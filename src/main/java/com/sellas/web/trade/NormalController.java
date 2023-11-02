@@ -420,15 +420,15 @@ public class NormalController {
 			if(mamount >= Integer.parseInt(String.valueOf(map.get("tnormalprice")))) {
 				//이미 채팅창이 생성되어 있는거 아녀??
 				int paymentCount = normalService.normalTradePaymentCountCount(map);
-				
-					if(paymentCount != 0) {
+				System.out.println("paymentCount의 값은 : " +  paymentCount);
+				json.put("paymentCount", paymentCount);
+					if(paymentCount > 0) {
 						//payment에 값이 이미 있다면 
 						System.out.println("이미 거래내역이 있구나!");
-						json.put("chatroomCount", 1);
 						return json.toString();
 					}
 				
-				
+					
 				
 				//돈 빼고 state 1로 바꾸고 payment 에 값 넣자
 				//먼저 돈을 빼버리자

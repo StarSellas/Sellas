@@ -192,7 +192,7 @@
 						return false;
 					}
 					
-					if(data.chatroomCount != 0){
+					if(data.paymentCount > 0){
 						alert("이미 진행중인 채팅방이 있거나 실패한 거래입니다.");
 						return false;
 					}
