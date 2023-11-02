@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+.cateBox{
+	width: 80%;
+	padding: 0;
+	float: right;
+}
+.boardListBox{
+	margin: auto;
+	padding: 0;
+	width: 90%;
+}
+
+#boardList{
+   margin: auto;
+   margin-top: 20px;
+   margin-bottom: 20px;
+   padding: 0;
+   width: 100%;
+   height: 70%;
+}
+
+.boardRow{
+	width: 100%;
+	height: 70px;
+	border-bottom: solid gray thin;
+}
+
+#cateBtn{
+	text-decoration: none;
+	color: gray;
+}
+
+#otherCateBtn{
+   width: 150px;
+   height: 30px;
+}
+.writeBtnBox{
+   margin: 20px;
+}
+.writeBtn{
+   flex: right;
+}
+.btitle{
+	padding-left: 10px;
+}
+.bread, .bdate, .commentcount{
+	font-size: 14px;
+}
