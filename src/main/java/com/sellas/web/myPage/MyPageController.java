@@ -245,6 +245,11 @@ public class MyPageController {
 	
 	
 	
+	//찜하기(위시리스트)
+	
+	
+	
+	
 	
 	
 	

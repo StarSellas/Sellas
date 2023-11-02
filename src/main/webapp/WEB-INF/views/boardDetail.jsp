@@ -96,6 +96,24 @@
         			});
         	
         		}) // cedit 클릭이벤트
+        		
+        		// 댓글쓰기 유효성 검사 (로그인&빈칸)
+        		$(".cWriteBtn").click(function(){
+        			
+        			let muuid = $(this).parent().siblings(".muuid").val();
+        			let cContent = $(this).parent().siblings(".cContent").val();
+					
+        			if(muuid == "" || muuid == null){
+	        			alert("로그인이 필요한 서비스입니다.");
+	        			return false;
+        			}
+        			
+					if(cContent == "" || cContent == null){
+						alert("댓글을 입력해주세요");
+						return false;
+					}
+        			//alert("댓글등록")
+        		});
         	
         	});
 			 
@@ -119,7 +137,7 @@
 						<div>
 							제목 : ${bdetail.btitle } // <span>조회수 : ${bdetail.bread }</span>
 						</div>
-						<div> 글쓴이 : ${debdetailail.mnickname } // 
+						<div> 글쓴이 : ${bdetail.mnickname } // 
 							<span>날짜 : ${bdetail.bdate }</span>
 						</div>
 					</div>
@@ -137,8 +155,10 @@
 					</div>
 					
 					<div class="bBtnBox">
-						<button onclick="bedit(${bdetail.sno}, ${bdetail.bno})">글수정</button>
-						<button onclick="bdelete(${bdetail.sno}, ${bdetail.bno})">글삭제</button>
+						<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq bdetail.mnickname}">
+							<button onclick="bedit(${bdetail.sno}, ${bdetail.bno})">글수정</button>
+							<button onclick="bdelete(${bdetail.sno}, ${bdetail.bno})">글삭제</button>
+						</c:if>
 					</div>
 				</div>
 
@@ -155,13 +175,16 @@
 							<c:forEach items="${comments }" var="comments">
 								<div class="commentBox">
 										<div class="cContentBox">
+											<input type="hidden" name="muuid" class="muuid" value="uuid : ${comments.muuid }">
 											<input type="hidden" class="cno" value="${comments.cno }"/>
-											<div>${comments.mnickname }	// <span>${comments.cdate }</span></div>
+											<div>${comments.mnickname }, ${comments.muuid }	// <span>${comments.cdate }</span></div>
 											<div class="content">${comments.ccontent }</div>
 										</div>
 										<div class="commentsBtn">
-											<button class="cedit">수정</button>
-											<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
+											<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq comments.mnickname}">
+												<button class="cedit">수정</button>
+												<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
+											</c:if>
 										</div>
 										<hr>
 								</div>
@@ -171,9 +194,9 @@
 
 					<!-------------------- 댓글쓰기창 -------------------->
 						<div class="cWriteBox">
-							<form action="./commentWrite" method="post">
+							<form action="./commentWrite" method="post" class="commentWriteForm">
 								<textarea class="cContent" name="ccontent"></textarea>
-								<input type="hidden" name="muuid" value="${sessionScope.muuid }">
+								<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 								<input type="hidden" name="cate" value="${param.cate }">
 								<input type="hidden" name="bno" value="${param.bno }">
 								<div class="commentsBtn">
@@ -188,9 +211,5 @@
                 </div>
         	</div>
         </section>
-        
-		
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

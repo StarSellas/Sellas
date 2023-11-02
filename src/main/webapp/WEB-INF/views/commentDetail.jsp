@@ -109,8 +109,10 @@
 								<div class="content">${comments.ccontent }</div>
 							</div>
 							<div class="commentsBtn">
-								<button class="cedit">수정</button>
-								<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
+								<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq comments.mnickname}">
+									<button class="cedit">수정</button>
+									<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
+								</c:if>
 							</div>
 							<hr>
 						</div>
@@ -121,7 +123,5 @@
             </div>
             
         </section>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

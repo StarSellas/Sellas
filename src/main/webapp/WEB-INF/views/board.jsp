@@ -34,7 +34,7 @@
 	<%@ include file="menubar.jsp" %>
 	
         <!-- Section-->
-        <section class="py-5">
+        <section class="py-5" id="bodyContainer">
         
             <div class="container px-4 mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
@@ -82,9 +82,11 @@
 		                        </td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'" data-bno="${mainList.rowNum}">
 		                        	${mainList.btitle} <span class="commentcount">(${mainList.commentcount})</span>
+		                        	<div>${mainList.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${mainList.bdate}</td>
-		                        <td class="bread">${mainList.bread}</td>
+		                        <td class="bread">${mainList.bread}  <span>${mainList.mnickname}</span></td>
+		                       
 		                     </tr>
                   		</c:forEach>
                		</c:if>
@@ -95,8 +97,9 @@
 		                        <td class="rowNum"><c:if test="${list.bthumbnail eq 0}"> <span>i</span> </c:if>
 		                        	${list.rowNum}
 		                        </td>
-		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'" data-bno="${list.rowNum}"> <%--  --%>
+		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'" data-bno="${list.rowNum}">
 		                        	${list.btitle} <span class="commentcount">(${list.commentcount})</span>
+		                        	<div>${list.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${list.bdate}</td>
 		                        <td class="bread">${list.bread}</td>
@@ -107,16 +110,15 @@
             </div>
             
             <div class="writeBtnBox">
-            	<c:if test="${param.cate eq 2 || param.cate eq 3}">
+            ${sessionScope.uuid}
+            	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
                		<button class="writeBtn" onclick="location.href='/boardWrite?cate=${param.cate}'">글쓰기</button>
-               </c:if>
+               	</c:if>
             </div>
 
         		 </div>
             </div>
         </section>
         
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
