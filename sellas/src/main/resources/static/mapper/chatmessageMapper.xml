@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.chat.ChatMessageDAO">
+	
+	<insert id="enterMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent) values (#{roomId}, #{buyer}, #{enterContent})
+	</insert>
+	
+	<insert id="chatMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent) values (#{roomId}, #{buyer}, #{message})
+	</insert>
+	
+	<insert id="outMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent) values (#{roomId}, #{buyer}, #{outContent})
+	</insert>
+	
+	<select id="name" parameterType="String" resultType="String">
+		select mnickname from member where muuid = #{name}
+	</select>
+	
+	<select id="alarmSeller" parameterType="String" resultType="String">
+		select oseller from onlinechat where ouuid = #{roomId}
+	</select>
+	
+	<insert id="alarm" parameterType="Map">
+		insert into alarm (ouuid, acontent, muuid, acheck) values (#{roomId}, #{alarmContent}, #{alarmseller},  1)
+	</insert>
+	
+</mapper>

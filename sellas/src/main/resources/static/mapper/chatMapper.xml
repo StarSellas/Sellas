@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.chat.ChatRoomDAO">
+
+	<insert id="room" parameterType="Map">
+		insert into onlinechat (ouuid, obuyer, oseller, tno) values (#{roomId}, #{obuyer}, #{oseller}, #{tno})
+	</insert>
+	
+</mapper>
