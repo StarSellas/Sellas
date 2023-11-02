@@ -73,18 +73,7 @@ public class BoardService {
 	}
 
 	public int commentWrite(Map<String, Object> map) {
-		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
-				
-		if(session.getAttribute("mnickname") != null) {
-			int result = boardDAO.commentWrite(map);
-			if(result == 1) {
-				return result;
-			} else {
-				return result;
-			}
-		} else {
-			return 2;
-		}
+		return boardDAO.commentWrite(map);
 	}
 
 	public int commentEdit(Map<String, Object> map) {

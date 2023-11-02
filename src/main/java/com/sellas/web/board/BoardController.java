@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,16 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import retrofit2.http.GET;
-import springfox.documentation.spring.web.json.Json;
+import com.sellas.web.util.Util;
+
 
 @Controller
 public class BoardController {
 
 	@Autowired 
 	private BoardService boardService;
+	@Autowired
+	private Util util;
 	
 	// (카테고리별)게시판페이지
 	@GetMapping("/board")
@@ -39,7 +41,6 @@ public class BoardController {
 		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
 		List<Map<String, Object>> boardList = boardService.boardList(cate);
 		List<Map<String, Object>> mainList = boardService.mainList(cate);
-		
 		// 게시판카테고리, 카테고리별 게시글, 메인보드 게시글(조회순)
 		model.addAttribute("board", setupboardList);
 		model.addAttribute("list", boardList);
@@ -51,6 +52,11 @@ public class BoardController {
 	// 글쓰기 페이지
 	@GetMapping("/boardWrite")
 	public String boardWrite(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
+		
+		if(!util.checkLogin()) {
+			return "redirect/login";
+		}
+		
 		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
 		model.addAttribute("board", setupboardList);
 
@@ -144,7 +150,7 @@ public class BoardController {
 		boardService.boardReadUP(map);
 		List<Map<String, Object>> imageList = boardService.imageList(map);
 		List<Map<String, Object>> commentList = boardService.commentList(map);
-		//System.out.println(imageList);
+		//System.out.println(commentList);
 		//[{bthumbnail=1, bno=25, bimage=고래nb.png}]
 		//System.out.println("디테일페이지 : " + detailList);
 		//{bno=5, bread=0, mnickname=셀라스, commentcount=2, bdate=14:27:46, sno=2, sname=판매요청, btitle=판매요청글씀, bcontent=ㅁㅇㄴㄹ, mno=1}
@@ -276,18 +282,20 @@ public class BoardController {
 	
 	// 댓글쓰기
 	@PostMapping("commentWrite")
-	public String commentWrite(@RequestParam Map<String, Object> map) {
+	public String commentWrite(@RequestParam Map<String, Object> map, HttpSession session) {
 		System.out.println(map); // {ccontent=adfasdfa, muuid=, cate=2, bno=74}
+		
+		if(!util.checkLogin()) {
+			return "redirect/login";
+		}
 		int result = boardService.commentWrite(map);
 		
-		if(result == 1) {
-			return "redirect:/boardDetail?cate="+map.get("cate")+"&bno="+map.get("bno");
-		} else if(result == 0){
-			System.out.println("댓글쓰기 실패");
-			return "redirect:/boardDetail?cate="+map.get("cate")+"&bno="+map.get("bno");
-		} else {
-			return "login";
-		}
+			if(result == 1) {
+				return "redirect:/boardDetail?cate="+map.get("cate")+"&bno="+map.get("bno");
+			} else {
+				System.out.println("댓글쓰기 실패");
+				return "redirect:/boardDetail?cate="+map.get("cate")+"&bno="+map.get("bno");
+			}
 	}
 	
 	// 댓글삭제

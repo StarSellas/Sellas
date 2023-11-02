@@ -42,7 +42,36 @@
 					let result = $(".cateWrite").val(sno);	// 선택한 카테고리 번호로 변경 (db로 가는 cate)
 					console.log("최종 저장될 cate : " + result.val());
 					
-				})      		
+				})
+				
+				
+				// 글쓰기 유효성 검사 (로그인&빈칸)
+        		$(".bwriteButton").click(function(){
+        			
+        			let muuid = $(this).parent().siblings(".muuid").val();
+        			let btitle = $(this).parent().siblings(".btitleBox").children(".btitle").val();
+        			let bcontent = $(this).parent().siblings(".bcontent").val();
+        			
+        			alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
+					
+        			if(muuid == "" || muuid == null){
+	        			alert("로그인이 필요한 서비스입니다.");
+	        			return false;
+        			}
+        			
+					if(btitle.length < 3){
+						alert("제목을 입력하세요.");
+						return false;
+					}
+					
+					if(bcontent.length < 3){
+						alert("내용을 입력하세요.");
+						return false;
+					}					
+        			
+        		});
+				
+				
         	});
         	
         	// 이미지 업로드
@@ -161,15 +190,17 @@
 					<div>
 						<form action="./boardWrite" method="post" enctype="multipart/form-data">
 							<div class="btitleBox">
-								<input type="text" class="" id="btitle" name="btitle" placeholder="제목을 입력해주세요">
+								<input type="text" class="btitle" id="btitle" name="btitle" placeholder="제목을 입력해주세요">
 							</div>
-							<textarea id="bcontent" name="bcontent" placeholder="내용을 입력해주세요"></textarea>
+							
+							<textarea id="bcontent" class="bcontent" name="bcontent" placeholder="내용을 입력해주세요"></textarea>
 							<div class="boardimgBox">
 								<div id="photoInputs">
                     				<div id="imagePreviews"></div>
                     			</div>
 								<button id="addPhotoButton" type="button">사진 추가하기</button>
 							</div>
+							<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 							<input type="hidden" class="cateWrite" name="cate" value="${param.cate}">
 							<div class="bwriteBtnBox">
 								<button type="submit" class="bwriteButton">글쓰기</button>
@@ -181,7 +212,5 @@
             </div>
             
         </section>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
