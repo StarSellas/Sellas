@@ -25,7 +25,7 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="../css/mypage.css">
+<link rel="stylesheet" href="../css/profile.css">
 
 </head>
 <body>
@@ -93,7 +93,7 @@
 			</div>
 			<div class="experience-section"
 				style="position: relative; margin-top: 100px;">
-				<span>경험치</span>
+				<span class="rabel">🐳경험치</span>
 				<div class="progress" role="progressbar"
 					aria-label="Example with label"
 					aria-valuenow="${(exp) * 100}" aria-valuemin="0"
@@ -102,25 +102,23 @@
 				</div>
 			</div>
 			
-			<div>받은 거래 후기</div>
+			<div class="reviewList">
+			<div class="rabel">받은 거래 후기</div>
 			<div class="review-div">
-			${profileReview}
-			</div>
 			<div>
 			<c:forEach items="${profileReview}" var="review">
 			<div class="movedetail" onclick="location.href='./reviewDetail?rno=${review.rno}'">
-							<div class="user-img">
+							<div class="reviewimg">
 					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
 				</div>
-			<div>${review.mwriter}</div>
-	
-			<div>${review.rdate}</div>
-	
-			<div>${review.rcontent}</div>
+			<div class=nickname>${review.mnickname}</div>
+			<div class="content">${review.rcontent}</div>
+			<div class="date">${review.rdate}</div>
 			</div>
 			</c:forEach>
-			
+				</div>
 			</div>
+		</div>
 		</div>
 
 	</section>

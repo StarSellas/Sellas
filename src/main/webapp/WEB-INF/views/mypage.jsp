@@ -71,7 +71,6 @@
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 
 			<div class="nav">
-
 				<div class="user-img">
 					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
 				</div>
@@ -84,22 +83,34 @@
 
 				<button class=profile onclick="window.location.href='profile'">프로필보기</button>
 			</div>
-
-<div>
-판매내역이랑 구매내역 경매내역불러오좌!!!!
-<div class="sell" onclick="location.href='./getsell'">
-판매내역
-</div>
-<div class="buy" onclick="location.href='./getbuy'">
-구매내역
-</div>
-<div class="action" onclick="location.href='./getaction'">
-경매내역
-</div>
-
-
-</div>
 		</div>
+		    <div class="card">
+        <div class="card-body">
+            <p class="card-text">여기가 웨일페이충전구역임</p>
+        </div>
+        </div>
+		        <h6>나의 거래</h6>
+		<div class="movedetail">
+<div class="listdiv" onclick="location.href='./getwish'">
+❤️ 위시리스트
+</div>
+<div class="listdiv" onclick="location.href='./getsell'">
+📃 판매내역
+</div>
+<div class="listdiv" onclick="location.href='./getbuy'">
+🧺 구매내역
+</div>
+<div class="listdiv" onclick="location.href='./getaction'">
+⌛ 경매내역
+</div>
+</div>
+		        <h6>나의 활동</h6>
+		<div class="movedetail">
+<div class="listdiv" onclick="location.href='./getwish'">
+📝 활동내역
+</div>
+</div>
+
 
 
 

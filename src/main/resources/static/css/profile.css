@@ -4,7 +4,6 @@
 	float: left;
 	display: flex; /* 추가 */
 	margin-top: 20px;
-	margin-bottom: 15px;
 }
 
 .user-img {
@@ -13,6 +12,7 @@
 	border-radius: 70%;
 	border: solid #e3e3e3 1px;
 	overflow: hidden;
+	float: left;
 }
 
 .user-img-img {
@@ -51,34 +51,49 @@
 
 /* 프로필페이지거래후기 */
 
-
-
-
-.movedetail{
-		margin: 10px;
-		margin-bottom: 30px;
+.reviewimg {
+	width: 30px;
+	height: 30px;
+	border-radius: 70%;
+	border: solid #e3e3e3 1px;
+	overflow: hidden;
+	float: left;
+		
 }
 
-.listdiv{
-		border-bottom: solid #e3e3e3 1px;
-		margin: 10px;
-		padding-bottom: 10px;
+.reviewList{
+	margin-top: 50px;
+	
 }
-.card-body  {
-	padding: 30px;
+
+.rabel {
+	font-weight: bold;
+}
+
+.review-div {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+.nickname{
+	font-weight: bold;
+	margin-left: 40px;
+}
+
+.date{
+	color: gray;
+	font-size: 13px; 
+	margin-left: 40px;
+	margin-bottom: 10px;
+}
+
+.content {
+	margin: 5px;
+	margin-left: 40px;
 	}
 
-.card {
-    width: 350px;
-    height: auto;
-    margin: 0 auto; /* 중앙 정렬 */
-    padding: 20px;
-    margin-bottom: 15px;
-    text-align: center; /* 텍스트 가운데 정렬 */
+.movedetail{
+		border-bottom: solid #e3e3e3 1px;
+		margin: 10px
 }
-
-h6{
-		margin-left: 40px;
-		font-weight: bold;
-		margin-top: 20px;
-}
+	

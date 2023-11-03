@@ -8,8 +8,9 @@
 }
 
 .user-img {
-	width: 70px;
-	height: 70px;
+	margin: auto 0;
+	width: 80px;
+	height: 80px;
 	border-radius: 70%;
 	border: solid #e3e3e3 1px;
 	overflow: hidden;
@@ -52,6 +53,20 @@
 /* 프로필페이지거래후기 */
 
 
+/* 프로필 수정페이지만 관련있습니다. */
+.nicknameChange{
+	margin-top: 80px;
+}
+
+.nicknameDIV {
+  background-color: red;
+}
+
+
+.edit-div {
+	margin: 0 auto;
+}
+/* 프로필 수정페이지만 관련있습니다. */
 
 
 .movedetail{

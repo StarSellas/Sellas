@@ -3,7 +3,8 @@
 .nav {
 	float: left;
 	display: flex; /* 추가 */
-	margin-top: 20px;
+	margin : 20px 10px 10px;
+
 }
 
 .object-fit-cover {

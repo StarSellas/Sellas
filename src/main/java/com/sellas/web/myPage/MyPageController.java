@@ -123,7 +123,7 @@ public class MyPageController {
     @ResponseBody
     public int mypageModify(@RequestParam Map<String, Object> map, HttpSession session) {
     
-    	System.out.println("뭐있음?"+map);
+   
     	map.put("uuid",session.getAttribute("muuid"));
     	int result = myPageService.nicknameModify(map);
     	
@@ -205,6 +205,12 @@ public class MyPageController {
 	public String getSell(Model model, HttpSession session) {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
+		
+		//추후수정
+		/*
+		 * //리뷰중복확인 List<Map<String, Object>> hasReview = myPageService.hasReview(uuid);
+		 * model.addAttribute("hasReview",hasReview);
+		 */
 
 		//판매내역불러오기
 		List<Map<String, Object>> sellList = myPageService.getSell(uuid);

@@ -24,16 +24,8 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="../css/mypage.css">
+<link rel="stylesheet" href="../css/profileEdit.css">
 <style type="text/css">
-.nicknameDIV {
-  background-color: red;
-  text-align: center;
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 </style>
 </head>
 <body>
@@ -84,15 +76,17 @@
 				</div>
 				<div class="location col">프로필수정</div>
 			</div>
-			<div class="nicknameDIV">
+			
+			<div class="edit-div">
 				<div class="user-img">
 					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
 				</div>
+			<div class="nicknameDIV">
 				<input class="NewNickname" value="${nickname}">
 				<button id="nickChangeBtn" onclick="nickChange()">닉네임 변경</button>
 			</div>
 		</div>
-
+</div>
 
 	</section>
 	<!-- Footer-->

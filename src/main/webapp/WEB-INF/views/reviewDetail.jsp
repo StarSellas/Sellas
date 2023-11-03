@@ -25,7 +25,7 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="../css/mypage.css">
+<link rel="stylesheet" href="../css/reviewDetail.css">
 
 </head>
 <body>
@@ -76,15 +76,24 @@
 				</div>
 				<div class="location col">거래후기</div>
 			</div>
-		
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
-								<div>${reviewDetail.mnickname}님이 보낸 후기가 도착했습니다.</div>
-
-			<div>${reviewDetail.mnickname}님과 거래한 물품은 [${reviewDetail.ttitle}] 입니다.</div>
+			
+	<div class="review-box">
+    <img src="../img/흰배경셀라스.jpg" alt="logo" class="logo">
+    <div><h5>${reviewDetail.mnickname}님이 보낸 후기</h5></div>
+    <br>
+    <div>
+        <h6>${reviewDetail.mnickname}님과 거래한 물품은</h6>
+        <h6>[${reviewDetail.ttitle}]입니다</h6>
+    </div>
+       <br>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">${reviewDetail.rcontent}</p>
+        </div>
+    </div>
+</div>
 	
-			<div>${reviewDetail.rcontent}</div>
-			</div>
-
+</div>
 	</section>
 	<!-- Footer-->
         <footer id="footer">

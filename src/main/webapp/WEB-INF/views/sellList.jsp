@@ -100,16 +100,13 @@
     </p>
       </div>
     </div>
+    ${hasReview}
+    ${row.tno}
   </div>
+
 <c:if test="${row.tnormalstate eq 2 }">
-    <c:choose>
-        <c:when test="${row.tno eq hasReview.tno}">
-            <button class="submitbtn" type="button" onclick="location.href='./reviewDetail?rno=${hasReview.rno}'">🐋 후기보러가기</button>
-        </c:when>
-        <c:otherwise>
+            <button class="submitbtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
             <button class="submitbtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
-        </c:otherwise>
-    </c:choose>
 </c:if>
 </div>
 <br>

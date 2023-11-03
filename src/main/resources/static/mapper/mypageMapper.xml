@@ -23,9 +23,10 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 
 
 <select id="getprofileReview" parameterType="Object" resultType="Map">
-	SELECT rno, pno, mwriter, rcontent, rdate
-	FROM review
-	WHERE mtarget=#{muuid}
+    SELECT r.rno, r.pno, r.mwriter, r.rcontent, r.rdate, m.mnickname
+    FROM review r
+    JOIN member m ON r.mwriter = m.muuid
+    WHERE r.mtarget = #{muuid}
 </select>
 
 
@@ -67,7 +68,7 @@ WHERE t.muuid =#{uuid} AND ti.tthumbnail = 0
 </select>
 
 <select id="hasReview" parameterType="String" resultType="Map">
-SELECT r.rno, r.pno, p.tno
+SELECT DISTINCT r.rno, r.pno, p.tno
 FROM review r
 JOIN payment p ON r.pno = p.pno
 JOIN trade t ON p.tno= t.tno
