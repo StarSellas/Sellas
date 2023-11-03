@@ -53,6 +53,12 @@ public class NormalController {
 		model.addAttribute("normalBoardList", normalBoardList);
 		
 		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+			//System.out.println("muuid:" + muuid);
+			List<Map<String, Object>> alarmroomId = normalService.alarmRoomId(muuid);
+			//System.out.println("알림갯수:" + alarmroomId);
+			if(alarmroomId.size() >= 1) {
+				alarmmodel.addAttribute("roomId", alarmroomId.get(0));
+			}
 			int alarmcount = normalService.alarmCount(muuid);
 			alarmmodel.addAttribute("alarmcount", alarmcount);
 		}

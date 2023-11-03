@@ -23,7 +23,11 @@
 	</select>
 	
 	<insert id="alarm" parameterType="Map">
-		insert into alarm (ouuid, acontent, muuid, acheck) values (#{roomId}, #{alarmContent}, #{alarmseller},  1)
+		insert into alarm (ouuid, acontent, oseller, acheck) values (#{roomId}, #{alarmContent}, #{alarmseller}, 1)
 	</insert>
+	
+	<select id="oseller" parameterType="String" resultType="String">
+		select oseller from onlinechat where ouuid = #{roomId}
+	</select>
 	
 </mapper>

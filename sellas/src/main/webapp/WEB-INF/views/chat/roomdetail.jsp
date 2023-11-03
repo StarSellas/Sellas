@@ -13,6 +13,7 @@
             display: none; /* 숨김 */
         }
     </style>
+    <script src="../js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -40,13 +41,8 @@
         var ws = Stomp.over(sock);
         var roomId = '${roomId}';
         var sender = '${obuyer}';
-        function findRoom() {
-            axios.get('/chat/room/' + roomId).then(function (response) {
-                var roomName = response.data.name;
-                document.getElementById('roomName').textContent = roomName;
-            });
-        }
-
+        let tno = '${tno}';
+		let oseller = '${oseller}';
         function sendMessage() {
             var messageInput = document.getElementById('message');
             var message = messageInput.value;
@@ -55,39 +51,54 @@
                 alert("내용을 입력해 주세요.");
                 return;
             }
-
+			/* console.log(message)
+			console.log(sender)
+			console.log(roomId) 셋 다 들어오는거 확인했습니다. */ 
             ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'TALK', roomId: roomId, sender: sender, message: message}));
             messageInput.value = '';
+            startPing();
         }
 
         function recvMessage(recv) {
             var messagesList = document.getElementById("messages");
             var listItem = document.createElement("li");
             listItem.className = "list-group-item";
-            listItem.textContent = recv.sender + " - " + recv.message;
+            listItem.textContent = '${mnickname}' + " - " + recv.message;
             messagesList.insertBefore(listItem, messagesList.firstChild);
         }
 
         ws.connect({}, function (frame) {
+        	//console.log(frame); 정상적으로 들어옵니다.
             ws.subscribe("/sub/ws/chat/room/" + roomId, function (message) {
+            	//console.log(message);
                 var recv = JSON.parse(message.body);
-                if(recv.type !='ALARM'){
-                	recvMessage(recv);
+                //console.log("recv" + recv); 정상적으로 들어옵니다.
+                if(recv.type != 'ALARM'){
+                	if(recv.type != 'INTERVAL'){
+                		recvMessage(recv);
+                	}
             	} else {
             		return false;
             	}
+               	
             });
             ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender}));
-            ws.send("/pub/ws/chat/message", {}, JSON.stringifiy({type: 'ALARM', roomId: roomId, sender: sender}));
-        }, function (error) {
-            if (reconnect++ <= 5) {
-                setTimeout(function () {
-                    console.log("connection reconnect");
-                    sock = new SockJS("/ws/chat");
-                    ws = Stomp.over(sock);
-                    connect();
-                }, 10 * 1000);
-            }
+        });
+        
+        function startPing(){
+        	let message = "INTERVAL";
+        	ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message}));
+        	setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
+        };
+        
+        let ws0 = Stomp.over(sock);
+        ws0.connect({}, function (frame) {
+        	//console.log(frame); 정상적으로 들어옵니다.
+            ws0.subscribe("/sub0/ws/chat/user/" + oseller, function (message) {
+            	//console.log(message);
+            });
+            let alarmmessage = '${acontent}';
+            ws0.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({type: 'ALARM', roomId: roomId, sender: sender, message: alarmmessage, recipient: oseller}));
         });
     </script>
 </body>

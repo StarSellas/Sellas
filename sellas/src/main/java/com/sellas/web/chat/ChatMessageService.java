@@ -41,5 +41,10 @@ public class ChatMessageService {
 		return chatMessageDAO.alarmSeller(roomId);
 	}
 
+	public String oseller(String roomId) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.oseller(roomId);
+	}
+
 	
 }

@@ -15,4 +15,30 @@ public class ChatRoomService {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.room(map);
 	}
+
+	public int alarmIn(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.alarmIn(map);
+	}
+
+	public String obuyer(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.obuyer(map);
+	}
+
+	public String tno(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.tno(map);
+	}
+
+	public String mNickName(String uuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.mNickName(uuid);
+	}
+
+	public Map<String, Object> alarmChat(String roomId) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.alarmChat(roomId);
+	}
+	
 }

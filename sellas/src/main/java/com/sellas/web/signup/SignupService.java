@@ -12,19 +12,15 @@ public class SignupService {
 	@Autowired
 	private SignupDAO signupDAO;
 
-	
-	/* SIGNUP : 회원가입 */
-	
 	public int signup(Map<String, String> map) {
 
-		map.put("uuid", UUID.randomUUID().toString());	// TODO : 중복 검사 필요
-		map.put("address", "");							// TODO : 수정 필요
-		map.put("detailaddress", "");					// TODO : 수정 필요
+		map.put("uuid", UUID.randomUUID().toString());	// 중복 검사 필요
+		map.put("address", "");							// 수정 필요
+		map.put("detailaddress", "");					// 수정 필요
 				
 		return signupDAO.signup(map);
 	}
-	
-	// 중복검사
+
 	public int duplicationCheck(String fieldId, String value) {
 		
 		int result = -1;

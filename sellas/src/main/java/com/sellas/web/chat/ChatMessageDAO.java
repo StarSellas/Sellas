@@ -19,6 +19,8 @@ public interface ChatMessageDAO {
 
 	String alarmSeller(String roomId);
 
+	String oseller(String roomId);
+
 	
 	
 }

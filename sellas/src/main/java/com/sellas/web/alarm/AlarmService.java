@@ -16,6 +16,11 @@ public class AlarmService {
 		// TODO Auto-generated method stub
 		return alarmDAO.alarmList(muuid);
 	}
+
+	public int setCheckZero(String muuid) {
+		// TODO Auto-generated method stub
+		return alarmDAO.setCheckZero(muuid);
+	}
 	
 	
 }

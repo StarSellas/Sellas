@@ -138,6 +138,11 @@ WHERE mnickname = #{mnickname}
 </update>
 
 <select id="alarmCount" parameterType="String" resultType = "Integer">
-	select COUNT(*) as count from alarm where oseller = #{muuid}
+	select COUNT(*) from alarm where oseller = #{muuid} and acheck = 1
 </select>
+
+<select id="alarmRoomId" parameterType="String" resultType="Map">
+	select ouuid from alarm where oseller = #{muuid} and acheck = 1
+</select>
+
 </mapper>

@@ -8,5 +8,15 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ChatRoomDAO {
 
 	int room(Map<String, Object> map);
+
+	int alarmIn(Map<String, Object> map);
+
+	String obuyer(Map<String, Object> map);
+
+	String tno(Map<String, Object> map);
+
+	String mNickName(String uuid);
+
+	Map<String, Object> alarmChat(String roomId);
 	
 }

@@ -133,6 +133,11 @@ public class NormalService {
 		return normalDAO.alarmCount(muuid);
 	}
 
+	public List<Map<String, Object>> alarmRoomId(String muuid) {
+		// TODO Auto-generated method stub
+		return normalDAO.alarmRoomId(muuid);
+	}
+
 	
 
 	

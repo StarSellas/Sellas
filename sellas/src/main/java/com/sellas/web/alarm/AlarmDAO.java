@@ -10,4 +10,6 @@ public interface AlarmDAO {
 
 	List<Map<String, Object>> alarmList(String muuid);
 
+	int setCheckZero(String muuid);
+
 }
