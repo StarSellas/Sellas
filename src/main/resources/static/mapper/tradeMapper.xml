@@ -14,8 +14,8 @@
 </insert>
 
 <insert id="addAuctionTradeItem" parameterType="Map">
-	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tauctionstartprice, tauctionminbidunit, tauctionstate)
-	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{auctionStartPrice}, #{auctionMinBidUnit}, 0)
+	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tauctionstartprice, tauctionminbidunit, tauctioncurrentbidprice, tauctionstate)
+	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{auctionStartPrice}, #{auctionMinBidUnit}, 0, 0)
 </insert>
 
 </mapper>

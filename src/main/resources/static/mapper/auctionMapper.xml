@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.auction.AuctionDAO">
+
+<!-- 
+<select id="auctionList" resultType="Map">
+	SELECT trade.tno, trade.ino, trade.ttitle, trade.tcontent, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, trade.tauctioncurrentbidprice, member.mnickname
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+	WHERE trade.ttype = 1
+</select>
+-->
+
+<select id="getItemCategoryList" resultType="Map">
+	SELECT *
+	FROM itemcategory
+	ORDER BY ino
+</select>
+
+<select id="getAuctionItemList" parameterType="String" resultType="Map">
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, trade.tauctioncurrentbidprice, member.mnickname, itemcategory.ino, itemcategory.iname
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+	WHERE trade.ttype = 1
+</select>
+
+<select id="getAuctionItemListPriceDESC" parameterType="String" resultType="Map">
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, trade.tauctioncurrentbidprice, member.mnickname, itemcategory.ino, itemcategory.iname
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+	WHERE trade.ttype = 1
+	ORDER BY trade.tauctioncurrentbidprice DESC
+</select>
+
+<select id="getAuctionItemListPriceASC" parameterType="String" resultType="Map">
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, trade.tauctioncurrentbidprice, member.mnickname, itemcategory.ino, itemcategory.iname
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+	WHERE trade.ttype = 1
+	ORDER BY trade.tauctioncurrentbidprice ASC
+</select>
+
+<select id="getAuctionItemListReadDESC" parameterType="String" resultType="Map">
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, trade.tauctioncurrentbidprice, member.mnickname, itemcategory.ino, itemcategory.iname
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+	WHERE trade.ttype = 1
+	ORDER BY trade.tread DESC
+</select>
+
+</mapper>
