@@ -48,17 +48,12 @@ public class NormalController {
 		map.put("inOrder", "desc"); 
 		List<Map<String, Object>> normalBoardList = normalService.normalBoardList(map);
 
-		System.out.println("보드 리스트 : " + normalBoardList);
+		//System.out.println("보드 리스트 : " + normalBoardList);
 		// System.out.println(tradeBoardList);
 		model.addAttribute("normalBoardList", normalBoardList);
 		
 		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
 			//System.out.println("muuid:" + muuid);
-			List<Map<String, Object>> alarmroomId = normalService.alarmRoomId(muuid);
-			//System.out.println("알림갯수:" + alarmroomId);
-			if(alarmroomId.size() >= 1) {
-				alarmmodel.addAttribute("roomId", alarmroomId.get(0));
-			}
 			int alarmcount = normalService.alarmCount(muuid);
 			alarmmodel.addAttribute("alarmcount", alarmcount);
 		}
@@ -70,11 +65,11 @@ public class NormalController {
 	@ResponseBody
 	@GetMapping("sortNormalTradeList")
 	public String sortNormalTradeList(@RequestParam Map<String, Object> map) {
-		System.out.println("들어오는 map 값입니다 : " + map);
+		//System.out.println("들어오는 map 값입니다 : " + map);
 		List<Map<String, Object>> sortNormalBoradList = normalService.normalBoardList(map);
 		JSONObject json = new JSONObject();
 		json.put("sortNormalBoradList", sortNormalBoradList);
-		System.out.println("제이슨 값입니다 : " + json.toString());
+		//System.out.println("제이슨 값입니다 : " + json.toString());
 		return json.toString();
 	}
 	
@@ -108,8 +103,8 @@ public class NormalController {
 	@PostMapping("/normalWirte")
 	public String tradeWirte(@RequestParam(value = "tradeimg", required = false) List<MultipartFile> tradeimg,
 			@RequestParam Map<String, Object> map) {
-		 System.out.println("글쓰기에서 보내주는 값입니당 : " + map);
-		 System.out.println("이미지가 오려나..?" + tradeimg);
+		 //System.out.println("글쓰기에서 보내주는 값입니당 : " + map);
+		 //System.out.println("이미지가 오려나..?" + tradeimg);
 		// System.out.println("트레이드 이미지 사이즈는 : " + tradeimg.size());
 
 		// 일단 보드에 넣어보자
@@ -118,7 +113,7 @@ public class NormalController {
 
 			int LastTno = (int) map.get("tno");
 
-			System.out.println("★★ 방금 넣은 따끈따끈한 값입니다 : " + LastTno);
+			//System.out.println("★★ 방금 넣은 따끈따끈한 값입니다 : " + LastTno);
 			// 가져온 tno 값을 맵에 넣기
 			map.put("tno", LastTno);
 			// 여기부터 사진 넣는 방식임다
@@ -131,7 +126,7 @@ public class NormalController {
 					HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder
 							.currentRequestAttributes()).getRequest();
 					String path = req.getServletContext().getRealPath("/tradeImgUpload");
-					System.out.println("이미지 오리지널 파일 이름 : " + tradeimg.get(i).getOriginalFilename());
+					//System.out.println("이미지 오리지널 파일 이름 : " + tradeimg.get(i).getOriginalFilename());
 					LocalDateTime ldt = LocalDateTime.now();
 					String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
 					String realFileName = format + "num" + i + tradeimg.get(i).getOriginalFilename();
@@ -139,7 +134,7 @@ public class NormalController {
 					// 확장자 자르기
 					String[] parts = tradeimg.get(i).getOriginalFilename().split("\\.");
 					String lastPart = parts[parts.length - 1];
-					System.out.println(lastPart);
+					//System.out.println(lastPart);
 
 					// 확장자 아니면 파일 없애보리기
 
@@ -176,19 +171,19 @@ public class NormalController {
 
 	@GetMapping("/normalDetail") 
 	public String tradeDetail(@RequestParam(name = "tno", required = true, defaultValue = "1") int tno, Model model) {
-		System.out.println("tno 값은 : " + tno);
+		//System.out.println("tno 값은 : " + tno);
 		// tno값에 맞는 값을 가져오기
 		Map<String, Object> normalDetail = normalService.normalDetail(tno);
-		System.out.println("디테일 값입니다 : " + normalDetail);
+		//System.out.println("디테일 값입니다 : " + normalDetail);
 		// 조회수 올리기
 		normalService.normalTreadUpdate(tno);
 		// 혹시 사진이 있나요?
 		int normalDetailCount = normalService.normalDetailCount(tno);
-		System.out.println("사진이 있나요? " + normalDetailCount);
+		//System.out.println("사진이 있나요? " + normalDetailCount);
 		if (normalDetailCount > 0) {
 			// 사진 realFileName 가져오기
 			List<Map<String, Object>> normalDetailImage = normalService.normalDetailImage(tno);
-			System.out.println("실제 파일 이름입니당 : " + normalDetailImage);
+			//System.out.println("실제 파일 이름입니당 : " + normalDetailImage);
 			// 모델에 값 넣기
 			model.addAttribute("normalDetailImage", normalDetailImage);
 		}
@@ -200,7 +195,7 @@ public class NormalController {
 	// 수정하기
 	@GetMapping("/normalEdit")
 	public String normalEdit(@RequestParam(value = "tno") int tno, Model model) {
-		System.out.println(tno);
+		//System.out.println(tno);
 		Map<String, Object> normalDetail = normalService.normalDetail(tno);
 
 		// 카테고리 list로 불러오기
@@ -221,9 +216,9 @@ public class NormalController {
 			model.addAttribute("normalDetailImage", normalDetailImage);
 			
 			
-			System.out.println("노말 디테일 이미지 어떻게 오나오 ? : " + normalDetailImage);
+			//System.out.println("노말 디테일 이미지 어떻게 오나오 ? : " + normalDetailImage);
 		}
-		System.out.println("normalDetail값은 이렇게 옵니다 : " + normalDetail);
+		//System.out.println("normalDetail값은 이렇게 옵니다 : " + normalDetail);
 		model.addAttribute("detail", normalDetail);
 		return "normalEdit";
 	}
@@ -234,10 +229,10 @@ public class NormalController {
 	public String normalDelete(@RequestParam Map<String, Object> map, HttpSession session) {
 		JSONObject json = new JSONObject();
 		
-		System.out.println(map);
+		//System.out.println(map);
 		if( map.get("muuid").equals(session.getAttribute("muuid"))) {
 			int normalDelete = normalService.normalDelete(map);
-			System.out.println("삭제돼랏" + normalDelete);
+			//System.out.println("삭제돼랏" + normalDelete);
 			if(normalDelete == 1) {
 				json.put("deleteSuccess", 1);
 			}  
@@ -258,7 +253,7 @@ public class NormalController {
 	//결제 정보를 가져온 뒤 부트페이로 보내는 메소드입니다.
 	@PostMapping("/fillRequset")
 	public String fillRequset(@RequestParam Map<String, Object> map, Model model) {
-		System.out.println(map);
+		//System.out.println(map);
 		model.addAttribute("bootpayDetail", map);
 		return "/bootpay";
 	} 
@@ -266,7 +261,7 @@ public class NormalController {
 	//결제가 완료되었을 때 실행되는 메소드입니다.
 	@PostMapping("/payOK")
 	public String payOK(@RequestParam Map<String, Object> map) {
-		System.out.println("결제가 성공하면 나오는 값 " + map);
+		//System.out.println("결제가 성공하면 나오는 값 " + map);
 		int fillResult = normalService.fillWhalePay(map); 
 			if(fillResult == 1 ) {
 				normalService.fillMamount(map);
@@ -281,8 +276,8 @@ public class NormalController {
 	@PostMapping("/normalEdit")
 	public String normalEdit(@RequestParam(value = "tradeimg", required = false) List<MultipartFile> tradeimg,
 			@RequestParam Map<String, Object> map) {
-		System.out.println("이미지 값이 어떻게 올까요? " + tradeimg);
-		System.out.println(map); 
+		//System.out.println("이미지 값이 어떻게 올까요? " + tradeimg);
+		//System.out.println(map); 
 
 		int normalEditResult = normalService.normalEdit(map);
 		if(normalEditResult == 1) {
@@ -302,24 +297,24 @@ public class NormalController {
 					deleteImage.put(selectedImage, Imagesrc);
 				}
 			}
-			System.out.println("deleteImage의 값입니당 왔으면 좋겠다 : "+deleteImage);
+			//System.out.println("deleteImage의 값입니당 왔으면 좋겠다 : "+deleteImage);
 			
 			int normalDeleteEditImageResult = normalService.normalDeleteEditImage(deleteImage);
-			System.out.println("수정되었을 때 사진이 삭제되는지 ?? : " + normalDeleteEditImageResult);
+			//System.out.println("수정되었을 때 사진이 삭제되는지 ?? : " + normalDeleteEditImageResult);
 			
 			}//if(!(map.get("selectedImage0").equals(""))) 끝
 			
 			
 			//사진 업로드
 			if (tradeimg != null && !tradeimg.isEmpty()) {
-				System.out.println("이게 왜 안나옴?????????????????????????????????????????");
+				//System.out.println("이게 왜 안나옴?????????????????????????????????????????");
 				for (int i = 0; i < tradeimg.size(); i++) {
 
 					// 저장할 경로명 뽑기 request뽑기
 					HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder
 							.currentRequestAttributes()).getRequest();
 					String path = req.getServletContext().getRealPath("/tradeImgUpload");
-					System.out.println("이미지 오리지널 파일 이름 : " + tradeimg.get(i).getOriginalFilename());
+					//System.out.println("이미지 오리지널 파일 이름 : " + tradeimg.get(i).getOriginalFilename());
 					LocalDateTime ldt = LocalDateTime.now();
 					String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
 					String realFileName = format + "num" + i + tradeimg.get(i).getOriginalFilename();
@@ -327,7 +322,7 @@ public class NormalController {
 					// 확장자 자르기
 					String[] parts = tradeimg.get(i).getOriginalFilename().split("\\.");
 					String lastPart = parts[parts.length - 1];
-					System.out.println(lastPart);
+					//System.out.println(lastPart);
 
 					// 확장자 아니면 파일 없애보리기
 
@@ -377,14 +372,14 @@ public class NormalController {
 	@ResponseBody
 	public String checkTnormalstate(@RequestParam Map<String, Object> map) {
 		JSONObject json = new JSONObject();
-		System.out.println(map);
+		//System.out.println(map);
 		int tnormalstate = normalService.selectTnormalstate(map);
 		json.put("tnormalstate", tnormalstate);
-		System.out.println("tnormalstate의 값은 : " + tnormalstate);
+		//System.out.println("tnormalstate의 값은 : " + tnormalstate);
 		if(tnormalstate==0) {
 			//거래가 가능한 경우
 			int mamount = normalService.selectMamountForTrade(map);
-			System.out.println("너 얼마있냐?? : " + mamount);
+			//System.out.println("너 얼마있냐?? : " + mamount);
 			json.put("mamount", mamount);
 			if(mamount >= Integer.parseInt(String.valueOf(map.get("tnormalprice")))) {
 				//돈 빼고 state 1로 바꾸고 payment 에 값 넣자
@@ -407,7 +402,7 @@ public class NormalController {
 					 	}//if(changeStateForTrade ==1 ) 끝
 					}//if(takeMamount == 1) 끝
 			}else {
-				System.out.println("ㅠㅠ 못사요");
+				//System.out.println("ㅠㅠ 못사요");
 				//json에 따로 값을 넣어서 경고창을 날릴 수 있게 해주자
 			}
 			
@@ -422,7 +417,7 @@ public class NormalController {
 	@PostMapping("/requestTrade")
 	@ResponseBody
 	public String requestTrade(@RequestParam(value = "mnickname") String mnickname) {
-		System.out.println(mnickname);
+		//System.out.println(mnickname);
 		JSONObject json = new JSONObject();
 		return json.toString(); 
 		

@@ -7,7 +7,7 @@
 	</select>
 	
 	<update id="setCheckZero" parameterType="String">
-		update alarm set acheck = 0 where oseller = #{muuid}
+		update alarm set acheck = 0 where oseller = #{muuid} and acheck = 1
 	</update>
 
 </mapper>

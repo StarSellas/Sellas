@@ -27,20 +27,21 @@ public class AlarmController {
 		
 		List<Map<String, Object>> alarmlist = alarmService.alarmList(muuid); //로그아웃해 있던 동안 쌓인 알림 리스트 받아옵니다.
 		
-		System.out.println("알림 리스트: " + alarmlist);
+		//System.out.println("알림 리스트: " + alarmlist);
 		
-			model.addAttribute("alarmlist", alarmlist); //alarmlist(방의 uuid와 alarm 내용을 alarmlist)라는 이름으로 모델로 보냅니다.
+		model.addAttribute("alarmlist", alarmlist); //alarmlist(방의 uuid와 alarm 내용을 alarmlist)라는 이름으로 모델로 보냅니다.
 		
 		return "/chat/alarm";
 		
 	}
 	
-	@PostMapping("/alarm")
-	public void alarm(@RequestParam String muuid) {
+	@PostMapping("/alarmcheck")
+	public void alarm(HttpSession session) {
 		
 		//System.out.println("muuid는 " + muuid);
 		
-		if(muuid != null && !(muuid.equals(""))) {
+		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+			String muuid = String.valueOf(session.getAttribute("muuid"));
 			int setcheckzero = alarmService.setCheckZero(muuid);
 		}
 	}

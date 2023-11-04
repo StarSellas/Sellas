@@ -11,19 +11,23 @@
 	</insert>
 	
 	<select id="obuyer" parameterType="Map" resultType="String">
-		select mnickname from member where muuid = #{obuyer}
+		select mnickname from member where muuid = #{me}
 	</select>
 	
-	<select id="tno" parameterType="Map" resultType="String">
+	<select id="tnoName" parameterType="Map" resultType="String">
 		select ttitle from trade where tno = #{tno}
 	</select>
 	
 	<select id="mNickName" parameterType="String" resultType="String">
-		select mnickname from member where muuid = #{uuid}
+		select mnickname from member where muuid = #{me}
 	</select>
 	
 	<select id="alarmChat" parameterType="String" resultType="Map">
 		select tno, oseller, obuyer from onlinechat where ouuid = #{roomId}
+	</select>
+	
+	<select id="obuyerName" parameterType="String" resultType="String">
+		select mnickname from member where muuid = #{me}
 	</select>
 	
 </mapper>

@@ -30,6 +30,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script type="text/javascript">
+    $(function(){
+    	$.ajax({
+    		url: '/chat/alarmcheck',
+    		type: 'post',
+    		success : function(data){
+    			
+    		},
+    		error : function(error){
+    			
+    		}
+    	});
+    });
     $(document).ready(function() {
         $(document).on('DOMNodeInserted', function() {
             $(".alarmroomhidden").hide();

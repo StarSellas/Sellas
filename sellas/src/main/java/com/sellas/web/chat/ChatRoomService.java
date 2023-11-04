@@ -21,9 +21,9 @@ public class ChatRoomService {
 		return chatRoomDAO.alarmIn(map);
 	}
 
-	public String obuyer(Map<String, Object> map) {
+	public String obuyer(Object object) {
 		// TODO Auto-generated method stub
-		return chatRoomDAO.obuyer(map);
+		return chatRoomDAO.obuyer(object);
 	}
 
 	public String tno(Map<String, Object> map) {
@@ -39,6 +39,16 @@ public class ChatRoomService {
 	public Map<String, Object> alarmChat(String roomId) {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.alarmChat(roomId);
+	}
+
+	public String tnoName(String tno) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.tnoName(tno);
+	}
+
+	public String obuyerName(String obuyer) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.obuyerName(obuyer);
 	}
 	
 }

@@ -13,13 +13,19 @@ public interface ChatMessageDAO {
 
 	Map<String, Object> alarm(Map<String, Object> alarmMap);
 
-	Map<String, Object> enterMessage(Map<String, Object> enterMap);
+	int enterMessage(Map<String, Object> enterMap);
 
-	Map<String, Object> outMessage(Map<String, Object> outMap);
+	int outMessage(Map<String, Object> outMap);
 
 	String alarmSeller(String roomId);
 
 	String oseller(String roomId);
+
+	int alarmPut(String roomuuid);
+
+	int talkMessage(Map<String, Object> talkmap);
+
+	int alarmMessage(Map<String, Object> alarmmap);
 
 	
 	

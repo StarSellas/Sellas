@@ -40,9 +40,15 @@
         var sock = new SockJS("/ws/chat");
         var ws = Stomp.over(sock);
         var roomId = '${roomId}';
-        var sender = '${obuyer}';
+        var sender = '${mnickname}';
         let tno = '${tno}';
 		let oseller = '${oseller}';
+		let emessage = '${econtent}';
+		message.onkeyup = function(ev) {
+            if (ev.keyCode === 13) {
+                sendMessage();
+            }
+        }
         function sendMessage() {
             var messageInput = document.getElementById('message');
             var message = messageInput.value;
@@ -63,7 +69,7 @@
             var messagesList = document.getElementById("messages");
             var listItem = document.createElement("li");
             listItem.className = "list-group-item";
-            listItem.textContent = '${mnickname}' + " - " + recv.message;
+            listItem.textContent = recv.sender + " - " + recv.message;
             messagesList.insertBefore(listItem, messagesList.firstChild);
         }
 
@@ -80,7 +86,7 @@
             	}
                	
             });
-            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender}));
+            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender, message: emessage}));
         });
         
         function startPing(){

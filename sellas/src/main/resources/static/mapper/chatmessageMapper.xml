@@ -3,15 +3,15 @@
 <mapper namespace="com.sellas.web.chat.ChatMessageDAO">
 	
 	<insert id="enterMessage" parameterType="Map">
-		insert into dialogue (ouuid, muuid, dcontent) values (#{roomId}, #{buyer}, #{enterContent})
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
 	</insert>
 	
-	<insert id="chatMessage" parameterType="Map">
-		insert into dialogue (ouuid, muuid, dcontent) values (#{roomId}, #{buyer}, #{message})
+	<insert id="talkMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
 	</insert>
 	
 	<insert id="outMessage" parameterType="Map">
-		insert into dialogue (ouuid, muuid, dcontent) values (#{roomId}, #{buyer}, #{outContent})
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
 	</insert>
 	
 	<select id="name" parameterType="String" resultType="String">
@@ -22,12 +22,16 @@
 		select oseller from onlinechat where ouuid = #{roomId}
 	</select>
 	
-	<insert id="alarm" parameterType="Map">
-		insert into alarm (ouuid, acontent, oseller, acheck) values (#{roomId}, #{alarmContent}, #{alarmseller}, 1)
+	<insert id="alarmMessage" parameterType="Map">
+		insert into alarm (ouuid, acontent, oseller, acheck) values (#{ouuid}, #{acontent}, #{oseller}, 1)
 	</insert>
 	
 	<select id="oseller" parameterType="String" resultType="String">
 		select oseller from onlinechat where ouuid = #{roomId}
 	</select>
+	
+	<insert id="alarmPut" parameterType="Map">
+		insert into alarm (ouuid, acontent, oseller, acheck) values (#{roomuuid}, #{alarmContent}, #{alarmseller}, 1)
+	</insert>
 	
 </mapper>

@@ -171,52 +171,48 @@
 		</div>
 	</footer>
 	<!-- Bootstrap core JS-->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="js/scripts.js"></script>
 </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
 	let sock = new SockJS("/ws/chat");
 	let ws = Stomp.over(sock);
 	let oseller = '${sessionScope.muuid}';
+	//console.log("alarmcount" + '${alarmcount}');
+	$(function() {
+		ws.connect({}, function(frame) {
+			//console.log(frame); 
+			ws.subscribe("/sub0/ws/chat/user/" + oseller, function(message) {
+				//console.log(message);
+				let recv = JSON.parse(message.body);
+				//console.log("recv" + recv); 정상적으로 들어옵니다.
+				if (recv.type == 'ALARM') {
+					// Change the color of elements with class "xi-message" to black
+					let xiMessageElements = document
+							.querySelectorAll(".xi-message");
+					xiMessageElements.forEach(function(element) {
+						element.style.color = "black";
+					});
+				} else {
+					return false;
+				}
 
-	ws.connect({}, function(frame) {
-		//console.log(frame); 
-		ws.subscribe("/sub0/ws/chat/user/" + oseller, function(message) {
-			console.log(message);
-			let recv = JSON.parse(message.body);
-			//console.log("recv" + recv); 정상적으로 들어옵니다.
-			if (recv.type == 'ALARM') {
-				// Change the color of elements with class "xi-message" to black
-				let xiMessageElements = document
-						.querySelectorAll(".xi-message");
-				xiMessageElements.forEach(function(element) {
-					element.style.color = "black";
-				});
-			} else {
-				return false;
-			}
+			});
 			startPing();
 		});
-	}, function(error) {
-
-		let reconnect = 0;
-
-		if (reconnect++ <= 5) {
-			setTimeout(function() {
-				console.log("connection reconnect");
-				sock = new SockJS("/ws/chat");
-				ws = Stomp.over(sock);
-				connect();
-			}, 10 * 1000);
-		}
 	});
+	
+		
+
 
 	function startPing() {
-		let message = "INTERVAL";
 		let oseller = "${sessionScope.muuid}"
 		let imessage = "INTERVAL";
 		ws.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({

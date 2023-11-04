@@ -11,12 +11,16 @@ public interface ChatRoomDAO {
 
 	int alarmIn(Map<String, Object> map);
 
-	String obuyer(Map<String, Object> map);
+	String obuyer(Object object);
 
 	String tno(Map<String, Object> map);
 
 	String mNickName(String uuid);
 
 	Map<String, Object> alarmChat(String roomId);
+
+	String tnoName(String tno);
+
+	String obuyerName(String obuyer);
 	
 }

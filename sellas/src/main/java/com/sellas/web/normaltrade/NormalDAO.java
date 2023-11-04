@@ -53,8 +53,7 @@ public interface NormalDAO {
 
 	int alarmCount(String muuid);
 
-	List<Map<String, Object>> alarmRoomId(String muuid);
-
+	
 
 
 	

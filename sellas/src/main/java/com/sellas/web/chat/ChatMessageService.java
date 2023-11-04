@@ -11,11 +11,6 @@ public class ChatMessageService {
 	@Autowired
 	private ChatMessageDAO chatMessageDAO;
 
-	public Map<String, Object> chatMessage(Map<String, Object> enterMap) {
-		// TODO Auto-generated method stub
-		return chatMessageDAO.chatMessage(enterMap);
-	}
-
 	public String name(String name) {
 		// TODO Auto-generated method stub
 		return chatMessageDAO.name(name);
@@ -26,12 +21,12 @@ public class ChatMessageService {
 		return chatMessageDAO.alarm(alarmMap);
 	}
 
-	public Map<String, Object> enterMessage(Map<String, Object> enterMap) {
+	public int enterMessage(Map<String, Object> enterMap) {
 		// TODO Auto-generated method stub
 		return chatMessageDAO.enterMessage(enterMap);
 	}
 
-	public Map<String, Object> outMessage(Map<String, Object> outMap) {
+	public int outMessage(Map<String, Object> outMap) {
 		// TODO Auto-generated method stub
 		return chatMessageDAO.outMessage(outMap);
 	}
@@ -44,6 +39,21 @@ public class ChatMessageService {
 	public String oseller(String roomId) {
 		// TODO Auto-generated method stub
 		return chatMessageDAO.oseller(roomId);
+	}
+
+	public int alarmPut(String roomuuid) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.alarmPut(roomuuid);
+	}
+
+	public int talkMessage(Map<String, Object> talkmap) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.talkMessage(talkmap);
+	}
+
+	public int alarmMessage(Map<String, Object> alarmmap) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.alarmMessage(alarmmap);
 	}
 
 	

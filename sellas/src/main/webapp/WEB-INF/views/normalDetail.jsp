@@ -91,7 +91,7 @@
 						test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 0}">
 						<button id="requestTradeBtn">거래 신청</button>
 					</c:if>
-					<form action="/chat/requestChat" method="post">
+					<form action="/chat/onlyalarm" method="post">
 						<input type="hidden" value="${detail.tno }" name="tno"> <input
 							type="hidden" value="${sessionScope.muuid }" name="obuyer">
 						<input type="hidden" value="${detail.muuid }" name="oseller">
