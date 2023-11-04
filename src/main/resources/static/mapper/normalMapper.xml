@@ -122,7 +122,7 @@ WHERE mnickname = #{mnickname}
 
 <update id="changeStateForNormal" parameterType="Map">
 UPDATE trade
-SET tnormalstate = 1
+SET tnormalstate = #{state}
 WHERE tno = #{tno}
 </update>
 
@@ -143,4 +143,37 @@ FROM payment
 WHERE tno = #{tno} and pseller = (SELECT muuid FROM member WHERE mnickname = #{sellerMnickname}) and pbuyer = (SELECT muuid FROM member WHERE mnickname = #{mnickname})
 
 </select>
+
+<select id="buyerOrSeller" parameterType="Map" resultType="Map">
+ SELECT
+		 (SELECT COUNT(*) FROM payment WHERE pbuyer = #{muuid} AND tno = #{tno}) AS buyer,
+		 (SELECT COUNT(*) FROM payment WHERE pbuyer != #{muuid} AND tno = #{tno}) AS seller,
+		 (SELECT pamount FROM payment WHERE tno = #{tno}) AS pamount
+</select>
+
+
+<update id="recieveChecked" parameterType="Map">
+UPDATE payment
+SET #{ok} = 0
+WHERE tno = #{tno} and pstate = 2
+
+</update>
+
+<select id="selectPaymentResult" parameterType="Map" resultType="Integer">
+SELECT COUNT(*)
+FROM payment
+WHERE tno=#{tno} and psellerok = 0 and pbuyerok = 0 and pstate = 2
+</select>
+
+<update id="changePstateForNormal" parameterType="Map">
+UPDATE payment
+SET pstate = #{pstate}, penddate = CURRENT_TIMESTAMP
+WHERE tno = #{tno}
+</update>
+
+<update id="giveMamountForSeller" parameterType="Map">
+UPDATE member
+SET mamount = mamount + #{pamount}
+WHERE muuid = (SELECT pseller FROM payment WHERE tno=#{tno} AND pstate = 0)
+</update>
 </mapper>

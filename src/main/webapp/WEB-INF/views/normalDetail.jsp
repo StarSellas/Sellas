@@ -84,6 +84,9 @@
 
 					${detail.tcontent}
 					<br>
+					
+					<!-- 판매중일때 -->
+					
 					<c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
 						<button id="normalEditBtn">수정하기</button>
 						<button id="normalDeleteBtn">등록 취소</button>
@@ -93,10 +96,14 @@
 						<button id="requestChatBtn">채팅 신청</button>
 					</c:if>
 						
-
+						
+						<!-- 거래중일때 -->
 					<c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 1}">
 							거래중입니다.
 					</c:if>
+					
+					
+						<!-- 판매완료일때 -->
 						<c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 2}">
 							거래가 완료된 물품입니다.
 					</c:if>
@@ -183,20 +190,19 @@
 						return false;
 					}
 					//오는 데이터 : tnormalstate , mamount, 
-					if(data.nomoney == 1){
-						alert("잔액이 부족합니다.");
-						if(confirm("충전 페이지로 이동하시겠습니까?")){
-							location.href='./fillPay';
-							
-						}
-						return false;
-					}
 					
 					if(data.paymentCount > 0){
 						alert("이미 진행중인 채팅방이 있거나 실패한 거래입니다.");
 						return false;
 					}
 					
+					if(data.nomoney == 1){
+						alert("잔액이 부족합니다.");
+						if(confirm("현재 보고 계신 물품의 가격보다 가지고 있는 잔액이 부족합니다.\n그래도 채팅방을 개설할까요?")){
+							//location.href='./fillPay';
+							
+						}
+					}
 					
 					
 					if(data.success == 1){

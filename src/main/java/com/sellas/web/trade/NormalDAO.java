@@ -53,6 +53,16 @@ public interface NormalDAO {
 
 	int normalTradePaymentCountCount(Map<String, Object> map);
 
+	Map<String, Object> buyerOrSeller(Map<String, Object> map);
+
+	int recieveChecked(Map<String, Object> map);
+
+	int selectPaymentResult(Map<String, Object> map);
+
+	int changePstateForNormal(Map<String, Object> map);
+
+	int giveMamountForSeller(Map<String, Object> map);
+
 
 
 	

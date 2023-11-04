@@ -133,6 +133,33 @@ public class NormalService {
 		return normalDAO.normalTradePaymentCountCount(map);
 	}
 
+	public Map<String, Object> buyerOrSeller(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.buyerOrSeller(map);
+	}
+
+	public int recieveChecked(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.recieveChecked(map);
+	}
+
+	public int selectPaymentResult(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.selectPaymentResult(map);
+	}
+
+	public int changePstateForNormal(Map<String, Object> map) {
+		
+		return normalDAO.changePstateForNormal(map);
+		
+	}
+
+	public int giveMamountForSeller(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.giveMamountForSeller(map);
+	}
+
+
 	
 
 	
