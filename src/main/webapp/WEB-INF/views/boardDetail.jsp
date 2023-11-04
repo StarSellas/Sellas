@@ -126,30 +126,31 @@
         <!-- Section-->
         <section class="py-5">
         
-            <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
+            <div class="container px-4 mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     
-                  <div><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a></div>
+                  <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a></div>
 
 				<!-------------------- 게시글창 -------------------->
+				
 				<div class="detailContainer">
 					<div class="titleBox">
-						<div>
+						<div class="btitle">
 							제목 : ${bdetail.btitle } // <span>조회수 : ${bdetail.bread }</span>
 						</div>
-						<div> 글쓴이 : ${bdetail.mnickname } // 
+						<div class="mnickname"> 글쓴이 : ${bdetail.mnickname } // 
 							<span>날짜 : ${bdetail.bdate }</span>
 						</div>
 					</div>
 					<div class="contentBox">
-						<div>내용 : ${bdetail.bcontent }</div>
+						<div class="bcontent">내용 : ${bdetail.bcontent }</div>
 					</div>
 					
 					<div class="bimageBox">
 					<span>이미지 갯수 : ${bdetail.bimagecount}</span>
 						<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
 							<c:forEach items="${imageList}" var="imageList">
-									<div class="boardImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}">${imageList.bimage}</div>
+								<div class="boardImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}">${imageList.bimage}</div>
 							</c:forEach>
 						</c:if>
 					</div>

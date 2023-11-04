@@ -35,7 +35,7 @@
 						<span>${sessionScope.mnickname} 로그인완</span>
 					</c:otherwise>
 				</c:choose>
-				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon"></a></button>
+				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="/img/menuIcon.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>
 		

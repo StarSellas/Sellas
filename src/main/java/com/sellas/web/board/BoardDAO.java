@@ -40,6 +40,11 @@ public interface BoardDAO {
 
 	int commentEdit(Map<String, Object> map);
 
+	int getFistIndex(int cate);
+
+	List<Map<String, Object>> nextPage(Map<String, Object> map);
+
+
 
 
 }

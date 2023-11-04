@@ -116,5 +116,10 @@ public class BoardService {
 	}
 
 
+	public List<Map<String, Object>> nextPage(Map<String, Object> map) {
+		return boardDAO.nextPage(map);
+	}
+
+
 
 }

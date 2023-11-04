@@ -26,6 +26,28 @@
 	border-bottom: solid gray thin;
 }
 
+.btitle{
+	width: 60%; 
+	padding-left: 10px;
+}
+
+.bdate, .mainbdate, .bread {
+	text-align: right;
+}
+
+.bdateBox{
+	margin-right: 10px;
+	text-align: left;
+}
+
+.bread, .bdate, .mainbdate, .commentcount, .mnickname{
+	font-size: 14px;
+}
+.bread{
+	font-weight: bolder;
+	padding-right: 10px;
+}
+
 #cateBtn{
 	text-decoration: none;
 	color: gray;
@@ -40,10 +62,4 @@
 }
 .writeBtn{
    flex: right;
-}
-.btitle{
-	padding-left: 10px;
-}
-.bread, .bdate, .commentcount{
-	font-size: 14px;
 }

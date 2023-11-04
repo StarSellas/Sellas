@@ -34,9 +34,9 @@
 	<%@ include file="menubar.jsp" %>
 	
         <!-- Section-->
-        <section class="py-5" id="bodyContainer">
+        <section class="py-5">
         
-            <div class="container px-4 mt-5" style="z-index: 10" id="productContainer">
+            <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
 
 				<!-- 게시판 카테고리 드롭다운 -->
@@ -73,46 +73,143 @@
             
             <div class="boardListBox">
                <table id="boardList">
+	               <thead>
+						<tr class="addList"></tr>
+					</thead>
                		<c:if test="${empty param}">
-               		
                			<c:forEach items="${mainList}" var="mainList">
-		                     <tr class="boardRow">
-		                        <td class="rowNum">
-		                        	${mainList.rowNum}
-		                        </td>
-		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'" data-bno="${mainList.rowNum}">
+		                     <tr class="boardRow" data-count="${mainList.count}">
+		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
+		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	${mainList.btitle} <span class="commentcount">(${mainList.commentcount})</span>
-		                        	<div>${mainList.mnickname}</div>
+		                        	<div class="mnickname">${mainList.mnickname}</div>
 		                        </td>
-		                        <td class="bdate">${mainList.bdate}</td>
-		                        <td class="bread">${mainList.bread}  <span>${mainList.mnickname}</span></td>
-		                       
+		                        <td class="bdateBox">
+		                       		<div class="mainbdate">${mainList.bdate}</div>
+		                       		<div class="bread">${mainList.bread}</div>
+		                        </td>
 		                     </tr>
                   		</c:forEach>
                		</c:if>
                		
              		<c:if test="${param.cate ne null }">
 						<c:forEach items="${list}" var="list">
-		                     <tr class="boardRow">
-		                        <td class="rowNum"><c:if test="${list.bthumbnail eq 0}"> <span>i</span> </c:if>
-		                        	${list.rowNum}
-		                        </td>
-		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'" data-bno="${list.rowNum}">
-		                        	${list.btitle} <span class="commentcount">(${list.commentcount})</span>
-		                        	<div>${list.mnickname}</div>
+		                     <tr class="boardRow" data-count="${list.count}">
+		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
+		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
+		                        	 ${list.btitle} <span class="commentcount">(${list.commentcount})</span>
+		                        	<div class="mnickname">${list.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${list.bdate}</td>
-		                        <td class="bread">${list.bread}</td>
 		                     </tr>
-                  		</c:forEach>             		
+                  		</c:forEach>
+                  		           		
              		</c:if>
                </table>
             </div>
             
+            
+            <script type="text/javascript">
+            
+            $(function(){
+               
+               let nextpage = 1;	// 초기페이지번호 1
+               let cate = ${param.cate};
+               let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno
+               let lastbno = $(".rowNum:last").attr("data-bno");	// 최하단글bno
+               let lastRow = $(".rowNum:last");	// 최하단row
+               let count = $(".boardRow").attr("data-count");	// 해당 카테고리의 글갯수
+               console.log(lastbno + " +초기");
+               console.log(lastRow.text().trim() + " +초기");
+               
+               let data = {};	// ajax로 보낼 객체
+               data.cate = cate;
+               data.lastbno = lastbno;
+               data.firstbno = firstbno;
+               data.count = count;
+               
+               $(".nextbutton").click(function() {
+                  
+                  console.log("nextpage : " + nextpage);
+                  let wholePage = Math.ceil(count/10);
+                  console.log("wholePage : " + wholePage);
+                  //let hasNext = (Math.ceil(count/10) > nextpage)
+                  //console.log(hasNext);
+                  
+                  // 다음페이지가 있다면 진행
+                  if(wholePage == nextpage){
+                	  
+                	  	alert("마지막 페이지 입니다.");
+   						return false;
+   						
+                  } else {
+                 
+                     nextpage++;
+                     $(".currentPage").text(nextpage) // 현재페이지 표시(테스트용)
+                     data.nextpage = nextpage;
+                     let newRow = "";
+                     
+                     $.ajax({
+                          url: './nextPage',
+                          type: 'post',
+                          data: data,
+                          dataType: 'json',
+                          success: function(data) {
+                        	    if (data.list != null) { // 데이터가 있다면 뽑아내기
+                        	        alert("데이터와");
+
+                        	        $(data).each(function() {
+                        	        	console.log(this.list[0].bno);
+                        	        	//console.log(this.list.length);
+                        	        	for (let i = 0; i < 1; i++) {
+                        	        		
+	                        	        	let newRow = "<tr class='boardRow'>"
+	                    	                    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>"
+	                    	                    + this.list[i].bno + "</td>"
+	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
+	                    	                    + this.list[i].btitle
+	                    	                    + " <span class='commentcount'>(" + this.list[i].commentcount + ")</span>"
+	                    	                    + "<div>" + this.list[i].m_name + "</div>"
+	                    	                    + "</td>"
+	                    	                    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
+	                    	                    + "<td class='bread'>" + this.list[i].blike + "</td>"
+	                    	                    + "</tr>";
+	
+	                    	                    lastRow = $(newRow).insertAfter(lastRow); // lastRow 뒤에 행 추가
+	                    	                    
+                        	        	}	// for
+                        	        }); // .each
+                        	        
+                        	    } // if(data != null)
+                        	},
+                          
+                          error: function(error) {
+                              //alert("에러남");
+                          }
+                          
+                      }); // ajax
+                   
+                  }
+                  
+               }) // 다음페이지 불러오기
+               
+               
+               let prevpage = ${pageNum }-1;
+               
+               $(".prevbutton").click(function(){
+                  location.href="/board?cate="+${param.cate}+"&pageNum="+prevpage;
+               })
+               
+               
+            });          
+            
+            </script>
+            
+            
             <div class="writeBtnBox">
             ${sessionScope.uuid}
             	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
-               		<button class="writeBtn" onclick="location.href='/boardWrite?cate=${param.cate}'">글쓰기</button>
+               		<button class="writeBtn" onclick="location.href='/boardWriteForTest?cate=${param.cate}'">글쓰기</button>
                	</c:if>
             </div>
 

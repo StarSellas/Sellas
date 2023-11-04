@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sellas.web.util.Util;
 
+import retrofit2.http.GET;
+
 
 @Controller
 public class BoardController {
@@ -37,10 +40,14 @@ public class BoardController {
 	// (카테고리별)게시판페이지
 	@GetMapping("/board")
 	public String board(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
-
-		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
+		
 		List<Map<String, Object>> boardList = boardService.boardList(cate);
+		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
 		List<Map<String, Object>> mainList = boardService.mainList(cate);
+		
+		System.out.println("boardList : " + boardList);
+		// [{bno=98, bread=7, mnickname=pyo, commentcount=0, bdate=2023-11-02, sno=2, bimagecount=0, rowNum=25, count=25, btitle=ㅂㅈㄷㄱㄱㅂ, bcontent=ㅂㅈㄷㄱ, mno=96},
+		
 		// 게시판카테고리, 카테고리별 게시글, 메인보드 게시글(조회순)
 		model.addAttribute("board", setupboardList);
 		model.addAttribute("list", boardList);
@@ -48,9 +55,23 @@ public class BoardController {
 		
 		return "board";
 	}
+	
+	// 다음페이지
+	@ResponseBody
+	@PostMapping("/nextPage")
+	public String nextPage(@RequestParam Map<String, Object> map) {
+		System.out.println(map);
+		JSONObject json = new JSONObject();
+		// {cate=2, lastbno=68, firstbno=98, count=25, nextpage=2}
+		List<Map<String, Object>> nextList = boardService.nextPage(map);
+		System.out.println("nextList : " + nextList);
+		json.put("list", nextList);
+
+		return json.toString();
+	}
 		
 	// 글쓰기 페이지
-	@GetMapping("/boardWrite")
+	@GetMapping("/boardWriteForTest")
 	public String boardWrite(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
 		
 		if(!util.checkLogin()) {
@@ -60,7 +81,7 @@ public class BoardController {
 		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
 		model.addAttribute("board", setupboardList);
 
-		return "boardWrite";
+		return "boardWriteForTest";
 	}
 	
 	// 글쓰기 로직
@@ -145,6 +166,7 @@ public class BoardController {
 	// 게시글 + 댓글 페이지
 	@GetMapping("boardDetail")
 	public String boardDetail(@RequestParam Map<String, Object> map, Model model) {
+		
 		//System.out.println("디테일map : " +  map); // 디테일map : {cate=2, bno=5}
 		Map<String, Object> detailList = boardService.boardDetail(map);
 		boardService.boardReadUP(map);
@@ -351,8 +373,8 @@ public class BoardController {
 	@GetMapping("test")
 	public String boardTest(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
 		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
-		List<Map<String, Object>> boardList = boardService.boardList(cate);
-		model.addAttribute("list", boardList);
+		//List<Map<String, Object>> boardList = boardService.boardList(cate);
+		//model.addAttribute("list", boardList);
 		model.addAttribute("board", setupboardList);
 		
 		return "test";
