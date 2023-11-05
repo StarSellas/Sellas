@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sellas.web.chat.ChatController;
+
 @Service
 public class NormalService {
 	@Autowired
@@ -131,6 +133,16 @@ public class NormalService {
 	public int alarmCount(String muuid) {
 		// TODO Auto-generated method stub
 		return normalDAO.alarmCount(muuid);
+	}
+
+	public int productAmount(String tno) {
+		// TODO Auto-generated method stub
+		return normalDAO.productAmount(tno);
+	}
+
+	public int obuyerAmounts(String obuyer) {
+		// TODO Auto-generated method stub
+		return normalDAO.obuyerAmounts(obuyer);
 	}
 
 	

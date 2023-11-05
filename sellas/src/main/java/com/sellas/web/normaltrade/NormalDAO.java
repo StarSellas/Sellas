@@ -53,6 +53,12 @@ public interface NormalDAO {
 
 	int alarmCount(String muuid);
 
+	int compareCount(Map<String, Object> comparemap);
+
+	int productAmount(String tno);
+
+	int obuyerAmounts(String obuyer);
+
 	
 
 

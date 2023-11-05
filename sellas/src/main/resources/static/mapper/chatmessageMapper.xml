@@ -14,6 +14,18 @@
 		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
 	</insert>
 	
+	<insert id="tradeOkMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
+	</insert>
+	
+	<insert id="tradeNoMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
+	</insert>
+	
+	<insert id="paymentMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{dcontent}, #{dtype})
+	</insert>
+	
 	<select id="name" parameterType="String" resultType="String">
 		select mnickname from member where muuid = #{name}
 	</select>

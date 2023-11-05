@@ -14,26 +14,6 @@
         }
     </style>
     <script src="../js/jquery-3.7.0.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div>
-            <h2 id="roomName"></h2>
-        </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text">내용</label>
-            </div>
-            <input type="text" class="form-control" id="message">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button" onclick="sendMessage()">보내기</button>
-            </div>
-        </div>
-        <ul class="list-group" id="messages">
-        </ul>
-        <div></div>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
@@ -44,11 +24,23 @@
         let tno = '${tno}';
 		let oseller = '${oseller}';
 		let emessage = '${econtent}';
-		message.onkeyup = function(ev) {
-            if (ev.keyCode === 13) {
-                sendMessage();
-            }
-        }
+
+        ws.connect({}, function (frame) {
+        	//console.log(frame); 정상적으로 들어옵니다.
+            ws.subscribe("/sub/ws/chat/room/" + roomId, function (message) {
+            	//console.log(message);
+                var recv = JSON.parse(message.body);
+                //console.log("recv" + recv); 정상적으로 들어옵니다.
+                if(recv.type != 'ALARM' && recv.type != 'INTERVAL'){
+                		recvMessage(recv);
+            	} else {
+            		return false;
+            	}
+               	
+            });
+            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender, message: emessage}));
+        });
+        
         function sendMessage() {
             var messageInput = document.getElementById('message');
             var message = messageInput.value;
@@ -72,22 +64,6 @@
             listItem.textContent = recv.sender + " - " + recv.message;
             messagesList.insertBefore(listItem, messagesList.firstChild);
         }
-
-        ws.connect({}, function (frame) {
-        	//console.log(frame); 정상적으로 들어옵니다.
-            ws.subscribe("/sub/ws/chat/room/" + roomId, function (message) {
-            	//console.log(message);
-                var recv = JSON.parse(message.body);
-                //console.log("recv" + recv); 정상적으로 들어옵니다.
-                if(recv.type != 'ALARM' && recv.type != 'INTERVAL'){
-                		recvMessage(recv);
-            	} else {
-            		return false;
-            	}
-               	
-            });
-            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender, message: emessage}));
-        });
         
         function startPing(){
         	let message = "INTERVAL";
@@ -95,5 +71,26 @@
         	setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
         };
     </script>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h2 id="roomName"></h2>
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text">내용</label>
+            </div>
+            <input type="text" class="form-control" id="message">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" onclick="sendMessage()">보내기</button>
+            </div>
+            <div><button class="tradeok" type="button">거래수락</button></div>
+			<div><button class="tradeno" type="button">거래취소</button></div>
+        </div>
+        <ul class="list-group" id="messages">
+        </ul>
+        <div></div>
+    </div>
 </body>
 </html>

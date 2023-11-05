@@ -58,6 +58,42 @@ public class ChatController {
 			outmap.put("dcontent", dcontent);
 			outmap.put("dtype", dtype);
 			int out = chatMessageService.outMessage(outmap);
+		} else if (ChatMessage.MessageType.TRADEOK.equals(message.getType())) {
+			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
+			Map<String, Object> tradeokmap = new HashMap<>();
+			String ouuid =  message.getRoomId();
+			String muuid = message.getSender();
+			String dcontent = message.getMessage();
+			String dtype = String.valueOf(message.getType());
+			tradeokmap.put("ouuid", ouuid);
+			tradeokmap.put("muuid", muuid);
+			tradeokmap.put("dcontent", dcontent);
+			tradeokmap.put("dtype", dtype);
+			int tradeok = chatMessageService.tradeOkMessage(tradeokmap);
+		} else if (ChatMessage.MessageType.TRADENO.equals(message.getType())) {
+			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
+			Map<String, Object> tradenomap = new HashMap<>();
+			String ouuid =  message.getRoomId();
+			String muuid = message.getSender();
+			String dcontent = message.getMessage();
+			String dtype = String.valueOf(message.getType());
+			tradenomap.put("ouuid", ouuid);
+			tradenomap.put("muuid", muuid);
+			tradenomap.put("dcontent", dcontent);
+			tradenomap.put("dtype", dtype);
+			int tradeno = chatMessageService.tradeNoMessage(tradenomap);
+		} else if (ChatMessage.MessageType.PAYMENT.equals(message.getType())) {
+			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
+			Map<String, Object> paymentmap = new HashMap<>();
+			String ouuid =  message.getRoomId();
+			String muuid = message.getSender();
+			String dcontent = message.getMessage();
+			String dtype = String.valueOf(message.getType());
+			paymentmap.put("ouuid", ouuid);
+			paymentmap.put("muuid", muuid);
+			paymentmap.put("dcontent", dcontent);
+			paymentmap.put("dtype", dtype);
+			int payment = chatMessageService.paymentMessage(paymentmap);
 		} else if (ChatMessage.MessageType.INTERVAL.equals(message.getType())) {
 			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
 		}

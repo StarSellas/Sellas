@@ -141,6 +141,12 @@ WHERE mnickname = #{mnickname}
 	select COUNT(*) from alarm where oseller = #{muuid} and acheck = 1
 </select>
 
+<select id="productAmount" parameterType="String" resultType="Integer">
+	select pamount from payment where tno = #{tno}
+</select>
 
+<select id="obuyerAmounts" parameterType="String" resultType="Integer">
+	select mamount from member where obuyer = #{obuyer}
+</select>
 
 </mapper>

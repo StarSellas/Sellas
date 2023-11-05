@@ -9,7 +9,7 @@ public class ChatMessage {
 
     // 메시지 타입 : 입장, 채팅, 나감, 알림, 인터벌, 거래금액, 거래수락, 거래취소
     public enum MessageType {
-        ENTER, TALK, OUT, ALARM, INTERVAL, PAYMENT, TRADEALLOW, TRADEREFUSE
+        ENTER, TALK, OUT, ALARM, INTERVAL, PAYMENT, TRADEOK, TRADENO
     }
     //payment가 가격, tradeallow가 거래 수락, traderefuse가 거래 취소
     

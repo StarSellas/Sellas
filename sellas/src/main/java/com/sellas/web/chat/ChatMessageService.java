@@ -56,5 +56,20 @@ public class ChatMessageService {
 		return chatMessageDAO.alarmMessage(alarmmap);
 	}
 
+	public int tradeOkMessage(Map<String, Object> tradeokmap) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.tradeOkMessage(tradeokmap);
+	}
+
+	public int tradeNoMessage(Map<String, Object> tradenomap) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.tradeNoMessage(tradenomap);
+	}
+
+	public int paymentMessage(Map<String, Object> paymentmap) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.paymentMessage(paymentmap);
+	}
+
 	
 }

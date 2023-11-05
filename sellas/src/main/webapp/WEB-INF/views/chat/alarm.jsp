@@ -107,16 +107,6 @@
                 }
                 startPing();
             });
-        }, function(error) {
-        	let reconnect = 0;
-            if (reconnect++ <= 5) {
-                setTimeout(function() {
-                    console.log("connection reconnect");
-                    sock = new SockJS("/ws/chat");
-                    ws = Stomp.over(sock);
-                    connect();
-                }, 10 * 1000);
-            }
         }); 
         
         function startPing(){

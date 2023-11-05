@@ -423,11 +423,22 @@ public class NormalController {
 		
 	}
 	
-	@GetMapping("/chatlist")
-	public String chatList() {
+	@PostMapping("/compareamounts")
+	@ResponseBody
+	public String compareAmounts(@RequestParam(name ="tno") String tno, @RequestParam(name ="obuyer") String obuyer) {
+		//구매자가 충전한 금액이 상품 금액보다 크면 1리턴합니다.
+		int productamounts = normalService.productAmount(tno);
+		int obuyeramounts = normalService.obuyerAmounts(obuyer);
+		JSONObject json = new JSONObject();
+		int comparecount = 2;
+		if(obuyeramounts >= productamounts) {
+		    comparecount = 1;
 		
-		
-		return "chatlist";
+		} else {
+			comparecount = 0;
+		}
+		json.put("comparecount", comparecount);
+		return json.toString();
 	}
 	
 	

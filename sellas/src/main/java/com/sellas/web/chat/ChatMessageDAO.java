@@ -27,6 +27,12 @@ public interface ChatMessageDAO {
 
 	int alarmMessage(Map<String, Object> alarmmap);
 
+	int tradeOkMessage(Map<String, Object> tradeokmap);
+
+	int tradeNoMessage(Map<String, Object> tradenomap);
+
+	int paymentMessage(Map<String, Object> paymentmap);
+
 	
 	
 }
