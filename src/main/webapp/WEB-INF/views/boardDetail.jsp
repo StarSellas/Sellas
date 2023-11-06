@@ -123,62 +123,65 @@
     <body>
 	<%@ include file="menubar.jsp" %>
 	
-        <!-- Section-->
+         <!-- Section-->
         <section class="py-5">
         
-            <div class="container px-4 mt-5" style="z-index: 10" id="productContainer">
+            <div class="cateName mt-4"><a href="/board?cate=${bdetail.sno }">${bdetail.sname } (${bdetail.bno })</a></div>
+            <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     
-                  <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a></div>
 
 				<!-------------------- 게시글창 -------------------->
 				
-				<div class="detailContainer">
+				<div class="detailContainer justify-content-center">
+					
 					<div class="titleBox">
 						<div class="btitle">
-							제목 : ${bdetail.btitle } // <span>조회수 : ${bdetail.bread }</span>
+							${bdetail.btitle }
 						</div>
-						<div class="mnickname"> 글쓴이 : ${bdetail.mnickname } // 
-							<span>날짜 : ${bdetail.bdate }</span>
+						<div class="mnickname">${bdetail.mnickname } 
+							<span class="bdate">${bdetail.bdate }</span>
 						</div>
 					</div>
+					
 					<div class="contentBox">
-						<div class="bcontent">내용 : ${bdetail.bcontent }</div>
+						<div class="bcontent">${bdetail.bcontent }</div>
 					</div>
 					
 					<div class="bimageBox">
-					<span>이미지 갯수 : ${bdetail.bimagecount}</span>
+					<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
 						<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
 							<c:forEach items="${imageList}" var="imageList">
-								<div class="boardImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}">${imageList.bimage}</div>
+								<div class="boardImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}"></div>
+								<!--<span>${imageList.bimage}</span>-->
 							</c:forEach>
 						</c:if>
 					</div>
-					
 					<div class="bBtnBox">
+						<span class="bread">조회 : ${bdetail.bread }</span>
 						<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq bdetail.mnickname}">
-							<button onclick="bedit(${bdetail.sno}, ${bdetail.bno})">글수정</button>
-							<button onclick="bdelete(${bdetail.sno}, ${bdetail.bno})">글삭제</button>
+							<button class="bedit" onclick="bedit(${bdetail.sno}, ${bdetail.bno})">글수정</button>
 						</c:if>
 					</div>
 				</div>
-
-				<hr>
                    
                    <!-------------------- 댓글창 -------------------->
                    <div class="commentContainer">
+                   
 					<c:choose>
 						<c:when test="${bdetail.commentcount eq 0}">
-							<div>댓글이 없습니다.</div>
+							<div class="noComments">댓글이 없습니다.</div>
 						</c:when>
 						<c:otherwise>
-							<button class="cWholeBtn" onclick="commentDetail(${bdetail.sno}, ${bdetail.bno})">댓글 전체보기</button>
+							<div class="cWholeBtnBox">
+								<button class="cWholeBtn" onclick="commentDetail(${bdetail.sno}, ${bdetail.bno})">댓글 전체보기</button>
+							</div>
 							<c:forEach items="${comments }" var="comments">
 								<div class="commentBox">
 										<div class="cContentBox">
 											<input type="hidden" name="muuid" class="muuid" value="uuid : ${comments.muuid }">
 											<input type="hidden" class="cno" value="${comments.cno }"/>
-											<div>${comments.mnickname }, ${comments.muuid }	// <span>${comments.cdate }</span></div>
+											<div class="chead">${comments.mnickname } <span class="cdate">${comments.cdate }</span></div>
 											<div class="content">${comments.ccontent }</div>
 										</div>
 										<div class="commentsBtn">
@@ -187,7 +190,6 @@
 												<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
 											</c:if>
 										</div>
-										<hr>
 								</div>
 							</c:forEach>
 						</c:otherwise>
@@ -205,7 +207,9 @@
 								</div>
 							</form>
 						</div>
-						
+						<div class="bdeleteBtnBox">
+							<button class="bdelete" onclick="bdelete(${bdetail.sno}, ${bdetail.bno})">글삭제</button>
+                   		</div>
                    </div>
 
                    

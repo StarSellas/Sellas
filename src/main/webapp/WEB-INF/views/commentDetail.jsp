@@ -92,7 +92,7 @@
         <!-- Section-->
         <section class="py-5">
         
-            <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
+            <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
 
 

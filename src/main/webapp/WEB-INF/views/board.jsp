@@ -25,9 +25,127 @@
         
 		<script type="text/javascript">
 			$(function(){
-				$(".rowNum").hide();
+				//$(".rowNum").hide();
 			});	
-		</script>        
+		</script>       
+		<script type="text/javascript">
+            
+            $(function(){
+               
+            	let currentPage = 1;
+            	let isBottomHandled = false;
+            	
+            	$(window).on("scroll",function(){
+            	    //위로 스크롤된 길이
+            	    let scrollTop=$(window).scrollTop();
+            	    //웹브라우저의 창의 높이
+            	    let windowHeight=$(window).height();
+            	    //문서 전체의 높이
+            	    let documentHeight=$(document).height();
+            	    //바닥까지 스크롤 되었는 지 여부를 알아낸다.
+            	    let isBottom=scrollTop+windowHeight + 10 >= documentHeight;
+
+            	    if(isBottom && !isBottomHandled){
+            	    	
+            	    	nextPage(currentPage);
+            	    	currentPage++;
+            	    	isBottomHandled = true;
+            	    	
+            	    } else if (!isBottom) {
+            	        // 스크롤이 바닥에서 벗어났을 때 상태 변수 재설정
+            	        isBottomHandled = false;
+            	    }
+            	
+            	
+           	 function nextPage(currentPage){
+            	
+               let cate = ${param.cate};
+               let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno ***** 확인용 *****
+               let lastRow = $(".boardRow:last");	// 최하단row
+               let count = $(".boardRow").attr("data-count");	// 해당 카테고리의 글갯수
+               let wholePage = Math.ceil(count/10);	// 전체페이지수(글의갯수/10의 올림) 
+               console.log("wholePage : " + wholePage);
+               console.log("count : " + count);
+               
+        		
+                  // 다음페이지가 없다면 진행X
+                  if(wholePage < currentPage){
+                	  	alert("마지막 페이지 입니다.");
+   						return false;
+                  }
+                  
+               		// 다음페이지가 있다면 진행
+               		 let newRow = ""; // 추가될 tr
+                     let data = {};	// ajax로 보낼 객체
+                     
+                     data.currentPage = currentPage;	// ***** 확인용 *****
+
+                 	 // 추가된 td의 bno값으로 초기화 (rownum)
+                  	 let lastbno = $(".rowNum:last").attr("data-bno"); // (추가글의)최하단글bno
+                     console.log("변경 lastbno : " + lastbno);
+                  	
+                  	 // 서버로 보낼것들 data에 담기
+                     data.cate = cate;
+                     data.lastbno = lastbno;
+                     data.firstbno = firstbno; // ***** 확인용 *****
+                     data.count = count;
+                     
+                     $.ajax({
+                          url: './nextPage',
+                          type: 'post',
+                          data: data,
+                          dataType: 'json',
+                          success: function(data) {
+                        	    if (data.list != null) { // 데이터가 있다면 뽑아내기
+                        	        alert("데이터와");
+
+                        	        $(data).each(function() {
+                        	        	//console.log("가져온list : " + this.list[0].bno + "~");
+                        	        	
+                        	        	for (let i = 0; i < this.list.length; i++) {
+                        	        		
+	                        	        	let newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
+	                    	                    + "<td class='rowNum"+ (i === 0 ? ' firstbno' : '') + "' data-bno='" + this.list[i].bno + "'>"
+	                    	                    + this.list[i].bno + "</td>"
+	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
+	                    	                    + this.list[i].btitle
+	                    	                    + " <span class='commentcount'>(" + this.list[i].commentcount + ")</span>"
+	                    	                    + "<div class='mnickname'>" + this.list[i].mnickname + "</div>"
+	                    	                    + "</td>"
+	                    	                    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
+	                    	                    + "</tr>";
+	
+	                    	                    lastRow.after(newRow); // lastRow 뒤에 추가
+	                        	        	  
+	                    	                  // 추가된 tr로 lastRow 재설정
+	                                          lastRow = $(".boardRow:last");   // 최하단row
+	                                          console.log("lastRow :" + i + "번째");
+
+                        	        	}	// for
+                        	        }); // .each
+                        	        
+                        	        $(".currentPage").text(currentPage); // ***** 페이지확인용 *****
+                        	    } // if(data != null)
+                        	    	
+                        	    	
+                        	},
+                          
+                          error: function(error) {
+                              //alert("에러남");
+                          }
+                          
+                      }); // ajax
+                      
+            } // nextPage
+               
+               
+            
+            	});	// 스크롤
+            
+            });          
+            
+            </script>
+         
         
     </head>
     <body>
@@ -71,6 +189,12 @@
 		            </ul>
 	            </div>
             
+            <div class="writeBtnBox">
+            	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
+               		<button class="writeBtn" onclick="location.href='/boardWriteForTest?cate=${param.cate}'">글쓰기</button>
+               	</c:if>
+            </div>
+            
             <div class="boardListBox">
                <table id="boardList">
 	               <thead>
@@ -103,119 +227,18 @@
 		                        <td class="bdate">${list.bdate}</td>
 		                     </tr>
                   		</c:forEach>
-                  		           		
              		</c:if>
                </table>
+              
             </div>
             
-            
-            <script type="text/javascript">
-            
-            $(function(){
-               
-               let nextpage = 1;	// 초기페이지번호 1
-               let cate = ${param.cate};
-               let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno
-               let lastbno = $(".rowNum:last").attr("data-bno");	// 최하단글bno
-               let lastRow = $(".rowNum:last");	// 최하단row
-               let count = $(".boardRow").attr("data-count");	// 해당 카테고리의 글갯수
-               console.log(lastbno + " +초기");
-               console.log(lastRow.text().trim() + " +초기");
-               
-               let data = {};	// ajax로 보낼 객체
-               data.cate = cate;
-               data.lastbno = lastbno;
-               data.firstbno = firstbno;
-               data.count = count;
-               
-               $(".nextbutton").click(function() {
-                  
-                  console.log("nextpage : " + nextpage);
-                  let wholePage = Math.ceil(count/10);
-                  console.log("wholePage : " + wholePage);
-                  //let hasNext = (Math.ceil(count/10) > nextpage)
-                  //console.log(hasNext);
-                  
-                  // 다음페이지가 있다면 진행
-                  if(wholePage == nextpage){
-                	  
-                	  	alert("마지막 페이지 입니다.");
-   						return false;
-   						
-                  } else {
-                 
-                     nextpage++;
-                     $(".currentPage").text(nextpage) // 현재페이지 표시(테스트용)
-                     data.nextpage = nextpage;
-                     let newRow = "";
-                     
-                     $.ajax({
-                          url: './nextPage',
-                          type: 'post',
-                          data: data,
-                          dataType: 'json',
-                          success: function(data) {
-                        	    if (data.list != null) { // 데이터가 있다면 뽑아내기
-                        	        alert("데이터와");
-
-                        	        $(data).each(function() {
-                        	        	console.log(this.list[0].bno);
-                        	        	//console.log(this.list.length);
-                        	        	for (let i = 0; i < 1; i++) {
-                        	        		
-	                        	        	let newRow = "<tr class='boardRow'>"
-	                    	                    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>"
-	                    	                    + this.list[i].bno + "</td>"
-	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
-	                    	                    + this.list[i].btitle
-	                    	                    + " <span class='commentcount'>(" + this.list[i].commentcount + ")</span>"
-	                    	                    + "<div>" + this.list[i].m_name + "</div>"
-	                    	                    + "</td>"
-	                    	                    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
-	                    	                    + "<td class='bread'>" + this.list[i].blike + "</td>"
-	                    	                    + "</tr>";
-	
-	                    	                    lastRow = $(newRow).insertAfter(lastRow); // lastRow 뒤에 행 추가
-	                    	                    
-                        	        	}	// for
-                        	        }); // .each
-                        	        
-                        	    } // if(data != null)
-                        	},
-                          
-                          error: function(error) {
-                              //alert("에러남");
-                          }
-                          
-                      }); // ajax
-                   
-                  }
-                  
-               }) // 다음페이지 불러오기
-               
-               
-               let prevpage = ${pageNum }-1;
-               
-               $(".prevbutton").click(function(){
-                  location.href="/board?cate="+${param.cate}+"&pageNum="+prevpage;
-               })
-               
-               
-            });          
-            
-            </script>
-            
-            
-            <div class="writeBtnBox">
-            ${sessionScope.uuid}
-            	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
-               		<button class="writeBtn" onclick="location.href='/boardWriteForTest?cate=${param.cate}'">글쓰기</button>
-               	</c:if>
-            </div>
-
+            <div class="nextBtnBox">
+            	<div class="currentPage">1</div>
+            	<button class="nextbutton" onclick="nextPage(1)">다음</button>
+			</div>
         		 </div>
             </div>
         </section>
         
-    </body>
-</html>
+        
+</html></html>

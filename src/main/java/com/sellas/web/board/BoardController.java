@@ -71,7 +71,7 @@ public class BoardController {
 	}
 		
 	// 글쓰기 페이지
-	@GetMapping("/boardWriteForTest")
+	@GetMapping("/boardWrite")
 	public String boardWrite(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
 		
 		if(!util.checkLogin()) {
@@ -81,7 +81,7 @@ public class BoardController {
 		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
 		model.addAttribute("board", setupboardList);
 
-		return "boardWriteForTest";
+		return "boardWrite";
 	}
 	
 	// 글쓰기 로직

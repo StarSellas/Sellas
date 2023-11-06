@@ -23,9 +23,9 @@
           <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         
          <!-- ******************* 모피어스 *********************** -->
-        <script src="./js/wnInterface.js"></script> 
-		<script src="./js/mcore.min.js"></script> 
-		<script src="./js/mcore.extends.js"></script>
+		<script src="./js/wnInterface.js"></script> 
+	<script src="./js/mcore.min.js"></script> 
+	<script src="./js/mcore.extends.js"></script> 
 
 
 
@@ -80,71 +80,7 @@
 				
 				
         	});
-        	
-        	// 이미지 업로드
-        	  $(function() {
-  	        	
-  	            var maxPhotos = 3;
-  	            var nextPhotoId = 1;
-  	
-  	            $("#addPhotoButton").click(function () {
-  	                
-  	            	//console.log("떠라");
-  	            	
-  	            	if (nextPhotoId <= maxPhotos) {
-  	                    var newInput = $("<input type='file' name='boardimg' class='boardimg' id='boardimg" + nextPhotoId + "'>");
-  	                    //var newPreview = $("<img class='imagePreview' id='imagePreview" + nextPhotoId + "' src='' alt='미리보기 이미지'>");
-  	                    $("#photoInputs").append(newInput);
-  	                    //$("#imagePreviews").append(newPreview);
-  							
-  	                       newInput.change(function () {
-  	                        resizeImage(this, 200, 200, function (resizedDataUrl) {
-  	                            var previewId = this.id.replace("boardimg", "imagePreview");
-  	                            var preview = $("#" + previewId);
-  	                            preview.attr("src", resizedDataUrl);
-  	                        }.bind(this));
-  	                    });
-
-  	                    nextPhotoId++;
-  	                } else {
-  	                    alert("더 이상 사진을 추가할 수 없습니다.");
-  	                }
-  	            });
-  	            
-  	        });
-  	        
-  	        function resizeImage(input, maxWidth, maxHeight, callback) {
-  	            if (input.files && input.files[0]) {
-  	                var reader = new FileReader();
-
-  	                reader.onload = function (e) {
-  	                    var image = new Image();
-  	                    image.src = e.target.result;
-
-  	                    image.onload = function () {
-  	                        var width = image.width;
-  	                        var height = image.height;
-
-  	                        if (width > maxWidth || height > maxHeight) {
-  	                            var ratio = Math.min(maxWidth / width, maxHeight / height);
-  	                            width *= ratio;
-  	                            height *= ratio;
-  	                        }
-
-  	                        var canvas = document.createElement("canvas");
-  	                        canvas.width = width;
-  	                        canvas.height = height;
-  	                        var ctx = canvas.getContext("2d");
-  	                        ctx.drawImage(image, 0, 0, width, height);
-
-  	                        var resizedDataUrl = canvas.toDataURL("image/jpeg");
-  	                        callback(resizedDataUrl);
-  	                    };
-  	                };
-
-  	                reader.readAsDataURL(input.files[0]);
-  	            }
-  	        }
+  
           
         </script>
 
@@ -228,69 +164,141 @@
             </div>
         </section>
 	<script>
-	    (function () {
-	      // 스코프 보장
-	
-	      $(function () {
-	        // upload  이벤트
-	        var $pickImage = $('#pick-image');
-	        var $previewBox = $('#preview-box');
-	        var $uploadImage = $('#upload-image');
-	        var $uploadImageBox = $('#upload-image-box');
-	        var _selectImage;
-	
-	        $pickImage.on('click', function () {
-	          // 이미지 가져오기
-	          $.imagePicker()
-	            .then(({ status, result }) => {
-	              if (status === 'SUCCESS') {
-	                _selectImage = result.path;
-	                return $.img2base64(_selectImage);
-	              } else {
-	                _selectImage = null;
-	                return Promise.reject('이미지를 가져오지 못했습니다.');
-	              }
-	            })
-	            .then(({ status, result }) => {
-	              if (status === 'SUCCESS') {
-	                // result 는 base64
-	                $previewBox.empty();
-	                var $img = $(document.createElement('img'));
-	                $img.attr('src', `data:image/png;base64,${result.data}`);
-	                $img.attr('width', '300px');
-	                $previewBox.append($img);
-	              } else {
-	                return Promise.reject('BASE64변환이 실패하였습니다.');
-	              }
-	            })
-	            .catch((err) => {
-	              if (typeof err === 'string') {
-	                M.pop.alert(err);
-	              }
-	              console.error(err);
-	            });
-	        });
-	
-	        $uploadImage.on('click', function () {
-	          if (!_selectImage) return M.pop.alert('이미지를 선택해주세요.');
-	          $.uploadImage(_selectImage, (total, current) => {
-	            console.log(`${current}/${total}`);
-	          }).then(({ status, header, body }) => {
-	            if (status === '200') {
-	              var { fullpath } = JSON.parse(body);
-	              $uploadImageBox.empty();
-	              var $img = $(document.createElement('img'));
-	              $img.attr('src', fullpath);
-	              $img.attr('width', '300px');
-	              $uploadImageBox.append($img);
-	            } else {
-	              return Promise.reject('업로드를 실패하였습니다.');
-	            }
-	          });
-	        });
-	      });
-	    })();
-  	</script>
+
+  (function () {
+
+    $.imagePicker = function () {
+      return new Promise((resolve) => {
+        M.media.picker({
+          mode: "SINGLE",
+          media: "PHOTO",
+          //path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+          column: 3,
+          callback: (status, result) => {
+            resolve({ status, result })
+          }
+        });
+      })
+    }
+
+    $.convertBase64ByPath = function (imagePath) {
+      if (typeof imagePath !== 'string') throw new Error('imagePath must be string')
+      return new Promise((resolve) => {
+        M.file.read({
+          path: imagePath,
+          encoding: 'BASE64',
+          indicator: true,
+          callback: function (status, result) {
+            resolve({ status, result })
+          }
+        });
+      })
+    }
+
+    $.uploadImageByPath = function (targetImgPath, progress) {
+      return new Promise((resolve) => {
+        const _options = {
+          url: `${location.origin}/file/upload`,
+          header: {},
+          params: {},
+          body: [
+            //multipart/form-data 바디 데이터
+            { name: "file", content: targetImgPath, type: "FILE" },
+          ],
+          encoding: "UTF-8",
+          finish: (status, header, body, setting) => {
+            resolve({ status, header, body })
+          },
+          progress: function (total, current) {
+            progress(total, current);
+          }
+        }
+        M.net.http.upload(_options);
+      })
+    }
+
+  })();
+
+
+  $(function () {
+
+    let selectImagePath = '';
+    let $previewImg = null;
+    let $uploadImg = null;
+    const $box = $('#box');
+    const $uploadBox = $('#upload-box');
+    const $progress = $('#progress');
+    const $picker = $('#picker');
+    const $upload = $('#upload');
+
+
+
+    $picker.on('click', () => {
+      if ($previewImg !== null) {
+        $previewImg.remove();
+        $previewImg = null;
+      }
+      selectImagePath = '';
+      $.imagePicker()
+        .then(({ status, result }) => {
+          if (status === 'SUCCESS') {
+            selectImagePath = result.path;
+            return $.convertBase64ByPath(selectImagePath)
+          } else {
+            return Promise.reject('이미지 가져오기 실패')
+          }
+        })
+        .then(({ status, result }) => {
+          if (status === 'SUCCESS') {
+            $previewImg = $(document.createElement('img'))
+            $previewImg.attr('height', '200px')
+            $previewImg.attr('src', "data:image/png;base64," + result.data)
+            $box.append($previewImg);
+          } else {
+            return Promise.reject('BASE64 변환 실패')
+          }
+        })
+        .catch((err) => {
+          if (typeof err === 'string') alert(err)
+          console.error(err)
+        })
+    })
+
+    $upload.on('click', () => {
+      if (selectImagePath === '') return alert('이미지를 선택해주세요.')
+      if ($uploadImg) {
+        $uploadImg.remove();
+        $uploadImg = null;
+      }
+      $progress.text('')
+      $.uploadImageByPath(selectImagePath, (total, current) => {
+        console.log(`total: ${total} , current: ${current}`)
+        $progress.text(`${current}/${total}`)
+      })
+        .then(({
+          status, header, body
+        }) => {
+          // status code
+          if (status === '200') {
+            $progress.text('업로드 완료')
+            const bodyJson = JSON.parse(body)
+            $uploadImg = $(document.createElement('img'))
+            $uploadImg.attr('height', '200px')
+            $uploadImg.attr('src', bodyJson.fullpath)
+            $uploadBox.append($uploadImg)
+          } else {
+            return Promise.reject('업로드를 실패하였습니다.')
+          }
+        })
+        .catch((err) => {
+          if (typeof err === 'string') alert(err)
+          console.error(err)
+        })
+    })
+  });
+
+
+</script>
   	
     </body>
 </html>

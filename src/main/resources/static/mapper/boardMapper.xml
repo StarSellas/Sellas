@@ -4,10 +4,13 @@
 	
 	<select id="boardList" parameterType="Integer" resultType="Map">
 		SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count
-		FROM boardview
-		WHERE sno=#{cate }
-		ORDER BY bno DESC
-		LIMIT 0, 10
+			FROM(
+				SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
+				b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
+				WHERE b.sno = #{cate}
+				ORDER BY b.bno ASC) bb
+			ORDER BY bb.bno DESC
+			LIMIT 0, 10
 	</select>
 	
 	<select id="nextPage" parameterType="Map" resultType="Map">
@@ -15,7 +18,7 @@
 			SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count 
 			FROM boardview
 			WHERE sno=#{cate } and bno < #{lastbno}
-			ORDER BY bno ASC
+			ORDER BY bno DESC
 			LIMIT 10
 		]]>
 	</select>
