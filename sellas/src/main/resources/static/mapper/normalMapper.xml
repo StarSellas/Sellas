@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.normaltrade.NormalDAO">
+
+<select id="normalBoardList" parameterType="Map" resultType="Map">
+SELECT *
+FROM normaltradeview
+ORDER BY ${sortBy} ${inOrder}
+</select>
+
+
+
+<select id="cateList" resultType="Map">
+SELECT *
+FROM itemcategory
+ORDER BY ino ASC
+</select>
+
+<select id="mainMember" parameterType="String" resultType="Map">
+SELECT *
+FROM member
+WHERE muuid = #{muuid}
+</select>
+
+<insert id="normalWrite" parameterType="Map">
+INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tnormalprice, tnormalstate)
+VALUES (#{category},#{muuid},#{ttype},#{ttitle},#{tcontent},#{tnormalprice}, #{tnormalstate})
+
+ <selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID() AS tno
+    </selectKey>
+</insert>
+
+
+<insert id="insertTradeimg" parameterType="Map">
+	INSERT INTO tradeimage (tno, timage)
+	VALUES (#{tno}, #{realFileName})
+</insert>
+
+<update id="setThumbnail" parameterType="String">
+UPDATE tradeimage
+SET tthumbnail = 0
+WHERE timage = #{realFileName}
+</update>
+
+
+
+<select id="normalDetail" parameterType="Integer" resultType="Map">
+SELECT *
+FROM normaltradeview
+WHERE tno = #{tno}
+</select>
+
+<update id="normalTreadUpdate" parameterType="Integer">
+UPDATE trade
+SET tread = tread+1
+WHERE tno = #{tno}
+</update>
+
+<select id="normalDetailCount" parameterType="Integer" resultType="Integer">
+SELECT COUNT(*)
+FROM tradeimage
+WHERE tno  = #{tno}
+</select>
+
+<select id="normalDetailImage" parameterType="Integer" resultType="Map">
+SELECT timage
+FROM tradeimage
+WHERE tno = #{tno}
+</select>
+
+<update id="normalDelete" parameterType="Map">
+UPDATE trade
+SET tnormalstate = 3
+WHERE tno = #{tno} and muuid=#{muuid}
+</update>
+
+<insert id="fillWhalePay">
+INSERT INTO fill (muuid, camount)
+VALUES ((SELECT muuid FROM member WHERE mnickname = #{mnickname}), #{money})
+</insert>
+
+<update id="normalEdit" parameterType="Map">
+UPDATE trade
+SET ttitle = #{ttitle},  ino = #{category}, tcontent = #{tcontent}, tnormalprice = #{tnormalprice}
+where tno =#{tno}
+</update>
+
+<delete id="normalDeleteEditImage" parameterType="Map">
+DELETE FROM tradeimage
+WHERE tno = #{tno} and timage = #{selectedImage0} <if test="selectedImage1 != ''">or timage =#{selectedImage1}</if>
+<if test="selectedImage2 !=''">or timage =#{selectedImage2}</if>
+
+
+</delete>
+
+<select id="SelectnormalThumbnail" parameterType="Map" resultType="Integer">
+SELECT COUNT(*)
+FROM tradeimage
+WHERE tno = #{tno} and tthumbnail = 0
+</select>
+
+<select id="selectTnormalstate" parameterType="Map" resultType="Integer">
+SELECT tnormalstate
+from trade
+where tno = #{tno}
+
+</select>
+
+
+<select id="selectMamountForTrade" parameterType="Map" resultType="Integer">
+SELECT mamount
+FROM member
+WHERE mnickname = #{mnickname}
+</select>
+
+<update id="takeMamount" parameterType="Map">
+UPDATE member
+SET mamount = mamount-#{tnormalprice}
+WHERE mnickname = #{mnickname}
+</update>
+
+<update id="changeStateForNormal" parameterType="Map">
+UPDATE trade
+SET tnormalstate = 1
+WHERE tno = #{tno}
+</update>
+
+<insert id="insertPaymentForNormal" parameterType="Map">
+INSERT INTO payment (tno, pseller, pbuyer, psellerok, pbuyerok, pamount, pstate)
+VALUES(#{tno}, (SELECT muuid FROM member WHERE mnickname = #{sellerMnickname}),(SELECT muuid FROM member WHERE mnickname = #{mnickname}), 2, 0, #{tnormalprice}, 2 )
+</insert>
+
+<update id="fillMamount" parameterType="Map">
+UPDATE member
+SET mamount = mamount + #{money}
+WHERE mnickname = #{mnickname}
+</update>
+
+<select id="alarmCount" parameterType="String" resultType = "Integer">
+	select COUNT(*) from alarm where oseller = #{muuid} and acheck = 1
+</select>
+
+<select id="productAmount" parameterType="String" resultType="Integer">
+	select pamount from payment where tno = #{tno}
+</select>
+
+<select id="obuyerAmounts" parameterType="String" resultType="Integer">
+	select mamount from member where obuyer = #{obuyer}
+</select>
+
+</mapper>
