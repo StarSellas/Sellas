@@ -22,41 +22,36 @@
         <!-- ******************* 추가 *********************** -->
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
         <script src="./js/jquery-3.7.0.min.js"></script>
-        
-		<script type="text/javascript">
-			$(function(){
-				//$(".rowNum").hide();
-			});	
-		</script>       
+
 		<script type="text/javascript">
             
             $(function(){
                
+            	$(".rowNum").hide();
+            	
             	let currentPage = 1;
             	let isBottomHandled = false;
             	
             	$(window).on("scroll",function(){
-            	    //위로 스크롤된 길이
-            	    let scrollTop=$(window).scrollTop();
-            	    //웹브라우저의 창의 높이
-            	    let windowHeight=$(window).height();
-            	    //문서 전체의 높이
-            	    let documentHeight=$(document).height();
-            	    //바닥까지 스크롤 되었는 지 여부를 알아낸다.
-            	    let isBottom=scrollTop+windowHeight + 10 >= documentHeight;
 
-            	    if(isBottom && !isBottomHandled){
+            		let scrollTop=$(window).scrollTop(); 		// 스크롤된 길이
+            	    let windowHeight=$(window).height(); 		//웹브라우저의 창의 높이
+            	    let documentHeight=$(document).height(); 	//문서 전체의 높이
+            	    
+            	    let isBottom=scrollTop+windowHeight + 10 >= documentHeight;	// 스크롤완료여부
+
+            	    if(isBottom && !isBottomHandled){	
             	    	
-            	    	nextPage(currentPage);
+            	    	nextPage(currentPage);	// 다음페이지 불러오는 함수	실행
             	    	currentPage++;
             	    	isBottomHandled = true;
             	    	
             	    } else if (!isBottom) {
-            	        // 스크롤이 바닥에서 벗어났을 때 상태 변수 재설정
+            	    	
             	        isBottomHandled = false;
             	    }
             	
-            	
+            // 다음페이지 불러오는 함수	
            	 function nextPage(currentPage){
             	
                let cate = ${param.cate};
@@ -75,19 +70,17 @@
                   }
                   
                		// 다음페이지가 있다면 진행
-               		 let newRow = ""; // 추가될 tr
-                     let data = {};	// ajax로 보낼 객체
+               		 let newRow = ""; 	// 추가될 tr
+                     let data = {};		// ajax로 보낼 객체
                      
                      data.currentPage = currentPage;	// ***** 확인용 *****
 
-                 	 // 추가된 td의 bno값으로 초기화 (rownum)
-                  	 let lastbno = $(".rowNum:last").attr("data-bno"); // (추가글의)최하단글bno
-                     console.log("변경 lastbno : " + lastbno);
+                  	 let lastbno = $(".rowNum:last").attr("data-bno"); // 최하단글bno
+                     //console.log("변경 lastbno : " + lastbno);
                   	
                   	 // 서버로 보낼것들 data에 담기
                      data.cate = cate;
                      data.lastbno = lastbno;
-                     data.firstbno = firstbno; // ***** 확인용 *****
                      data.count = count;
                      
                      $.ajax({
@@ -96,17 +89,19 @@
                           data: data,
                           dataType: 'json',
                           success: function(data) {
+                        	  
                         	    if (data.list != null) { // 데이터가 있다면 뽑아내기
                         	        alert("데이터와");
-
+                        	       
+                        	        	
                         	        $(data).each(function() {
                         	        	//console.log("가져온list : " + this.list[0].bno + "~");
                         	        	
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
-	                        	        	let newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
-	                    	                    + "<td class='rowNum"+ (i === 0 ? ' firstbno' : '') + "' data-bno='" + this.list[i].bno + "'>"
-	                    	                    + this.list[i].bno + "</td>"
+                        	        		let newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
+	                    	                    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>"
+	                    	                    + "</td>"
 	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
 	                    	                    + this.list[i].btitle
 	                    	                    + " <span class='commentcount'>(" + this.list[i].commentcount + ")</span>"
@@ -120,14 +115,17 @@
 	                    	                  // 추가된 tr로 lastRow 재설정
 	                                          lastRow = $(".boardRow:last");   // 최하단row
 	                                          console.log("lastRow :" + i + "번째");
-
+	                                          
+	                                          $(".rowNum").hide();
+	                                          
                         	        	}	// for
+                        	        	
                         	        }); // .each
                         	        
                         	        $(".currentPage").text(currentPage); // ***** 페이지확인용 *****
+                        	        
                         	    } // if(data != null)
-                        	    	
-                        	    	
+                        	    
                         	},
                           
                           error: function(error) {
@@ -137,7 +135,6 @@
                       }); // ajax
                       
             } // nextPage
-               
                
             
             	});	// 스크롤
@@ -191,7 +188,7 @@
             
             <div class="writeBtnBox">
             	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
-               		<button class="writeBtn" onclick="location.href='/boardWriteForTest?cate=${param.cate}'">글쓰기</button>
+               		<button class="writeBtn" onclick="location.href='/boardWrite?cate=${param.cate}'">글쓰기</button>
                	</c:if>
             </div>
             
@@ -234,7 +231,7 @@
             
             <div class="nextBtnBox">
             	<div class="currentPage">1</div>
-            	<button class="nextbutton" onclick="nextPage(1)">다음</button>
+            	<button class="nextbutton">다음</button>
 			</div>
         		 </div>
             </div>

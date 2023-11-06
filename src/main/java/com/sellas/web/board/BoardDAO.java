@@ -14,6 +14,8 @@ public interface BoardDAO {
 
 	List<Map<String, Object>> mainList(int cate);
 	
+	List<Map<String, Object>> nextPage(Map<String, Object> map);
+	
 	int boardWrite(Map<String, Object> map);
 
 	int boardImage(Map<String, Object> map);
@@ -39,12 +41,6 @@ public interface BoardDAO {
 	int commentWrite(Map<String, Object> map);
 
 	int commentEdit(Map<String, Object> map);
-
-	int getFistIndex(int cate);
-
-	List<Map<String, Object>> nextPage(Map<String, Object> map);
-
-
 
 
 }

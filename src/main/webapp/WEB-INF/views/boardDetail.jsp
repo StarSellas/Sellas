@@ -69,15 +69,15 @@
         			let newContentBox = ""
         	
         			newContentBox += '<div class="newWriteBox">'
-        				+ '<form action="./commentEdit" method="post">'
+        				+ '<form action="./commentEdit" method="post" class="newtWriteForm">'
         				+ '<input type="hidden" name="bno" value="' + bno + '">'
         				+ '<input type="hidden" name="cno" value="' + cno + '">'
         				+ '<input type="hidden" name="cate" value="' + cate + '">'
-        				+ '<textarea class="cContent" name="ccontent">'
+        				+ '<textarea class="newcContent" name="ccontent">'
         				+ ccontent
         				+ '</textarea>'
         				+ '<div class="commentsBtn">'
-        				+ '<button type="submit">등록</button>' // 등록 버튼
+        				+ '<button type="submit" class="newcWriteBtn">등록</button>' // 등록 버튼
         				+ '<button class="reset">취소</button>'
         				+ '</div>'
         				+ '</form>'
@@ -152,11 +152,14 @@
 					<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
 						<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
 							<c:forEach items="${imageList}" var="imageList">
-								<div class="boardImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}"></div>
+								<div class="boardImgBox">
+									<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
+								</div>
 								<!--<span>${imageList.bimage}</span>-->
 							</c:forEach>
 						</c:if>
 					</div>
+					
 					<div class="bBtnBox">
 						<span class="bread">조회 : ${bdetail.bread }</span>
 						<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq bdetail.mnickname}">

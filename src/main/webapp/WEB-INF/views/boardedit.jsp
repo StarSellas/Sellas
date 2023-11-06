@@ -19,11 +19,12 @@
         
         <!-- ******************* 추가 *********************** -->
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-        <link href="css/detail.css" rel="stylesheet">
+        <link href="css/boardWrite.css" rel="stylesheet">
         <script src="./js/jquery-3.7.0.min.js"></script>
         
         <script type="text/javascript">
-        
+        		
+        	// 이미지 수정
         	$(function(){
         		
         		let bno = ${bdetail.bno};
@@ -35,7 +36,7 @@
         		// 기존게시글 이미지 추출
         		$('.boardImgBox').each(function(){
         			bimageName = $(this).text();
-        			//console.log("이미지들:" + bimageName);
+        			console.log("이미지들:" + bimageName);
         			noEditList.push(bimageName);
         			console.log("noEditList : " + noEditList);
         		})
@@ -78,7 +79,13 @@
         		
         		// 글수정 버튼 클릭 => data(삭제할이미지)를 매개변수로 imgDelete 실행
         		$(".editbtn").click(function(){
-        			imgDelete(data);
+        			
+        			if("bno" in data){
+	        			imgDelete(data);
+        			} else {
+        				formsubmit();
+        			}
+        			
         		});
         		
         		// 이미지 삭제함수
@@ -189,34 +196,43 @@
         <!-- Section-->
         <section class="py-5">
         
-            <div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
+        	<div class="cateName mt-4"><a href="/board?cate=${bdetail.sno }">${bdetail.sname } (${bdetail.bno })</a></div>
+            <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     
-                 <div>글수정페이지</div>
+                    <!-------------------- 글수정창 -------------------->
                     
-                   <div>
-						<form action="./boardEdit" method="post" id="form" enctype="multipart/form-data">
+                   <div class="beditContainer justify-content-center">
+						
+						<form action="./boardEdit" method="post" class="beditForm" id="form" enctype="multipart/form-data">
 							<div class="titleBox">
-								<input type="text" class="" id="btitle" name="btitle" value="${bdetail.btitle }">
+								<input type="text" class="btitle id="btitle" name="btitle" value="${bdetail.btitle }">
 							</div>
+							
 							<div class="contentBox">
-								<textarea class="contentBox" name="bcontent">${bdetail.bcontent }</textarea>
+								<textarea class="bcontent" name="bcontent">${bdetail.bcontent }</textarea>
 								<input type="hidden" name="bno" value="${bdetail.bno}">
 								<input type="hidden" name="cate" value="${param.cate}">
 							</div>
 							
 							<div class="bimageBox">
-								<span>이미지 갯수 : ${bdetail.bimagecount}</span>
+								<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
 								<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
 									<c:forEach items="${imageList}" var="imageList">
-										<div class="boardImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
-										${imageList.bimage}<button class="imgEditbtn" type="button"></button></div>
+										<div class="boardImgBox editImgBox">
+											<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
+											<button class="imgEditbtn" type="button">수정</button>
+										</div>
 									</c:forEach>
 								</c:if>
+								
 								<div id="photoInputs">
                     				<div id="imagePreviews"></div>
                     			</div>
-								<button id="addPhotoButton" type="button">사진 추가하기</button>
+                    			
+                    			<div class="addPhotoBtnBox">
+									<button id="addPhotoButton" type="button">사진 추가하기</button>
+								</div>
 							</div>
 						
 						<div class="buttonBox">

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sellas.web.util.Util;
 
-import retrofit2.http.GET;
-
 
 @Controller
 public class BoardController {
@@ -45,7 +42,7 @@ public class BoardController {
 		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
 		List<Map<String, Object>> mainList = boardService.mainList(cate);
 		
-		System.out.println("boardList : " + boardList);
+		//System.out.println("boardList : " + boardList);
 		// [{bno=98, bread=7, mnickname=pyo, commentcount=0, bdate=2023-11-02, sno=2, bimagecount=0, rowNum=25, count=25, btitle=ㅂㅈㄷㄱㄱㅂ, bcontent=ㅂㅈㄷㄱ, mno=96},
 		
 		// 게시판카테고리, 카테고리별 게시글, 메인보드 게시글(조회순)
@@ -60,11 +57,12 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("/nextPage")
 	public String nextPage(@RequestParam Map<String, Object> map) {
-		System.out.println(map);
-		JSONObject json = new JSONObject();
+		//System.out.println(map);
 		// {cate=2, lastbno=68, firstbno=98, count=25, nextpage=2}
+
+		JSONObject json = new JSONObject();
 		List<Map<String, Object>> nextList = boardService.nextPage(map);
-		System.out.println("nextList : " + nextList);
+		//System.out.println("nextList : " + nextList);
 		json.put("list", nextList);
 
 		return json.toString();
@@ -192,7 +190,7 @@ public class BoardController {
 		Map<String, Object> detailList = boardService.boardDetail(map);
 		List<Map<String, Object>> imageList = boardService.imageList(map);
 		//System.out.println(detailList);
-		// {bno=11, bread=0, mnickname=셀라스, commentcount=0, bdate=12:29:22, sno=2, btitle=글써, bcontent=글써, mno=1}
+		// {bno=107, bread=5, mnickname=pyo, commentcount=0, bdate=14:39:53, sno=2, bimagecount=0, sname=판매요청, btitle=제목, bcontent=내용, mno=96}
 		
 		model.addAttribute("bdetail", detailList);
 		model.addAttribute("imageList", imageList);
@@ -218,8 +216,9 @@ public class BoardController {
 	@PostMapping("boardEdit")
 	public String boardEdit(@RequestParam (value="boardimg", required = false) List<MultipartFile> boardimgList,
 							@RequestParam Map<String, Object> map) {
-		//System.out.println("map : " + map);
-		//System.out.println("boardimgList : " + boardimgList);
+		
+		System.out.println("map : " + map);
+		System.out.println("boardimgList : " + boardimgList);
 		//map : {btitle=테스트이미지, bcontent=업로드, bno=68, cate=2, boardimg1=pyos.png, boardimg3=pyos2.png}
 		int writeResult = boardService.boardEdit(map);
 			if(writeResult == 1) {

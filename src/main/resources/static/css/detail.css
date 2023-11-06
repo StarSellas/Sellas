@@ -151,10 +151,10 @@
 
 /****************** commentsWrite *******************/
 
-.cWriteBox{
+.cWriteBox, .newWriteBox{
 	margin: 10px;
 	padding: 0;
-	width: inherit;
+	width: 100%;
 }
 .commentWriteForm{
 	width: inherit;
@@ -162,9 +162,19 @@
 	margin-top: 20px;
 	display: flex;
 }
+.newtWriteForm{
+	width: inherit;
+	margin: auto;
+	display: flex;
+}
 .cContent{
 	width: 78%;
 	height: 40px;
+}
+.newcContent{
+	width: 60%;
+	height: 40px;
+	margin: 5px 10px;
 }
 .cWriteBtn{
   	border: none;
@@ -173,9 +183,12 @@
 	margin-left: 10px;
 	margin-bottom: 10px;
 }
-/****************** boardEdit *******************/
-
-.imgEditbtn{
-	width: 40px;
-	height: 30px;
+.newcWriteBtn{
+	margin-right: 10px;
+}
+.newcWriteBtn, .reset {
+	border: none;
+	background: transparent;
+	padding: 0;
+	margin-bottom: 10px;
 }

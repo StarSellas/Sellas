@@ -17,6 +17,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <link href="css/boardWrite.css" rel="stylesheet" />
         
         <!-- ******************* 추가 *********************** -->
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
@@ -50,15 +51,10 @@
         			
         			let muuid = $(this).parent().siblings(".muuid").val();
         			let btitle = $(this).parent().siblings(".btitleBox").children(".btitle").val();
-        			let bcontent = $(this).parent().siblings(".bcontent").val();
+        			let bcontent = $(this).parent().siblings(".bcontentBox").children(".bcontent").val();
         			
         			alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
 					
-        			if(muuid == "" || muuid == null){
-	        			alert("로그인이 필요한 서비스입니다.");
-	        			return false;
-        			}
-        			
 					if(btitle.length < 3){
 						alert("제목을 입력하세요.");
 						return false;
@@ -70,7 +66,6 @@
 					}					
         			
         		});
-				
 				
         	});
         	
@@ -176,7 +171,7 @@
 			               
 			                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<c:forEach items="${board}" var="board">
-									<li class="cateChange">
+									<li class="cateChange" >
 										<a	class="dropdown-item cateForWrite" href="#"> ${board.sname }</a> 
 										<input type="hidden" class="changeCate" value="${board.sno }">
 									</li>
@@ -187,21 +182,27 @@
 		            </div>
 				
 					<!-------------------- 글쓰기창 -------------------->
-					<div>
-						<form action="./boardWrite" method="post" enctype="multipart/form-data">
+					<div class="bwriteContainer">
+						<form action="./boardWrite"  class="bwriteForm" method="post" enctype="multipart/form-data">
 							<div class="btitleBox">
 								<input type="text" class="btitle" id="btitle" name="btitle" placeholder="제목을 입력해주세요">
 							</div>
 							
-							<textarea id="bcontent" class="bcontent" name="bcontent" placeholder="내용을 입력해주세요"></textarea>
-							<div class="boardimgBox">
+							<div class="bcontentBox">
+								<textarea id="bcontent" class="bcontent" name="bcontent" placeholder="내용을 입력해주세요"></textarea>
+							</div>
+							
+							<div class="bimageBox">
 								<div id="photoInputs">
                     				<div id="imagePreviews"></div>
                     			</div>
-								<button id="addPhotoButton" type="button">사진 추가하기</button>
+                    			<div class="addPhotoBtnBox">
+									<button id="addPhotoButton" type="button">사진 추가하기</button>
+								</div>
 							</div>
 							<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 							<input type="hidden" class="cateWrite" name="cate" value="${param.cate}">
+							
 							<div class="bwriteBtnBox">
 								<button type="submit" class="bwriteButton">글쓰기</button>
 							</div>

@@ -1,23 +1,13 @@
 package com.sellas.web.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import com.sellas.web.board.BoardDTO;
 
 @Component
 public class Util {
@@ -68,25 +58,6 @@ public class Util {
 		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
 
 		return session.getAttribute("muuid") != null;
-	}
-	
-	// 페이징
-	public Map<String, Object> getListLink(BoardDTO dto) {
-		
-		Map<String, Object> pmap = new HashMap<String, Object>();
-		pmap.put("pageNum", String.valueOf(dto.getPageNum()));
-		
-		/*
-		 * UriComponents pageUri =
-		 * UriComponentsBuilder.fromUriString("http://localhost:8080/board")
-		 * .queryParams(pmap).build();
-		 */
-		
-		//System.out.println(pageUri);
-		// http://localhost:8080/board?cate=2&bno=10&pageNum=1
-		
-		return pmap;
-	
 	}
 	
 	

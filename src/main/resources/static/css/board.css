@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-.firstbno{
-	color : red;
-}
-
 .cateBox{
 	width: 80%;
 	padding: 0;
@@ -34,6 +30,11 @@
 	width: 60%; 
 	padding-left: 10px;
 }
+
+.bdate, .mainbdate, .bread {
+	text-align: right;
+}
+
 
 .bdate, .mainbdate, .bread {
 	text-align: right;
