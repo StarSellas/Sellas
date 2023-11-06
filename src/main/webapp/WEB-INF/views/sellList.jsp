@@ -84,7 +84,7 @@
 <div class="card mb-3" style="max-width: 400px;">
   <div class="row g-0" onclick="location.href='./detail?tno=${row.tno}'">
     <div class="col-4">
-      <img src="../img/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+      <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
     </div>
     <div class="col-8">
       <div class="card-body">
