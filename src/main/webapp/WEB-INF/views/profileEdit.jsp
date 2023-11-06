@@ -82,7 +82,7 @@
 					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
 				</div>
 			<div class="nicknameDIV">
-				<input class="NewNickname" value="${nickname}">
+				<input class="NewNickname form-floating" value="${nickname}">
 				<button id="nickChangeBtn" onclick="nickChange()">닉네임 변경</button>
 			</div>
 		</div>
@@ -100,9 +100,6 @@
             </div>
         </footer>
 	<!-- Bootstrap core JS-->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- Core theme JS-->
 	<script src="../js/jquery-3.7.0.min.js"></script>
 	<script src="../js/mypage.js"></script>
 </body>
