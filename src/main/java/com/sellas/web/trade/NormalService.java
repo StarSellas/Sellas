@@ -159,6 +159,21 @@ public class NormalService {
 		return normalDAO.giveMamountForSeller(map);
 	}
 
+	public int normalTradeFail(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.normalTradeFail(map);
+	}
+
+	public int mamountReturn(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.mamountReturn(map);
+	}
+
+	public String selectBuyer(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.selectBuyer(map);
+	}
+
 
 	
 

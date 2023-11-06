@@ -375,17 +375,28 @@ public class NormalController {
 		return "redirect:/normalDetail?tno=" + map.get("tno");
 	}
 
-	// 이건 채팅이 구현되면 사용하겠습니다.
-	// 채팅 신청 -> 채팅방 개설 -> 거래 수락 -> tnormalstate 값 수정하고 payment에 값 박고 돈 빼고 거래 시작!
-
-	// 거래 파기 > tnormalstate값 수정하고(1>0) payment에 enddate 넣고 pstate 수정(2>1)
-
-	// 이게 최종본입니다.
-	// 1. 채팅 신청 -> tnormalstate검사 > 채팅창이 이미 개설되었는지 검사>계좌 잔액 검사(false가 아닌 confirm창으로
-	// 경고) > 채팅창생성레쓰고
+	
+	
+	//채팅 신청하기버튼 > 여기 조건이 충족되면 jsp에서 필요한 값 들고 채팅방 생성(requestChat)으로 보냅니다.
+	
+	
+	/*
+	 * var form = $("<form></form>").attr({ action: "./requestChat", method: "post",});
+	 * 
+	 * // 필요한 hidden input 추가 
+	 * form.append($("<input>").attr({ type: "hidden", name: "tno", value: tno }));
+	 * form.append($("<input>").attr({ type: "hidden", name: "obuyer", value: buyerMuuid }));
+	 * form.append($("<input>").attr({ type: "hidden", name: "oseller", value: sellerMuuid }));
+	 * form.append($("<input>").attr({ type: "hidden", name: "tnormalprice", value: tnormalprice }));
+	 * form.appendTo("body").submit(); }
+	 */
+	
+	
 	@PostMapping("/checkTnormalstate")
 	@ResponseBody
 	public String checkTnormalstate(@RequestParam Map<String, Object> map, HttpSession session) {
+		System.out.println("checkTnormalstate의 맵값 : " + map);
+		//checkTnormalstate의 맵값 : {tno=52, mnickname=대붕, tnormalprice=500, sellerMnickname=divy}
 		System.out.println("세션값은 : " + session.getAttribute("muuid"));
 		JSONObject json = new JSONObject();
 		// 로그인 했는지 검사
@@ -436,7 +447,7 @@ public class NormalController {
 	// }
 
 	@PostMapping("/requestChat")
-	public String requestChat(@RequestParam Map<String, Object> map, HttpSession session) {
+	public String requestChat(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
 
 		// System.out.println("채팅으로 받아오는 값입니다 : " + map);
 		// System.out.println("세션에서 받아오는 muuid 값입니다 : " +
@@ -450,6 +461,7 @@ public class NormalController {
 
 			System.out.println("최종적으로 담기는 값 : " + map);
 		}
+		model.addAttribute("roomdetail", map);
 		return "/chat/roomdetail";
 	}
 
@@ -459,23 +471,25 @@ public class NormalController {
 	public String tradeAccepted(@RequestParam Map<String, Object> map) {
 		// 거래를 수락하는 메소드입니다.
 		JSONObject json = new JSONObject();
-
+		System.out.println("tradeAccepted를 눌렀을 때 받아오는 값입니다 : " +map);
 		map.put("state", 1);
 
 		int tnormalstate = normalService.selectTnormalstate(map);
 		if (tnormalstate == 0) {
-
+			System.out.println("tnormalstate==0이 들어오나요?");
 			// 구매자의 돈을 귀속합니다.
 			int takeMamount = normalService.takeMamount(map);
-			/*
-			 * <update id="takeMamount" parameterType="Map"> UPDATE member SET mamount =
-			 * mamount-#{tnormalprice} WHERE mnickname = #{mnickname} </update>
-			 */
+			//<update id="takeMamount" parameterType="Map">
+			//UPDATE member
+			//SET mamount = mamount-#{tnormalprice}
+			//WHERE muuid = #{obuyer}
+			//</update>
+		
 			if (takeMamount == 1) {
-
+				System.out.println("takeMamount==1이 들어오나요?");
 				// payment에 값을 집어넣습니다.
 				int insertPaymentForNormal = normalService.insertPaymentForNormal(map);
-
+ 
 				// <insert id="insertPaymentForNormal" parameterType="Map">
 				// INSERT INTO payment (tno, pseller, pbuyer, psellerok, pbuyerok, pamount,
 				// pstate)
@@ -485,6 +499,7 @@ public class NormalController {
 				// #{tnormalprice}, 2 )
 				// </insert>
 				if (insertPaymentForNormal == 1) {
+					System.out.println("insertPaymentForNormal==1이 들어오나요?");
 					// tnormalstate의 값을 변경해줍니다.(판매중 -> 거래중)
 					int changeStateForTrade = normalService.changeStateForNormal(map);
 					if (changeStateForTrade == 1) {
@@ -494,8 +509,12 @@ public class NormalController {
 				}
 			}
 
+		}//if (tnormalstate == 0)  
+		else {
+			json.put("tnormalstateFalse", 0);
+			return json.toString();
 		}
-
+		
 		System.out.println("맵의 값입니다 : " + map);
 		System.out.println("아이구 어서옵쇼");
 
@@ -508,13 +527,16 @@ public class NormalController {
 	// 물품 수령 완료 메소드(거래 완료)
 	// ajax?
 	// 받아와야 하는 값 : 세션의 muuid(muuid) , tno(tno),
+	//recieveChecked의 맵값은 : {tno=52, muuid=a3d69eb4-bc98-47c6-abc5-55ba93c9fb99}
+
 	@ResponseBody
 	@PostMapping("/recieveChecked")
-	public String recieveChecked(Map<String, Object> map) {
+	public String recieveChecked(@RequestParam Map<String, Object> map) {
+		System.out.println("recieveChecked의 맵값은 : " + map);
 		JSONObject json = new JSONObject();
 		// 당신은 구매자인가요 판매자인가요? + pamount가져오기
 		Map<String, Object> buyerOrSeller = normalService.buyerOrSeller(map);
-
+		System.out.println("buyerOrSeller의 값을 알려줘 : " + buyerOrSeller);
 		// SELECT
 		// (SELECT COUNT(*) FROM payment WHERE pbuyer =
 		// 'a3d69eb4-bc98-47c6-abc5-55ba93c9fb99' AND tno = 48) AS buyer,
@@ -526,7 +548,7 @@ public class NormalController {
 			map.put("ok", "pbuyerok");
 		} else {
 			map.put("ok", "psellerok");
-		}
+		} 
 
 		map.put("pamount", buyerOrSeller.get("pamount"));
 		int recieveChecked = normalService.recieveChecked(map);
@@ -535,7 +557,7 @@ public class NormalController {
 		// WHERE tno = #{tno} and pstate = 2
 		if (recieveChecked == 1) {
 			int selectPaymentResult = normalService.selectPaymentResult(map);
-			
+			 
 			if (selectPaymentResult == 1) {
 				// tnormalstate 값 변경(거래완료)
 				map.put("state", 2);
@@ -547,7 +569,7 @@ public class NormalController {
 				// 판매자한테 돈 주기
 				int giveMamountForSeller = normalService.giveMamountForSeller(map);
 				if (giveMamountForSeller == 1) {
-					json.put("TradeAllSuccess", 1);
+					json.put("tradeAllSuccess", 1);
 				}
 			}//selectPaymentResult == 1 끝
 			else {
@@ -565,21 +587,42 @@ public class NormalController {
 	
 
 	// 거래 취소 메소드(거래중 > 거래취소)
-	// 받아와야 하는 값 : tno, 세션의 muuid, 실패 사유,
-
+	// 받아와야 하는 값 : tno, 세션의 muuid, 실패 사유, tnormalprice
+	//recieveCancelled의 맵 값은 : {reason=저 이거 사기 싫ㄹ어요;;, tnormalprice=500, muuid=a3d69eb4-bc98-47c6-abc5-55ba93c9fb99, tno=52}
 	@ResponseBody
 	@PostMapping("/recieveCancelled")
 	public String recieveCancelled(@RequestParam Map<String, Object> map) {
+		JSONObject json = new JSONObject();
+		System.out.println("recieveCancelled의 맵 값은 : " + map);
+		// 당신은 구매자인가요 판매자인가요? + pamount가져오기
+		Map<String, Object> buyerOrSeller = normalService.buyerOrSeller(map);
+		
+		if (Integer.parseInt(String.valueOf(buyerOrSeller.get("buyer"))) == 1) {
+			map.put("who", map.get("muuid"));
+			map.put("ok", "pbuyerok");
+		} else {
+			map.put("who", map.get("muuid"));
+			map.put("ok", "psellerok");
+		} 
+		
+		
+		System.out.println("구매자?판매자?의 값 : " + buyerOrSeller);
 		map.put("state", 0);
 		// tnormalstate 값 변경(판매중) Trade 테이블
 		normalService.changeStateForNormal(map);
-		// pstate값 변경(실패), enddate 삽입, 누가 취소했는지, 사유가 무엇인지 넣기 Payment 테이블
 		
 		// 구매자한테 돈 돌려주기 Member 테이블
+		String buyer = normalService.selectBuyer(map);
+		map.put("buyer", buyer);
+		int mamountReturn = normalService.mamountReturn(map);
+		 
+		// pstate값 변경(실패), enddate 삽입, 누가 취소했는지, 사유가 무엇인지 넣기 Payment 테이블
+		int normalTradeFail = normalService.normalTradeFail(map);
+		
 		
 		// ajax로 성공 값 보내주기
-
-		return "";
+		json.put("recieveCancelledSuccess", 1);
+		return json.toString();
 	}
 
 }// 컨트롤러 끝

@@ -217,7 +217,7 @@
 						      form.append($("<input>").attr({ type: "hidden", name: "tno", value: tno }));
 						      form.append($("<input>").attr({ type: "hidden", name: "obuyer", value: buyerMuuid }));
 						      form.append($("<input>").attr({ type: "hidden", name: "oseller", value: sellerMuuid }));
-
+						      form.append($("<input>").attr({ type: "hidden", name: "tnormalprice", value: tnormalprice }));
 						      // 폼을 body에 추가하고 자동으로 submit
 						      form.appendTo("body").submit();
 					}

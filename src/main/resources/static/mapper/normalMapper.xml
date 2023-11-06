@@ -117,7 +117,7 @@ WHERE mnickname = #{mnickname}
 <update id="takeMamount" parameterType="Map">
 UPDATE member
 SET mamount = mamount-#{tnormalprice}
-WHERE mnickname = #{mnickname}
+WHERE muuid = #{pbuyer}
 </update>
 
 <update id="changeStateForNormal" parameterType="Map">
@@ -128,7 +128,7 @@ WHERE tno = #{tno}
 
 <insert id="insertPaymentForNormal" parameterType="Map">
 INSERT INTO payment (tno, pseller, pbuyer, psellerok, pbuyerok, pamount, pstate)
-VALUES(#{tno}, (SELECT muuid FROM member WHERE mnickname = #{sellerMnickname}),(SELECT muuid FROM member WHERE mnickname = #{mnickname}), 2, 2, #{tnormalprice}, 2 )
+VALUES(#{tno}, #{pseller},#{pbuyer}, 2, 2, #{tnormalprice}, 2 )
 </insert>
 
 <update id="fillMamount" parameterType="Map">
@@ -154,7 +154,7 @@ WHERE tno = #{tno} and pseller = (SELECT muuid FROM member WHERE mnickname = #{s
 
 <update id="recieveChecked" parameterType="Map">
 UPDATE payment
-SET #{ok} = 0
+SET ${ok} = 0
 WHERE tno = #{tno} and pstate = 2
 
 </update>
@@ -175,5 +175,23 @@ WHERE tno = #{tno}
 UPDATE member
 SET mamount = mamount + #{pamount}
 WHERE muuid = (SELECT pseller FROM payment WHERE tno=#{tno} AND pstate = 0)
+</update>
+
+<update id="normalTradeFail" parameterType="Map">
+UPDATE payment
+SET ${ok}= 1,pstate = 1, penddate = CURRENT_TIMESTAMP, ptradereject = #{who}, ptraderejectreason = #{reason}
+WHERE tno = #{tno} and pstate = 2
+</update>
+
+<select id="selectBuyer" parameterType="Map" resultType="String">
+SELECT muuid
+FROM member
+WHERE muuid = (SELECT pbuyer FROM payment WHERE tno = #{tno} and pstate = 2)
+</select>
+
+<update id="mamountReturn" parameterType="Map" >
+UPDATE member
+SET mamount = mamount + #{tnormalprice}
+WHERE muuid = #{buyer}
 </update>
 </mapper>

@@ -63,6 +63,12 @@ public interface NormalDAO {
 
 	int giveMamountForSeller(Map<String, Object> map);
 
+	int normalTradeFail(Map<String, Object> map);
+
+	int mamountReturn(Map<String, Object> map);
+
+	String selectBuyer(Map<String, Object> map);
+
 
 
 	
