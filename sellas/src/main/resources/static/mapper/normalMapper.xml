@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sellas.web.normaltrade.NormalDAO">
+<mapper namespace="com.sellas.web.trade.NormalDAO">
 
-<select id="normalBoardList" parameterType="Map" resultType="Map">
+<select id="normalBoardList" parameterType="String" resultType="Map">
 SELECT *
 FROM normaltradeview
-ORDER BY ${sortBy} ${inOrder}
+${orderBy}
 </select>
 
 
@@ -117,24 +117,82 @@ WHERE mnickname = #{mnickname}
 <update id="takeMamount" parameterType="Map">
 UPDATE member
 SET mamount = mamount-#{tnormalprice}
-WHERE mnickname = #{mnickname}
+WHERE muuid = #{pbuyer}
 </update>
 
 <update id="changeStateForNormal" parameterType="Map">
 UPDATE trade
-SET tnormalstate = 1
+SET tnormalstate = #{state}
 WHERE tno = #{tno}
 </update>
 
 <insert id="insertPaymentForNormal" parameterType="Map">
 INSERT INTO payment (tno, pseller, pbuyer, psellerok, pbuyerok, pamount, pstate)
-VALUES(#{tno}, (SELECT muuid FROM member WHERE mnickname = #{sellerMnickname}),(SELECT muuid FROM member WHERE mnickname = #{mnickname}), 2, 0, #{tnormalprice}, 2 )
+VALUES(#{tno}, #{pseller},#{pbuyer}, 2, 2, #{tnormalprice}, 2 )
 </insert>
 
 <update id="fillMamount" parameterType="Map">
 UPDATE member
 SET mamount = mamount + #{money}
 WHERE mnickname = #{mnickname}
+</update>
+
+<select id="normalTradePaymentCountCount" parameterType="Map" resultType="Integer">
+SELECT COUNT(*)
+FROM payment
+WHERE tno = #{tno} and pseller = (SELECT muuid FROM member WHERE mnickname = #{sellerMnickname}) and pbuyer = (SELECT muuid FROM member WHERE mnickname = #{mnickname})
+
+</select>
+
+<select id="buyerOrSeller" parameterType="Map" resultType="Map">
+ SELECT
+		 (SELECT COUNT(*) FROM payment WHERE pbuyer = #{muuid} AND tno = #{tno}) AS buyer,
+		 (SELECT COUNT(*) FROM payment WHERE pbuyer != #{muuid} AND tno = #{tno}) AS seller,
+		 (SELECT pamount FROM payment WHERE tno = #{tno}) AS pamount
+</select>
+
+
+<update id="recieveChecked" parameterType="Map">
+UPDATE payment
+SET ${ok} = 0
+WHERE tno = #{tno} and pstate = 2
+
+</update>
+
+<select id="selectPaymentResult" parameterType="Map" resultType="Integer">
+SELECT COUNT(*)
+FROM payment
+WHERE tno=#{tno} and psellerok = 0 and pbuyerok = 0 and pstate = 2
+</select>
+
+<update id="changePstateForNormal" parameterType="Map">
+UPDATE payment
+SET pstate = #{pstate}, penddate = CURRENT_TIMESTAMP
+WHERE tno = #{tno}
+</update>
+
+<update id="giveMamountForSeller" parameterType="Map">
+UPDATE member
+SET mamount = mamount + #{pamount}
+WHERE muuid = (SELECT pseller FROM payment WHERE tno=#{tno} AND pstate = 0)
+</update>
+
+<update id="normalTradeFail" parameterType="Map">
+UPDATE payment
+SET ${ok}= 1,pstate = 1, penddate = CURRENT_TIMESTAMP, ptradereject = #{who}, ptraderejectreason = #{reason}
+WHERE tno = #{tno} and pstate = 2
+</update>
+
+<select id="selectBuyer" parameterType="Map" resultType="String">
+SELECT muuid
+FROM member
+WHERE muuid = (SELECT pbuyer FROM payment WHERE tno = #{tno} and pstate = 2)
+</select>
+
+<update id="mamountReturn" parameterType="Map" >
+UPDATE member
+SET mamount = mamount + #{tnormalprice}
+WHERE muuid = #{buyer}
 </update>
 
 <select id="alarmCount" parameterType="String" resultType = "Integer">
@@ -148,5 +206,4 @@ WHERE mnickname = #{mnickname}
 <select id="obuyerAmounts" parameterType="String" resultType="Integer">
 	select mamount from member where obuyer = #{obuyer}
 </select>
-
 </mapper>

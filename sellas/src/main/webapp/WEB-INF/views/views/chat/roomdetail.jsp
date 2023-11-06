@@ -27,23 +27,22 @@
 }
 </style>
 <script src="../js/jquery-3.7.0.min.js"></script>
+<script src="../js/buyerchat.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>
 	let sock = new SockJS("/ws/chat");
-	let emessage = '${emessage}';
-	console.log("emessage : " + emessage);
+	let emessage = '${econtent}';
 	let oseller = '${oseller}';
-	let sender = '${obuyer}'
 	let roomId = '${roomId}';
-	let mnickname = '${mnickname}';
+	let sender = '${mnickname}';
 	let tno = '${tno}';
-
+	
 	let ws = Stomp.over(sock);
 	let trade = 0;
-
+	
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
 		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
@@ -61,58 +60,50 @@
 			type : 'ENTER',
 			roomId : roomId,
 			sender : sender,
-			mnickname : mnickname,
 			message : emessage
 		}));
 		startPing();
 	});
-
-	$(function() {
-		$(".tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
+	
+	$(function(){
+		$(".tradeok").click(function(){ //거래수락을 눌렀을 때 실행할 함수입니다.
 			$.ajax({
-				url : '/compareamounts',
-				type : 'post',
-				data : {
-					tno : tno,
-					obuyer : sender
-				},
-				dataType : "json",
-				success : function(data) { //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
-					if (data.comparecount == 1) {
-
+				url: '/compareamounts',
+				type: 'post',
+				data: {tno: tno, obuyer: sender},
+				dataType: "json",
+				success:function(data){ //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
+					if(data.comparecount == 1){
+						
 					} else {
 						alert("충전금액이 부족합니다.");
-						location.href = '../fillPay';
+						location.href='../fillPay';
 					}
 				},
-				error : function(error) {
-					alert("에러가 발생했습니다. 다시 시도하지 마십시오.");
-				}
+				error:function(error){alert("에러가 발생했습니다. 다시 시도하지 마십시오.");}
 			});
-		trade = 1;
-		});
-		let okmessage = mnickname + "님이 거래를 수락하셨습니다.";
-		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-			type : 'TRADEOK',
-			roomId : roomId,
-			sender : sender,
-			mnickname : mnickname,
-			message : okmessage
-		}));
-		let inputElement = $(".form-control");
+			});
+			trade = 1;
+			let okmessage = sender + "님이 거래를 수락하셨습니다.";
+			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+				type: 'TRADEOK',
+				roomId: roomId,
+				sender: sender,
+				message: okmessage
+			}));
+			let inputElement = $(".form-control");
 
-		// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
-		inputElement.attr("placeholder", "거래금액을 입력해주세요");
-
-		$(".tradeno").click(function() { //거래취소 눌렀을 때 실행할 함수입니다.
-			trade = 2;
+		    // 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
+		    inputElement.attr("placeholder", "거래금액을 입력해주세요");
+		
+		$(".tradeno").click(function(){ //거래취소 눌렀을 때 실행할 함수입니다.
+			trade = 2; 
 			let nomessage = sender + "님이 거래를 취소하셨습니다.";
 			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-				type : 'TRADENO',
-				roomId : roomId,
-				sender : sender,
-				mnickname : mnickname,
-				message : nomessage
+				type: 'TRADENO',
+				roomId: roomId,
+				sender: sender,
+				message: nomessage
 			}));
 		});
 	});
@@ -120,7 +111,7 @@
 	function sendMessage() { //메시지 보내는 곳입니다.
 		let messageInput = document.getElementById('message');
 		let message = messageInput.value;
-
+		
 		if (message === "") { // 공백을 제거하지 않음
 			return;
 		}
@@ -128,46 +119,43 @@
 		/* console.log(message)
 		console.log(sender)
 		console.log(roomId) 셋 다 들어오는거 확인했습니다. */
-		if (trade == 0) {
-			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-				type : 'TALK',
-				roomId : roomId,
-				sender : sender,
-				mnickname : mnickname,
-				message : message
-			}));
-			messageInput.value = '';
-		} else if (trade == 1) {
+		if(trade == 0){
+		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+			type : 'TALK',
+			roomId : roomId,
+			sender : sender,
+			message : message
+		}));
+		messageInput.value = '';
+		} else if(trade == 1) {
 			if (!isNaN(message)) {
-				// ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
-				ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-					type : 'PAYMENT',
-					roomId : roomId,
-					sender : sender,
-					mnickname : mnickname,
-					message : message
-				// 숫자로 변환한 값을 전송합니다.
-				}));
-				trade = 0;
-				messageInput.value = '';
-				let inputElement = $(".form-control");
+			    // ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
+			    ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+			        type: 'PAYMENT',
+			        roomId: roomId,
+			        sender: sender,
+			        message: message  // 숫자로 변환한 값을 전송합니다.
+			    }));
+			    trade = 0;
+			    messageInput.value = '';
+			    let inputElement = $(".form-control");
 
-				// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
-				inputElement.attr("placeholder", "");
+			    // 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
+			    inputElement.attr("placeholder", "");
 			} else {
-				// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
-				alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
+			    // 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
+			    alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
 			}
-
+			
 		}
 	}
 
 	function recvMessage(recv) { //메시지 수신해서 출력하는 곳입니다.
 		var messagesList = document.getElementById("messages");
-		var listItem = document.createElement("div");
+		var listItem = document.createElement("li");
 		listItem.className = "list-group-item";
-		listItem.textContent = recv.mnickname + " - " + recv.message;
-		messagesList.insertBefore(listItem, messagesList.lastChild);
+		listItem.textContent = recv.sender + " - " + recv.message;
+		messagesList.insertBefore(listItem, messagesList.firstChild);
 	}
 
 	function startPing() {
@@ -176,13 +164,12 @@
 			type : 'INTERVAL',
 			roomId : roomId,
 			sender : sender,
-			mnickname : mnickname,
 			message : message
 		}));
 		setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
 	};
-</script>
-
+	</script>
+	
 
 </head>
 <body>
@@ -194,43 +181,28 @@
 			<div class="input-group-prepend">
 				<label class="input-group-text">내용</label>
 			</div>
-			<input type="text" class="form-control" id="message">
-			<!-- 메시지 입력하는 곳입니다. -->
+			<input type="text" class="form-control" id="message"> <!-- 메시지 입력하는 곳입니다. -->
 			<div class="input-group-append">
 				<button class="btn btn-primary" type="button"
 					onclick="sendMessage()">보내기</button>
 			</div>
-			<div>
-				<button class="tradeok" type="button">거래수락</button>
-			</div>
-			<div>
-				<button class="tradeno" type="button">거래취소</button>
-			</div>
+			<div><button class="tradeok" type="button">거래수락</button></div>
+			<div><button class="tradeno" type="button">거래취소</button></div>
 		</div>
-		<div class="recordchat">
-			<c:if test="${lastroomcheck eq 1 }">
-				<!-- 과거 대화목록 불러옵니다. -->
+		<div>
+			<c:if test="${lastroomcheck eq 1 }"> <!-- 과거 대화목록 불러옵니다. -->
 				<c:forEach items="${lastchatlist }" var="lastchat">
-					<c:choose>
-						<c:when test="${lastchat.chatnick eq mnickname }">
-							<div>${lastchat.chatnick }-
-								${lastchat.dcontent }</div>
-
-						</c:when>
-						<c:otherwise>
-							<div>${lastchat.dcontent }-
-								${lastchat.chatnick }</div>
-						</c:otherwise>
-					</c:choose>
-
+					<c:when test="${lastchat.chatnick eq mnickname }">
+						<li style="float:left">${lastchat.dcontent } - ${lastchat.chatnick }</li>
+					</c:when>
+					<c:otherwise>
+						<li style="float:right">${lastchat.dcontent } - ${lastchat.chatnick }</li>
+					</c:otherwise>
 				</c:forEach>
 			</c:if>
 		</div>
-		<div class="realtimechat">
-			<div class="list-group" id="messages">
-				<!-- 실시간 메시지 내용 나오는 곳입니다. -->
-			</div>
-		</div>
+		<ul class="list-group" id="messages"> <!-- 실시간 메시지 내용 나오는 곳입니다. -->
+		</ul>
 	</div>
 </body>
 </html>

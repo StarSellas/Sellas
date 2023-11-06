@@ -52,9 +52,24 @@ public class ChatRoomService {
 		return chatRoomDAO.lastChatList(map);
 	}
 
-	public Map<String, Object> searchChatRoom(Map<String, Object> map) {
+	public int searchChatRoom(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.searchChatRoom(map);
+	}
+
+	public String getOuuid(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getOuuid(map);
+	}
+
+	public List<Map<String, Object>> alarmList(String muuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.alarmList(muuid);
+	}
+
+	public int setCheckZero(String muuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.setCheckZero(muuid);
 	}
 	
 }

@@ -20,9 +20,9 @@
         var sock = new SockJS("/ws/chat");
         var ws = Stomp.over(sock);
         var roomId = '${roomId}';
-        var sender = '${oseller}';
+        var sender = '${mnickname}';
         let tno = '${tno}';
-		let mnickname = '${mnickname}';
+		let oseller = '${oseller}';
 		let emessage = '${econtent}';
 
         ws.connect({}, function (frame) {
@@ -38,7 +38,7 @@
             	}
                	
             });
-            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender, mnickname : mnickname, message: emessage}));
+            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'ENTER', roomId: roomId, sender: sender, message: emessage}));
         });
         
         function sendMessage() {
@@ -52,30 +52,22 @@
 			/* console.log(message)
 			console.log(sender)
 			console.log(roomId) 셋 다 들어오는거 확인했습니다. */ 
-            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'TALK', roomId: roomId, sender: sender, mnickname : mnickname, message: message}));
+            ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'TALK', roomId: roomId, sender: sender, message: message}));
             messageInput.value = '';
             startPing();
         }
 
         function recvMessage(recv) {
-        	if(recv.type == 'enter' || recv.type == 'out'){
-        		var messagesList = document.getElementById("messages");
-                var listItem = document.createElement("div");
-                listItem.className = "list-group-item";
-                listItem.textContent = recv.message;
-                messagesList.insertBefore(listItem, messagesList.lastChild);
-        	} else {
             var messagesList = document.getElementById("messages");
-            var listItem = document.createElement("div");
+            var listItem = document.createElement("li");
             listItem.className = "list-group-item";
-            listItem.textContent = recv.mnickname + " - " + recv.message;
-            messagesList.insertBefore(listItem, messagesList.lastChild);
-        	}
+            listItem.textContent = recv.sender + " - " + recv.message;
+            messagesList.insertBefore(listItem, messagesList.firstChild);
         }
         
         function startPing(){
         	let message = "INTERVAL";
-        	ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, mnickname : mnickname, message: message}));
+        	ws.send("/pub/ws/chat/message", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message}));
         	setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
         };
     </script>
@@ -99,19 +91,17 @@
         <div>
 			<c:if test="${lastroomcheck eq 1 }"> <!-- 과거 대화목록 불러옵니다. -->
 				<c:forEach items="${lastchatlist }" var="lastchat">
-				<c:choose>
 					<c:when test="${lastchat.chatnick eq mnickname }">
-						<div style="float:left">${lastchat.dcontent } - ${lastchat.chatnick }</div>
+						<li style="float:left">${lastchat.dcontent } - ${lastchat.chatnick }</li>
 					</c:when>
 					<c:otherwise>
-						<div style="float:right">${lastchat.dcontent } - ${lastchat.chatnick }</div>
+						<li style="float:right">${lastchat.dcontent } - ${lastchat.chatnick }</li>
 					</c:otherwise>
-					</c:choose>
 				</c:forEach>
 			</c:if>
 		</div>
-        <div class="list-group" id="messages">
-        </div>
+        <ul class="list-group" id="messages">
+        </ul>
         <div></div>
     </div>
 </body>

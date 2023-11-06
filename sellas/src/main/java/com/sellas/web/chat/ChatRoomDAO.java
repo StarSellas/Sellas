@@ -24,6 +24,12 @@ public interface ChatRoomDAO {
 
 	List<Map<String, Object>> lastChatList(Map<String, Object> map);
 
-	Map<String, Object> searchChatRoom(Map<String, Object> map);
+	int searchChatRoom(Map<String, Object> map);
+
+	String getOuuid(Map<String, Object> map);
+
+	List<Map<String, Object>> alarmList(String muuid);
+
+	int setCheckZero(String muuid);
 	
 }

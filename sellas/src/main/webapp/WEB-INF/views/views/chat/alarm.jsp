@@ -21,7 +21,7 @@
     <c:if test="${not empty alarmlist}">
         <c:forEach items="${alarmlist}" var="alarm">
         <ul>
-            <li class="alarmcontent">${alarm.dcontent}</li><!-- 얘를 클릭하면 채팅룸(roomalarm)으로 가고 밑에 ouuid를 가진 웹소켓 서버와 연결됩니다. -->
+            <li class="alarmcontent">${alarm.acontent}</li><!-- 얘를 클릭하면 채팅룸(roomalarm)으로 가고 밑에 ouuid를 가진 웹소켓 서버와 연결됩니다. -->
             <li class="alarmroomhidden">${alarm.ouuid }</li><!-- 얘는 안보여줍니다. -->
         </ul>
         </c:forEach>
@@ -86,7 +86,7 @@
         
         function recvMessage(recv) { //실시간으로 알람을 받아 화면에 보여주는 코드입니다.
             var realtimealarm = document.querySelector(".realtimealarm");
-            var listItem = document.createElement("div");
+            var listItem = document.createElement("li");
             listItem.className = "list-group-item";
             listItem.textContent = recv.message;
             realtimealarm.appendChild(listItem); 

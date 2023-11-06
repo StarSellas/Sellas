@@ -25,6 +25,7 @@
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="./js/jquery-3.7.0.min.js"></script>
+
 </head>
 <body>
 	<!-- Navigation-->
@@ -42,82 +43,25 @@
 	<header> </header>
 	<!-- Section-->
 	<section class="py-5">
-		<script type="text/javascript">
-		function resizeImage(input, maxWidth, maxHeight, callback) {
-		    if (input.files && input.files[0]) {
-		        var reader = new FileReader();
-
-		        reader.onload = function (e) {
-		            var image = new Image();
-		            image.src = e.target.result;
-
-		            image.onload = function () {
-		                var width = image.width;
-		                var height = image.height;
-
-		                if (width > maxWidth || height > maxHeight) {
-		                    var ratio = Math.min(maxWidth / width, maxHeight / height);
-		                    width *= ratio;
-		                    height *= ratio;
-		                }
-
-		                var canvas = document.createElement("canvas");
-		                canvas.width = width;
-		                canvas.height = height;
-		                var ctx = canvas.getContext("2d");
-		                ctx.drawImage(image, 0, 0, width, height);
-
-		                var resizedDataUrl = canvas.toDataURL("image/jpeg");
-		                callback(resizedDataUrl);
-		            };
-		        };
-
-		        reader.readAsDataURL(input.files[0]);
-		    }
-		}
-
-		</script>
-
-
 
 		<div class="container px-4 px-lg-5 mt-5 tradecontainter"
 			style="z-index: 10" id="productContainer">
 			<div
 				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-				<form action="./normalEdit" method="post"
+				<form action="./normalWirte" method="post"
 					enctype="multipart/form-data">
-					<input type="hidden" value="${detail.tno }" name="tno">
 					<input type="hidden" value="${muuid }" name="muuid"> <input
-						type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
-					<br>카테고리
-					 <select name="category" >
+						type="text" placeholder="제목을 입력해주세요" name="ttitle" id="ttitle" maxlength="30"><br>
+					<br> 이 사이에 카테고리 설정해야징 <select name="category">
 						<c:forEach items="${categoryList }" var="i">
-							<option value="${i.ino }" >${i.iname }</option>
+							<option value="${i.ino }">${i.iname }</option>
 						</c:forEach>
-					</select> <br><br><br>
-					내용
+					</select> <br> <br> <br>
 					<div>
-						<textarea placeholder="내용을 입력해주세요." name="tcontent" id="tcontent" >${detail.tcontent }</textarea>
+						<textarea placeholder="내용을 입력해주세요." name="tcontent" id="tcontent"></textarea>
 					</div>
-					<br> <br> 가격 : <input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">원
-
-
-					<br>
-					
-					
-					
-					<c:if test="${normalDetailImage ne null }">
-					현재 사진입니다.
-					<c:forEach items="${normalDetailImage }" var="i" varStatus="loop">
-					<div  class="image-container">
-					<img alt="" src="./tradeImgUpload/${i.timage }" width="200px" height="200px" class="normalTradeImg"><br>
-					<button type="button" class="normalTradeChangeBtn" data-image-name="${i.timage}">사진 변경하기</button>
-					<input type="hidden" name="selectedImage${loop.index}" value="" id="selectedImageInput">
-					<input type="file" style="display: none;" >
-					</div>
-					</c:forEach>
-					</c:if>
-					<br>
+					<br> <br> 가격 : <input type="number" name="tnormalprice"
+						id="tnormalprice">원 <br>
 					<button id="addPhotoButton" type="button">사진 추가하기</button>
 					<br> 최대 3장
 					<div id="photoInputs">
@@ -125,13 +69,11 @@
 					</div>
 					<br> <br> <br> <br> <br> <br>
 
-					<button type="submit" id="normalEditBtn">수정하기</button>
-					<input type="button" onclick="location.href='./normalDetail?tno=${detail.tno}'" value="취소"/>
+					<button type="submit" id="normalWriteBtn">글쓰깅</button>
+					<button type="button" onclick="location.href='./'">취소</button>
 				</form>
 
-
-
-
+				제이쿼리를 사용해서 유효성을 검사하고 카테고리 값도 ino로 바꾼 후 잘못된 값이 없으면 서브밋하게 만들어야지
 
 			</div>
 		</div>
@@ -142,11 +84,11 @@
 		<div class="container">
 			<ul class="menubar">
 				<li onclick="location.href='./'"><i class="xi-home xi-2x"></i>
-				<div id="menu">홈</div></li>
+					<div id="menu">홈</div></li>
 				<li><i class="xi-message xi-2x"></i>
-				<div id="menu">채팅</div></li>
+					<div id="menu">채팅</div></li>
 				<li><i class="xi-profile xi-2x"></i>
-				<div id="menu">마이페이지</div></li>
+					<div id="menu">마이페이지</div></li>
 			</ul>
 		</div>
 	</footer>
@@ -155,26 +97,46 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="js/scripts.js"></script>
+
 	<script type="text/javascript">
         
-	 $(function () {
-	        $(".normalTradeChangeBtn").click(function () {
-	            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
-	            var container = $(this).closest(".image-container");
-	            container.find("input[type=hidden]").val(imageName); // hidden input의 값을 설정
-	        });
-	    });
-	
-	
-	
-       
+        function resizeImage(input, maxWidth, maxHeight, callback) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var image = new Image();
+                    image.src = e.target.result;
+
+                    image.onload = function () {
+                        var width = image.width;
+                        var height = image.height;
+
+                        if (width > maxWidth || height > maxHeight) {
+                            var ratio = Math.min(maxWidth / width, maxHeight / height);
+                            width *= ratio;
+                            height *= ratio;
+                        }
+
+                        var canvas = document.createElement("canvas");
+                        canvas.width = width;
+                        canvas.height = height;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(image, 0, 0, width, height);
+
+                        var resizedDataUrl = canvas.toDataURL("image/jpeg");
+                        callback(resizedDataUrl);
+                    };
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         
         $(function () {
-        	
-        		var editPhotoSize =${normalDetailCount};
-        	
             var maxPhotos = 3;
-            var nextPhotoId = 1+editPhotoSize;
+            var nextPhotoId = 1;
 
             $("#addPhotoButton").click(function () {
                 if (nextPhotoId <= maxPhotos) {
@@ -195,37 +157,10 @@
                     nextPhotoId++;
                 } else {
                     alert("더 이상 사진을 추가할 수 없습니다.");
-                    $("#addPhotoButton").hide();
                 }
             });
         });
 
-        $(".normalTradeChangeBtn").click(function () {
-            // 해당 버튼와 상위 div 요소 선택
-            var container = $(this).closest(".image-container");
-
-            // 이미지 미리보기를 만들고 이미지 경로 설정
-            var preview = $("<img class='imagePreview'>");
-            preview.attr("src", container.find(".normalTradeImg").attr("src"));
-
-            // 파일 업로드 입력 만들기
-            var fileInput = $("<input type='file' class='fileInput' name='tradeimg'>");
-
-            // 이미지와 파일 업로드 입력을 동적으로 추가
-            container.append(preview);
-            container.append(fileInput);
-
-            // 이미지 숨기기, 수정 버튼 숨기기
-            container.find(".normalTradeImg").hide();
-            $(this).hide();
-            // 이미지 선택하면 크기를 조정하여 미리보기 업데이트
-            fileInput.change(function () {
-                resizeImage(this, 200, 200, function (resizedDataUrl) {
-                    preview.attr("src", resizedDataUrl);
-                });
-            });
-        });
-        
         
         //유효성 검사를 시작해볼까...
 		$(function(){
@@ -246,7 +181,7 @@
 			
 			
 			
-			$("#normalEditBtn").click(function(){
+			$("#normalWriteBtn").click(function(){
 				
 				//제목 안 썼을 때
 				let ttitle = $("#ttitle").val();
@@ -287,7 +222,15 @@
 			});
 		});
 
+
+
+
+        
+        
+        
+        
      
         </script>
+
 </body>
 </html>

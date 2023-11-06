@@ -3,7 +3,7 @@
 <mapper namespace="com.sellas.web.chat.ChatRoomDAO">
 	
 	<insert id="room" parameterType="Map">
-		insert into onlinechat (ouuid, tno, oseller, obuyer) values (#{roomId}, #{tno}, #{oseller}, #{obuyer})
+		insert into onlinechat (ouuid, tno, oseller, obuyer) values (#{ouuid}, #{tno}, #{oseller}, #{obuyer})
 	</insert>
 	
 	<insert id="alarmIn" parameterType="Map">
@@ -26,12 +26,26 @@
 		select mnickname from member where muuid = #{me}
 	</select>
 	
-	<select id="lastChatList" parameterType="Map" resultType="String">
-		select dno, (select mnickname from member where muuid = #{muuid}) as chatnick, dcontent, dtype, ddate from dialogue where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}, ouuid = #{ouuid} order by dno asc
+	<select id="lastChatList" parameterType="Map" resultType="Map">
+		select (select mnickname from member where muuid = #{me}) as chatnick, dcontent, dtype, ddate 
+		from dialogue where ouuid = #{roomId} and dtype IN ('ENTER', 'TALK', 'OUT', 'PAYMENT', 'TRADEOK', 'TRADENO')
+		order by dno asc
 	</select>
 	
-	<select id="searchChatRoom" parameterType="Map" resultType="Map">
-		select count(*) as count, ouuid onlinechat where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}
+	<select id="searchChatRoom" parameterType="Map" resultType="Integer">
+		select count(ouuid) from onlinechat where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}
 	</select>
+	
+	<select id="getOuuid" parameterType="Map" resultType="String">
+		select ouuid from onlinechat where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}
+	</select>
+	
+	<select id="alarmList" parameterType="String" resultType="Map">
+		select ouuid, dcontent from dialogue where muuid = #{muuid} and dcheck = 1 order by dno asc
+	</select>
+	
+	<update id="setCheckZero" parameterType="String">
+		update dialogue set dcheck = 0 where muuid = #{muuid} and dcheck = 1
+	</update>
 	
 </mapper>
