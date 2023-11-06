@@ -368,15 +368,101 @@ public class BoardController {
 	}
 	
 	
-	// 카테고리 테스트
-	@GetMapping("test")
-	public String boardTest(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
-		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
-		//List<Map<String, Object>> boardList = boardService.boardList(cate);
-		//model.addAttribute("list", boardList);
-		model.addAttribute("board", setupboardList);
+	
+	
+	/*****************  테스트용 *****************/
+	
+	// 글쓰기 페이지
+	@GetMapping("/boardWriteForTest")
+	public String boardWriteForTest(@RequestParam(value = "cate", required = false, defaultValue = "1") int cate, Model model) {
 		
-		return "test";
+		if(!util.checkLogin()) {
+			return "redirect/login";
+		}
+		
+		List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
+		model.addAttribute("board", setupboardList);
+
+		return "boardWriteForTest";
+	}
+	
+	// 글쓰기 로직
+	@PostMapping("/boardWriteForTest")
+	public String boardWriteForTest(@RequestParam (value="boardimg", required = false) List<MultipartFile> boardimgList, 
+							@RequestParam Map<String, Object> map) {
+		
+		int imgResultCount = 0;
+		System.out.println(map);
+		int writeResult = boardService.boardWrite(map);
+		System.out.println("null일텐데? : " + boardimgList);
+		//{btitle=나눔에 글을 쓰려는데, bcontent=이게 , cate=2, sname=나눔}
+		//System.out.println(boardimgList);
+		//[org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@72ec8d18]
+		if(writeResult == 1) {
+			System.out.println("bno :" + map.get("bno"));
+			// 파일이 있다면 업로드
+			if(boardimgList != null && !boardimgList.isEmpty()) {
+				
+				for (int i = 0; i < boardimgList.size(); i++) {
+				
+					HttpServletRequest request = 
+							((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+					String path = request.getServletContext().getRealPath("/boardImgUpload");
+					//System.out.println("경로: "+ path);	//경로: C:\Users\gogus\git\sellas\src\main\webapp\boardImgUpload
+					
+					//System.out.println(boardimgList.get(i).getOriginalFilename()); 	//resource-28.jpg
+					//System.out.println(boardimgList.get(i).getSize());				//81618
+					//System.out.println(boardimgList.get(i).getContentType());   		// image/jpeg
+					
+					LocalDateTime ldt = LocalDateTime.now();
+					String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
+					String realFileName = format + "num" + i + boardimgList.get(i).getOriginalFilename();
+					
+					
+					// 확장자 자르기
+					String[] parts = boardimgList.get(i).getOriginalFilename().split("\\.");
+					String lastPart = parts[parts.length - 1];
+					System.out.println(lastPart);
+
+					// 확장자 아니면 파일 없애보리기
+					if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
+							|| lastPart.equals("bmp") || lastPart.equals("gif") || lastPart.equals("jpe"))) {
+						continue;
+					}
+
+					File boardimgName = new File(path, realFileName);
+					System.out.println(boardimgName);
+					
+					try {
+						FileCopyUtils.copy(boardimgList.get(i).getBytes(), boardimgName);
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+					map.put("bimage", realFileName);
+					System.out.println("map " + (i+1) + "번째 : " +  map);
+					int imgResult = boardService.boardImage(map);
+					System.out.println("imgResult "+ (i+1) + " 번째 : " + imgResult);
+					
+					if (imgResult == 1 && i == 0) {
+						System.out.println("이걸넣을건데 :" + map.get("bimage"));
+						int result = boardService.setThumbnail(map);
+						System.out.println("제발요: "+ result);
+					}
+					
+					imgResultCount += imgResult;
+					
+				} // for문
+					System.out.println("업로드완"+ imgResultCount);
+			} // if(!boardimg.isEmpty()
+			
+			return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
+			
+		}	// if(writeResult == 1) 
+			System.out.println("글쓰기&파일업로드 실패");
+			return "redirect:/boardDetail?cate=" + map.get("cate");
 	}
 	
 	

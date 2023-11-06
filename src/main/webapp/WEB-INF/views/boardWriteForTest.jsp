@@ -24,12 +24,13 @@
         
          <!-- ******************* 모피어스 *********************** -->
 		<script src="./js/wnInterface.js"></script> 
-	<script src="./js/mcore.min.js"></script> 
-	<script src="./js/mcore.extends.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script> 
 
 
 
 <script type="text/javascript">
+
         	$(function(){
         		
         		// 게시판 카테고리 클릭
@@ -163,9 +164,10 @@
 			</div>
             </div>
         </section>
+        
 	<script>
 
-  (function () {
+  $(function () {
 
     $.imagePicker = function () {
       return new Promise((resolve) => {
@@ -176,10 +178,10 @@
           column: 3,
           callback: (status, result) => {
             resolve({ status, result })
-          }
+          },
         });
-      })
-    }
+      });
+    };
 
     $.convertBase64ByPath = function (imagePath) {
       if (typeof imagePath !== 'string') throw new Error('imagePath must be string')
@@ -189,11 +191,11 @@
           encoding: 'BASE64',
           indicator: true,
           callback: function (status, result) {
-            resolve({ status, result })
-          }
+            resolve({ status, result });
+          },
         });
-      })
-    }
+      });
+    };
 
     $.uploadImageByPath = function (targetImgPath, progress) {
       return new Promise((resolve) => {
@@ -211,13 +213,13 @@
           },
           progress: function (total, current) {
             progress(total, current);
-          }
-        }
+          },
+        };
         M.net.http.upload(_options);
-      })
-    }
+      });
+    };
 
-  })();
+  });
 
 
   $(function () {

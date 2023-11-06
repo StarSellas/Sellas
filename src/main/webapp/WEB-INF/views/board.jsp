@@ -99,7 +99,7 @@
                         	        	
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
-                        	        		let newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
+                        	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
 	                    	                    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>"
 	                    	                    + "</td>"
 	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
@@ -126,7 +126,7 @@
                         	        
                         	    } // if(data != null)
                         	    
-                        	},
+                        	}, // success
                           
                           error: function(error) {
                               //alert("에러남");
@@ -188,7 +188,7 @@
             
             <div class="writeBtnBox">
             	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
-               		<button class="writeBtn" onclick="location.href='/boardWrite?cate=${param.cate}'">글쓰기</button>
+               		<button class="writeBtn" onclick="location.href='/boardWriteForTest?cate=${param.cate}'">글쓰기</button>
                	</c:if>
             </div>
             
