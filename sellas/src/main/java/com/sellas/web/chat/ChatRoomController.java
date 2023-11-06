@@ -22,51 +22,23 @@ import retrofit2.http.POST;
 @RequestMapping("/chat")
 public class ChatRoomController {
 
-//    private final ChatRoomRepository chatRoomRepository;
 
 	@Autowired
 	private ChatRoomService chatRoomService;
 
-	// 채팅 리스트 화면
-
-//    @GetMapping("/room")
-//    public String rooms() {
-//
-//        return "/chat/room";
-//
-//    }
-
-	// 모든 채팅방 목록 반환
-
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoom> room() {
-//
-//        return chatRoomRepository.findAllRoom();
-//
-//    }
-
-	// 채팅방 생성
-
-//    @PostMapping("/room")
-//    @ResponseBody
-//    public ChatRoom createRoom(@RequestParam String name) {
-//
-//        return chatRoomRepository.createChatRoom(name);
-//
-//    }
-
 	// 채팅방 입장 화면
+	// 알람을 보내는 웹소켓 서버와 일반 대화용 웹소켓 서버가 달라서 알람용 페이지를 하나 더 만들었습니다.
+	// 웹소켓 서버가 한 jsp페이지에 2개를 실행시키는게 저는 실패해서 이렇게 했습니다.
 	@PostMapping("/onlyalarm")
 	public String onlyAlarm(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
-		if (session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
-			String uuid = String.valueOf(UUID.randomUUID());
+		if (session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) { //로그인 여부 검사합니다.
+			String uuid = String.valueOf(UUID.randomUUID()); //채팅방용 uuid를 이곳에서 생성합니다.
 			String tno = String.valueOf(map.get("tno"));
 			String obuyer = String.valueOf(map.get("obuyer"));
-			String oseller = String.valueOf(map.get("oseller"));
+			String oseller = String.valueOf(map.get("oseller")); //이게 알람용 웹소켓 서버의 마지막 주소입니다.
 			String tnoname = chatRoomService.tnoName(tno);
 			String obuyername = chatRoomService.obuyerName(obuyer);
-			String acontent = obuyername + "님이 " + tnoname + "에 대한 채팅 신청을 하였습니다.";
+			String acontent = obuyername + "님이 " + tnoname + "에 대한 채팅 신청을 하였습니다."; //oseller에게 보낼 메시지입니다.
 			model.addAttribute("tno", tno);
 			model.addAttribute("obuyer", obuyer);
 			model.addAttribute("oseller", oseller);
@@ -77,32 +49,31 @@ public class ChatRoomController {
 		}
 		return "/login";
 	}
-
+	
+	//일반 채팅용 서버와 페이지로 가는 메소드입니다.
 	@PostMapping("/requestChat")
 	public String requestChat(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
 
-		System.out.println("채팅으로 받아오는 값입니다 : " + map);
+		//System.out.println("채팅으로 받아오는 값입니다 : " + map);
 		// System.out.println("세션에서 받아오는 muuid 값입니다 : " +
 		// session.getAttribute("muuid"));
 
 		// System.out.println("채팅방 uuid 의 값입니다 : " + uuid);
-		if (session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+		if (session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) { //로그인 여부를 검사합니다.
 
 			
 
-			String me = (String) session.getAttribute("muuid");
+			String me = (String) session.getAttribute("muuid"); //obuyer의 uuid를 세션에서 받아옵니다.
 
 			String obuyer = chatRoomService.obuyer(me);
 
+			String mnickname = chatRoomService.mNickName(me); //obuyer의 닉네임을 받아옵니다.
 
-			String mnickname = chatRoomService.mNickName(me);
+			String econtent = mnickname + "님이 입장하셨습니다."; //입장 메시지입니다.
 
-			String econtent = mnickname + "님이 입장하셨습니다.";
+			int insertresult = chatRoomService.room(map); //같은 uuid를 가진 채팅방이 있는지 검사하고, 있으면 0, 없으면 1을 리턴합니다.
 
-
-			int insertresult = chatRoomService.room(map);
-
-			if (insertresult == 1) {
+			if (insertresult == 1) { //같은 uuid를 가진 채팅방이 없으므로 모델로 채팅방에 필요한 정보들을 전달합니다.
 
 				model.addAttribute("tno", map.get("tno"));
 				model.addAttribute("roomId", map.get("roomId"));
@@ -113,11 +84,11 @@ public class ChatRoomController {
 
 				return "/chat/roomdetail";
 
-			} else {
+			} else { //같은 uuid를 가진 채팅방이 있어서 uuid를 삭제하고, 재생성한 후 다시 검사하고, 없으면 보냅니다.
 
 				map.remove("ouuid");
 
-				while (insertresult == 0) {
+				while (insertresult == 0) { //insertresult가 1이면 탈출합니다.
 
 					String uuid = String.valueOf(UUID.randomUUID());
 
@@ -145,7 +116,9 @@ public class ChatRoomController {
 		return "/login";
 
 	}
-
+	
+	//판매자(oseller)가 접속할 roomalarm.jsp에 접속하는 메소드입니다.
+	//판매자는 구매자에게 알람을 보내지 않아서 alarm은 없습니다.
 	@PostMapping("/alarmChat")
 	public String alarmChat(@RequestParam Map<String, Object> roommap, Model model) {
 		// System.out.println("룸 아이디는 " + roomId); 오는거 확인했어요.
@@ -171,14 +144,5 @@ public class ChatRoomController {
 		return "/chat/roomalarm";
 	}
 
-	// 특정 채팅방 조회
-
-//    @GetMapping("/room/{roomId}")
-//    @ResponseBody
-//    public ChatRoom roomInfo(@PathVariable String roomId) {
-//
-//        return chatRoomRepository.findRoomById(roomId);
-//
-//    }
 
 }

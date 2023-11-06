@@ -52,7 +52,7 @@ public class NormalController {
 		// System.out.println(tradeBoardList);
 		model.addAttribute("normalBoardList", normalBoardList);
 		
-		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) { //로그인 여부를 검사하고 온 알람이 몇 개인지 main.jsp에 보냅니다.
 			//System.out.println("muuid:" + muuid);
 			int alarmcount = normalService.alarmCount(muuid);
 			alarmmodel.addAttribute("alarmcount", alarmcount);
@@ -423,6 +423,7 @@ public class NormalController {
 		
 	}
 	
+	//구매자의 소지 금액과 물품 가격을 비교해서 리턴하는 메소드입니다.
 	@PostMapping("/compareamounts")
 	@ResponseBody
 	public String compareAmounts(@RequestParam(name ="tno") String tno, @RequestParam(name ="obuyer") String obuyer) {

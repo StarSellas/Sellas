@@ -21,8 +21,8 @@
     <c:if test="${not empty alarmlist}">
         <c:forEach items="${alarmlist}" var="alarm">
         <ul>
-            <li class="alarmcontent">${alarm.acontent}</li>
-            <li class="alarmroomhidden">${alarm.ouuid }</li>
+            <li class="alarmcontent">${alarm.acontent}</li><!-- 얘를 클릭하면 채팅룸(roomalarm)으로 가고 밑에 ouuid를 가진 웹소켓 서버와 연결됩니다. -->
+            <li class="alarmroomhidden">${alarm.ouuid }</li><!-- 얘는 안보여줍니다. -->
         </ul>
         </c:forEach>
         </c:if>
@@ -31,7 +31,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script type="text/javascript">
     $(function(){
-    	$.ajax({
+    	$.ajax({ //acheck를 1에서 0으로 수정하는 ajax입니다.
     		url: '/chat/alarmcheck',
     		type: 'post',
     		success : function(data){
@@ -42,19 +42,19 @@
     		}
     	});
     });
-    $(document).ready(function() {
+    $(document).ready(function() { //ouuid(채팅룸uuid)를 가리는 코드입니다.
         $(document).on('DOMNodeInserted', function() {
             $(".alarmroomhidden").hide();
         });
     });
     
-    $(function(){
+    $(function(){ //roomalarm.jsp로 보내는 가상폼입니다.
     	$(".alarmcontent").click(function(){
     		var roomId = $(this).nextAll(".alarmroomhidden").text();
 
             // roomId를 사용하여 필요한 작업 수행
             console.log("Clicked on roomId: " + roomId);
-    		let form = document.createElement("form"); //좌석수 빼는 폼
+    		let form = document.createElement("form"); 
             form.setAttribute("action", "/chat/alarmChat");
             form.setAttribute("method", "post");
             
@@ -64,25 +64,38 @@
             ouuidInput.setAttribute("value", roomId); 
             form.appendChild(ouuidInput);
             
-            document.body.appendChild(form); //좌석 빼줌
+            document.body.appendChild(form); 
            	form.submit(); 
     	});
     });
-        var sock = new SockJS("/ws/chat");
+        var sock = new SockJS("/ws/chat"); //실시간으로 알람을 받기위한 웹소켓 연결 코드입니다.
         var ws = Stomp.over(sock);
         let muuid = "${sessionScope.muuid}"
-        function recvMessage(recv) {
+        
+            ws.connect({}, function(frame) { //웹소켓 연결 코드입니다.
+                ws.subscribe("/sub0/ws/chat/user/" + muuid, function(message) {
+                    var recv = JSON.parse(message.body);
+                    if (recv.type == 'ALARM') { //알람만 받기위해서 온 메시지들을 거르는 코드입니다.
+                        recvMessage(recv);
+                    } else {
+                        return false;
+                    }
+                    startPing(); //웹소켓 연결이 끊기지 않게 30초에 한번씩 자동으로 메시지를 보내는 메소드입니다.
+                });
+            }); 
+        
+        function recvMessage(recv) { //실시간으로 알람을 받아 화면에 보여주는 코드입니다.
             var realtimealarm = document.querySelector(".realtimealarm");
             var listItem = document.createElement("li");
             listItem.className = "list-group-item";
             listItem.textContent = recv.message;
-            realtimealarm.appendChild(listItem); // Add the new alarm at the bottom
+            realtimealarm.appendChild(listItem); 
         } 
         
        $(function(){
-        	$(".list-group-item").click(function(){
+        	$(".list-group-item").click(function(){ //위에서 연결한 웹소켓으로 온 실시간 알람을 클릭하면 판매자 채팅룸(roomalarm.jsp)으로 이동하는 코드입니다.
         		var roomId = $(this).nextAll(".alarmroomhidden").text();
-        		var form = document.createElement("form"); //좌석수 빼는 폼
+        		var form = document.createElement("form"); 
                 form.setAttribute("action", "/chat/alarmChat");
                 form.setAttribute("method", "post");
                 
@@ -92,21 +105,9 @@
                 ouuidInput.setAttribute("value", roomId); 
                 form.appendChild(ouuidInput);
                 
-                document.body.appendChild(form); //좌석 빼줌
+                document.body.appendChild(form); 
                	form.submit();
         	});
-        }); 
-
-        ws.connect({}, function(frame) {
-            ws.subscribe("/sub0/ws/chat/user/" + muuid, function(message) {
-                var recv = JSON.parse(message.body);
-                if (recv.type == 'ALARM') {
-                    recvMessage(recv);
-                } else {
-                    return false;
-                }
-                startPing();
-            });
         }); 
         
         function startPing(){

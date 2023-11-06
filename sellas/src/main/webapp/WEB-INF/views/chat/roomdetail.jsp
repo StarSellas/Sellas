@@ -39,20 +39,20 @@
 	let ws = Stomp.over(sock);
 	let trade = 0;
 	
-	ws.connect({}, function(frame) {
+	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
-		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) {
+		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
 			console.log(message);
 			var recv = JSON.parse(message.body);
 			//console.log("recv" + recv); 정상적으로 들어옵니다.
-			if (recv.type != 'ALARM' && recv.type != 'INTERVAL') {
+			if (recv.type != 'ALARM' && recv.type != 'INTERVAL') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
 				recvMessage(recv);
 			} else {
 				return false;
 			}
 
 		});
-		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+		ws.send("/pub/ws/chat/message", {}, JSON.stringify({ //채팅방에 들어오면 가장먼저 보내는 메시지입니다.
 			type : 'ENTER',
 			roomId : roomId,
 			sender : sender,
@@ -104,7 +104,7 @@
 		});
 	});
 	
-	function sendMessage() {
+	function sendMessage() { //메시지 보내는 곳입니다.
 		let messageInput = document.getElementById('message');
 		let message = messageInput.value;
 		
@@ -146,7 +146,7 @@
 		}
 	}
 
-	function recvMessage(recv) {
+	function recvMessage(recv) { //메시지 수신해서 출력하는 곳입니다.
 		var messagesList = document.getElementById("messages");
 		var listItem = document.createElement("li");
 		listItem.className = "list-group-item";
@@ -177,7 +177,7 @@
 			<div class="input-group-prepend">
 				<label class="input-group-text">내용</label>
 			</div>
-			<input type="text" class="form-control" id="message">
+			<input type="text" class="form-control" id="message"> <!-- 메시지 입력하는 곳입니다. -->
 			<div class="input-group-append">
 				<button class="btn btn-primary" type="button"
 					onclick="sendMessage()">보내기</button>
@@ -185,7 +185,7 @@
 			<div><button class="tradeok" type="button">거래수락</button></div>
 			<div><button class="tradeno" type="button">거래취소</button></div>
 		</div>
-		<ul class="list-group" id="messages">
+		<ul class="list-group" id="messages"> <!-- 메시지 내용나오는 곳입니다. -->
 		</ul>
 		<div></div>
 	</div>
