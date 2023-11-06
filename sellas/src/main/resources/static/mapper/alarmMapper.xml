@@ -3,7 +3,7 @@
 <mapper namespace="com.sellas.web.alarm.AlarmDAO">
 
 	<select id="alarmList" parameterType="String" resultType="Map">
-		select ouuid, acontent from alarm where oseller = #{muuid} and acheck = 1 order by atime desc
+		select ouuid, acontent from alarm where oseller = #{muuid} and acheck = 1 order by ano asc
 	</select>
 	
 	<update id="setCheckZero" parameterType="String">

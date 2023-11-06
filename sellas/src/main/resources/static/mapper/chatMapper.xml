@@ -10,10 +10,6 @@
 		insert into alarm (ouuid, acontent, oseller, acheck) values(#{roomId}, #{acontent}, #{oseller}, 1)
 	</insert>
 	
-	<select id="obuyer" parameterType="Map" resultType="String">
-		select mnickname from member where muuid = #{me}
-	</select>
-	
 	<select id="tnoName" parameterType="Map" resultType="String">
 		select ttitle from trade where tno = #{tno}
 	</select>
@@ -28,6 +24,14 @@
 	
 	<select id="obuyerName" parameterType="String" resultType="String">
 		select mnickname from member where muuid = #{me}
+	</select>
+	
+	<select id="lastChatList" parameterType="Map" resultType="String">
+		select dno, (select mnickname from member where muuid = #{muuid}) as chatnick, dcontent, dtype, ddate from dialogue where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}, ouuid = #{ouuid} order by dno asc
+	</select>
+	
+	<select id="searchChatRoom" parameterType="Map" resultType="Map">
+		select count(*) as count, ouuid onlinechat where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}
 	</select>
 	
 </mapper>

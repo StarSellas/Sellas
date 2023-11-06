@@ -14,6 +14,7 @@
 <body>
 	<script>
 		let sock = new SockJS("/ws/chat");
+		let lastroomcheck = '${lastroomcheck}';
 		let oseller = '${oseller}';
 		let obuyer = '${obuyer}';
 		let tno = '${tno}';
@@ -36,22 +37,6 @@
 				}));
 				ws0.disconnect();
 			});
-			/* setTimeout(function() {
-				$.ajax({
-					url : '/chat/requestChat',
-					type : 'get',
-					contentType: 'application/json',
-					data : JSON.stringify({
-				        tno: tno,
-				        obuyer: obuyer,
-				        oseller: oseller
-				    }),
-					success : function(data) {
-					},
-					error : function(error) {
-					}
-				}); 
-			}, 500);*/
 			$(function() {
 			let form = document.createElement("form"); 
 			form.setAttribute("action", "/chat/requestChat");
@@ -80,6 +65,12 @@
 			ouuidInput.setAttribute("name", "roomId");
 			ouuidInput.setAttribute("value", ouuid);
 			form.appendChild(ouuidInput);
+			
+			let lastrommcheckInput = document.createElement("input");
+			lastrommcheckInput.setAttribute("type", "hidden");
+			lastrommcheckInput.setAttribute("name", "lastroomcheck");
+			lastrommcheckInput.setAttribute("value", lastroomcheck);
+			form.appendChild(lastroomcheckInput);
 			
 			document.body.appendChild(form); //좌석 빼줌
 			form.submit(); 

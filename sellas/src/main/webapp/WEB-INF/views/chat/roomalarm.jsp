@@ -88,6 +88,18 @@
             <div><button class="tradeok" type="button">거래수락</button></div>
 			<div><button class="tradeno" type="button">거래취소</button></div>
         </div>
+        <div>
+			<c:if test="${lastroomcheck eq 1 }"> <!-- 과거 대화목록 불러옵니다. -->
+				<c:forEach items="${lastchatlist }" var="lastchat">
+					<c:when test="${lastchat.chatnick eq mnickname }">
+						<li style="float:left">${lastchat.dcontent } - ${lastchat.chatnick }</li>
+					</c:when>
+					<c:otherwise test="${lastchat.chatnick ne mnickname }">
+						<li style="float:right">${lastchat.dcontent } - ${lastchat.chatnick }</li>
+					</c:otherwise>
+				</c:forEach>
+			</c:if>
+		</div>
         <ul class="list-group" id="messages">
         </ul>
         <div></div>

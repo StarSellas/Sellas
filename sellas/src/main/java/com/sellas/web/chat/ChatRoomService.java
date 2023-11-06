@@ -1,5 +1,6 @@
 package com.sellas.web.chat;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,6 @@ public class ChatRoomService {
 	public int alarmIn(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.alarmIn(map);
-	}
-
-	public String obuyer(Object object) {
-		// TODO Auto-generated method stub
-		return chatRoomDAO.obuyer(object);
 	}
 
 	public String tno(Map<String, Object> map) {
@@ -49,6 +45,16 @@ public class ChatRoomService {
 	public String obuyerName(String obuyer) {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.obuyerName(obuyer);
+	}
+
+	public List<Map<String, Object>> lastChatList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.lastChatList(map);
+	}
+
+	public Map<String, Object> searchChatRoom(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.searchChatRoom(map);
 	}
 	
 }

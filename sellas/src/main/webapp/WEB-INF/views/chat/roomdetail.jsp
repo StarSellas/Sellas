@@ -7,6 +7,10 @@
 6. ChatController에 TRADEOK, TRADENO, PAYMENT 타입의 메시지들 서버로 보내는 로직 짜기 ㅇ
 7. 구매자(obuyer)가 거래수락을 했을 때, 
  -->
+<!-- 
+1. lastroomcheck가 1이면 lastchatlist를 불러오고 0이면 안불러옵니다. c:if 사용합니다.
+2. 불러온 lastchatlist에는 dno(채팅순서), muuid로 member테이블에서 불러온 chatnick, dcontent, dtype, ddate가 있는데 그냥 dcontent, chatnick만 씁니다
+3. muuid안써요. requestChat에서 muuid로 mnickname을 chatnick이라는 이름으로 불러오고, 그거 씁니다. -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -185,10 +189,20 @@
 			<div><button class="tradeok" type="button">거래수락</button></div>
 			<div><button class="tradeno" type="button">거래취소</button></div>
 		</div>
-		<ul class="list-group" id="messages"> <!-- 메시지 내용나오는 곳입니다. -->
+		<div>
+			<c:if test="${lastroomcheck eq 1 }"> <!-- 과거 대화목록 불러옵니다. -->
+				<c:forEach items="${lastchatlist }" var="lastchat">
+					<c:when test="${lastchat.chatnick eq mnickname }">
+						<li style="float:left">${lastchat.dcontent } - ${lastchat.chatnick }</li>
+					</c:when>
+					<c:otherwise test="${lastchat.chatnick ne mnickname }">
+						<li style="float:right">${lastchat.dcontent } - ${lastchat.chatnick }</li>
+					</c:otherwise>
+				</c:forEach>
+			</c:if>
+		</div>
+		<ul class="list-group" id="messages"> <!-- 실시간 메시지 내용 나오는 곳입니다. -->
 		</ul>
-		<div></div>
 	</div>
-	
 </body>
 </html>

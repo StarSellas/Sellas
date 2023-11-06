@@ -1,5 +1,6 @@
 package com.sellas.web.chat;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -11,8 +12,6 @@ public interface ChatRoomDAO {
 
 	int alarmIn(Map<String, Object> map);
 
-	String obuyer(Object object);
-
 	String tno(Map<String, Object> map);
 
 	String mNickName(String uuid);
@@ -22,5 +21,9 @@ public interface ChatRoomDAO {
 	String tnoName(String tno);
 
 	String obuyerName(String obuyer);
+
+	List<Map<String, Object>> lastChatList(Map<String, Object> map);
+
+	Map<String, Object> searchChatRoom(Map<String, Object> map);
 	
 }
