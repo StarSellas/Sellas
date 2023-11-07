@@ -86,7 +86,7 @@
 	WHERE muuid = #{abidder}
 </update>
 
-<update id="changeHistoryState">
+<update id="changeHistoryState" parameterType="Map">
 	UPDATE auctionhistory
 	SET astate = 1
 	WHERE ano = #{ano}
