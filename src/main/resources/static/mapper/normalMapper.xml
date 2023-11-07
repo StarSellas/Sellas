@@ -13,7 +13,7 @@ LIMIT 10
 <![CDATA[ 
 SELECT *, (SELECT COUNT(*) FROM normaltradeview) as count
 FROM normaltradeview
-WHERE ${originvalue} < #{lastvalue}
+WHERE tno < #{lasttno}
 ${orderBy}
 LIMIT 10
 ]]>

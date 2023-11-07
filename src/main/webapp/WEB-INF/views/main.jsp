@@ -116,8 +116,7 @@
                            <!-- Product price-->
                            작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
                         </div>
-                        <input type="hidden" class="rowNum" data-tno="${i.tno }">
-                        <input type="hidden" class="tread" data-tread="${i.tread }">${i.tread }
+                        <input type="hidden" class="rowNum" data-tno="${i.tno }">${i.tno }
                      </div>
                      <!-- Product actions-->
                      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
@@ -146,12 +145,42 @@
       </div>
    </section>
 
-   <script type="text/javascript">
+  
+
+   <!-- Footer-->
+   <footer id="footer">
+      <div class="container">
+         <ul class="menubar">
+            <li onclick="location.href='./'"><i class="xi-home xi-2x"></i>
+               <div id="menu">홈</div></li>
+            <c:if test="${alarmcount eq null }">
+               <li><i class="xi-message xi-2x"></i>
+                  <div id="menu">채팅</div></li>
+            </c:if>
+            <c:if test="${alarmcount eq 0 }">
+               <li><i class="xi-message xi-2x"></i>
+                  <div id="menu">채팅</div></li>
+            </c:if>
+            <c:if test="${alarmcount gt 0 }">
+               <li><i class="xi-message xi-2x" style="color: black"></i>
+                  <div id="menu">채팅</div></li>
+            </c:if>
+            <li><i class="xi-profile xi-2x"></i>
+               <div id="menu">마이페이지</div></li>
+         </ul>
+      </div>
+   </footer>
+   <!-- Bootstrap core JS-->
+   <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+   <!-- Core theme JS-->
+   <script src="js/scripts.js"></script>
+   
+    <script type="text/javascript">
    	
    
-   
    $(function() {
-
+	   
 	    let currentPage = 1;
    		let isBottomHandled = false;
    	
@@ -165,7 +194,6 @@
 
    	    if(isBottom && !isBottomHandled){	
    	    	
-   	    	console.log("실행");
    	    	nextPage(currentPage);	// 다음페이지 불러오는 함수	실행
    	    	currentPage++;
    	    	isBottomHandled = true;
@@ -179,15 +207,16 @@
 	// 다음페이지 불러오는 함수	
  	 function nextPage(currentPage){
 		
+		
+		 let sort = 0;	// 일단 0로만 가져와보기
          let firsttno = $(".rowNum:first").attr("data-tno");	// 최상단글tno ***** 확인용 *****
-         let lasttread = $(".tread:last").attr("data-tread");	// 최하단글tread 
          let lastRow = $(".tradeRow:last");	// 최하단row
          let count = $(".tradeRow").attr("data-count");	// 해당 카테고리의 글갯수
          let wholePage = Math.ceil(count/10);	// 전체페이지수(글의갯수/10의 올림) 
          
          //console.log("firsttno : " + firsttno);
-         //console.log("count : " + count);
-         //console.log("wholePage : " + wholePage);
+         console.log("count : " + count);
+         console.log("wholePage : " + wholePage);
          console.log("currentPage : " + currentPage);
          //console.log("nextPage : " + currentPage);
          lastRow.css("color", "red");
@@ -204,22 +233,15 @@
          let data = {};		// ajax로 보낼 객체
          
       	 let lasttno = $(".rowNum:last").attr("data-tno"); // 최하단글tno
-      	 console.log("list: " + firsttno + " ~ " + lasttno);
-      	 
-      	 let lasttread = $(".tread:last").attr("data-tread");
-      	 console.log("lasttread: " + lasttread)
+      	 console.log("list: " + firsttno + " ~ " + lasttno)
       	 
       	 // 서버로 보낼것들 data에 담기
-         //data.sort = sort;
-         //data.firsttno = firsttno;
+         data.sort = sort;
          data.lasttno = lasttno;
          data.count = count;
-         data.lasttread = lasttread;
          
-         //console.log("sort : " + data.sort);
-         console.log("firsttno : " + data.firsttno);
+         console.log("sort : " + data.sort);
          console.log("lasttno : " + data.lasttno);
-         console.log("lasttread : " + data.lasttread);
          console.log("count : " + data.count);
      	 
          $.ajax({
@@ -245,7 +267,6 @@
 	           	            + '작성자 : ' + this.list[i].mnickname + '<br>' + this.list[i].tnormalprice + ' 웨일페이<br>'
 	           	            + '</div>'
 	           	            + '<input type="hidden" class="rowNum" data-tno="' + this.list[i].tno + '">' + this.list[i].tno
-	           	            + '<input type="hidden" class="tread" data-tread="' + this.list[i].tread + '">' + this.list[i].tread
 	           	            + '</div>'
 	           	            + '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">'
 	           	            + '<div style="text-align: center;">'
@@ -283,37 +304,10 @@
 	});	// 스크롤
 
 });    
-   
    </script>
-
-   <!-- Footer-->
-   <footer id="footer">
-      <div class="container">
-         <ul class="menubar">
-            <li onclick="location.href='./'"><i class="xi-home xi-2x"></i>
-               <div id="menu">홈</div></li>
-            <c:if test="${alarmcount eq null }">
-               <li><i class="xi-message xi-2x"></i>
-                  <div id="menu">채팅</div></li>
-            </c:if>
-            <c:if test="${alarmcount eq 0 }">
-               <li><i class="xi-message xi-2x"></i>
-                  <div id="menu">채팅</div></li>
-            </c:if>
-            <c:if test="${alarmcount gt 0 }">
-               <li><i class="xi-message xi-2x" style="color: black"></i>
-                  <div id="menu">채팅</div></li>
-            </c:if>
-            <li><i class="xi-profile xi-2x"></i>
-               <div id="menu">마이페이지</div></li>
-         </ul>
-      </div>
-   </footer>
-   <!-- Bootstrap core JS-->
-   <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-   <!-- Core theme JS-->
-   <script src="js/scripts.js"></script>
+   
+   
+   
 </body>
 
 <script
@@ -321,6 +315,7 @@
 <script
    src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
+
    let sock = new SockJS("/ws/chat");
    let ws = Stomp.over(sock);
    let oseller = '${sessionScope.muuid}';

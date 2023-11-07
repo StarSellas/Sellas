@@ -77,26 +77,21 @@ public class NormalController {
 		return "main";
 	}
 	
+	
+	// 스크롤페이징
 	@ResponseBody
 	@PostMapping("nextTradePage")
-	public String nextPage(@RequestParam Map<String, Object> pmap,
-			@RequestParam(name = "sort", defaultValue = "0") int sort
-			, HttpSession session) {
+	public String nextPage(@RequestParam Map<String, Object> pmap, HttpSession session) {
 		
-		System.out.println("sort : " + sort);
-		System.out.println("pmap : " + pmap);
-		// {sort=0, lasttno=49, count=18}
+		System.out.println(pmap);
+		// {sort=0, lasttno=49, count=19}
 		JSONObject json = new JSONObject();
 
-		//int sort = Integer.parseInt(String.valueOf(pmap.get("sort")));
-		//String lasttno = String.valueOf(pmap.get("lasttno"));
-		//int count = Integer.parseInt(String.valueOf(pmap.get("count")));
-		//int lasttread = Integer.parseInt(String.valueOf(pmap.get("lasttread")));
+		int sort = Integer.parseInt(String.valueOf(pmap.get("sort")));
+		int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
+		int count = Integer.parseInt(String.valueOf(pmap.get("count")));
 		
 		// "sort" 매개변수에 따라 SQL 쿼리를 동적으로 생성
-		String originvalue = "";
-		int lastvalue = 0;
-		
 		String orderBy = "";
 		switch (sort) {
 		case 1:
@@ -107,14 +102,10 @@ public class NormalController {
 			break;
 		case 3:
 			orderBy = "ORDER BY tread DESC";
-			originvalue = "tread";
-			lastvalue = Integer.parseInt(String.valueOf(pmap.get("lasttread")));
 			break;
 		default:
 			// 기본 정렬은 tno DESC
 			orderBy = "ORDER BY tno DESC";
-			originvalue = "tno";
-			lastvalue = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
 			break;
 		}
 		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
@@ -131,11 +122,7 @@ public class NormalController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sortBy", "tno");
 		map.put("inOrder", "desc");
-		map.put("orderBy", orderBy);
-		map.put("originvalue", originvalue);
-		map.put("lastvalue", lastvalue);
-		
-		System.out.println(map);
+		map.put("lasttno", lasttno);
 		
 		List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
 		System.out.println("다음리스트 : " + nextNormalBoardList);
@@ -147,7 +134,6 @@ public class NormalController {
 
 		return json.toString();
 	}
-	
 	
 
 	// 메인 화면 리스트 정렬 메소드입니다.
@@ -163,6 +149,7 @@ public class NormalController {
 		return json.toString();
 	}
 
+	
 	// default jsp로 보내주는 메소드입니다.
 	@GetMapping("default")
 	public String basic() {
