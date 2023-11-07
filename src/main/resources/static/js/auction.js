@@ -106,10 +106,10 @@ function addAuctionItem(item){
 	let priceInfoDiv = document.createElement("div");
 	
 	let currentBidPrice = document.createElement("span");
-	currentBidPrice.textContent = item.tauctioncurrentbidprice;
+	currentBidPrice.textContent = item.abidprice;
 	
 	let minimumBidPrice = document.createElement("span");
-	minimumBidPrice.textContent = item.tauctioncurrentbidprice + item.tauctionminbidunit;
+	minimumBidPrice.textContent = item.minbidprice;
 
 	priceInfoDiv.append(currentBidPrice);
 	priceInfoDiv.append(minimumBidPrice);
@@ -123,15 +123,13 @@ function addAuctionItem(item){
 	auctionItemDiv.append(auctionItemSubDiv);
 	
 	
-	// 거래번호(tno)		: Detail 요청 시 필요
-	let tno = document.createElement("input");
-	tno.value = item.tno;
-	tno.type = "hidden";
-	tno.setAttribute("id", "tno");
-	auctionItemDiv.append(tno);
-	
 	// 카테고리번호(ino)	: 카테고리 필터 적용 시 필요
 	auctionItemDiv.classList.add("category"+item.ino);
+	
+	// onclick 이벤트 처리	: 디테일 페이지 요청
+	auctionItemDiv.onclick = function() {
+		window.location.href = "auctionDetail?tno=" + item.tno;
+	}
 	
 	
 	auctionItemListDiv.append(auctionItemDiv);

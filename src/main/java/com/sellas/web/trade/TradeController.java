@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sellas.web.util.Util;
 
@@ -43,5 +44,15 @@ public class TradeController {
 		
 		// TODO : detail 페이지로 이동하도록 수정
 		return "main";
+	}
+	
+	/* 거래 진행 */
+	
+	// 잔액 확인 필요 시 ajax 요청
+	@ResponseBody
+	@GetMapping("/checkBalance")
+	public boolean checkBalance(@RequestParam int price) {
+		
+		return tradeService.checkBalance(price);
 	}
 }
