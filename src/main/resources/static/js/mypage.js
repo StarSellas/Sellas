@@ -52,3 +52,11 @@ function nickChange() {
 		}	
 
 }
+
+function picChange() {
+	
+	alert("!");
+	
+}
+
+

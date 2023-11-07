@@ -78,15 +78,19 @@
 			</div>
 			
 			<div class="edit-div">
+				
 				<div class="user-img">
 					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
 				</div>
-			<div class="nicknameDIV">
-				<input class="NewNickname form-floating" value="${nickname}">
-				<button id="nickChangeBtn" onclick="nickChange()">닉네임 변경</button>
+				<img src="../img/camera.png" alt="camera" class="camera" onclick="picChange()">
+				</div>
+				
+				
+			<div class="form-floating" id="nicknameDIV">
+				<input class="form-control" id="newNickname" value=${nickname}>
 			</div>
+				<button id="nickChangeBtn" onclick="nickChange()">닉네임 변경</button>
 		</div>
-</div>
 
 	</section>
 	<!-- Footer-->

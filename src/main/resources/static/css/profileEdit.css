@@ -33,15 +33,24 @@
 }
 
 #nickChangeBtn {
+	 display: flex;
 	width: 100px;
 	height: 40px;
 	padding: 5px;
 	background-color: white;
-	margin-top: 15px; margin-left : 20px;
+	margin: 0 auto;
+	margin-top: 15px;
 	border-radius: 5px;
 	border: solid #e3e3e3 1px;
-	margin-left: 40px;
+	justify-content: center; 
+
 }
+
+#newNickname{
+padding: 0;
+padding-left: 15px;
+height: 50px;
+	}
 
 
 .location {
@@ -54,39 +63,31 @@
 	margin-top: 80px;
 }
 
-.nicknameDIV {
-  background-color: red;
+#nicknameDIV {
+	position: relative;
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 0;
 }
 
 
 .edit-div {
+	 position: relative;
 	margin: 0 auto;
+	margin-top: 50px;
 }
 
 
-
-.movedetail{
-		margin: 10px;
-		margin-bottom: 30px;
+.camera{
+    position: absolute;
+    top: 70%;
+    left: 55%;
+    width: 30px;
+    height: 30px;
 }
 
-.listdiv{
-		border-bottom: solid #e3e3e3 1px;
-		margin: 10px;
-		padding-bottom: 10px;
-}
-.card-body  {
-	padding: 30px;
-	}
 
-.card {
-    width: 350px;
-    height: auto;
-    margin: 0 auto; /* 중앙 정렬 */
-    padding: 20px;
-    margin-bottom: 15px;
-    text-align: center; /* 텍스트 가운데 정렬 */
-}
 
 h6{
 		margin-left: 40px;
