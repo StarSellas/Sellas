@@ -27,7 +27,7 @@
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="./js/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+<script src="../js/wishlist.js"></script>
 </head>
 <body>
 	<!-- Navigation-->
@@ -72,8 +72,9 @@
 
 
 					<div id="detailID">${detail.mnickname}</div>
-					<div id="detailDate">${detail.tdate}&nbsp;
-						&nbsp;&nbsp;&nbsp;작성자: ${detail.mnickname}</div>
+					<div id="detailDate">${detail.tdate}</div>
+					<!-- 최지은 -->
+						<div id="detailWriter">작성자 ${detail.mnickname}</div>
 
 					<c:if test="${normalDetailImage ne null }">
 						<c:forEach items="${normalDetailImage }" var="i">
@@ -89,7 +90,18 @@
 						<button id="normalDeleteBtn">등록 취소</button>
 					</c:if>
 					<c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 0}">
-						<button id="addWishList">찜하기☆</button>
+					
+						<c:choose>
+    <c:when test="${hasWish eq '0' or empty hasWish}">
+    <!-- 중복 없으면 빈하트 최지은 -->
+        <img src="../img/heartbin.png" 
+             id="addWishList" align="left" style="cursor:pointer; width: 20px;">
+    </c:when>
+    <c:otherwise>
+        <img src="../img/heart.png" 
+              id="delWishList" align="left" style="cursor:pointer; width: 20px;">
+    </c:otherwise>
+</c:choose>
 						<button id="requestChatBtn">채팅 신청</button>
 					</c:if>
 						
@@ -192,7 +204,7 @@
 						return false;
 					}
 					
-					if(data.paymentCount > 0){
+					if(data.chatroomCount != 0){
 						alert("이미 진행중인 채팅방이 있거나 실패한 거래입니다.");
 						return false;
 					}
@@ -224,6 +236,11 @@
 			}
 		});// 거래 신청 버튼 끝
 		
+/* 		최지은이건드림 */
+	    $('#detailWriter').click(function() {
+	        var muuid = '${detail.muuid}';
+	        window.location.href = '/profileMember?muuid=' + muuid;
+	    });
 		
 /* 		$("#requestChatBtn").click(function(){
 			alert("!");

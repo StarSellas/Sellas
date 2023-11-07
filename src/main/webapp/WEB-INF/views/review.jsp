@@ -134,9 +134,6 @@
 	<section class="py-5">
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="row justify-content-center">
-			<p>pno: ${reviewMember.pno}</p>
-<p>pseller: ${reviewMember.pseller}</p>
-<p>pbuyer: ${reviewMember.pbuyer}</p>
 				<form class="mb-3" name="review" id="review" method="post">
 				    <input type="hidden" name="pno" value="${reviewMember.pno}" />
     <input type="hidden" name="pseller" value="${reviewMember.pseller}" />

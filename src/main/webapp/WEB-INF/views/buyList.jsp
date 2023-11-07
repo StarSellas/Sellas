@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,7 @@
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet" href="./css/mypageList.css">
-
+<script src="./js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 	<!-- Navigation-->
@@ -70,48 +71,59 @@
 	<section class="py-5">
 
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
-					<div class="d-flex inside-bar align-items-center">
+			<div class="d-flex inside-bar align-items-center">
 				<div class="back col-auto" onclick="location.href='/mypage'">
 					<i class="xi-angle-left xi-x"></i>
 				</div>
 				<div class="location col">구매내역</div>
 			</div>
 			<div class="nav">
-		<c:forEach items="${buyList}" var="row">
+
+			<c:forEach items="${buyList}" var="row">
 	<c:choose>
 	<c:when test="${fn:length(buyList) gt 0 }">
-	<table>
-		<tr>
-			<th class ="rr1">안녕</th>
-			<th>구매물품</th>
-			<th>이미지</th>
-			<th>금액</th>
-		</tr>
-			<tr onclick="location.href='./detail?pno=${row.pno }'">
-			<td><img src="../img/${row.timage}" alt="user-img" class="sdas"></td>
-				<td class="td1">${row.tno}</td>
-				<td class="title">${row.ttitle}</td>
-				<td class="td2">${row.tnormalprice}</td>
-				<td>${row.tnormalstate}</td>
-				<fmt:formatDate value="${row.tdate}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>
-			</tr>
-	</table>
-				${row.tdate}
-		<br>
+<div class="card mb-3" style="max-width: 400px;">
+  <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
+    <div class="col-4">
+      <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+    </div>
+    <div class="col-8">
+      <div class="card-body">
+        <input type="hidden" value="${row.tno}">
+        <h5 class="card-title">${row.ttitle}</h5>
+		<p class="card-text">
+  <p class="card-text">
+        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
+    </p>
+    <p class="card-text">
+        <small class="text-body-secondary">
+   ${row.tdate}
+        </small>
+    </p>
+      </div>
+    </div>
+  </div>
+<!--   버튼 -->
+
+    <c:choose>
+        <c:when test="${row.rno != null}">
+            <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+        </c:when>
+        <c:otherwise>
+            <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+        </c:otherwise>
+    </c:choose>
+
+<!--   버튼 -->
+</div>
 	 </c:when>
 	<c:otherwise>구매 내역이 없어요.</c:otherwise>
 	</c:choose>
-<c:if test="${row.tnormalstate eq 2 }">
-<button type="button" onclick="location.href='./review?tno=${row.tno}'">후기쓰러가기</button>
-			 </c:if>
 		</c:forEach>
-
-
 </div>
-		</div>
+  </div>
 
-
-
+<br>
 
 	</section>
 	<!-- Footer-->
@@ -128,6 +140,7 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
-	<script src="js/scripts.js"></script>
+<script>
+</script>
 </body>
 </html>

@@ -1,8 +1,9 @@
 package com.sellas.web.myPage;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.sellas.web.util.Util;
 
-import retrofit2.http.GET;
 
 
 @Controller
@@ -24,12 +25,14 @@ public class MyPageController {
 
 	@Autowired
 	MyPageService myPageService;
+	
+	@Autowired
+	private Util util;
 
 	@GetMapping("/mypage")
 	public String myPage(Model model, HttpSession session) {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
-		//가져오는값 :mnickname, mpoint, mbalance
 		
 		//세션에 저장된 uuid를 가지고 멤버조회
 		Map<String, Object> member = myPageService.memberInfo(uuid);
@@ -52,9 +55,8 @@ public class MyPageController {
 	@GetMapping("/profile")
 	public String profile(Model model, HttpSession session) {
 		
-		//로그인 안했을시
-		if(session==null) {
-			return "login";
+		if(!util.checkLogin()) {
+			return "redirect/login";
 		}
 		
 		
@@ -73,6 +75,8 @@ public class MyPageController {
 	@GetMapping("/profileMember")
 	public String profileMember(@RequestParam("muuid") String uuid, Model model, HttpSession session) {
 		
+		
+		//세션에 있는 uuid와 같다면
 		if(uuid == session.getAttribute("muuid")) {
 			return "profile";
 		}
@@ -123,10 +127,8 @@ public class MyPageController {
     @ResponseBody
     public int mypageModify(@RequestParam Map<String, Object> map, HttpSession session) {
     
-   
     	map.put("uuid",session.getAttribute("muuid"));
     	int result = myPageService.nicknameModify(map);
-    	
     	
     	//닉네임 변경 성공시 세션에 새닉네임 넣어줌
     	if(result == 1) {
@@ -181,42 +183,44 @@ public class MyPageController {
 	}
 	
 	
-	//후기디테일
-	//후기상세페이지
+	//내가 받은 후기상세페이지
 	@GetMapping("reviewDetail")
 	public String reviewDetail(@RequestParam int rno, Model model, HttpSession session) {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("rno", rno);
+		map.put("uuid", session.getAttribute("muuid"));
 		
-	
-		
-		
-		Map<String, Object> reviewDetail = myPageService.reviewDetail(rno);
-		
-		System.out.println("뭐가있는지봅시다"+reviewDetail);
+		Map<String, Object> reviewDetail = myPageService.reviewDetail(map);
 		model.addAttribute("reviewDetail", reviewDetail);
-		
 		return "reviewDetail";
-	
-	
 	}
 	
 	
+	//내가 보낸 후기상세페이지
+	@GetMapping("reviewDetailByMe")
+	public String reviewDetailByMe(@RequestParam int rno, Model model, HttpSession session) {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("rno", rno);
+		map.put("muuid", session.getAttribute("muuid"));
+		
+		Map<String, Object> reviewDetail = myPageService.reviewDetailByMe(map);
+		model.addAttribute("reviewDetail", reviewDetail);
+		return "reviewDetail";
+	}
+	
+	
+
 	//판매내역
 	@GetMapping("getsell")
 	public String getSell(Model model, HttpSession session) {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
-		
-		//추후수정
-		/*
-		 * //리뷰중복확인 List<Map<String, Object>> hasReview = myPageService.hasReview(uuid);
-		 * model.addAttribute("hasReview",hasReview);
-		 */
-
 		//판매내역불러오기
 		List<Map<String, Object>> sellList = myPageService.getSell(uuid);
 		model.addAttribute("sellList",sellList);
-		
-		
+
 		return "sellList";
 		
 	}
@@ -231,7 +235,7 @@ public class MyPageController {
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		
 		
-		//구매진짜한것만
+		//구매진짜한것만 담겨있음 완료끝낸것만
 		List<Map<String, Object>> buyList = myPageService.getBuy(uuid);
 		model.addAttribute("buyList",buyList);
 		
@@ -244,8 +248,62 @@ public class MyPageController {
 	
 	
 	
+	//위시리스트 불러오기
+	@GetMapping("getwish")
+	public String wishList(Model model, HttpSession session) {
+		
+		
+		if(!util.checkLogin()) {
+			return "redirect/login";
+		}
+		
+		String uuid = String.valueOf(session.getAttribute("muuid"));
+		List<Map<String, Object>> wishList = myPageService.getWish(uuid);
+		
+		model.addAttribute("wishList",wishList);
+		return "wishList";
 	
-	//찜하기(위시리스트)
+	}
+	
+	
+	
+	
+	
+	//찜하기(위시리스트) 추가하기
+	@ResponseBody
+	@PostMapping("addWish")
+	public String addWish(@RequestParam("tno") int tno, Model model, HttpSession session) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tno", tno);
+		map.put("muuid", session.getAttribute("muuid"));
+		
+		int addWish = myPageService.addWish(map);
+		
+		JSONObject json = new JSONObject();
+		json.put("addWish", addWish);
+		System.out.println("제이슨 값입니다 : " + json.toString());
+		return json.toString();
+	
+	}
+	
+	//찜하기 삭제하기
+	@ResponseBody
+	@PostMapping("delWish")
+	public String delWish(@RequestParam("tno") int tno, Model model, HttpSession session) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tno", tno);
+		map.put("muuid", session.getAttribute("muuid"));
+		
+		int delWish = myPageService.delWish(map);
+		
+		JSONObject json = new JSONObject();
+		json.put("delWish", delWish);
+		System.out.println("삭제의 제이슨 값입니다 : " + json.toString());
+		return json.toString();
+	
+	}
 	
 	
 	

@@ -191,7 +191,7 @@ public class NormalController {
 	}
 
 	@GetMapping("/normalDetail") 
-	public String tradeDetail(@RequestParam(name = "tno", required = true, defaultValue = "1") int tno, Model model) {
+	public String tradeDetail(@RequestParam(name = "tno", required = true, defaultValue = "1") int tno, Model model, HttpSession session) {
 		System.out.println("tno 값은 : " + tno);
 		// tno값에 맞는 값을 가져오기
 		Map<String, Object> normalDetail = normalService.normalDetail(tno);
@@ -208,7 +208,19 @@ public class NormalController {
 			// 모델에 값 넣기
 			model.addAttribute("normalDetailImage", normalDetailImage);
 		}
-
+		
+		
+		//TODO 지은추가 세션도넣었음
+		//찜여부 확인
+		Map<String,Object> wishInfo = new HashMap<>();
+		wishInfo.put("tno", tno);
+		wishInfo.put("muuid",session.getAttribute("muuid"));
+		System.out.println("세션이담겨져있나요"+wishInfo.get("muuid"));
+		Map<String,Object> hasWish = normalService.hasWish(wishInfo);
+		System.out.println("님아 뭐있음?" + wishInfo);
+		System.out.println(hasWish);
+		
+		model.addAttribute("hasWish",hasWish);
 		model.addAttribute("detail", normalDetail);
 		return "normalDetail";
 	}

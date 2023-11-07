@@ -49,6 +49,7 @@ dependencies {
 	implementation 'net.nurigo:sdk:4.3.0'
 	//mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	
 }
 
 bootWar{

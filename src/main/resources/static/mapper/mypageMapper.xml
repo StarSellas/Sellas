@@ -49,42 +49,70 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 UPDATE member SET mnickname=#{newNickname} WHERE muuid=#{uuid}
 </update>
 
-<select id="reviewDetail" parameterType="Integer" resultType="Map">
-SELECT r.mwriter, r.rcontent, rdate, t.ttitle, m.mnickname
+<select id="reviewDetail" parameterType="Map" resultType="Map">
+SELECT r.mwriter, r.mtarget, m1.mnickname as writer_nickname, m2.mnickname as target_nickname,
+       r.rcontent, r.rdate, t.ttitle
 FROM review r
 JOIN payment p ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
-JOIN member m ON r.mwriter = m.muuid
-WHERE rno=#{rno}
+JOIN member m1 ON r.mwriter = m1.muuid
+JOIN member m2 ON r.mtarget = m2.muuid
+WHERE r.rno=#{rno} AND r.mtarget=#{uuid}
+</select>
+
+<select id="reviewDetailByMe" parameterType="Map" resultType="Map">
+SELECT r.mwriter, r.mtarget, m1.mnickname as writer_nickname, m2.mnickname as target_nickname,
+       r.rcontent, r.rdate, t.ttitle
+FROM review r
+JOIN payment p ON r.pno = p.pno
+JOIN trade t ON p.tno = t.tno
+JOIN member m1 ON r.mwriter = m1.muuid
+JOIN member m2 ON r.mtarget = m2.muuid
+WHERE r.rno=#{rno} AND r.mwriter=#{uuid}
 </select>
 
 
 
 <select id="getSell" parameterType="String" resultType="Map">
-SELECT t.tno, t.ttitle, t.tnormalprice, t.tnormalstate, t.tdate, ti.timage
+SELECT t.*, r.* , ti.timage
 FROM trade t
 JOIN tradeimage ti ON t.tno = ti.tno
-WHERE t.muuid =#{uuid} AND ti.tthumbnail = 0
-</select>
-
-<select id="hasReview" parameterType="String" resultType="Map">
-SELECT DISTINCT r.rno, r.pno, p.tno
-FROM review r
-JOIN payment p ON r.pno = p.pno
-JOIN trade t ON p.tno= t.tno
-WHERE mwriter=#{uuid}
+LEFT JOIN payment p ON t.tno = p.tno
+LEFT JOIN review r ON r.pno = p.pno
+WHERE t.muuid =#{uuid}  AND ti.tthumbnail = 0
 </select>
 
 
 <select id="getBuy" parameterType="String" resultType="Map">
-SELECT pno, penddate, t.tno, t.ttitle, t,tdate, t.tnormalprice, ti.timage, t.tnormalstate
+SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, rno
 FROM payment p
+LEFT JOIN review r ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
 JOIN tradeimage ti ON t.tno = ti.tno
 WHERE pbuyer=#{uuid} AND pstate = 0 AND ti.tthumbnail = 0
 </select>
 
 
+<select id="getWish" parameterType="String" resultType="Map">
+SELECT w.wno, w.muuid, t.tno, t.ttitle, t.tdate, t.tnormalprice, t.tnormalstate, ti.timage
+FROM wishlist w
+JOIN trade t ON w.tno = t.tno
+JOIN tradeimage ti ON t.tno = ti.tno
+WHERE w.muuid =#{uuid} AND ti.tthumbnail = 0
+</select>
+
+
+<insert id="addWish" parameterType="Map">
+
+INSERT INTO wishlist (tno, muuid)
+VALUES(#{tno}, #{muuid})
+
+</insert>
+
+<delete id="delWish" parameterType="Map">
+DELETE FROM wishlist WHERE muuid=#{muuid} AND tno=#{tno}
+
+</delete>
 
 
 

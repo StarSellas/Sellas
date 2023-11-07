@@ -79,10 +79,15 @@ public class MyPageService {
 		return myPageDAO.getprofileReview(attribute);
 	}
 
-	public Map<String, Object> reviewDetail(int rno) {
-		return myPageDAO.reviewDetail(rno);
+	public Map<String, Object> reviewDetail(Map<String, Object> map) {
+		return myPageDAO.reviewDetail(map);
 	}
 
+	public Map<String, Object> reviewDetailByMe(Map<String, Object> map) {
+		return myPageDAO.reviewDetailByMe(map);
+	}
+	
+	
 	public List<Map<String, Object>> getSell(String uuid) {
 		return myPageDAO.getSell(uuid);
 	}
@@ -91,12 +96,18 @@ public class MyPageService {
 		return myPageDAO.getBuy(uuid);
 	}
 
-	public List<Map<String, Object>> hasReview(String uuid) {
-		
-		return myPageDAO.hasReview(uuid);
+	public int addWish(Map<String, Object> map) {
+		return myPageDAO.addWish(map);
 	}
 
-	
+	public int delWish(Map<String, Object> map) {
+		return myPageDAO.delWish(map);
+	}
+
+	public List<Map<String, Object>> getWish(String uuid) {
+		return myPageDAO.getWish(uuid);
+	}
+
 	
 
 	

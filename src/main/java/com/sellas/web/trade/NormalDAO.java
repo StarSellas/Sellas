@@ -53,6 +53,7 @@ public interface NormalDAO {
 
 	int normalTradePaymentCountCount(Map<String, Object> map);
 
+	Map<String, Object> hasWish(Map<String, Object> hasWish);
 
 
 	

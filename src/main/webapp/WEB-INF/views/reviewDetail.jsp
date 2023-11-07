@@ -79,11 +79,24 @@
 			
 	<div class="review-box">
     <img src="../img/흰배경셀라스.jpg" alt="logo" class="logo">
-    <div><h5>${reviewDetail.mnickname}님이 보낸 후기</h5></div>
+    <c:choose>
+<c:when test="${reviewDetail.mwriter != null && reviewDetail.mtarget != null}">
+    <c:if test="${reviewDetail.mtarget eq sessionScope.muuid}">
+    <div><h5>${reviewDetail.writer_nickname}님이 보낸 후기</h5></div>
+    </c:if>
+    <c:if test="${reviewDetail.mtarget ne  sessionScope.muuid}">
+    <div><h5>내가 ${reviewDetail.target_nickname}님에게 보낸 후기</h5></div>
+    </c:if>
     <br>
     <div>
-        <h6>${reviewDetail.mnickname}님과 거래한 물품은</h6>
+        <c:if test="${reviewDetail.mtarget eq sessionScope.muuid}">
+        <h6>${reviewDetail.writer_nickname}님과 거래한 물품은</h6>
         <h6>[${reviewDetail.ttitle}]입니다</h6>
+           </c:if>
+             <c:if test="${reviewDetail.mtarget ne  sessionScope.muuid}">
+                <h6>${reviewDetail.target_nickname}님과 거래한 물품은</h6>
+        <h6>[${reviewDetail.ttitle}]입니다</h6>
+        </c:if>
     </div>
        <br>
     <div class="card">
@@ -91,6 +104,13 @@
             <p class="card-text">${reviewDetail.rcontent}</p>
         </div>
     </div>
+    </c:when>
+    <c:otherwise>
+    <div class="notYet">
+    아직 후기를 받지 않았어요. 기다려주세요.
+    </div>
+    </c:otherwise>
+    </c:choose>
 </div>
 	
 </div>

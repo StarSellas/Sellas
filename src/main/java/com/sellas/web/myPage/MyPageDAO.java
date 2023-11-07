@@ -23,12 +23,18 @@ public interface MyPageDAO {
 
 	List<Map<String, Object>> getprofileReview(Object attribute);
 
-	Map<String, Object> reviewDetail(int rno);
+	Map<String, Object> reviewDetail(Map<String, Object> map);
 
 	List<Map<String, Object>> getSell(String uuid);
 
 	List<Map<String, Object>> getBuy(String uuid);
 
-	List<Map<String, Object>> hasReview(String uuid);
+	int addWish(Map<String, Object> map);
+
+	int delWish(Map<String, Object> map);
+
+	List<Map<String, Object>> getWish(String uuid);
+
+	Map<String, Object> reviewDetailByMe(Map<String, Object> map);
 
 }

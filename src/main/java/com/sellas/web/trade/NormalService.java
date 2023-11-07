@@ -133,6 +133,10 @@ public class NormalService {
 		return normalDAO.normalTradePaymentCountCount(map);
 	}
 
+	public Map<String, Object> hasWish(Map<String, Object> wishInfo) {
+		return normalDAO.hasWish(wishInfo);
+	}
+
 	
 
 	

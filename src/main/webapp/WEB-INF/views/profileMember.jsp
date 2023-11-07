@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,11 +21,12 @@
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
 
+
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="./css/mypageList.css">
-<script src="./js/jquery-3.7.0.min.js"></script>
+<link rel="stylesheet" href="../css/profile.css">
+
 </head>
 <body>
 	<!-- Navigation-->
@@ -72,63 +71,58 @@
 
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="d-flex inside-bar align-items-center">
-				<div class="back col-auto" onclick="location.href='/mypage'">
+				<div class="back col-auto" onclick="location.href='/main'">
 					<i class="xi-angle-left xi-x"></i>
 				</div>
-				<div class="location col">판매내역</div>
+				<div class="location col">${nickname}님의 프로필</div>
 			</div>
 			<div class="nav">
-
-			<c:forEach items="${sellList}" var="row">
-	<c:choose>
-	<c:when test="${fn:length(sellList) gt 0 }">
-<div class="card mb-3" style="max-width: 400px;">
-  <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
-    <div class="col-4">
-      <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
-    </div>
-    <div class="col-8">
-      <div class="card-body">
-        <input type="hidden" value="${row.tno}">
-        <h5 class="card-title">${row.ttitle}</h5>
-		<p class="card-text">
-  <p class="card-text">
-        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
-    </p>
-    <p class="card-text">
-        <small class="text-body-secondary">
-   ${row.tdate}
-        </small>
-    </p>
-      </div>
-    </div>
-  </div>
-<!--   버튼 -->
-<c:if test="${row.tnormalstate == 2}">
-    <c:choose>
-        <c:when test="${row.rno != null}">
-            <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
-        </c:when>
-        <c:otherwise>
-            <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
-        </c:otherwise>
-    </c:choose>
-</c:if>
-<c:if test="${row.tnormalstate != 2}">
- <button id="reviewBtn" value="${row.tno}" class="submitbtn reviewBtn" type="button">글 숨기기</button>
-</c:if>
-
-
-<!--   버튼 -->
-</div>
-	 </c:when>
-	<c:otherwise>판매 내역이 없어요.</c:otherwise>
-	</c:choose>
-		</c:forEach>
-</div>
-  </div>
-
-<br>
+				<div class="user-img">
+					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+				</div>
+				<div class="user-nickname">${nickname}</div>
+				<div class="user-level">
+					<c:if test="${exp < 15}">아기고래</c:if>
+					<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
+					<c:if test="${exp > 20 }">슈퍼고래</c:if>
+				</div>
+			
+			
+			</div>
+			<div class="experience-section"
+				style="position: relative; margin-top: 100px;">
+				<span class="rabel">🐳경험치</span>
+				<div class="progress" role="progressbar"
+					aria-label="Example with label"
+					aria-valuenow="${(exp) * 100}" aria-valuemin="0"
+					aria-valuemax="100">
+					<div class="progress-bar" style="width: ${exp}%; background-color: #88abff;">${exp}%</div>
+				</div>
+			</div>
+			
+			<div class="reviewList">
+			<div class="rabel">받은 거래 후기</div>
+			<div class="review-div">
+			${profileReview}여기뭐뜨는데?
+			console.log(${profileReview eq null});
+			<div>
+			<c:if test="${empty profileReview}">
+			받은 거래 후기가 없어요
+			</c:if>
+			<c:forEach items="${profileReview}" var="review">
+			<div class="movedetail" onclick="location.href='./reviewDetail?rno=${review.rno}'">
+							<div class="reviewimg">
+					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+				</div>
+			<div class=nickname>${review.mnickname}</div>
+			<div class="content">${review.rcontent}</div>
+			<div class="date">${review.rdate}</div>
+			</div>
+			</c:forEach>
+				</div>
+			</div>
+		</div>
+		</div>
 
 	</section>
 	<!-- Footer-->
@@ -145,7 +139,8 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
-<script>
-</script>
+	<script src="js/scripts.js">
+		
+	</script>
 </body>
 </html>

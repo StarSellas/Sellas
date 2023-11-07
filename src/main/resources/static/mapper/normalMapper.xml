@@ -51,6 +51,14 @@ FROM normaltradeview
 WHERE tno = #{tno}
 </select>
 
+
+<select id="hasWish" parameterType="Map" resultType="Map">
+    SELECT wno
+    FROM wishlist
+    WHERE tno=#{tno} 
+    AND muuid=#{muuid}
+</select>
+
 <update id="normalTreadUpdate" parameterType="Integer">
 UPDATE trade
 SET tread = tread+1
