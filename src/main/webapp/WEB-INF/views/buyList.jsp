@@ -82,7 +82,7 @@
 			<c:forEach items="${buyList}" var="row">
 	<c:choose>
 	<c:when test="${fn:length(buyList) gt 0 }">
-<div class="card mb-3" style="max-width: 400px;">
+<div class="card mb-3" style="max-width: 400px; max-height: 450px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
       <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
