@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.chat.ChatMessageDAO">
+	
+	<insert id="enterMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{econtent}, #{dtype})
+	</insert>
+	
+	<insert id="talkMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tcontent}, #{dtype})
+	</insert>
+	
+	<insert id="outMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{ocontent}, #{dtype})
+	</insert>
+	
+	<insert id="tradeOkMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tocontent}, #{dtype})
+	</insert>
+	
+	<insert id="tradeNoMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tncontent}, #{dtype})
+	</insert>
+	
+	<insert id="paymentMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{pcontent}, #{dtype})
+	</insert>
+	
+	<insert id="tradeAcceptMessage"  parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tacontent}, #{dtype})
+	</insert>
+	
+	<insert id="tradeCancelMessage" parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tccontent}, #{dtype})
+	</insert>
+	
+	<insert id="tradeCompleteMessage"  parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tcmcontent}, #{dtype})
+	</insert>
+	
+	<insert id="alarmMessage" parameterType="Map">
+		insert into dialogue (ouuid, dcontent, muuid, dtype, dcheck) values (#{ouuid}, #{acontent}, #{oseller}, #{dtype}, 1)
+	</insert>
+	
+	<select id="name" parameterType="String" resultType="String">
+		select mnickname from member where muuid = #{name}
+	</select>
+	
+	<select id="alarmSeller" parameterType="String" resultType="String">
+		select oseller from onlinechat where ouuid = #{roomId}
+	</select>	
+	
+	<select id="oseller" parameterType="String" resultType="String">
+		select oseller from onlinechat where ouuid = #{roomId}
+	</select>
+	
+</mapper>
