@@ -210,7 +210,12 @@ public class MyPageController {
 		return "reviewDetail";
 	}
 	
-	
+	/**
+	 * 
+	 * @param model
+	 * @param session
+	 * @return 
+	 */
 
 	//판매내역
 	@GetMapping("getsell")
@@ -259,6 +264,7 @@ public class MyPageController {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		List<Map<String, Object>> wishList = myPageService.getWish(uuid);
+		System.out.println("위시리스트안담기세요?" + wishList);
 		
 		model.addAttribute("wishList",wishList);
 		return "wishList";
@@ -287,6 +293,13 @@ public class MyPageController {
 	
 	}
 	
+	/**
+	 * 
+	 * @param tno
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	//찜하기 삭제하기
 	@ResponseBody
 	@PostMapping("delWish")
@@ -303,6 +316,37 @@ public class MyPageController {
 		System.out.println("삭제의 제이슨 값입니다 : " + json.toString());
 		return json.toString();
 	
+	}
+	
+	
+	
+	//내활동내역보기
+	@GetMapping("myActivities")
+	public String myActivities(Model model, HttpSession session ) {
+		
+		if(!util.checkLogin()) {
+			return "redirect/login";
+		}
+		
+
+		String nickname = String.valueOf(session.getAttribute("mnickname"));
+		//내글보기
+/*		{bno=107, bread=103, mnickname=pyo, commentcount=6, bdate=2023-11-06, sno=2,
+				bimagecount=2, btitle=제목수정, bcontent=내용수정, mno=96*/
+		
+		List<Map<String, Object>> myPost = myPageService.getMyPost(nickname);
+		//내댓글보기
+		
+		System.out.println("mypost"+myPost);
+		List<Map<String, Object>> myComment = myPageService.getMyComment(nickname);
+		
+		System.out.println("myCOmment"+myComment);
+		model.addAttribute("myPost", myPost);
+		model.addAttribute("myComment",myComment);
+		
+		return"myActivities";
+		
+		
 	}
 	
 	

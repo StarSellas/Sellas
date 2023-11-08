@@ -3,10 +3,8 @@
 <mapper namespace="com.sellas.web.myPage.MyPageDAO">
 
 <select id="findId" parameterType="String" resultType="com.sellas.web.myPage.ReviewDTO">
-
 SELECT pno, tno, pseller, pbuyer, pstate FROM payment
 WHERE tno=#{tno} AND pstate=0
-
 </select>
 
 
@@ -72,7 +70,6 @@ WHERE r.rno=#{rno} AND r.mwriter=#{uuid}
 </select>
 
 
-
 <select id="getSell" parameterType="String" resultType="Map">
 SELECT t.*, r.* , ti.timage
 FROM trade t
@@ -103,17 +100,27 @@ WHERE w.muuid =#{uuid} AND ti.tthumbnail = 0
 
 
 <insert id="addWish" parameterType="Map">
-
 INSERT INTO wishlist (tno, muuid)
 VALUES(#{tno}, #{muuid})
-
 </insert>
 
 <delete id="delWish" parameterType="Map">
 DELETE FROM wishlist WHERE muuid=#{muuid} AND tno=#{tno}
-
 </delete>
 
+
+<select id="getMyPost" parameterType="String" resultType="Map">
+	SELECT * FROM boardview
+	WHERE mnickname=#{nickname}
+	
+</select>
+
+<select id="getMyComment" parameterType="String" resultType="Map">
+	SELECT c.*, b.sno
+	FROM commentview c
+	JOIN board b ON c.bno = b.bno
+	WHERE mnickname=#{nickname}
+</select>
 
 
 </mapper>

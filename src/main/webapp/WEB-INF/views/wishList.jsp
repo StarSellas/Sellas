@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="./css/mypageList.css">
     <script src="./js/jquery-3.7.0.min.js"></script>
     <script src="../js/wishlist.js"></script>
+    <link rel="stylesheet" href="./css/mypageList.css">
 </head>
 <body>
     <!-- Navigation-->
@@ -92,8 +93,12 @@
                                             </div>
                                         </div>
                                         <input type="hidden" value="${row.tno}" class="normalTno">
+                                    	<div class="card-text">
+								<c:if test="${row.tnormalstate eq 0 }">판매중</c:if>
+								<c:if test="${row.tnormalstate eq 1 }">거래중</c:if>
+								<c:if test="${row.tnormalstate eq 2 }">판매완료</c:if>
+							</div>
                                     </div>
-                                    ${row.tnormalstate}
                                     <c:choose>
                                         <c:when test="${row.wno eq 0 or empty row.wno}">
                                             위시리스트가 없습니다.

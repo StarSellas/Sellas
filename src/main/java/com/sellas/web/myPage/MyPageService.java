@@ -108,6 +108,14 @@ public class MyPageService {
 		return myPageDAO.getWish(uuid);
 	}
 
+	public List<Map<String, Object>> getMyPost(String uuid) {
+		return myPageDAO.getMyPost(uuid);
+	}
+
+	public List<Map<String, Object>> getMyComment(String uuid) {
+		return myPageDAO.getMyComment(uuid);
+	}
+
 	
 
 	

@@ -20,11 +20,13 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
+<script src="./js/jquery-3.7.0.min.js"></script>
+
 
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="./css/mypage.css">
+<link rel="stylesheet" href="../css/profile.css">
 
 </head>
 <body>
@@ -67,53 +69,54 @@
 	<header> </header>
 	<!-- Section-->
 	<section class="py-5">
-
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
-
-			<div class="nav">
-				<div class="user-img">
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+			<div class="d-flex inside-bar align-items-center">
+				<div class="back col-auto" onclick="location.href='/'">
+				<a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
 				</div>
-				<div class="user-nickname">${nickname}</div>
-				<div class="user-level">
-				<c:if test="${exp < 15}">아기고래</c:if>
-								<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
-								<c:if test="${exp > 20 }">슈퍼고래</c:if>
-				</div>
-
-				<button class=profile onclick="window.location.href='profile'">프로필보기</button>
+				<div class="location col">${sessionScope.mnickname}님의 활동내역</div>
 			</div>
+			
+		<div class="index">	
+		<ul class="uldix">
+			<li class="my showPostList on">내 글 보기</li>
+			<li class="my showCommentList">내 댓글보기</li>
+		</ul>
 		</div>
-		    <div class="card">
-        <div class="card-body">
-            <p class="card-text">여기가 웨일페이충전구역임</p>
-        </div>
-        </div>
-		        <h6>나의 거래</h6>
-		<div class="movedetail">
-<div class="listdiv" onclick="location.href='./getwish'">
-❤️ 위시리스트
-</div>
-<div class="listdiv" onclick="location.href='./getsell'">
-📃 판매내역
-</div>
-<div class="listdiv" onclick="location.href='./getbuy'">
-🧺 구매내역
-</div>
-<div class="listdiv" onclick="location.href='./getaction'">
-⌛ 경매내역
-</div>
-</div>
-		        <h6>나의 활동</h6>
-		<div class="movedetail">
-<div class="listdiv" onclick="location.href='./myActivities'">
-📝 활동내역
-</div>
-</div>
+		
+			<div class="postList">
+			<div class="rabel">내글목록</div>
+			<div class="review-div">
+			<div>
 
 
+<c:forEach items="${myPost}" var="p">
+			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${p.bno }'">
+			<div class=>${p.sno}</div>
+			<div class="btitle">${p.btitle}</div>
+			<div class="bdate">${p.bdate}</div>
+			<div class="commentcount">${p.commentcount}</div>
+				</div>
+			</c:forEach>
+			</div>
+				</div>
+			</div>
+			
+			<div class="commentList">
+				<div class="rabel">내 댓글 목록</div>
 
-
+			<c:forEach items="${myComment}" var="c">
+			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${c.bno }'">
+			<div class=>${c.bno}</div>
+			<div class=>${c.sno}</div>
+			<div class="btitle">${c.ccontent}</div>
+			<div class="bdate">${c.cdate}</div>
+				</div>
+			</c:forEach>
+			</div>
+			
+			
+		</div>
 
 	</section>
 	<!-- Footer-->
@@ -130,6 +133,25 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
-	<script src="js/scripts.js"></script>
+	<script>
+	$(function() {
+		
+		$(".commentList").hide();
+	
+	$(".my").click(function() {
+		alert("!");
+	
+		$(this).addClass("on");
+		$(this).siblings("li").removeClass("on");
+		if ($(this).hasClass("showPostList")) {
+			$(".postList").show();
+			$(".commentList").hide();
+		} else if ($(this).hasClass("showCommentList")) {
+			$(".postList").hide();
+			$(".commentList").show();
+		}
+	})
+	});
+	</script>
 </body>
 </html>

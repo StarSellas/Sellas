@@ -37,4 +37,8 @@ public interface MyPageDAO {
 
 	Map<String, Object> reviewDetailByMe(Map<String, Object> map);
 
+	List<Map<String, Object>> getMyPost(String uuid);
+
+	List<Map<String, Object>> getMyComment(String uuid);
+
 }

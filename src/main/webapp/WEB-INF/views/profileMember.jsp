@@ -71,8 +71,8 @@
 
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="d-flex inside-bar align-items-center">
-				<div class="back col-auto" onclick="location.href='/main'">
-					<i class="xi-angle-left xi-x"></i>
+				<div class="back col-auto" onclick="location.href='/'">
+				<a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
 				</div>
 				<div class="location col">${nickname}님의 프로필</div>
 			</div>
@@ -103,8 +103,6 @@
 			<div class="reviewList">
 			<div class="rabel">받은 거래 후기</div>
 			<div class="review-div">
-			${profileReview}여기뭐뜨는데?
-			console.log(${profileReview eq null});
 			<div>
 			<c:if test="${empty profileReview}">
 			받은 거래 후기가 없어요
