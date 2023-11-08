@@ -76,17 +76,17 @@ FROM trade t
 JOIN tradeimage ti ON t.tno = ti.tno
 LEFT JOIN payment p ON t.tno = p.tno
 LEFT JOIN review r ON r.pno = p.pno
-WHERE t.muuid =#{uuid}  AND ti.tthumbnail = 0
+WHERE t.muuid =#{uuid}  AND ti.tthumbnail = 0 AND (r.mwriter IS NULL OR r.mwriter !=#{uuid})
 </select>
 
 
 <select id="getBuy" parameterType="String" resultType="Map">
-SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, rno
+SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, r.rno, r.mwriter
 FROM payment p
 LEFT JOIN review r ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
 JOIN tradeimage ti ON t.tno = ti.tno
-WHERE pbuyer=#{uuid} AND pstate = 0 AND ti.tthumbnail = 0
+WHERE pbuyer=#{uuid} AND pstate = 0 AND ti.tthumbnail = 0 AND (r.mwriter IS NULL OR r.mwriter !=#{uuid})
 </select>
 
 
