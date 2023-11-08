@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.auction.AuctionDAO">
+
+<select id="getItemCategoryList" resultType="Map">
+	SELECT *
+	FROM itemcategory
+	ORDER BY ino
+</select>
+
+<sql id="auctionListBaseSQL">
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname,
+	COALESCE(auctionhistory.abidprice, 0) AS abidprice,
+	COALESCE(auctionhistory.abidprice + trade.tauctionminbidunit, trade.tauctionstartprice) AS minbidprice
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+		LEFT JOIN auctionhistory
+		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
+	WHERE trade.ttype = 1
+</sql>
+
+<select id="getAuctionItemList" resultType="Map">
+	<include refid="auctionListBaseSQL"/>
+</select>
+
+<select id="getAuctionItemListPriceDESC" resultType="Map">
+	<include refid="auctionListBaseSQL"/>
+	ORDER BY minbidprice DESC
+</select>
+
+<select id="getAuctionItemListPriceASC" resultType="Map">
+	<include refid="auctionListBaseSQL"/>
+	ORDER BY minbidprice ASC
+</select>
+
+<select id="getAuctionItemListReadDESC" resultType="Map">
+	<include refid="auctionListBaseSQL"/>
+	ORDER BY trade.tread DESC
+</select>
+
+<select id="auctionItemDetail" parameterType="Object" resultType="Map">
+	SELECT trade.tno, trade.ttitle, trade.tcontent, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.muuid, member.mnickname, itemcategory.ino, itemcategory.iname,
+	COALESCE(auctionhistory.abidder, null) AS abidder,
+	COALESCE(auctionhistory.abidprice, 0) AS abidprice
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+		LEFT JOIN auctionhistory
+		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
+	WHERE trade.ttype = 1 AND trade.tno = #{tno}
+</select>
+
+<select id="auctionBiddingInfo" parameterType="Map" resultType="Map">
+	SELECT trade.tno, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mbalance,
+	COALESCE(auctionhistory.ano, null) AS ano,
+	COALESCE(auctionhistory.abidder, null) AS abidder,
+	COALESCE(auctionhistory.abidprice, 0) AS abidprice
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = #{muuid}
+		LEFT JOIN auctionhistory
+		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
+	WHERE trade.ttype = 1 AND trade.tno = #{tno}
+</select>
+
+<update id="increaseRead" parameterType="Integer">
+	UPDATE trade
+	SET tread = tread + 1
+	WHERE tno = #{tno}
+</update>
+
+<update id="withdrawBalance" parameterType="Map">
+	UPDATE member
+	SET mbalance = mbalance - #{bidPrice}
+	WHERE muuid = #{muuid}
+</update>
+
+<update id="restoreBalance" parameterType="Map">
+	UPDATE member
+	SET mbalance = mbalance + #{abidprice}
+	WHERE muuid = #{abidder}
+</update>
+
+<update id="changeHistoryState" parameterType="Map">
+	UPDATE auctionhistory
+	SET astate = 1
+	WHERE ano = #{ano}
+</update>
+
+<insert id="addBiddingHistory" parameterType="Map">
+	INSERT INTO auctionhistory (tno, abidder, abidprice, abidcharge)
+	VALUES (#{tno}, #{muuid}, #{bidPrice}, #{bidPrice}*0.1)
+</insert>
+
+</mapper>

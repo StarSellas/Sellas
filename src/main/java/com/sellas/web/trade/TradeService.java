@@ -11,11 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.sellas.web.util.Util;
+
 @Service
 public class TradeService {
 	
 	@Autowired
 	private TradeDAO tradeDAO;
+	@Autowired
+	private Util util;
 	
 	
 	/* 거래 물품 등록 */
@@ -49,5 +53,21 @@ public class TradeService {
         	default:	// 등록 실패
         		return 0;
         }
+	}
+
+	public boolean checkBalance(int price) {
+
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+		String muuid = session.getAttribute("muuid").toString();
+		if(util.checkLogin(muuid)) {
+			int balance = tradeDAO.checkBalance(muuid);
+			if(balance >= price) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 }

@@ -53,10 +53,20 @@ public class Util {
 	}
 	
 	/* 로그인 확인 */
+	
+	// 로그인 상태일 때 true 리턴
 	public boolean checkLogin() {
 		
 		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
 
 		return session.getAttribute("muuid") != null;
+	}
+	
+	// 로그인 정보가 일치할 때 true 리턴
+	public boolean checkLogin(String muuid) {
+		
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+
+		return checkLogin() && session.getAttribute("muuid").equals(muuid);
 	}
 }

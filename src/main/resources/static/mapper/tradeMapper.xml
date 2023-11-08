@@ -18,4 +18,10 @@
 	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{auctionStartPrice}, #{auctionMinBidUnit}, 0)
 </insert>
 
+<select id="checkBalance" parameterType="String" resultType="Integer">
+	SELECT mbalance
+	FROM member
+	WHERE muuid=#{muuid}
+</select>
+
 </mapper>

@@ -30,7 +30,7 @@
 				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>
-	<!-- Header-->
+		<!-- Header-->
 		<header>
 
 		</header>

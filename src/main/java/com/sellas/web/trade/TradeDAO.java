@@ -14,4 +14,6 @@ public interface TradeDAO {
 
 	int addAuctionTradeItem(Map<String, Object> map);
 
+	int checkBalance(String attribute);
+
 }
