@@ -29,7 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class NormalController {
 	@Autowired
 	private NormalService normalService;
-
+	
+	@GetMapping("menu")
+	public String menu() {
+		return "menu";
+	}
+	
 	// main.jsp로 보내주는 메소드입니다.
 	@GetMapping("/")
 	public String index(Model model, @RequestParam(name = "sort", defaultValue = "0") int sort, HttpSession session) {

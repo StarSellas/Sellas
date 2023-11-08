@@ -179,6 +179,7 @@
    
    $(function() {
 	   
+	   console.log("tno : " + $(".rowNum:first").attr("data-tno"))
 	    let currentPage = 1;
    		let isBottomHandled = false;
    	

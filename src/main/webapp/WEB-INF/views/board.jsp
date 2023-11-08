@@ -22,26 +22,28 @@
         <!-- ******************* 추가 *********************** -->
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
         <script src="./js/jquery-3.7.0.min.js"></script>
-
-		<script type="text/javascript">
+        
+        		<script type="text/javascript" defer>
             
 			
             $(function(){
             	
+            	let cate;
             	
             	// 검색단어 검색창에 남기기
             	let searchCate = "${param.searchCate}";
-            	if (searchCate != null){
+            	let search = "${param.search}";
+            	if (searchCate != null && search != null){
 					$(".swrite").val(search);
             	} 
 				
             	// 글번호 숨김
             	$(".rowNum").hide();
             	
-            	
             	// 스크롤 페이징
             	let currentPage = 1;	// 현재페이지
             	let isBottomHandled = false;	// 연속적인 요청 방지용
+            	
             	
             	// 스크롤 이벤트 발생
             	$(window).on("scroll",function(){
@@ -51,7 +53,7 @@
             	    let documentHeight=$(document).height(); 	//문서 전체의 높이
             	    
             	    let isBottom=scrollTop+windowHeight + 10 >= documentHeight;	// 스크롤완료여부
-					
+            	    
             	    if(isBottom && !isBottomHandled){	
             	    	
             	    	nextPage(currentPage);	// 다음페이지 불러오는 함수	실행
@@ -66,13 +68,21 @@
             // 다음페이지 불러오는 함수	
            	 function nextPage(currentPage){
             	
-               let cate = ${param.cate}
+           		if(${empty param}){
+            		cate = 0;
+            	} else {
+            		cate = $(".cateNum").val();
+            		console.log(cate);
+            	}
+           		
                let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno ***** 확인용 *****
+               let lastbno = firstbno; 
                let lastRow = $(".boardRow:last");					// 최하단row
                let count = $(".boardRow").attr("data-count");		// 해당 카테고리의 글갯수
                let wholePage = Math.ceil(count/10);					// 전체페이지수(글의갯수/10의 올림) 
                console.log("wholePage : " + wholePage);
                console.log("count : " + count);
+               console.log("firstbno : " + firstbno);
                
         		
                   // 다음페이지가 없다면 진행X
@@ -87,8 +97,8 @@
                      
                      data.currentPage = currentPage;	// ***** 확인용 *****
 
-                  	 let lastbno = $(".rowNum:last").attr("data-bno"); // 최하단글bno
-                     //console.log("변경 lastbno : " + lastbno);
+                  	 lastbno = $(".rowNum:last").attr("data-bno"); // 최하단글bno
+                     console.log("변경 lastbno : " + lastbno);
                   	
                   	 // 서버로 보낼것들 data에 담기
                      data.cate = cate;
@@ -151,8 +161,7 @@
             	
             });          
             
-            </script>
-         
+            </script>  
         
     </head>
     <body>
@@ -164,6 +173,8 @@
             <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                 
+                 <a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
+                
 				<!-------------- 게시판 검색 & 카테고리 드롭다운 -------------->
 				<div class="searchBox">
 					<form action="./board" method="get" class="searchFrom">
@@ -173,7 +184,7 @@
 							<option value="writer" data-scno="3">글쓴이</option>
 						</select>
 						<input type="text" name="search" class="swrite">
-						<input type="hidden" name="cate" value="${param.cate }">
+						<input type="hidden" name="cate" value="${param.cate }" class="cateNum">
 						<button type="submit" class="swriteButton">🐋</button>			
 					</form>
 				</div>
@@ -220,40 +231,22 @@
             <div class="boardListBox">
                <table id="boardList">
 					
-					<!-------------- 메인게시판(조회순) -------------->
+					<!-------------- 메인게시판(전체글_최신순) -------------->
                		<c:if test="${empty param}">
+               		
                			<c:forEach items="${mainList}" var="mainList">
 		                     <tr class="boardRow" data-count="${mainList.count}">
-		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.rowNum}</td>
+		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	${mainList.btitle} <span class="commentcount">(${mainList.commentcount})</span>
 		                        	<div class="mnickname">${mainList.mnickname}</div>
 		                        </td>
-		                        <td class="bdateBox">
-		                       		<div class="mainbdate">${mainList.bdate}</div>
-		                       		<div class="bread">${mainList.bread}</div>
-		                        </td>
+		                       	<td class="bdate">${mainList.bdate}</td>
 		                     </tr>
+		                     
                   		</c:forEach>
                		</c:if>
                		
-               		<!--------------  여기에다가 조건추가  param.search 값 판별-------------->
-               		
-             		<c:if test="${param.searchCate ne null && param.search ne null && param.searchCate ne null}">
-             		
-						<c:forEach items="${searchList}" var="item">
-							<tr class="boardRow" data-count="${item.scount}">
-		                        <td class="rowNum" data-bno="${item.bno}">${item.bno}</td>
-		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${item.sno}&bno=${item.bno }'">
-		                        	 ${item.btitle} <span class="commentcount">(${item.commentcount})</span>
-		                        	<div class="mnickname">${item.mnickname}</div>
-		                        </td>
-		                        <td class="bdate">${item.bdate}</td>
-		                     </tr>
-	             		</c:forEach>
-	             		
-             		</c:if> 
-             		
              		<!-------------- 카테고리별 게시판(공지, 나눔, 판매요청) -------------->
              		
              		<c:if test="${param.cate ne null && param.searchCate eq null}">
@@ -271,6 +264,22 @@
                   		
              		</c:if>
              		
+             		<!--------------카테고리별 게시판 검색결과 -------------->
+             		<c:if test="${param.searchCate ne null && param.search ne null && param.searchCate ne null}">
+             		
+						<c:forEach items="${searchList}" var="searchList">
+							<tr class="boardRow" data-count="${searchList.scount}">
+		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
+		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
+		                        	 ${searchList.btitle} <span class="commentcount">(${searchList.commentcount})</span>
+		                        	<div class="mnickname">${searchList.mnickname}</div>
+		                        </td>
+		                        <td class="bdate">${searchList.bdate}</td>
+		                     </tr>
+	             		</c:forEach>
+	             		
+             		</c:if> 
+             		
                </table>
               
             </div>
@@ -281,5 +290,6 @@
             </div>
         </section>
         
-        
-</html></html>
+  </body>
+  
+</html>

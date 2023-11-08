@@ -10,7 +10,7 @@ public interface BoardDAO {
 
 	List<Map<String, Object>> boardList(Map<String, Object> map);
 
-	List<Map<String, Object>> setupboardList(Map<String, Object> map);
+	List<Map<String, Object>> setupboardList();
 
 	List<Map<String, Object>> mainList(Map<String, Object> map);
 	
@@ -43,6 +43,8 @@ public interface BoardDAO {
 	int commentWrite(Map<String, Object> map);
 
 	int commentEdit(Map<String, Object> map);
+
+	List<Map<String, Object>> mnextPage(Map<String, Object> map);
 
 
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,33 +37,36 @@ public class BoardController {
 	// (카테고리별)게시판페이지
 	@GetMapping("/board")
 	public String board(@RequestParam(value = "cate", required = false, defaultValue = "0") int cate,
-						@RequestParam(value = "search", required = false, defaultValue = "noSearch") String search,
+						@RequestParam(value = "search", required = false) String search,
 						@RequestParam Map<String, Object> map, Model model) {
 
-		System.out.println(cate); // 0
-		System.out.println(search); // noSearch
+		//System.out.println(cate); // 0
+		//System.out.println(search); // noSearch
 		map.put("cate", cate);
-		System.out.println("map : " + map);	// map : {cate=0, search=noSearch}
+		
+		//System.out.println("map : " + map);	// map : {cate=0, search=noSearch}
 			
 		// 메인게시판일때 (조회순 10개)
 		if (cate == 0) {
 			
 			System.out.println("메인보드페이지 cate가 0이져");
 			List<Map<String, Object>> mainList = boardService.mainList(map);
-			List<Map<String, Object>> setupboardList = boardService.setupboardList(map);
+			List<Map<String, Object>> setupboardList = boardService.setupboardList();
+			List<Map<String, Object>> searchList = boardService.searchList(map);
+
 			model.addAttribute("mainList", mainList);
 			model.addAttribute("board", setupboardList);
-				
-			return "board";
+			model.addAttribute("searchList", searchList);
 			
+			return "board";
 		} 
 
-		System.out.println("search있을때 map : " + map); // {searchCate=title, search=파이팅, cate=2}
+		//System.out.println("search있을때 map : " + map); // {searchCate=title, search=파이팅, cate=2}
 		List<Map<String, Object>> boardList = boardService.boardList(map);
-		List<Map<String, Object>> setupboardList = boardService.setupboardList(map);
+		List<Map<String, Object>> setupboardList = boardService.setupboardList();
 		List<Map<String, Object>> searchList = boardService.searchList(map);
-		System.out.println("searchList : " + searchList);
-		System.out.println("scount : " + searchList.get(0).get("scount"));
+		//System.out.println("searchList : " + searchList);
+		//System.out.println("scount : " + searchList.get(0).get("scount"));
 
 		// 게시판카테고리, 카테고리별 게시글
 		model.addAttribute("board", setupboardList);
@@ -76,10 +80,19 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("/nextPage")
 	public String nextPage(@RequestParam Map<String, Object> map) {
-		// System.out.println(map);
-		// {cate=2, lastbno=68, firstbno=98, count=25, nextpage=2}
-
+		System.out.println(map);
+		// {cate=2, lastbno=68, firstbno=98, count=25}
+		int cate = Integer.parseInt(String.valueOf(map.get("cate"))); 
+		
 		JSONObject json = new JSONObject();
+		
+		if(cate == 0) {
+			List<Map<String, Object>> nextList = boardService.mnextPage(map);
+			//System.out.println("메인다음리스트 : " + nextList);
+			json.put("list", nextList);
+			return json.toString();
+		}
+		
 		List<Map<String, Object>> nextList = boardService.nextPage(map);
 		// System.out.println("nextList : " + nextList);
 		json.put("list", nextList);
@@ -95,7 +108,7 @@ public class BoardController {
 			return "redirect/login";
 		}
 
-		List<Map<String, Object>> setupboardList = boardService.setupboardList(map);
+		List<Map<String, Object>> setupboardList = boardService.setupboardList();
 		model.addAttribute("board", setupboardList);
 
 		return "boardWrite";
@@ -174,7 +187,7 @@ public class BoardController {
 				System.out.println("업로드완" + imgResultCount);
 			} // if(!boardimg.isEmpty()
 
-			return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
+			return "redirect:/board?cate=" + map.get("cate");
 
 		} // if(writeResult == 1)
 		System.out.println("글쓰기&파일업로드 실패");

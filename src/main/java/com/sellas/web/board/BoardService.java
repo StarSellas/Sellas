@@ -16,8 +16,8 @@ public class BoardService {
 		return boardDAO.boardList(map);
 	}
 
-	public List<Map<String, Object>> setupboardList(Map<String, Object> map) {
-		return boardDAO.setupboardList(map);
+	public List<Map<String, Object>> setupboardList() {
+		return boardDAO.setupboardList();
 	}
 	
 	public List<Map<String, Object>> mainList(Map<String, Object> map) {
@@ -121,6 +121,10 @@ public class BoardService {
 
 	public int commentEdit(Map<String, Object> map) {
 		return boardDAO.commentEdit(map);
+	}
+
+	public List<Map<String, Object>> mnextPage(Map<String, Object> map) {
+		return boardDAO.mnextPage(map);
 	}
 
 
