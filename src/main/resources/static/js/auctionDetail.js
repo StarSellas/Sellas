@@ -1,5 +1,4 @@
 
-
 /* 입찰 금액 유효성 검사 */
 // 입찰 금액 input focusout 이벤트 발생 시 입력값 유효성 검사
 document.getElementById("bidPrice").addEventListener("focusout", validateBidding);
