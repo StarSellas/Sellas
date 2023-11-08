@@ -432,7 +432,6 @@ public class NormalController {
 				json.put("nomoney", 1);
 			}
 
-			if (mamount >= Integer.parseInt(String.valueOf(map.get("tnormalprice")))) {
 				// 이미 채팅창이 생성되어 있는거 아녀??
 				int paymentCount = normalService.normalTradePaymentCountCount(map);
 				System.out.println("paymentCount의 값은 : " + paymentCount);
@@ -444,7 +443,6 @@ public class NormalController {
 				}
 
 				json.put("success", 1);
-			} // if(changeStateForTrade ==1 ) 끝
 
 			// }//if(takeMamount == 1) 끝
 		} else {
