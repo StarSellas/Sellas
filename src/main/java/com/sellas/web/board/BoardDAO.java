@@ -8,11 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface BoardDAO {
 
-	List<Map<String, Object>> boardList(int cate);
+	List<Map<String, Object>> boardList(Map<String, Object> map);
 
-	List<Map<String, Object>> setupboardList(int cate);
+	List<Map<String, Object>> setupboardList(Map<String, Object> map);
 
-	List<Map<String, Object>> mainList(int cate);
+	List<Map<String, Object>> mainList(Map<String, Object> map);
+	
+	List<Map<String, Object>> searchList(Map<String, Object> map);
 	
 	List<Map<String, Object>> nextPage(Map<String, Object> map);
 	
@@ -41,6 +43,7 @@ public interface BoardDAO {
 	int commentWrite(Map<String, Object> map);
 
 	int commentEdit(Map<String, Object> map);
+
 
 
 }

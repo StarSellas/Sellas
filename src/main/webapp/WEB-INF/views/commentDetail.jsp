@@ -82,8 +82,31 @@
 	    	
 	    		}) // cedit 클릭이벤트
 	    	
+	    		// 댓글쓰기 유효성 검사 (로그인&빈칸)
+        		$(".cWriteBtn").click(function(){
+        			
+        			let muuid = $(this).parent().siblings(".muuid").val();
+        			let cContent = $(this).parent().siblings(".cContent").val();
+					//alert("계정 : " + muuid + " / 댓글 : " + cContent)
+        			
+        			if(muuid == "" || muuid == null){
+        				
+	        			if(confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")){
+		        			location.href="/login"
+	        			} 
+	        			return false;
+        			}
+        			
+					if(cContent == "" || cContent == null){
+						alert("댓글을 입력해주세요");
+						return false;
+					}
+        			//alert("댓글등록")
+        		});
+	    	
+	    	
 	    	});
-        
+	    	
         </script>
         
     </head>
@@ -101,11 +124,9 @@
 					<c:forEach items="${comments }" var="comments">
 						<div class="commentBox">
 							<div class="cContentBox">
-								<input type="hidden" class="cno" value="${comments.cno }" />
-								<input type="hidden" class="bno" value="${comments.bno }" />
-								<div>${comments.mnickname }
-									// <span>${comments.cdate }</span>
-								</div>
+								<input type="hidden" class="cno" value="${comments.cno }" /> <input
+									type="hidden" class="bno" value="${comments.bno }" />
+								<div class="chead">${comments.mnickname }<span class="cdate">${comments.cdate }</span></div>
 								<div class="content">${comments.ccontent }</div>
 							</div>
 							<div class="commentsBtn">

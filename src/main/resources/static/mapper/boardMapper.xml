@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sellas.web.board.BoardDAO">
 	
-	<select id="boardList" parameterType="Integer" resultType="Map">
+	<select id="boardList" parameterType="Map" resultType="Map">
 		SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count
 			FROM(
 				SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
 				b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
-				WHERE b.sno = #{cate}
+				WHERE b.sno = #{cate} 				
 				ORDER BY b.bno ASC) bb
-			ORDER BY bb.bno DESC
-			LIMIT 0, 10
+		ORDER BY bb.bno DESC
+		LIMIT 0, 10
 	</select>
 	
 	<select id="nextPage" parameterType="Map" resultType="Map">
@@ -23,12 +23,36 @@
 		]]>
 	</select>
 	
-	<select id="setupboardList" parameterType="Integer" resultType="Map">
+	<select id="setupboardList" parameterType="Map" resultType="Map">
 		SELECT * FROM setupboard 
 	</select>
 	
 	<select id="mainList" parameterType="Integer" resultType="Map">
-		SELECT * FROM boardview	ORDER BY bread DESC	LIMIT 0, 20
+		SELECT *
+			FROM(
+				SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
+				b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
+				ORDER BY b.bread DESC) bb
+			ORDER BY bb.bread DESC
+			LIMIT 0, 10
+	</select>
+
+	<select id="searchList" parameterType="Map" resultType="Map">
+		SELECT *, (SELECT COUNT(*) FROM boardview
+		    WHERE sno = #{cate}
+		    <choose>
+		        <when test="searchCate == 'title'">AND btitle LIKE CONCAT('%', #{search}, '%')</when>
+		        <when test="searchCate == 'content'">AND bcontent LIKE CONCAT('%', #{search}, '%')</when>
+		        <when test="searchCate == 'writer'">AND mnickname LIKE CONCAT('%', #{search}, '%')</when>
+		    </choose>) as scount
+		FROM boardview
+		WHERE sno = #{cate}
+		<choose>
+			<when test="searchCate == 'title'">AND btitle LIKE CONCAT('%', #{search}, '%')</when>
+			<when test="searchCate == 'content'">AND bcontent LIKE CONCAT('%', #{search}, '%')</when>
+			<when test="searchCate == 'writer'">AND mnickname LIKE CONCAT('%', #{search}, '%')</when>
+		</choose>
+		ORDER BY bno DESC
 	</select>
 
 	<select id="boardDetail" parameterType="Map" resultType="Map">
@@ -86,6 +110,7 @@
 	<select id="commentList" parameterType="Map" resultType="Map">
 		SELECT * FROM commentview
 		WHERE bno=#{bno}
+		ORDER BY cno
 	</select>
 
 	<update id="commentDelete" parameterType="Map">

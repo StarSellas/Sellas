@@ -1,10 +1,35 @@
 @charset "UTF-8";
 
-.cateBox{
-	width: 80%;
+.HeaderBox{
+	width: 90%;
 	padding: 0;
-	float: right;
+	margin: auto;
+	display: flex;
+	align-items: flex-end;
 }
+.searchBox{
+	width: inherit;
+}
+.searchFrom{
+	width: inherit;
+	display: flex;
+	align-items: flex-end; 
+}
+.swrite, .searchCate{
+	margin: 0;
+	padding: 1px;
+	height: inherit;
+}
+
+#navbarDropdown{
+	text-decoration: none;
+	color: black;
+	padding-top: 0;
+	margin-right: 5px;
+}
+
+/****************** board *******************/
+
 .boardListBox{
 	margin: auto;
 	padding: 0;

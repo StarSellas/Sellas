@@ -45,7 +45,6 @@
 					
 				})
 				
-				
 				// 글쓰기 유효성 검사 (로그인&빈칸)
         		$(".bwriteButton").click(function(){
         			

@@ -35,7 +35,7 @@
 	margin: 10px 0 5px 10px;
 	font-size: 14px;
 	color: gray;
-	float: left;
+	flex: 1;
 }
 .mnickname{
 	font-size: 14px;
@@ -46,42 +46,38 @@
 }
 	
 .contentBox{
-	height: 35%;	
+	height: 30%;	
 }
 .bimageBox{
 	margin: 10px;
-	height: 35%;
+	height: 30%;
 }
 .boardImgBox{
 	margin: 10px;
 	text-align: center;
 }
 .boardImg{
-	width: 250px;
+	width: 200px;
 }
 
 .bBtnBox{
-	margin: auto;
+	margin: 5px;;
 	padding: 0;
 	width: inherit;
+	height: 5%;
+	display: flex;
+	align-items: flex-end;
 }
-
-.bedit{
-	float: right;
+.bButtons{
+	display: flex;
+ 	align-items: flex-end;
+}
+.bedit, .bdelete{
+	padding: 0;
+	margin: 5px;
 	border: none;
 	background: transparent;
-	padding: 0;
-}
-.bdeleteBtnBox{
-	margin: 10px;
-	margin-top: 20px;
-}
-.bdelete {
-	padding: 0;
-	border: none; 
-	background: transparent;
 	font-size: 14px;
-	color: gray;
 }
 
 /****************** comments *******************/
@@ -101,7 +97,6 @@
 }
 
 .cWholeBtnBox{
-	border-top: 1px solid #dee2e6;
 	width: 95%;
 }
 .cWholeBtn{
@@ -118,11 +113,14 @@
 	padding: 0;
 	width: inherit;
 	display: flex;
+	align-items: flex-end; 
+	border-top: 1px solid #dee2e6;
 	border-bottom: 1px solid #dee2e6;
 }
 .cContentBox{
 	width: 60%;
 	margin: 5px 10px;
+	flex: 1;
 }
 .chead{
 	margin-bottom: 5px;
@@ -134,20 +132,24 @@
 	font-weight: normal;
 }
 .commentsBtn{
-	margin-left: 5px;
-	float: right;
+	margin-left: 10px;
 	display: flex;
 	align-items: flex-end; 
 }
-.cedit{
-	margin-right: 10px;
-}
+
 .cedit, .cdelete{
 	border: none;
 	background: transparent;
 	padding: 0;
-	margin-bottom: 10px;
+	margin: 0 10px 10px 0;
+	font-size: 13.5px;
 	}
+	
+.moreComments{
+	font-size: 15px;
+	text-align: center;
+	opacity: 60%
+}
 
 /****************** commentsWrite *******************/
 
@@ -157,8 +159,8 @@
 	width: 100%;
 }
 .commentWriteForm{
-	width: inherit;
 	margin: 10px;
+	padding: 0;
 	margin-top: 20px;
 	display: flex;
 }
@@ -168,7 +170,7 @@
 	display: flex;
 }
 .cContent{
-	width: 78%;
+	width: 70%;
 	height: 40px;
 }
 .newcContent{
@@ -180,8 +182,9 @@
   	border: none;
 	background: transparent;
 	padding: 0;
-	margin-left: 10px;
+	padding-left: 10px;
 	margin-bottom: 10px;
+	font-size: 15px;
 }
 .newcWriteBtn{
 	margin-right: 10px;

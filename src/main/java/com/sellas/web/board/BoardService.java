@@ -3,16 +3,8 @@ package com.sellas.web.board;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.mysql.cj.Session;
 
 @Service
 public class BoardService {
@@ -20,16 +12,20 @@ public class BoardService {
 	@Autowired
 	private BoardDAO boardDAO;
 
-	public List<Map<String, Object>> boardList(int cate) {
-		return boardDAO.boardList(cate);
+	public List<Map<String, Object>> boardList(Map<String, Object> map) {
+		return boardDAO.boardList(map);
 	}
 
-	public List<Map<String, Object>> setupboardList(int cate) {
-		return boardDAO.setupboardList(cate);
+	public List<Map<String, Object>> setupboardList(Map<String, Object> map) {
+		return boardDAO.setupboardList(map);
 	}
 	
-	public List<Map<String, Object>> mainList(int cate) {
-		return boardDAO.mainList(cate);
+	public List<Map<String, Object>> mainList(Map<String, Object> map) {
+		return boardDAO.mainList(map);
+	}
+
+	public List<Map<String, Object>> searchList(Map<String, Object> map) {
+		return boardDAO.searchList(map);
 	}
 	
 	public List<Map<String, Object>> nextPage(Map<String, Object> map) {
@@ -126,6 +122,7 @@ public class BoardService {
 	public int commentEdit(Map<String, Object> map) {
 		return boardDAO.commentEdit(map);
 	}
+
 
 
 

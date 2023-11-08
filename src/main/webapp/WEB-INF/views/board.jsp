@@ -25,13 +25,25 @@
 
 		<script type="text/javascript">
             
+			
             $(function(){
-               
+            	
+            	
+            	// 검색단어 검색창에 남기기
+            	let searchCate = "${param.searchCate}";
+            	if (searchCate != null){
+					$(".swrite").val(search);
+            	} 
+				
+            	// 글번호 숨김
             	$(".rowNum").hide();
             	
-            	let currentPage = 1;
-            	let isBottomHandled = false;
             	
+            	// 스크롤 페이징
+            	let currentPage = 1;	// 현재페이지
+            	let isBottomHandled = false;	// 연속적인 요청 방지용
+            	
+            	// 스크롤 이벤트 발생
             	$(window).on("scroll",function(){
 
             		let scrollTop=$(window).scrollTop(); 		// 스크롤된 길이
@@ -39,12 +51,12 @@
             	    let documentHeight=$(document).height(); 	//문서 전체의 높이
             	    
             	    let isBottom=scrollTop+windowHeight + 10 >= documentHeight;	// 스크롤완료여부
-
+					
             	    if(isBottom && !isBottomHandled){	
             	    	
             	    	nextPage(currentPage);	// 다음페이지 불러오는 함수	실행
             	    	currentPage++;
-            	    	isBottomHandled = true;
+            	    	isBottomHandled = true;	// 연속적인 요청 방지용
             	    	
             	    } else if (!isBottom) {
             	    	
@@ -54,11 +66,11 @@
             // 다음페이지 불러오는 함수	
            	 function nextPage(currentPage){
             	
-               let cate = ${param.cate};
+               let cate = ${param.cate}
                let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno ***** 확인용 *****
-               let lastRow = $(".boardRow:last");	// 최하단row
-               let count = $(".boardRow").attr("data-count");	// 해당 카테고리의 글갯수
-               let wholePage = Math.ceil(count/10);	// 전체페이지수(글의갯수/10의 올림) 
+               let lastRow = $(".boardRow:last");					// 최하단row
+               let count = $(".boardRow").attr("data-count");		// 해당 카테고리의 글갯수
+               let wholePage = Math.ceil(count/10);					// 전체페이지수(글의갯수/10의 올림) 
                console.log("wholePage : " + wholePage);
                console.log("count : " + count);
                
@@ -91,8 +103,7 @@
                           success: function(data) {
                         	  
                         	    if (data.list != null) { // 데이터가 있다면 뽑아내기
-                        	        alert("데이터와");
-                        	       
+                        	        //alert("데이터와");
                         	        	
                         	        $(data).each(function() {
                         	        	//console.log("가져온list : " + this.list[0].bno + "~");
@@ -124,14 +135,12 @@
                         	        
                         	        $(".currentPage").text(currentPage); // ***** 페이지확인용 *****
                         	        
-                        	    } // if(data != null)
-                        	    
+                        	    } // if(data.list != null)
                         	}, // success
                           
                           error: function(error) {
                               //alert("에러남");
                           }
-                          
                       }); // ajax
                       
             } // nextPage
@@ -139,6 +148,7 @@
             
             	});	// 스크롤
             
+            	
             });          
             
             </script>
@@ -153,54 +163,68 @@
         
             <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
+                
+				<!-------------- 게시판 검색 & 카테고리 드롭다운 -------------->
+				<div class="searchBox">
+					<form action="./board" method="get" class="searchFrom">
+						<select name="searchCate">
+							<option value="title" data-scno="1">제목</option>
+							<option value="content" data-scno="2">내용</option>
+							<option value="writer" data-scno="3">글쓴이</option>
+						</select>
+						<input type="text" name="search" class="swrite">
+						<input type="hidden" name="cate" value="${param.cate }">
+						<button type="submit" class="swriteButton">🐋</button>			
+					</form>
+				</div>
 
-				<!-- 게시판 카테고리 드롭다운 -->
-				<div class="cateBox">
-		            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 align-items-end" id="cateBar">
-		               <li class="nav-item dropdown">
-		               <c:choose>
-		                  <c:when test="${empty param}">
-		                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
-		                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
-		                     게시판
-		                     </a>
-		                  </c:when>
-		                  <c:otherwise>
-		                     <c:forEach items="${board}" var="board">
-		                        <c:if test="${param.cate eq board.sno}">
-		                           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
-		                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-		                           ${board.sname }
-		                           </a>
-		                         </c:if> 
-		                     </c:forEach>
-		                  </c:otherwise>
-		               </c:choose>
-		               
-		                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-		                     <c:forEach items="${board}" var="board">
-		                        <li class="cateChange"><a class="dropdown-item" href="/board?cate=${board.sno }">${board.sname }</a></li>
-		                     </c:forEach>
-		                  </ul>
-		               </li>
-		            </ul>
-	            </div>
+					<div class="cateBox">
+			            <ul class="navbar-nav" id="cateBar">
+			               <li class="nav-item dropdown">
+			               <c:choose>
+			                  <c:when test="${empty param}">
+			                     <a class="nav-link dropdown-toggle" id="navbarMain" href="#"
+			                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			                     게시판
+			                     </a>
+			                  </c:when>
+			                  <c:otherwise>
+			                     <c:forEach items="${board}" var="board">
+			                        <c:if test="${param.cate eq board.sno}">
+			                           <a class="dropdown-toggle" id="navbarDropdown" href="#"
+			                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			                           ${board.sname }
+			                           </a>
+			                         </c:if> 
+			                     </c:forEach>
+			                  </c:otherwise>
+			               </c:choose>
+			               
+			                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+			                     <c:forEach items="${board}" var="board">
+			                        <li class="cateChange"><a class="dropdown-item" href="/board?cate=${board.sno }">${board.sname }</a></li>
+			                     </c:forEach>
+			                  </ul>
+			               </li>
+			            </ul>
+		            </div>
+		            
             
             <div class="writeBtnBox">
             	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
-               		<button class="writeBtn" onclick="location.href='/boardWriteForTest?cate=${param.cate}'">글쓰기</button>
+               		<button class="writeBtn" onclick="location.href='/boardWrite?cate=${param.cate}'">글쓰기</button>
                	</c:if>
             </div>
             
+          
             <div class="boardListBox">
                <table id="boardList">
-	               <thead>
-						<tr class="addList"></tr>
-					</thead>
+					
+					<!-------------- 메인게시판(조회순) -------------->
                		<c:if test="${empty param}">
                			<c:forEach items="${mainList}" var="mainList">
 		                     <tr class="boardRow" data-count="${mainList.count}">
-		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
+		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.rowNum}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	${mainList.btitle} <span class="commentcount">(${mainList.commentcount})</span>
 		                        	<div class="mnickname">${mainList.mnickname}</div>
@@ -213,7 +237,27 @@
                   		</c:forEach>
                		</c:if>
                		
-             		<c:if test="${param.cate ne null }">
+               		<!--------------  여기에다가 조건추가  param.search 값 판별-------------->
+               		
+             		<c:if test="${param.searchCate ne null && param.search ne null && param.searchCate ne null}">
+             		
+						<c:forEach items="${searchList}" var="item">
+							<tr class="boardRow" data-count="${item.scount}">
+		                        <td class="rowNum" data-bno="${item.bno}">${item.bno}</td>
+		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${item.sno}&bno=${item.bno }'">
+		                        	 ${item.btitle} <span class="commentcount">(${item.commentcount})</span>
+		                        	<div class="mnickname">${item.mnickname}</div>
+		                        </td>
+		                        <td class="bdate">${item.bdate}</td>
+		                     </tr>
+	             		</c:forEach>
+	             		
+             		</c:if> 
+             		
+             		<!-------------- 카테고리별 게시판(공지, 나눔, 판매요청) -------------->
+             		
+             		<c:if test="${param.cate ne null && param.searchCate eq null}">
+             		
 						<c:forEach items="${list}" var="list">
 		                     <tr class="boardRow" data-count="${list.count}">
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
@@ -224,15 +268,15 @@
 		                        <td class="bdate">${list.bdate}</td>
 		                     </tr>
                   		</c:forEach>
+                  		
              		</c:if>
+             		
                </table>
               
             </div>
             
-            <div class="nextBtnBox">
-            	<div class="currentPage">1</div>
-            	<button class="nextbutton">다음</button>
-			</div>
+            <div class="nextBtnBox"> 현재페이지 : <span class="currentPage">1</span></div>
+            
         		 </div>
             </div>
         </section>

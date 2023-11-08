@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -102,9 +102,13 @@
         			
         			let muuid = $(this).parent().siblings(".muuid").val();
         			let cContent = $(this).parent().siblings(".cContent").val();
-					
+					//alert("계정 : " + muuid + " / 댓글 : " + cContent)
+        			
         			if(muuid == "" || muuid == null){
-	        			alert("로그인이 필요한 서비스입니다.");
+        				
+	        			if(confirm("로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?")){
+		        			location.href="/login"
+	        			} 
 	        			return false;
         			}
         			
@@ -114,7 +118,6 @@
 					}
         			//alert("댓글등록")
         		});
-        	
         	});
 			 
         </script>
@@ -132,7 +135,6 @@
                     
 
 				<!-------------------- 게시글창 -------------------->
-				
 				<div class="detailContainer justify-content-center">
 					
 					<div class="titleBox">
@@ -163,7 +165,10 @@
 					<div class="bBtnBox">
 						<span class="bread">조회 : ${bdetail.bread }</span>
 						<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq bdetail.mnickname}">
-							<button class="bedit" onclick="bedit(${bdetail.sno}, ${bdetail.bno})">글수정</button>
+							<div class="bButtons">
+								<button class="bedit" onclick="bedit(${bdetail.sno}, ${bdetail.bno})">글수정</button>
+								<button class="bdelete" onclick="bdelete(${bdetail.sno}, ${bdetail.bno})">글삭제</button>
+							</div>
 						</c:if>
 					</div>
 				</div>
@@ -179,22 +184,49 @@
 							<div class="cWholeBtnBox">
 								<button class="cWholeBtn" onclick="commentDetail(${bdetail.sno}, ${bdetail.bno})">댓글 전체보기</button>
 							</div>
-							<c:forEach items="${comments }" var="comments">
-								<div class="commentBox">
-										<div class="cContentBox">
-											<input type="hidden" name="muuid" class="muuid" value="uuid : ${comments.muuid }">
-											<input type="hidden" class="cno" value="${comments.cno }"/>
-											<div class="chead">${comments.mnickname } <span class="cdate">${comments.cdate }</span></div>
-											<div class="content">${comments.ccontent }</div>
+							
+							<c:choose>
+							<c:when test="${bdetail.commentcount gt 5}">
+								<div class="moreComments">... 🐳 ...</div>
+								<c:forEach items="${comments }" var="comments" varStatus="loop" begin="${bdetail.commentcount - 5}" end="${bdetail.commentcount - 1}" step="1">
+									<div class="commentBox">
+											<div class="cContentBox">
+												<input type="hidden" name="muuid" class="muuid" value="uuid : ${comments.muuid }">
+												<input type="hidden" class="cno" value="${comments.cno }"/>
+												<div class="chead">${comments.mnickname } <span class="cdate">${comments.cdate }</span></div>
+												<div class="content">${comments.ccontent }</div>
+											</div>
+											<div class="commentsBtn">
+												<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq comments.mnickname}">
+													<button class="cedit">수정</button>
+													<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
+												</c:if>
+											</div>
+									</div>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+									<c:forEach items="${comments }" var="comments" varStatus="loop">
+										<div class="commentBox">
+											<div class="cContentBox">
+												<input type="hidden" name="muuid" class="muuid"	value="uuid : ${comments.muuid }"> 
+												<input type="hidden" class="cno" value="${comments.cno }" />
+												<div class="chead">${comments.mnickname }
+													<span class="cdate">${comments.cdate }</span>
+												</div>
+												<div class="content">${comments.ccontent }</div>
+											</div>
+											<div class="commentsBtn">
+												<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq comments.mnickname}">
+													<button class="cedit">수정</button>
+													<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
+												</c:if>
+											</div>
 										</div>
-										<div class="commentsBtn">
-											<c:if test="${sessionScope.mnickname ne null && sessionScope.mnickname eq comments.mnickname}">
-												<button class="cedit">수정</button>
-												<button class="cdelete" onclick="cdelete(${comments.cno })">삭제</button>
-											</c:if>
-										</div>
-								</div>
-							</c:forEach>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+							
 						</c:otherwise>
 					</c:choose>
 
@@ -210,9 +242,6 @@
 								</div>
 							</form>
 						</div>
-						<div class="bdeleteBtnBox">
-							<button class="bdelete" onclick="bdelete(${bdetail.sno}, ${bdetail.bno})">글삭제</button>
-                   		</div>
                    </div>
 
                    
