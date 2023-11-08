@@ -75,7 +75,7 @@
                     <c:otherwise>
                         <c:forEach items="${wishList}" var="row">
                             <div class="card mb-3" style="max-width: 400px;">
-                                <div class="row g-0" onclick="location.href='./detail?tno=${row.tno}'">
+                                <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
                                     <div class="col-4">
                                         <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
                                     </div>
