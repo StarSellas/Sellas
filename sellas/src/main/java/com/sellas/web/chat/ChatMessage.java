@@ -20,5 +20,6 @@ public class ChatMessage {
     private String recipient; // 메시지 받을 사람
     private String mnickname; //메시지 보낸 사람의 닉네임
     private String requestMoney;
+
 		
 }
