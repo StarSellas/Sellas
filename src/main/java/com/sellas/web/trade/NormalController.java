@@ -96,6 +96,7 @@ public class NormalController {
 		int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
 		int count = Integer.parseInt(String.valueOf(pmap.get("count")));
 		
+		/********************************* 이부분 지워도 될듯 *********************************/
 		// "sort" 매개변수에 따라 SQL 쿼리를 동적으로 생성
 		String orderBy = "";
 		switch (sort) {
@@ -114,7 +115,9 @@ public class NormalController {
 			break;
 		}
 		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
-
+		
+		/********************************* 이부분 지워도 될듯 *********************************/
+		
 		// ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
 		String muuid = String.valueOf(session.getAttribute("muuid"));
 
@@ -129,6 +132,7 @@ public class NormalController {
 		map.put("inOrder", "desc");
 		map.put("lasttno", lasttno);
 		
+		System.out.println("쿼리문실행할 MAP: " + map);
 		List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
 		System.out.println("다음리스트 : " + nextNormalBoardList);
 

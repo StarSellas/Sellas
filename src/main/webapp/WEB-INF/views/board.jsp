@@ -23,32 +23,34 @@
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
         <script src="./js/jquery-3.7.0.min.js"></script>
         
-        		<script type="text/javascript" defer>
-            
-			
+        <script type="text/javascript" defer>
+	            
+	     // 글제목 길면 자르기
+	    	function cutTitle(){
+	        	$(".btitle").each(function() {
+	        	    let title = $(this).children(".title").text();
+	        	    //console.log(title);
+	        	    //console.log(title.length);
+	        	    
+	        	    if(title.length > 12){
+	            		titlecut = title.substring(0, 10) + " ...";
+	            		//console.log("titlecut : " + titlecut);
+	            		$(this).children(".title").text(titlecut);
+	            	}
+	        	});
+	    	}	
+        
+        
             $(function(){
             	
-            	let cate;
+            	cutTitle(); // 글제목 자르기
             	
-            	// 검색카테고리&검색단어 검색창에 남기기
-            	let searchCate = "${param.searchCate}";
-            	let search = "${param.search}";
-            	
-            	console.log("여기안와?")
-        		let firstOption = $(".searchCate option:first").val();
-        		$(".searchCate").val(firstOption);
-            	
-            	if (searchCate != "" && search != ""){
-            		console.log("여긴왜옴?")
-            		console.log("searchCate : " + searchCate)
-            		$(".searchCate[name='searchCate']").val(searchCate);
-					$(".swrite").val(search);
-            	}
-            	
+
             	// 글번호 숨김
             	$(".rowNum").hide();
             	
             	// 스크롤 페이징
+            	let cate;
             	let currentPage = 1;	// 현재페이지
             	let isBottomHandled = false;	// 연속적인 요청 방지용
             	
@@ -131,7 +133,8 @@
 	                    	                    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>"
 	                    	                    + "</td>"
 	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
-	                    	                    + this.list[i].btitle
+	                    	                    + "<span class='title'>"
+	                    	                    + this.list[i].btitle + "</span>"
 	                    	                    + " <span class='commentcount'>(" + this.list[i].commentcount + ")</span>"
 	                    	                    + "<div class='mnickname'>" + this.list[i].mnickname + "</div>"
 	                    	                    + "</td>"
@@ -145,6 +148,9 @@
 	                                          console.log("lastRow :" + i + "번째");
 	                                          
 	                                          $(".rowNum").hide();
+	                                          
+	                                      	 // 새로 불러온 글제목 자르기
+	                                          cutTitle();	
 	                                          
                         	        	}	// for
                         	        	
@@ -169,7 +175,53 @@
             });          
             
             </script>  
-        
+            
+					<script type="text/javascript">
+						
+					// 검색
+						$(function(){
+							
+							$(".dropdown-menu a").click(function() {
+	   							 // 클릭된 항목에 active 클래스 추가
+	    						$(this).addClass("active");
+	    						// 다른 항목에서 active 클래스 제거
+	   							$(".dropdown-menu a").not(this).removeClass("active");
+	    						
+	    						let searchCate = $(".active").text();
+	    						$("#navbarDropdown").text(searchCate);	// 선택한 카테고리 보여주기
+							});
+							
+							// 검색버튼 클릭
+							$(".swriteButton").click(function(){
+								
+								if($(".dropdown-menu a").hasClass("active")){
+									let selectedOption = $(".dropdown-menu a.active").data("option");
+									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
+									console.log(selectedOption)
+								} 
+								
+								$(".searchFrom").submit();	// form 제출
+							});
+							
+							
+							// 검색카테고리 & 검색단어 검색창에 남기기
+			            	let searchCate = "${param.searchCate}";
+			            	let search = "${param.search}";
+			            	
+			        		let firstOption = $(".searchCate option:first").val();
+			        		$(".searchCate").val(firstOption);
+			            	
+			            	if (searchCate != ""){
+			            		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
+								console.log("선택한카테 : " + pick);
+								$("#navbarDropdown").text(pick);
+			            		$(".swrite").val(search);
+			            	}
+							
+						})
+						
+					</script>
+
     </head>
     <body>
 	<%@ include file="menubar.jsp" %>
@@ -185,21 +237,34 @@
 				<!-------------- 게시판 검색 & 카테고리 드롭다운 -------------->
 				
 				<div class="HeaderBox">
+				
 				<div class="searchBox">
-					<form action="./board" method="get" class="searchFrom">
-						<select name="searchCate" class="searchCate">
-							<option value="title">제목</option>
-							<option value="content">내용</option>
-							<option value="writer">글쓴이</option>
-						</select>
-						<input type="text" name="search" class="swrite">
-						<input type="hidden" name="cate" value="${param.cate }" class="cateNum">
-						<button type="submit" class="swriteButton bg-light">🐋</button>			
-					</form>
-				</div>
+
+						<form action="./board" method="get" class="searchFrom">
+
+							<ul class="navbar-nav">
+								<li class="nav-item dropdown">
+									<a	class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item title" href="#" data-option="title">제목</a></li>
+										<li><hr class="dropdown-divider" /></li>
+										<li><a class="dropdown-item content" href="#" data-option="content">내용</a></li>
+										<li><hr class="dropdown-divider" /></li>
+										<li><a class="dropdown-item writer" href="#" data-option="writer">글쓴이</a></li>
+									</ul>
+								</li>
+							</ul>
+
+							<input type="text" name="search" class="swrite"> 
+							<input type="hidden" name="searchCate" class="searchCate" value="title">
+							<input type="hidden" name="cate" value="${param.cate }" class="cateNum">
+							<button type="button" class="swriteButton bg-light">🐋</button>
+
+						</form>
+					</div>
 
 					<div class="cateBox">
-			            <ul class="navbar-nav" id="cateBar">
+			            <ul class="navbar-nav">
 			               <li class="nav-item dropdown">
 			               <c:choose>
 			                  <c:when test="${empty param}">
@@ -248,7 +313,7 @@
 		                     <tr class="boardRow" data-count="${mainList.count}">
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
-		                        	${mainList.btitle} <span class="commentcount">(${mainList.commentcount})</span>
+		                        	<span class="title">${mainList.btitle}</span> <span class="commentcount">(${mainList.commentcount})</span>
 		                        	<div class="mnickname">${mainList.mnickname}</div>
 		                        </td>
 		                       	<td class="bdate">${mainList.bdate}</td>
@@ -265,7 +330,7 @@
 		                     <tr class="boardRow" data-count="${list.count}">
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
-		                        	 ${list.btitle} <span class="commentcount">(${list.commentcount})</span>
+		                        	 <span class="title">${list.btitle}</span> <span class="commentcount">(${list.commentcount})</span>
 		                        	<div class="mnickname">${list.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${list.bdate}</td>
@@ -276,12 +341,14 @@
              		
              		<!--------------카테고리별 게시판 검색결과 -------------->
              		<c:if test="${param.searchCate ne null && param.search ne null && param.searchCate ne null}">
-             		
+             			<c:if test="${empty  searchList}">
+             				<div class="NoSearchList">검색결과가 없습니다.</div>
+             			</c:if>
 						<c:forEach items="${searchList}" var="searchList">
 							<tr class="boardRow" data-count="${searchList.scount}">
 		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
-		                        	 ${searchList.btitle} <span class="commentcount">(${searchList.commentcount})</span>
+		                        	 <span class="title">${searchList.btitle}</span> <span class="commentcount">(${searchList.commentcount})</span>
 		                        	<div class="mnickname">${searchList.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${searchList.bdate}</td>

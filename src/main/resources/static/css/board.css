@@ -76,7 +76,6 @@
 	text-align: right;
 }
 
-
 .bdate, .mainbdate, .bread {
 	text-align: right;
 }
@@ -102,6 +101,15 @@
 #otherCateBtn{
    width: 150px;
    height: 30px;
+}
+
+.NoSearchList{
+	width: inherit;
+	margin: 30px 10px;
+	padding: 20px 0px;
+	text-align: center;
+	color: #88abff;
+	opacity: 0.5;
 }
 .writeBtnBox{
    margin: 20px;

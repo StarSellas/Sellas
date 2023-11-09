@@ -14,7 +14,7 @@ LIMIT 10
 SELECT *, (SELECT COUNT(*) FROM normaltradeview) as count
 FROM normaltradeview
 WHERE tno < #{lasttno}
-${orderBy}
+ORDER BY tno DESC
 LIMIT 10
 ]]>
 </select>

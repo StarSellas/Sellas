@@ -37,18 +37,16 @@ public class BoardController {
 	// (카테고리별)게시판페이지
 	@GetMapping("/board")
 	public String board(@RequestParam(value = "cate", required = false, defaultValue = "0") int cate,
-						@RequestParam(value = "searchCate", required = false , defaultValue = "title") String search,
-						@RequestParam(value = "search", required = false) String searchCate,
+						@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+						@RequestParam(value = "search", required = false) String search,
 						@RequestParam Map<String, Object> map, Model model) {
 
-		//System.out.println(cate); // 0
-		//System.out.println(search); // noSearch
+		System.out.println(cate); // 0
+		System.out.println(searchCate); // noSearch
 		map.put("cate", cate);
-		if(!map.containsKey("searchCate")) {
-			map.put("searchCate", search);
-		}
+		map.put("searchCate", searchCate);
 		
-		//System.out.println("map : " + map);	// map : {cate=0, search=noSearch}
+		System.out.println("map : " + map);	// map : {cate=0, search=noSearch}
 			
 		// 메인게시판일때 (조회순 10개)
 		if (cate == 0) {
@@ -61,6 +59,7 @@ public class BoardController {
 			if(search != null && searchCate != null) {
 				System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
 				List<Map<String, Object>> searchList = boardService.searchList(map);
+				System.out.println(searchList);
 				model.addAttribute("searchList", searchList);
 			}
 
