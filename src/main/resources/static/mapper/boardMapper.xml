@@ -49,16 +49,6 @@
 				LIMIT 0, 10
 		]]>
 	</select>
-	
-<!-- 	<select id="mainList" parameterType="Integer" resultType="Map">
-		SELECT *
-			FROM(
-				SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
-				b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
-				ORDER BY b.bread DESC) bb
-			ORDER BY bb.bread DESC
-			LIMIT 0, 10
-	</select> -->
 
 	<select id="searchList" parameterType="Map" resultType="Map">
 		SELECT *, (SELECT COUNT(*) FROM boardview

@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+.backButton{
+	margin-bottom: 5px;
+}
 .HeaderBox{
 	width: 90%;
 	padding: 0;
@@ -7,9 +10,7 @@
 	display: flex;
 	align-items: flex-end;
 }
-.searchBox{
-	width: inherit;
-}
+
 .searchFrom{
 	width: inherit;
 	display: flex;
@@ -17,8 +18,23 @@
 }
 .swrite, .searchCate{
 	margin: 0;
-	padding: 1px;
-	height: inherit;
+	padding: 1px 2px;
+	height: 30px;
+}
+.swrite{
+	width: 150px;
+}
+.swriteButton{
+	border: 0.5px solid gray;
+	margin: 0;
+	padding: 1px 2px;
+	width: 35px;
+	height: 30px;
+}
+
+.cateBox{
+	margin: 0;
+	margin-left: 10px; 
 }
 
 #navbarDropdown{

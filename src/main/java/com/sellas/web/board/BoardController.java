@@ -37,26 +37,35 @@ public class BoardController {
 	// (카테고리별)게시판페이지
 	@GetMapping("/board")
 	public String board(@RequestParam(value = "cate", required = false, defaultValue = "0") int cate,
-						@RequestParam(value = "search", required = false) String search,
+						@RequestParam(value = "searchCate", required = false , defaultValue = "title") String search,
+						@RequestParam(value = "search", required = false) String searchCate,
 						@RequestParam Map<String, Object> map, Model model) {
 
 		//System.out.println(cate); // 0
 		//System.out.println(search); // noSearch
 		map.put("cate", cate);
+		if(!map.containsKey("searchCate")) {
+			map.put("searchCate", search);
+		}
 		
 		//System.out.println("map : " + map);	// map : {cate=0, search=noSearch}
 			
 		// 메인게시판일때 (조회순 10개)
 		if (cate == 0) {
 			
-			System.out.println("메인보드페이지 cate가 0이져");
+			System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
 			List<Map<String, Object>> mainList = boardService.mainList(map);
 			List<Map<String, Object>> setupboardList = boardService.setupboardList();
-			List<Map<String, Object>> searchList = boardService.searchList(map);
+			
+			// 메인게시판에서 검색했을 때 
+			if(search != null && searchCate != null) {
+				System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
+				List<Map<String, Object>> searchList = boardService.searchList(map);
+				model.addAttribute("searchList", searchList);
+			}
 
 			model.addAttribute("mainList", mainList);
 			model.addAttribute("board", setupboardList);
-			model.addAttribute("searchList", searchList);
 			
 			return "board";
 		} 
@@ -79,14 +88,17 @@ public class BoardController {
 	// 스크롤페이징
 	@ResponseBody
 	@PostMapping("/nextPage")
-	public String nextPage(@RequestParam Map<String, Object> map) {
-		System.out.println(map);
+	public String nextPage(@RequestParam(value = "cate", required = false, defaultValue = "0") int cate,
+							@RequestParam Map<String, Object> map) {
+		
+		//System.out.println(cate);
+		//System.out.println("map : " + map);
 		// {cate=2, lastbno=68, firstbno=98, count=25}
-		int cate = Integer.parseInt(String.valueOf(map.get("cate"))); 
 		
 		JSONObject json = new JSONObject();
 		
 		if(cate == 0) {
+			
 			List<Map<String, Object>> nextList = boardService.mnextPage(map);
 			//System.out.println("메인다음리스트 : " + nextList);
 			json.put("list", nextList);

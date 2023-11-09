@@ -30,13 +30,21 @@
             	
             	let cate;
             	
-            	// 검색단어 검색창에 남기기
+            	// 검색카테고리&검색단어 검색창에 남기기
             	let searchCate = "${param.searchCate}";
             	let search = "${param.search}";
-            	if (searchCate != null && search != null){
+            	
+            	console.log("여기안와?")
+        		let firstOption = $(".searchCate option:first").val();
+        		$(".searchCate").val(firstOption);
+            	
+            	if (searchCate != "" && search != ""){
+            		console.log("여긴왜옴?")
+            		console.log("searchCate : " + searchCate)
+            		$(".searchCate[name='searchCate']").val(searchCate);
 					$(".swrite").val(search);
-            	} 
-				
+            	}
+            	
             	// 글번호 숨김
             	$(".rowNum").hide();
             	
@@ -72,7 +80,6 @@
             		cate = 0;
             	} else {
             		cate = $(".cateNum").val();
-            		console.log(cate);
             	}
            		
                let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno ***** 확인용 *****
@@ -170,22 +177,24 @@
         <!-- Section-->
         <section class="py-5">
         
-            <div class="container mt-5" style="z-index: 10" id="productContainer">
+            <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                 
-                 <a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
+                <div class="backButton"><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
                 
 				<!-------------- 게시판 검색 & 카테고리 드롭다운 -------------->
+				
+				<div class="HeaderBox">
 				<div class="searchBox">
 					<form action="./board" method="get" class="searchFrom">
-						<select name="searchCate">
-							<option value="title" data-scno="1">제목</option>
-							<option value="content" data-scno="2">내용</option>
-							<option value="writer" data-scno="3">글쓴이</option>
+						<select name="searchCate" class="searchCate">
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+							<option value="writer">글쓴이</option>
 						</select>
 						<input type="text" name="search" class="swrite">
 						<input type="hidden" name="cate" value="${param.cate }" class="cateNum">
-						<button type="submit" class="swriteButton">🐋</button>			
+						<button type="submit" class="swriteButton bg-light">🐋</button>			
 					</form>
 				</div>
 
@@ -220,6 +229,7 @@
 			            </ul>
 		            </div>
 		            
+		            </div>
             
             <div class="writeBtnBox">
             	<c:if test="${sessionScope.muuid ne null && (param.cate == 2 || param.cate == 3)}">
