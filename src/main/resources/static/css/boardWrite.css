@@ -1,0 +1,80 @@
+@charset "UTF-8";
+
+.cateName{
+	text-align: center;
+}
+.cateName a{
+	text-decoration: none;
+	color: gray;
+	font-size: 14px;
+}
+
+.bwriteContainer, .beditContainer{
+	margin: auto;
+	padding: auto;
+	width: 90%;
+	height: 90%;
+}
+.bwriteForm,.beditForm{
+	margin: auto;
+	padding: 0;
+	width: inherit;
+	height: inherit;
+}
+
+.btitleBox, .bcontentBox, .titleBox, .contentBox{
+	margin: 20px 5px;
+	padding: 0;
+	width: 100%;
+	display: flex;
+}
+.btitle{
+	width: inherit;
+}
+.bcontent{
+	width: inherit;
+	height: 200px;
+}
+
+.bimageBox {
+	margin: auto;
+	padding: 0;
+	width: 100%;
+}
+.photoInputs, .boardimg{
+	margin: 10px;
+}
+.addPhotoBtnBox{
+	margin-top: 25px;
+}
+.bwriteBtnBox, .buttonBox{
+	margin: 10px 0;
+	padding: 0;
+	width: 100%;
+}
+.bwriteButton, .editbtn{
+	float: right;
+}
+/****************** boardEdit *******************/
+.boardImgBox editImgBox{
+	height: inherit;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.boardImg{
+	width: 250px;
+	margin: 10px;
+}
+
+.imgEditbtn{
+	margin: auto;
+	width: 40px;
+	height: 30px;
+	font-size: 14px;
+	border: none;
+	padding: 0;
+}
+
+

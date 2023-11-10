@@ -34,6 +34,11 @@ public class NormalController {
 	@Autowired
 	private NormalService normalService;
 
+	@GetMapping("/menu")
+	public String menu() {
+		return "menu";
+	}
+	
 	// main.jsp로 보내주는 메소드입니다.
 	@GetMapping("/")
 	public String index(Model model, @RequestParam(name = "sort", defaultValue = "0") int sort, HttpSession session) {
@@ -71,7 +76,7 @@ public class NormalController {
 		map.put("inOrder", "desc");
 		List<Map<String, Object>> normalBoardList = normalService.normalBoardList(orderBy);
 		System.out.println("보드 리스트 : " + normalBoardList);
-		// System.out.println(tradeBoardList);
+		//System.out.println("normalBoardList : " + normalBoardList);
 		model.addAttribute("normalBoardList", normalBoardList);
 
 		System.out.println("지금 멀로 정렬되어잇나여? " + sortList[sort]);
@@ -80,6 +85,42 @@ public class NormalController {
 
 		return "main";
 	}
+	
+	// 스크롤페이징
+		@ResponseBody
+		@PostMapping("nextTradePage")
+		public String nextPage(@RequestParam Map<String, Object> pmap, HttpSession session) {
+			
+			System.out.println("pmap ; " + pmap);
+			// {sort=0, lasttno=49, count=19}
+			JSONObject json = new JSONObject();
+
+			int sort = Integer.parseInt(String.valueOf(pmap.get("sort")));
+			int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
+			
+			// ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
+			String muuid = String.valueOf(session.getAttribute("muuid"));
+
+			// 세션에 저장된 uuid를 가지고 회원 정보 조회
+			Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
+			// System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
+
+			// 거래 리스트를 뽑아옵니다.
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("lasttno", lasttno);
+			
+			System.out.println("쿼리문실행할 MAP: " + map);
+			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
+			System.out.println("다음리스트 : " + nextNormalBoardList);
+
+			// 정렬도 모델에 넣습니다.
+			
+			json.put("list", nextNormalBoardList);
+
+			return json.toString();
+		}
+	
 
 	// 메인 화면 리스트 정렬 메소드입니다.
 	@ResponseBody

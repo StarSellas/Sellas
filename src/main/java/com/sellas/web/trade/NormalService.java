@@ -20,6 +20,13 @@ public class NormalService {
 		// TODO Auto-generated method stub
 		return normalDAO.normalBoardList(orderBy);
 	}
+	
+	/**************  스크롤 **************/
+	
+	public List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map) {
+		return normalDAO.nextNormalBoardList(map);
+	}
+	
 
 	public Map<String, Object> mainMember(String muuid) {
 		// TODO Auto-generated method stub
@@ -31,12 +38,6 @@ public class NormalService {
 		return normalDAO.insertTradeimg(map);
 		
 	}
-
-	
-	
-	
-	
-	
 	
 	public int normalWrite(Map<String, Object> map) {
 		//tnormalstate값 넣어주기

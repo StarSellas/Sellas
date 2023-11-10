@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.board.BoardDAO">
+	
+	<select id="boardList" parameterType="Map" resultType="Map">
+		SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count
+			FROM(
+				SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
+				b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
+				WHERE b.sno = #{cate} 				
+				ORDER BY b.bno ASC) bb
+		ORDER BY bb.bno DESC
+		LIMIT 0, 10
+	</select>
+	
+	<select id="nextPage" parameterType="Map" resultType="Map">
+		<![CDATA[ 
+			SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count 
+			FROM boardview
+			WHERE sno=#{cate } and bno < #{lastbno}
+			ORDER BY bno DESC
+			LIMIT 10
+		]]>
+	</select>
+	
+	<select id="setupboardList" resultType="Map">
+		SELECT * FROM setupboard 
+	</select>
+	
+	<select id="mainList" parameterType="Integer" resultType="Map">
+		SELECT *, (SELECT COUNT(*) FROM boardview) AS count 
+			FROM(
+				SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
+				b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
+				ORDER BY b.bno DESC) bb
+			ORDER BY bb.bno DESC
+			LIMIT 0, 10
+	</select>
+	
+	<select id="mnextPage" parameterType="Map" resultType="Map">
+		<![CDATA[ 
+			SELECT *, (SELECT COUNT(*) FROM boardview) AS count 
+				FROM(
+					SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
+					b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
+					ORDER BY b.bno DESC) bb
+				WHERE bno < #{lastbno}
+				ORDER BY bb.bno DESC
+				LIMIT 0, 10
+		]]>
+	</select>
+
+	<select id="searchList" parameterType="Map" resultType="Map">
+		SELECT *, (SELECT COUNT(*) FROM boardview
+			WHERE
+			<if test="cate gt 0">
+			sno = #{cate} AND
+			</if>
+		    <choose>
+		        <when test="searchCate == 'title'">btitle LIKE CONCAT('%', #{search}, '%')</when>
+		        <when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
+		        <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+		    </choose>) as scount
+		FROM boardview
+		WHERE
+		<if test="cate gt 0">
+		sno = #{cate} AND
+		</if>
+		<choose>
+			<when test="searchCate == 'title'">btitle LIKE CONCAT('%', #{search}, '%')</when>
+			<when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
+			<when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+		</choose>
+		ORDER BY bno DESC
+		LIMIT 0, 10
+	</select>
+
+	<select id="boardDetail" parameterType="Map" resultType="Map">
+		SELECT *, (SELECT sname from setupboard WHERE sno=#{cate}) AS sname 
+		FROM boardview 
+		WHERE bno=#{bno}
+	</select>
+	
+	<select id="imageList" parameterType="Map" resultType="Map">
+		SELECT * FROM boardimage
+		WHERE bno=#{bno}
+	</select>
+	
+	<update id="boardReadUP" parameterType="Map">
+		UPDATE board SET bread = bread + 1
+		WHERE bno=#{bno}
+	</update>
+
+	<insert id="boardWrite" parameterType="Map">
+		INSERT INTO board (sno, muuid, btitle, bcontent)
+		VALUES (#{cate}, #{muuid}, #{btitle}, #{bcontent})
+		
+		<selectKey resultType="Integer" keyProperty="bno" order="AFTER">
+			 SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<insert id="boardImage" parameterType="Map">
+		INSERT INTO boardimage (bno, bimage)
+		VALUES (#{bno}, #{bimage})
+	</insert>
+
+	<update id="setThumbnail" parameterType="Map">
+		UPDATE boardimage SET bthumbnail=0
+		WHERE bimage=#{bimage} and bno=#{bno}
+	</update>
+
+	<update id="boardEdit" parameterType="Map">
+		UPDATE board SET bdelete=1, btitle=#{btitle}, bcontent=#{bcontent}, bdate=CURRENT_TIMESTAMP
+		WHERE bno=#{bno}
+	</update>
+
+	<delete id="imgDelete" parameterType="Map">
+		DELETE FROM boardimage WHERE bimage=#{imgDel} and bno=#{bno}
+	</delete>
+
+	<update id="boardDelete" parameterType="Map">
+		UPDATE board SET bdelete=0
+		WHERE bno=#{bno}
+	</update>
+
+	
+	<!-- ************ 댓글 ************ -->
+	
+	<select id="commentList" parameterType="Map" resultType="Map">
+		SELECT * FROM commentview
+		WHERE bno=#{bno}
+		ORDER BY cno
+	</select>
+
+	<update id="commentDelete" parameterType="Map">
+		UPDATE comment SET cdelete=0
+		WHERE cno=#{cno}
+	</update>
+
+	<insert id="commentWrite" parameterType="Map">
+		INSERT INTO comment (muuid, ccontent, bno)
+		VALUES (#{muuid}, #{ccontent}, #{bno})
+	</insert>
+	
+	<update id="commentEdit" parameterType="Map">
+		UPDATE comment SET cdelete=1, ccontent=#{ccontent}, cdate=CURRENT_TIMESTAMP
+		WHERE cno=#{cno}
+	</update>
+	
+
+</mapper>
