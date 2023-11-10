@@ -81,8 +81,8 @@
 
 			<c:forEach items="${buyList}" var="row">
 	<c:choose>
-	<c:when test="${fn:length(buyList) gt 0 }">
-<div class="card mb-3" style="max-width: 400px; max-height: 450px;">
+	<c:when test="${fn:length(buyList) gt 0 && row.hastno eq null}">
+<div class="card mb-3" style="max-width: 400px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
       <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
@@ -100,24 +100,67 @@
    ${row.tdate}
         </small>
     </p>
+    ${row.hastno}
+    ${row.writeYN}
       </div>
     </div>
   </div>
 <!--   버튼 -->
-
-    <c:choose>
-        <c:when test="${row.rno != null}">
+<c:choose>
+<c:when test="${row.tnormalstate == 2}">
+<c:choose>
+    <c:when test="${row.rno == null}">
+        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+    </c:when>
+    <c:when test="${row.rno != null && row.writeYN == 'Y'}">
             <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
-        </c:when>
-        <c:otherwise>
-            <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
-        </c:otherwise>
+    </c:when>
+    <c:when test="${row.rno != null && row.writeYN != 'Y'}">
+     <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+    </c:when>
+    <c:otherwise>
+        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+    </c:otherwise>
     </c:choose>
-
-<!--   버튼 -->
+</c:when>
+<c:otherwise>
+ <button id="reviewBtn" value="${row.tno}" class="submitbtn reviewBtn" type="button">글 숨기기</button>
+</c:otherwise>
+</c:choose>
 </div>
+<!--   버튼 -->
 	 </c:when>
-	<c:otherwise>구매 내역이 없어요.</c:otherwise>
+
+<c:when test="${fn:length(buyList) gt 0 && row.hastno eq 'Y' && row.writeYN eq 'Y'}">
+    <div class="card mb-3" style="max-width: 400px;">
+        <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
+            <div class="col-4">
+                <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+            </div>
+            <div class="col-8">
+                <div class="card-body">
+                    <input type="hidden" value="${row.tno}">
+                    <h5 class="card-title">${row.ttitle}</h5>
+                    <p class="card-text">
+                        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-body-secondary">
+                            ${row.tdate}
+                        </small>
+                    </p>
+                    ${row.hastno}
+                    ${row.writeYN}
+                </div>
+            </div>
+        </div>
+        <!-- 버튼 -->
+        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+    </div>
+</c:when>
+	 <c:when test="${fn:length(buyList) eq 0}">
+	 판매내역이 없어요.
+	 </c:when>
 	</c:choose>
 		</c:forEach>
 </div>

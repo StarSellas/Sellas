@@ -85,14 +85,15 @@
 			</div>
 		</div>
 		    <div class="card">
-        <div class="card-body">
+       
             <div class="payname">WhalePay</div>
-            <div class="balance">${mbalance}</div>
-                 <button onclick="location.href='./fillPay'">머니충전</button>
-            <p class="card-text">
-            </p>
+        <div class="row1">
+            <div class="balance"><fmt:formatNumber value="${mbalance}" pattern="#,###원"/></div>
+          
+                 <button class="movefill" onclick="location.href='./fillPay'"> 충전</button>
         </div>
         </div>
+ 
 		        <h6>나의 거래</h6>
 		<div class="movedetail">
 <div class="listdiv" onclick="location.href='./getwish'">

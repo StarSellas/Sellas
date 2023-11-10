@@ -198,9 +198,19 @@ public class MyPageController {
 		
 		Map<String, Object> reviewDetail = myPageService.reviewDetail(map);
 		model.addAttribute("reviewDetail", reviewDetail);
+		System.out.println("리뷰디테일"+reviewDetail);
+	
 		return "reviewDetail";
+		
 	}
 	
+	/**
+	 * 내가 보낸 리뷰 확인
+	 * @param rno
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	
 	//내가 보낸 후기상세페이지
 	@GetMapping("reviewDetailByMe")
@@ -208,10 +218,13 @@ public class MyPageController {
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("rno", rno);
-		map.put("muuid", session.getAttribute("muuid"));
+		map.put("uuid", session.getAttribute("muuid"));
 		
 		Map<String, Object> reviewDetail = myPageService.reviewDetailByMe(map);
 		model.addAttribute("reviewDetail", reviewDetail);
+		
+		System.out.println("넌없어?"+reviewDetail);
+		
 		return "reviewDetail";
 	}
 	

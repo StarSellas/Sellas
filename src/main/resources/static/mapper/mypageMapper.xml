@@ -49,13 +49,13 @@ UPDATE member SET mnickname=#{newNickname} WHERE muuid=#{uuid}
 
 <select id="reviewDetail" parameterType="Map" resultType="Map">
 SELECT r.mwriter, r.mtarget, m1.mnickname as writer_nickname, m2.mnickname as target_nickname,
-       r.rcontent, r.rdate, t.ttitle
+       r.rcontent, r.rdate, t.ttitle, r.rno
 FROM review r
 JOIN payment p ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
 JOIN member m1 ON r.mwriter = m1.muuid
 JOIN member m2 ON r.mtarget = m2.muuid
-WHERE r.rno=#{rno} AND r.mtarget=#{uuid}
+WHERE p.pno IN (SELECT pno FROM review WHERE rno=#{rno}) AND r.mtarget=#{uuid};
 </select>
 
 <select id="reviewDetailByMe" parameterType="Map" resultType="Map">
@@ -66,27 +66,31 @@ JOIN payment p ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
 JOIN member m1 ON r.mwriter = m1.muuid
 JOIN member m2 ON r.mtarget = m2.muuid
-WHERE r.rno=#{rno} AND r.mwriter=#{uuid}
+WHERE p.pno IN (SELECT pno FROM review WHERE rno=#{rno}) AND r.mwriter=#{uuid}
 </select>
 
 
 <select id="getSell" parameterType="String" resultType="Map">
-SELECT t.*, r.* , ti.timage
+SELECT t.*, r.* , ti.timage,
+       CASE WHEN r.mwriter=#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
+       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM trade t
 JOIN tradeimage ti ON t.tno = ti.tno
 LEFT JOIN payment p ON t.tno = p.tno
 LEFT JOIN review r ON r.pno = p.pno
-WHERE t.muuid =#{uuid}  AND ti.tthumbnail = 0 AND (r.mwriter IS NULL OR r.mwriter !=#{uuid})
+WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0;
 </select>
 
 
 <select id="getBuy" parameterType="String" resultType="Map">
-SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, r.rno, r.mwriter
+SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, r.rno,
+       CASE WHEN r.mwriter =#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
+       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM payment p
 LEFT JOIN review r ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
 JOIN tradeimage ti ON t.tno = ti.tno
-WHERE pbuyer=#{uuid} AND pstate = 0 AND ti.tthumbnail = 0 AND (r.mwriter IS NULL OR r.mwriter !=#{uuid})
+WHERE pbuyer =#{uuid} AND pstate = 0 AND ti.tthumbnail = 0;
 </select>
 
 

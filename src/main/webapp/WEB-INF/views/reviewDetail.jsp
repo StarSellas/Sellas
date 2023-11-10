@@ -85,7 +85,7 @@
     <c:if test="${reviewDetail.mtarget eq sessionScope.muuid}">
     <div><h5>${reviewDetail.writer_nickname}님이 보낸 후기</h5></div>
     </c:if>
-    <c:if test="${reviewDetail.mtarget ne  sessionScope.muuid}">
+    <c:if test="${reviewDetail.mtarget ne sessionScope.muuid}">
     <div><h5>내가 ${reviewDetail.target_nickname}님에게 보낸 후기</h5></div>
     </c:if>
     <br>
@@ -94,7 +94,7 @@
         <h6>${reviewDetail.writer_nickname}님과 거래한 물품은</h6>
         <h6>[${reviewDetail.ttitle}]입니다</h6>
            </c:if>
-             <c:if test="${reviewDetail.mtarget ne  sessionScope.muuid}">
+             <c:if test="${reviewDetail.mtarget ne sessionScope.muuid}">
                 <h6>${reviewDetail.target_nickname}님과 거래한 물품은</h6>
         <h6>[${reviewDetail.ttitle}]입니다</h6>
         </c:if>
@@ -112,9 +112,15 @@
     </div>
     </c:otherwise>
     </c:choose>
+<div>
+  <c:if test="${reviewDetail.mtarget eq sessionScope.muuid}">
+<button id="reviewBtn" class="submitbtn reviewBtn" type="button"
+onclick="location.href='./reviewDetailByMe?rno=${reviewDetail.rno}'">내가 쓴 후기 보러가기</button>
+</c:if>
+</div>
+
 </div>
 	
-</div>
 	</section>
 	<!-- Footer-->
         <footer id="footer">
