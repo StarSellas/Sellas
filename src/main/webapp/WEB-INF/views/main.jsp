@@ -285,9 +285,7 @@
 				<button onclick="location.href='./normalWrite'"
                style="background-color: red; width: 50px; height: 50px;">물품
                등록</button>
-            <button onclick="location.href='./fillPay'"
-               style="background-color: yellow; width: 50px; height: 50px;">머니
-               충전</button>
+            엌ㅋㅋ 이대원 머니충전 내가 가져간다
             <br>
          </div>
          <div
@@ -403,28 +401,7 @@
    </section>
 
    <!-- Footer-->
-   <footer id="footer">
-      <div class="container">
-         <ul class="menubar">
-            <li onclick="location.href='./'"><i class="xi-home xi-2x"></i>
-               <div id="menu">홈</div></li>
-            <c:if test="${alarmcount eq null }">
-               <li><i class="xi-message xi-2x"></i>
-                  <div id="menu">채팅</div></li>
-            </c:if>
-            <c:if test="${alarmcount eq 0 }">
-               <li><i class="xi-message xi-2x"></i>
-                  <div id="menu">채팅</div></li>
-            </c:if>
-            <c:if test="${alarmcount gt 0 }">
-               <li><i class="xi-message xi-2x" style="color: black"></i>
-                  <div id="menu">채팅</div></li>
-            </c:if>
-            <li><i class="xi-profile xi-2x"></i>
-               <div id="menu">마이페이지</div></li>
-         </ul>
-      </div>
-   </footer>
+
    <!-- Core theme JS-->
    <script src="js/scripts.js"></script>
    

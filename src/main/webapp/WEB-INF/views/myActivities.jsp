@@ -26,7 +26,7 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="../css/profile.css">
+<link rel="stylesheet" href="../css/myActivities.css">
 
 </head>
 <body>
@@ -85,33 +85,46 @@
 		</div>
 		
 			<div class="postList">
-			<div class="rabel">내글목록</div>
-			<div class="review-div">
+			<div class="activities-div">
 <c:forEach items="${myPost}" var="p">
 			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${p.bno }'">
-			<div class=>${p.sno}</div>
 			<div class="btitle">${p.btitle}</div>
 			<div class="bdate">${p.bdate}</div>
-			<div class="commentcount">${p.commentcount}</div>
+			<div class="row1">
+				<div id="commentcount"><i class="xi-speech-o xi-x count">
+				</i>${p.commentcount}</div>
+			<div class="setup">
+			<c:if test="${p.sno eq 1}">공지사항</c:if>
+			<c:if test="${p.sno eq 2}">판매요청</c:if>
+			<c:if test="${p.sno eq 3}">나눔</c:if>
 				</div>
+			</div>
+			</div>
 			</c:forEach>
 				</div>
 			</div>
 			
 			<div class="commentList">
-				<div class="rabel">내 댓글 목록</div>
-
 			<c:forEach items="${myComment}" var="c">
 			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${c.bno }'">
-			<div class=>${c.bno}</div>
-			<div class=>${c.sno}</div>
+			
 			<div class="btitle">${c.ccontent}</div>
 			<div class="bdate">${c.cdate}</div>
+			<div class="row1">
+			<div id="commentcount">${c.btitle}</div>
+			<div class="setup">
+			<c:if test="${c.sno eq 1}">공지사항</c:if>
+			<c:if test="${c.sno eq 2}">판매요청</c:if>
+			<c:if test="${c.sno eq 3}">나눔</c:if>
+				</div>
+			</div>
 				</div>
 			</c:forEach>
 			</div>
 			
-			
+			<c:if test="${exp < 15}">아기고래</c:if>
+								<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
+								<c:if test="${exp > 20 }">슈퍼고래</c:if>
 		</div>
 
 	</section>
@@ -135,7 +148,6 @@
 		$(".commentList").hide();
 	
 	$(".my").click(function() {
-		alert("!");
 	
 		$(this).addClass("on");
 		$(this).siblings("li").removeClass("on");

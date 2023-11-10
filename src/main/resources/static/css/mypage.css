@@ -36,10 +36,10 @@
 	height: 40px;
 	padding: 5px;
 	background-color: white;
-	margin-top: 15px; margin-left : 20px;
+	margin-top: 15px;
 	border-radius: 5px;
 	border: solid #e3e3e3 1px;
-	margin-left: 40px;
+	margin-left: 7rem;
 }
 
 
@@ -74,11 +74,34 @@
     margin: 0 auto; /* 중앙 정렬 */
     padding: 20px;
     margin-bottom: 15px;
-    text-align: center; /* 텍스트 가운데 정렬 */
 }
 
 h6{
 		margin-left: 40px;
 		font-weight: bold;
 		margin-top: 20px;
+}
+
+
+.payname{
+	color: #88abff ;
+	font-weight: 800;
+}
+
+.balance{
+	float: left;
+}
+
+.movefill{
+	float: right;
+    width: 80px;
+    height: 25px;
+    background-color: white;
+    border-radius: 5px;
+    border: solid #e3e3e3 1px;
+    font-size: 12px;
+}
+
+.row1{
+	margin-top: 15px;
 }

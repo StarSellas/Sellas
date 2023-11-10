@@ -40,3 +40,8 @@ h6 {
 .notYet{
 	margin-top: 50px;
 }
+
+a {
+	color: inherit;
+}
+

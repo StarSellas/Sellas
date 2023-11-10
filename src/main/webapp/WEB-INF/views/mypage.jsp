@@ -76,19 +76,24 @@
 				</div>
 				<div class="user-nickname">${nickname}</div>
 				<div class="user-level">
-				<c:if test="${exp < 15}">아기고래</c:if>
-								<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
-								<c:if test="${exp > 20 }">슈퍼고래</c:if>
+				<c:if test="${exp < 30}">아기고래</c:if>
+								<c:if test="${exp >= 30 && exp <= 70}">고래</c:if>
+								<c:if test="${exp > 70 }">슈퍼고래</c:if>
 				</div>
 
 				<button class=profile onclick="window.location.href='profile'">프로필보기</button>
 			</div>
 		</div>
 		    <div class="card">
-        <div class="card-body">
-            <p class="card-text">여기가 웨일페이충전구역임</p>
+       
+            <div class="payname">WhalePay</div>
+        <div class="row1">
+            <div class="balance"><fmt:formatNumber value="${mbalance}" pattern="#,###원"/></div>
+          
+                 <button class="movefill" onclick="location.href='./fillPay'"> 충전</button>
         </div>
         </div>
+ 
 		        <h6>나의 거래</h6>
 		<div class="movedetail">
 <div class="listdiv" onclick="location.href='./getwish'">

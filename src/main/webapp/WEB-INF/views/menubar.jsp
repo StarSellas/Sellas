@@ -27,7 +27,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 10">
            <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="./"><img src="./img/sellastext.png" class="header" alt="SellAS"></a>
-            <button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="./img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
+				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="./img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>
 		
@@ -35,11 +35,11 @@
        <!-- Footer-->
         <footer id="footer">
             <div class="container">
-               <ul class="menubar">
-                  <li onclick="location.href='./'"><img src="./img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
-                  <li onclick="location.href='#'"><img src="./img/chat.png" class="footericon" alt="chat"><div id="menu">채팅</div></li>
-                  <li onclick="location.href='./mypage'"><img src="./img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
-               </ul>
+	            <ul class="menubar">
+	            	<li onclick="location.href='./'"><img src="./img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
+	            	<li onclick="location.href='#'"><img src="./img/chat.png" class="footericon" alt="chat"><div id="menu">채팅</div></li>
+	            	<li onclick="location.href='./mypage'"><img src="./img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
+	            </ul>
             </div>
         </footer>
 

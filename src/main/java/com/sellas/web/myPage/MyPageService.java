@@ -62,7 +62,15 @@ public class MyPageService {
 	}
 
 	public Map<String, Object> memberInfo(String uuid) {
-		return myPageDAO.memberInfo(uuid);
+		Map<String, Object> member  = myPageDAO.memberInfo(uuid);
+		
+		//mpoint가 100이상일 경우에도 100으로 나옴
+		int mpoint = Integer.parseInt(member.get("mpoint").toString());
+		if(mpoint > 100) {
+			member.put("mpoint", 100);
+		}
+		
+		return  member;
 	}
 
 	public int isNicknameExists(String newNickname) {
@@ -76,6 +84,7 @@ public class MyPageService {
 	}
 
 	public List<Map<String, Object>> getprofileReview(Object attribute) {
+		
 		return myPageDAO.getprofileReview(attribute);
 	}
 
@@ -89,6 +98,10 @@ public class MyPageService {
 	
 	
 	public List<Map<String, Object>> getSell(String uuid) {
+		
+		
+		
+		
 		return myPageDAO.getSell(uuid);
 	}
 
