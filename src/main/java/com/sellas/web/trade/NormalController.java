@@ -41,26 +41,10 @@ public class NormalController {
 	
 	// main.jsp로 보내주는 메소드입니다.
 	@GetMapping("/")
-	public String index(Model model, @RequestParam(name = "sort", defaultValue = "0") int sort, HttpSession session) {
-		// "sort" 매개변수에 따라 SQL 쿼리를 동적으로 생성
-		String orderBy = "";
-		switch (sort) {
-		case 1:
-			orderBy = "ORDER BY tnormalprice ASC";
-			break;
-		case 2:
-			orderBy = "ORDER BY tnormalprice DESC";
-			break;
-		case 3:
-			orderBy = "ORDER BY tread DESC";
-			break;
-		default:
-			// 기본 정렬은 tno DESC
-			orderBy = "ORDER BY tno DESC";
-			break;
-		}
-		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
-
+	public String index(@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+						@RequestParam(value = "search", required = false) String search,
+						Model model, HttpSession session) {
+		
 		// ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
 		String muuid = String.valueOf(session.getAttribute("muuid"));
 
@@ -68,20 +52,27 @@ public class NormalController {
 		Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
 		// System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
 		model.addAttribute("memberInfo", mainMemberInfo);
-
-		// 거래 리스트를 뽑아옵니다.
-
+		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("sortBy", "tno");
-		map.put("inOrder", "desc");
-		List<Map<String, Object>> normalBoardList = normalService.normalBoardList(orderBy);
-		System.out.println("보드 리스트 : " + normalBoardList);
-		//System.out.println("normalBoardList : " + normalBoardList);
+		
+		// 검색값 있는 경우 
+		if(search != null && searchCate != null) {
+			
+			//System.out.println("메인에서 잡는 searchCate : " + searchCate);
+			//System.out.println("메인에서 잡는 search : " + search);
+			map.put("searchCate", searchCate);
+			map.put("search", search);
+			
+			List<Map<String, Object>> normalSearchList = normalService.normalSearchList(map);
+			//System.out.println("normalSearchList : " + normalSearchList);
+			model.addAttribute("normalSearchList", normalSearchList);
+			
+		}
+		
+		// 거래 리스트를 뽑아옵니다. (최신순10개)
+		List<Map<String, Object>> normalBoardList = normalService.normalBoardList();
+		//System.out.println("보드 리스트 : " + normalBoardList);
 		model.addAttribute("normalBoardList", normalBoardList);
-
-		System.out.println("지금 멀로 정렬되어잇나여? " + sortList[sort]);
-		// 정렬도 모델에 넣습니다.
-		model.addAttribute("sortList", sortList[sort]);
 
 		return "main";
 	}
@@ -94,8 +85,6 @@ public class NormalController {
 			System.out.println("pmap ; " + pmap);
 			// {sort=0, lasttno=49, count=19}
 			JSONObject json = new JSONObject();
-
-			int sort = Integer.parseInt(String.valueOf(pmap.get("sort")));
 			int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
 			
 			// ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
@@ -110,7 +99,7 @@ public class NormalController {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("lasttno", lasttno);
 			
-			System.out.println("쿼리문실행할 MAP: " + map);
+			//System.out.println("쿼리문실행할 MAP: " + map);
 			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
 			System.out.println("다음리스트 : " + nextNormalBoardList);
 

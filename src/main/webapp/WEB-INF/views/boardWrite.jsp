@@ -22,14 +22,18 @@
         <!-- ******************* 추가 *********************** -->
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
         <script src="./js/jquery-3.7.0.min.js"></script>
+        <script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script> 
         
         <script type="text/javascript">
         	$(function(){
         		
+        		// 게시판 드롭다운 스타일조정
+				$(".division2").hide();
+        		
         		// 게시판 카테고리 클릭
 				$(".cateForWrite").click(function(){
-					
-					// 여기에다가 관리자 grade 아니면 클릭 못하게 막기 
 					
 					let cate = $(this).text().trim();	// 선택한 카테고리 이름
 					//console.log("바꿀카테고리 : "+ cate);
@@ -44,94 +48,8 @@
 					//console.log("최종 저장될 cate : " + result.val());
 					
 				})
-				
-				// 글쓰기 유효성 검사 (로그인&빈칸)
-        		$(".bwriteButton").click(function(){
-        			
-        			let muuid = $(this).parent().siblings(".muuid").val();
-        			let btitle = $(this).parent().siblings(".btitleBox").children(".btitle").val();
-        			let bcontent = $(this).parent().siblings(".bcontentBox").children(".bcontent").val();
-        			
-        			//alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
-					
-					if(btitle.length < 3){
-						alert("제목을 입력하세요.");
-						return false;
-					}
-					
-					if(bcontent.length < 3){
-						alert("내용을 입력하세요.");
-						return false;
-					}					
-        			
-        		});
-				
         	});
         	
-        	// 이미지 업로드
-        	  $(function() {
-  	        	
-  	            var maxPhotos = 3;
-  	            var nextPhotoId = 1;
-  	
-  	            $("#addPhotoButton").click(function () {
-  	                
-  	            	//console.log("떠라");
-  	            	
-  	            	if (nextPhotoId <= maxPhotos) {
-  	                    var newInput = $("<input type='file' name='boardimg' class='boardimg' id='boardimg" + nextPhotoId + "'>");
-  	                    //var newPreview = $("<img class='imagePreview' id='imagePreview" + nextPhotoId + "' src='' alt='미리보기 이미지'>");
-  	                    $("#photoInputs").append(newInput);
-  	                    //$("#imagePreviews").append(newPreview);
-  							
-  	                       newInput.change(function () {
-  	                        resizeImage(this, 200, 200, function (resizedDataUrl) {
-  	                            var previewId = this.id.replace("boardimg", "imagePreview");
-  	                            var preview = $("#" + previewId);
-  	                            preview.attr("src", resizedDataUrl);
-  	                        }.bind(this));
-  	                    });
-
-  	                    nextPhotoId++;
-  	                } else {
-  	                    alert("더 이상 사진을 추가할 수 없습니다.");
-  	                }
-  	            });
-  	            
-  	        });
-  	        
-  	        function resizeImage(input, maxWidth, maxHeight, callback) {
-  	            if (input.files && input.files[0]) {
-  	                var reader = new FileReader();
-
-  	                reader.onload = function (e) {
-  	                    var image = new Image();
-  	                    image.src = e.target.result;
-
-  	                    image.onload = function () {
-  	                        var width = image.width;
-  	                        var height = image.height;
-
-  	                        if (width > maxWidth || height > maxHeight) {
-  	                            var ratio = Math.min(maxWidth / width, maxHeight / height);
-  	                            width *= ratio;
-  	                            height *= ratio;
-  	                        }
-
-  	                        var canvas = document.createElement("canvas");
-  	                        canvas.width = width;
-  	                        canvas.height = height;
-  	                        var ctx = canvas.getContext("2d");
-  	                        ctx.drawImage(image, 0, 0, width, height);
-
-  	                        var resizedDataUrl = canvas.toDataURL("image/jpeg");
-  	                        callback(resizedDataUrl);
-  	                    };
-  	                };
-
-  	                reader.readAsDataURL(input.files[0]);
-  	            }
-  	        }
           
         </script>
         
@@ -169,11 +87,14 @@
 			               </c:choose>
 			               
 			                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<c:forEach items="${board}" var="board">
-									<li class="cateChange" >
-										<a	class="dropdown-item cateForWrite" href="#"> ${board.sname }</a> 
-										<input type="hidden" class="changeCate" value="${board.sno }">
-									</li>
+								<c:forEach items="${board}" var="board" varStatus="loop">
+									<c:if test="${board.sno gt 1}">
+										<li class="cateChange" >
+											<a	class="dropdown-item cateForWrite" href="#"> ${board.sname }</a> 
+											<input type="hidden" class="changeCate" value="${board.sno }">
+										</li>
+										<li class="division${loop.index }"><hr class="dropdown-divider" /></li>
+									</c:if>
 								</c:forEach>
 							</ul>
 			               </li>
@@ -182,7 +103,7 @@
 				
 					<!-------------------- 글쓰기창 -------------------->
 					<div class="bwriteContainer">
-						<form action="./boardWrite"  class="bwriteForm" method="post" enctype="multipart/form-data">
+					
 							<div class="btitleBox">
 								<input type="text" class="btitle" id="btitle" name="btitle" placeholder="제목을 입력해주세요">
 							</div>
@@ -190,27 +111,332 @@
 							<div class="bcontentBox">
 								<textarea id="bcontent" class="bcontent" name="bcontent" placeholder="내용을 입력해주세요"></textarea>
 							</div>
-							
-							<div class="bimageBox">
-								<div id="photoInputs">
-                    				<div id="imagePreviews"></div>
-                    			</div>
-                    			<div class="addPhotoBtnBox">
-									<button id="addPhotoButton" type="button">사진 추가하기</button>
-								</div>
-							</div>
+					<!-------------------- 이미지업로드  -------------------->
+
+						<div>
+							<button id="addPhotoBtn">사진 추가하기</button>
+						</div>
+						<div id="addPhoto">
+							<button id="picker2" type="button">앨범에서 추가</button>
+							<button id="camera" type="button">카메라에서 추가</button>
+							<div id="box"></div>
+							<div id="progress"></div>
+							<div id="upload-box"></div>
+						</div>
+
+
 							<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 							<input type="hidden" class="cateWrite" name="cate" value="${param.cate}">
 							
 							<div class="bwriteBtnBox">
-								<button type="submit" class="bwriteButton">글쓰기</button>
+								<button type="button" class="bwriteButton">글쓰기</button>
 							</div>
-						</form>
 					</div>
 					
 				</div>
             </div>
             
         </section>
-    </body>
+        
+        
+	<script type="text/javascript">
+	
+	//모피어스를 이용한 카메라 사진 및 앨범 사진 넣기 by 대원
+	let cameraImagePath ='';
+	let selectImagePath = [];
+    let $previewImg = null;
+    let $uploadImg = null;
+    let $previewImgArray = [];
+	
+    
+    const $box = $('#box');
+    const $uploadBox = $('#upload-box');
+    const $progress = $('#progress');
+    const $picker = $('#picker');
+    const $upload = $('#upload');
+    const $camera = $('#camera');
+    const $picker2 = $('#picker2');
+    
+    
+    $("#camera").click(function(){
+    	
+    	$("#picker2").hide();
+    	
+   	 if ($previewImg !== null) {
+		        $previewImg.remove();
+		        $previewImg = null;
+		      }
+		      selectImagePath = [];
+	M.media.camera({
+       path: "/media",
+       mediaType: "PHOTO",
+       saveAlbum: true,
+       callback: function(status, result, option) {
+           if (status == 'SUCCESS') {
+        	   //alert("뜨나?11")
+               var photo_path = result.fullpath;
+               selectImagePath[0] = result.path;
+               
+                $.convertBase64ByPath2(selectImagePath)
+                .then(({ status, result }) => {
+         if (status === 'SUCCESS') {
+        	 //alert("뜨나?22")
+           $previewImg = $(document.createElement('img'))
+           $previewImg.attr('height', '200px')
+           $previewImg.attr('src', "data:image/png;base64," + result[0].data)
+           
+           $box.append($previewImg);
+         } else {
+           return Promise.reject('BASE64 변환 실패')
+         }
+       })
+       .catch((err) => {
+         if (typeof err === 'string') alert(err)
+         console.error(err)
+       })
+               
+            // return $.uploadImageByPath2(selectImagePath); 이거 쓰면 업로드됩니당
+               
+           }
+       }
+     
+		 });
+  }); 
+    
+    
+    
+   			 $picker2.on('click', () => {
+   				 $("#camera").hide();
+   				 if ($box.find('img').length >= 5) {s
+   			        alert('더 이상 이미지를 추가할 수 없습니다.');
+   			        return false;
+   			    }
+   				 
+   				 
+    	  		if ($previewImg !== null) {
+    	   				 $previewImg.remove();
+    	   				 $previewImg = null;
+    	 			 }
+    		  selectImagePath = '';
+    	 		 $.imagePicker2()
+    	   		 .then(({ status, result }) => {
+    	     	 	if (status === 'SUCCESS') {
+    	    	 		 for (let i = 0; i < result.length; i++) {
+    	    	 			 $previewImgArray[i] = result[i].path;
+    	    	 		 }
+    	       		 return $.convertBase64ByPath2($previewImgArray)
+    	       		 } else {
+    	            return Promise.reject('이미지 가져오기 실패')
+    	       		 }
+    	      })
+    	      .then(({ status, result }) => {
+    	        if (status === 'SUCCESS') {
+    	        for (let i = 0; i < result.length; i++) {
+    	        	
+    	          let imageSrc = "data:image/png;base64," + result[i].data;
+    	          let $previewImg = $(document.createElement('img'));
+    	          $previewImg.attr('height', '200px');
+    	          $previewImg.attr('src', imageSrc);
+    	          $box.append($previewImg);
+    	        }
+    	      } else {
+    	        return Promise.reject('이미지 가져오기 실패');
+    	      }
+    	    })
+    	    .catch((err) => {
+    	      if (typeof err === 'string') alert(err);
+    	      console.error(err);
+    	    });
+    	})
+	
+    	
+    	$.imagePicker2 = function () {
+				      return new Promise((resolve) => {
+				        M.media.picker({
+				          mode: "MULTI",
+				          media: "PHOTO",
+				          maxCount : 4,
+				          // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+				          column: 3,
+				          callback: (status, result) => {
+				            resolve({ status, result })
+				            
+				          
+				          }
+				        });
+				      })
+				    }
+   			 
+   			$.convertBase64ByPath2 = function ($previewImgArray) {
+		    	  if (!Array.isArray($previewImgArray)) {
+		    	    throw new Error('$previewImgArray must be an array');
+		    	  }
+
+		    	  return new Promise((resolve) => {
+		    	    const results = [];
+
+		    	    const readNextFile = (index) => {
+		    	      if (index < $previewImgArray.length) {
+		    	        M.file.read({
+		    	          path: $previewImgArray[index],
+		    	          encoding: 'BASE64',
+		    	          indicator: true,
+		    	          callback: function (status, result) {
+		    	            if (status === 'SUCCESS') {
+		    	              results.push(result);
+		    	              readNextFile(index + 1);
+		    	            } else {
+		    	              // Handle error
+		    	              results.push(null); // Push null for failed file
+		    	              readNextFile(index + 1);
+		    	            }
+		    	          }
+		    	        });
+		    	      } else {
+		    	        resolve({ status: 'SUCCESS', result: results });
+		    	      }
+		    	    };
+
+		    	    readNextFile(0);
+		    	  });
+		    	};
+		    	
+		    	$.uploadImageByPath2 = function ($previewImgArray, bno, cate, progress) {
+			    	  return new Promise((resolve) => {
+			    	    const _options = {
+			    	      url: 'http://172.30.1.4:8080/fileUpload',
+			    	      header: {},
+			    	      params: { bno: bno, cate: cate },
+			    	      body: $previewImgArray.map((filePath) => ({
+			    	        name: 'file',
+			    	        content: filePath,
+			    	        type: 'FILE',
+			    	      })),
+			    	      encoding: 'UTF-8',
+			    	      finish: (status, header, body, setting) => {
+			    	        resolve({ status, header, body });
+			    	      },
+			    	      progress: function (total, current) {
+			    	        progress(total, current);
+			    	      },
+			    	    };
+
+			    	    M.net.http.upload(_options);
+			    	  });
+			    	};
+   			 
+			  $(function(){
+				  $("#addPhoto").hide();
+				  $("#addPhotoBtn").click(function(){
+					  alert("사진은 앨범과 카메라 중 하나만 선택 가능합니다.");
+					  $("#addPhoto").show();
+				  });
+				  
+				  
+				  $(".bwriteButton").click(function(){
+					  
+					let muuid = $(this).parent().siblings(".muuid").val();
+					let cate = $(this).parent().siblings(".cateWrite").val();
+        			let btitle = $(this).parent().siblings(".btitleBox").children(".btitle").val();
+        			let bcontent = $(this).parent().siblings(".bcontentBox").children(".bcontent").val();
+        			
+        			alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
+					
+        			// 글쓰기 유효성 검사 (로그인&빈칸)
+					if(btitle.length < 3){
+						alert("제목을 입력하세요.");
+						return false;
+					}
+					
+					if(bcontent.length < 3){
+						alert("내용을 입력하세요.");
+						return false;
+					}		
+					
+					$.ajax({
+						url : "./boardWrite",
+						type : "post",
+						data : {cate : cate, btitle : btitle, bcontent : bcontent, muuid : muuid},
+						dataType : "json",
+						
+						success : function(data){
+							if(data.addSuccess == 1){
+								
+								let bno = data.bno;
+								let cate = data.cate;
+								
+								alert("이건? : "+ bno);
+								
+								if($previewImgArray[0].length > 0){
+									if ($previewImgArray[0] === ''){
+											 if ($uploadImg) {
+											        $uploadImg.remove();
+											        $uploadImg = null;
+											}
+									 }
+								      
+								      $progress.text('')
+								      $.uploadImageByPath2($previewImgArray, bno, cate, (total, current) => {
+								        console.log(`total: ${total} , current: ${current}`)
+								        $progress.text(`${current}/${total}`)
+								      })
+								        .then(({
+								          status, header, body
+								        }) => {
+								          // status code
+								          if (status === '200') {
+								        	  alert("떠라");
+								            $progress.text('업로드 완료')
+								            const bodyJson = JSON.parse(body)
+								            $uploadImg = $(document.createElement('img'))
+								            $uploadImg.attr('height', '200px')
+								            $uploadImg.attr('src', bodyJson.fullpath)
+								            $uploadBox.append($uploadImg)
+								          } else {
+								            return Promise.reject(status)
+								          }
+								        })
+								        .catch((err) => {
+								          if (typeof err === 'string') alert(err)
+								          console.error(err)
+								        })
+									
+								}
+								
+								alert("작성이 완료되었습니다.");
+								var form = document.createElement("form");
+								form.method = "GET";
+								form.action = "./boardDetail"; // 컨트롤러 경로 설정
+								var inputForbno = document.createElement("input");
+								inputForbno.type = "hidden"; // 숨겨진 필드
+								inputForbno.name = "bno"; // 파라미터 이름
+								inputForbno.value = bno; // 파라미터 값
+								var inputForcate = document.createElement("input");
+								inputForcate.type = "hidden"; // 숨겨진 필드
+								inputForcate.name = "cate"; // 파라미터 이름
+								inputForcate.value = cate; // 파라미터 값
+
+								// input을 form에 추가
+								form.appendChild(inputForbno);
+								form.appendChild(inputForcate);
+								
+								document.body.appendChild(form);
+
+								// 폼 전송
+								form.submit();
+									
+							}
+						},
+						error : function(error){
+							alert("흑흑");
+						}
+						
+					});
+					
+				  });
+			  });
+			    	
+	</script>
+
+</body>
 </html>

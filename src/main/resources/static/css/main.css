@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.searchBox{
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 10px;
+}
+
+.searchFrom{
+	width: inherit;
+	display: flex;
+	align-items: flex-end; 
+	border-bottom: 1px gray solid;
+}
+.swrite, .searchCate{
+	margin: 0;
+	padding: 1px 2px;
+	height: 30px;
+}
+.swrite{
+	width: 150px;
+	border: none;
+}
+.swriteButton{
+	border: 0.5px solid white;
+	border-radius: 30px;
+	background-color: inherit;
+	margin: 0;
+	padding: 2px 2px 8px 2px;
+	width: 35px;
+	height: 35px;
+}
+#searchIcon{
+	width: 80%;
+}
+
+#navbarDropdown{
+	text-decoration: none;
+	color: black;
+	padding-left: 5px;
+	margin-right: 5px;
+}

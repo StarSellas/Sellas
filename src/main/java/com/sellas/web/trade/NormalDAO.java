@@ -10,7 +10,7 @@ public interface NormalDAO {
 
 	List<Map<String, Object>> cateList();
 
-	List<Map<String, Object>> normalBoardList(String orderBy);
+	List<Map<String, Object>> normalBoardList();
 
 	List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map);	/**************  스크롤 **************/
 
@@ -80,5 +80,7 @@ public interface NormalDAO {
 	String obuyerUuid(Map<String, Object> map);
 	
 	Map<String, Object> hasWish(Map<String, Object> hasWish);
+
+	List<Map<String, Object>> normalSearchList(Map<String, Object> map);
 
 }

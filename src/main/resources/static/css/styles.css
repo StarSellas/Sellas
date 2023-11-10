@@ -46,6 +46,10 @@ button.navbar-toggler{
 	float: right;
 }
 
+#headerline{
+   border-bottom: 1px solid #88abff;
+}
+
 .menubar{
 	margin: auto;
 	padding: 0;
