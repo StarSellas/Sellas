@@ -12,6 +12,8 @@ public interface NormalDAO {
 
 	List<Map<String, Object>> normalBoardList(String orderBy);
 
+	List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map);	/**************  스크롤 **************/
+
 	Map<String, Object> mainMember(String muuid);
 
 	int insertTradeimg(Map<String, Object> map);
