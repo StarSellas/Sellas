@@ -30,7 +30,7 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 
 
 <select id="memberInfo" parameterType="String" resultType="Map">
-	SELECT mnickname, mpoint
+	SELECT mnickname, mpoint, mbalance
 	FROM member
 	WHERE muuid=#{uuid}
 </select>

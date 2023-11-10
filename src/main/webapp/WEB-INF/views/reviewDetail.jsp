@@ -71,10 +71,11 @@
 
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="d-flex inside-bar align-items-center">
-				<div class="back col-auto" onclick="location.href='/profile'">
-					<i class="xi-angle-left xi-x"></i>
+				<div class="back col-auto" onclick="location.href='/'">
+				<a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
 				</div>
 				<div class="location col">거래후기</div>
+				</div>
 			</div>
 			
 	<div class="review-box">

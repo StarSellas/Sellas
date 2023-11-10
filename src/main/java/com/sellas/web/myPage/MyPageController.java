@@ -42,9 +42,10 @@ public class MyPageController {
 			return "login";
 		}
 		
-		 session.setAttribute("mpoint", member.get("mpoint"));
 		 model.addAttribute("nickname", session.getAttribute("mnickname"));
-		 model.addAttribute("exp", session.getAttribute("mpoint"));
+		 model.addAttribute("exp", member.get("mpoint"));
+		 model.addAttribute("mbalance", member.get("mbalance"));
+		 
 		 
 		return "mypage";
 	}
@@ -59,12 +60,16 @@ public class MyPageController {
 			return "redirect/login";
 		}
 		
+		String uuid = String.valueOf(session.getAttribute("muuid"));
+		
+		//세션에 저장된 uuid를 가지고 멤버조회
+		Map<String, Object> member = myPageService.memberInfo(uuid);
 		
 		//거래후기불러오기
 		List<Map<String, Object>> profileReview = myPageService.getprofileReview(session.getAttribute("muuid"));
 		
 		 model.addAttribute("nickname", session.getAttribute("mnickname"));
-		 model.addAttribute("exp", session.getAttribute("mpoint"));
+		 model.addAttribute("exp", member.get("mpoint"));
 		 model.addAttribute("profileReview" , profileReview );
 
 		return "profile";
