@@ -43,9 +43,11 @@
         
             $(function(){
             	
+            	// 게시판 드롭다운 스타일조정
+				$(".division2").hide();
+            	            	
             	cutTitle(); // 글제목 자르기
             	
-
             	// 글번호 숨김
             	$(".rowNum").hide();
             	
@@ -85,7 +87,7 @@
             	}
            		
                let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno ***** 확인용 *****
-               let lastbno = firstbno; 
+               //let lastbno = firstbno; 
                let lastRow = $(".boardRow:last");					// 최하단row
                let count = $(".boardRow").attr("data-count");		// 해당 카테고리의 글갯수
                let wholePage = Math.ceil(count/10);					// 전체페이지수(글의갯수/10의 올림) 
@@ -258,7 +260,7 @@
 							<input type="text" name="search" class="swrite"> 
 							<input type="hidden" name="searchCate" class="searchCate" value="title">
 							<input type="hidden" name="cate" value="${param.cate }" class="cateNum">
-							<button type="button" class="swriteButton bg-light">🐋</button>
+							<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
 
 						</form>
 					</div>
@@ -286,8 +288,9 @@
 			               </c:choose>
 			               
 			                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-			                     <c:forEach items="${board}" var="board">
+			                     <c:forEach items="${board}" var="board" varStatus="loop">
 			                        <li class="cateChange"><a class="dropdown-item" href="/board?cate=${board.sno }">${board.sname }</a></li>
+			                    	<li class="division${loop.index }"><hr class="dropdown-divider" /></li>
 			                     </c:forEach>
 			                  </ul>
 			               </li>
@@ -340,7 +343,7 @@
              		</c:if>
              		
              		<!--------------카테고리별 게시판 검색결과 -------------->
-             		<c:if test="${param.searchCate ne null && param.search ne null && param.searchCate ne null}">
+             		<c:if test="${param.cate ne null && param.search ne null && param.searchCate ne null}">
              			<c:if test="${empty  searchList}">
              				<div class="NoSearchList">검색결과가 없습니다.</div>
              			</c:if>

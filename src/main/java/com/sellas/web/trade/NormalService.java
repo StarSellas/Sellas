@@ -16,9 +16,9 @@ public class NormalService {
 		return normalDAO.cateList();
 	}
 
-	public List<Map<String, Object>> normalBoardList(String orderBy) {
+	public List<Map<String, Object>> normalBoardList() {
 		// TODO Auto-generated method stub
-		return normalDAO.normalBoardList(orderBy);
+		return normalDAO.normalBoardList();
 	}
 	
 	/**************  스크롤 **************/
@@ -198,6 +198,10 @@ public class NormalService {
 
 	public Map<String, Object> hasWish(Map<String, Object> wishInfo) {
 		return normalDAO.hasWish(wishInfo);
+	}
+
+	public List<Map<String, Object>> normalSearchList(Map<String, Object> map) {
+		return normalDAO.normalSearchList(map);
 	}
 
 	

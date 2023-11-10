@@ -20,6 +20,7 @@
    rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
+<link href="css/main.css" rel="stylesheet">
 
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
@@ -58,7 +59,6 @@
 	// 다음페이지 불러오는 함수	
  	 function nextPage(currentPage){
 		
-		
 		 let sort = 0;	// 일단 0로만 가져와보기
          let firsttno = $(".rowNum:first").attr("data-tno");	// 최상단글tno ***** 확인용 *****
          let lastRow = $(".tradeRow:last");	// 최하단row
@@ -75,7 +75,7 @@
          
      	 // 다음페이지가 없다면 진행X
          if(wholePage < currentPage){
-       	  	alert("마지막 페이지 입니다.");
+       	  	//alert("마지막 페이지 입니다.");
 				return false;
          }
      	 
@@ -132,7 +132,7 @@
 	           	         	lastRow.after(newRow); // lastRow 뒤에 추가
 	           	         	
 	           	       		lastRow = $(".tradeRow:last");   // 최하단row
-	           	      	 	console.log("lastRow :" + i + "번째");
+	           	      	 	//console.log("lastRow :" + i + "번째");
 	           	       		
            	    	} // for
            	    	 
@@ -155,6 +155,54 @@
 
 });    
    </script>
+   
+               		<!---------------- 검색 ------------------>
+					<script type="text/javascript">
+					
+						$(function(){
+							
+							$(".dropdown-menu a").click(function() {
+	   							 // 클릭된 항목에 active 클래스 추가
+	    						$(this).addClass("active");
+	    						// 다른 항목에서 active 클래스 제거
+	   							$(".dropdown-menu a").not(this).removeClass("active");
+	    						
+	    						let searchCate = $(".active").text();
+	    						console.log(searchCate);
+	    						$("#navbarDropdown").text(searchCate);	// 선택한 카테고리 보여주기
+							});
+							
+							// 검색버튼 클릭
+							$(".swriteButton").click(function(){
+								
+								if($(".dropdown-menu a").hasClass("active")){
+									let selectedOption = $(".dropdown-menu a.active").data("option");
+									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
+									console.log(selectedOption)
+								} 
+								
+								$(".searchFrom").submit();	// form 제출
+							});
+							
+							
+							// 검색카테고리 & 검색단어 검색창에 남기기
+			            	let searchCate = "${param.searchCate}";
+			            	let search = "${param.search}";
+			            	
+			        		let firstOption = $(".searchCate option:first").val();
+			        		$(".searchCate").val(firstOption);
+			            	
+			            	if (searchCate != ""){
+			            		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
+								console.log("선택한카테 : " + pick);
+								$("#navbarDropdown").text(pick);
+			            		$(".swrite").val(search);
+			            	}
+							
+						})
+					</script>
+   
+   
    
 </head>
 <body>
@@ -183,8 +231,10 @@
    </header>
    <!-- Section-->
 
-   <section class="py-5">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+   <section class="py-3">
+
+<%--   정렬부분 주석처리 했슴다 *************************************
+
          <li class="nav-item dropdown">
             <div class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
                role="button" data-bs-toggle="dropdown" aria-expanded="false">${sortList }</div>
@@ -202,11 +252,37 @@
             </ul>
          </li>
       </ul>
-      <div class="container px-4 px-lg-5 mt-5" style="z-index: 10"
-         id="productContainer">
+       --%>
+      
+      <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
+         
+         <div class="searchBox justify-content-center">
+
+					<form action="./" method="get" class="searchFrom">
+
+						<ul class="navbar-nav">
+							<li class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<li><a class="dropdown-item title" href="#"	data-option="title">제목</a></li>
+									<li><hr class="dropdown-divider" /></li>
+									<li><a class="dropdown-item content" href="#" data-option="content">내용</a></li>
+									<li><hr class="dropdown-divider" /></li>
+									<li><a class="dropdown-item writer" href="#" data-option="writer">글쓴이</a></li>
+								</ul>
+							</li>
+						</ul>
+
+						<input type="text" name="search" class="swrite"> 
+						<input type="hidden" name="searchCate" class="searchCate" value="title">
+						<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+
+					</form>
+		</div>
+         
          <div style="text-align: center;">
 
-            <button onclick="location.href='./normalWrite'"
+				<button onclick="location.href='./normalWrite'"
                style="background-color: red; width: 50px; height: 50px;">물품
                등록</button>
             <button onclick="location.href='./fillPay'"
@@ -217,58 +293,114 @@
          <div
             class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
             id="sortContainer">
-            <c:forEach items="${normalBoardList }" var="i" varStatus="loop">
             
-               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}">
-                  <div class="card h-100">
-                     <!-- Product image-->
-                     <c:choose>
-                        <c:when test="${i.thumbnail ne null }">
-                           <img class="card-img-top" src="./tradeImgUpload/${i.thumbnail }" alt="thumbnail" />
-                        </c:when>
-                        <c:otherwise>
-                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
-                              alt="..." />
-                        </c:otherwise>
-                     </c:choose>
-                     <!-- Product details-->
-                     <div class="card-body p-4">
-                        <div class="text-center">
-                           <!-- Product name-->
-                           <h5 class="fw-bolder normalTtitle">${i.ttitle }</h5>
-                           <!-- Product price-->
-                           작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
-                        </div>
-                        <input type="hidden" class="rowNum" data-tno="${i.tno }">${i.tno }
-                     </div>
-                     <!-- Product actions-->
-                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div style="text-align: center;">
-                           <c:if test="${i.tnormalstate ==0 }">
-                               판매중
-                               </c:if>
-                           <c:if test="${i.tnormalstate ==1 }">
-                               거래중
-                               </c:if>
-                           <c:if test="${i.tnormalstate ==2 }">
-                               판매완료
-                               </c:if>
-                        </div>
-                        <div class="text-center">
-                           <a class="btn btn-outline-dark mt-auto"
-                              href="./normalDetail?tno=${i.tno }">상품 보러가기</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               
-            </c:forEach>
+            <!---------------- 메인화면(검색X) ------------>
+            <c:if test="${param.search eq null}">
+            
+	            <c:forEach items="${normalBoardList }" var="i" varStatus="loop">
+	            
+	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}">
+	                  <div class="card h-100">
+	                     <!-- Product image-->
+	                     <c:choose>
+	                        <c:when test="${i.thumbnail ne null }">
+	                           <img class="card-img-top" src="./tradeImgUpload/${i.thumbnail }" alt="thumbnail" />
+	                        </c:when>
+	                        <c:otherwise>
+	                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
+	                              alt="..." />
+	                        </c:otherwise>
+	                     </c:choose>
+	                     <!-- Product details-->
+	                     <div class="card-body p-4">
+	                        <div class="text-center">
+	                           <!-- Product name-->
+	                           <h5 class="fw-bolder normalTtitle">${i.ttitle }</h5>
+	                           <!-- Product price-->
+	                           작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
+	                        </div>
+	                        <input type="hidden" class="rowNum" data-tno="${i.tno }">${i.tno }
+	                     </div>
+	                     <!-- Product actions-->
+	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+	                        <div style="text-align: center;">
+	                           <c:if test="${i.tnormalstate ==0 }">
+	                               판매중
+	                               </c:if>
+	                           <c:if test="${i.tnormalstate ==1 }">
+	                               거래중
+	                               </c:if>
+	                           <c:if test="${i.tnormalstate ==2 }">
+	                               판매완료
+	                               </c:if>
+	                        </div>
+	                        <div class="text-center">
+	                           <a class="btn btn-outline-dark mt-auto"
+	                              href="./normalDetail?tno=${i.tno }">상품 보러가기</a>
+	                        </div>
+	                     </div>
+	                  </div>
+	               </div>
+	               
+	            </c:forEach>
+	            
+            </c:if>
+            
+			 <!---------------- 메인화면(검색O) ------------>
+			<c:if test="${param.search ne null && param.searchCate ne null}">
+			
+				<c:forEach items="${normalSearchList }" var="s" varStatus="loop">
+	            
+	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}">
+	                  <div class="card h-100">
+	                     <!-- Product image-->
+	                     <c:choose>
+	                        <c:when test="${s.thumbnail ne null }">
+	                           <img class="card-img-top" src="./tradeImgUpload/${s.thumbnail }" alt="thumbnail" />
+	                        </c:when>
+	                        <c:otherwise>
+	                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
+	                              alt="..." />
+	                        </c:otherwise>
+	                     </c:choose>
+	                     <!-- Product details-->
+	                     <div class="card-body p-4">
+	                        <div class="text-center">
+	                           <!-- Product name-->
+	                           <h5 class="fw-bolder normalTtitle">${s.ttitle }</h5>
+	                           <!-- Product price-->
+	                           작성자 : ${s.mnickname }<br> ${s.tnormalprice } 웨일페이<br>
+	                        </div>
+	                        <input type="hidden" class="rowNum" data-tno="${s.tno }">${s.tno }
+	                     </div>
+	                     <!-- Product actions-->
+	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+	                        <div style="text-align: center;">
+	                           <c:if test="${s.tnormalstate ==0 }">
+	                               판매중
+	                               </c:if>
+	                           <c:if test="${s.tnormalstate ==1 }">
+	                               거래중
+	                               </c:if>
+	                           <c:if test="${s.tnormalstate ==2 }">
+	                               판매완료
+	                               </c:if>
+	                        </div>
+	                        <div class="text-center">
+	                           <a class="btn btn-outline-dark mt-auto"
+	                              href="./normalDetail?tno=${s.tno }">상품 보러가기</a>
+	                        </div>
+	                     </div>
+	                  </div>
+	               </div>
+	               
+	            </c:forEach>
+			
+			</c:if>
 			
          </div>
       </div>
    </section>
-
-  
 
    <!-- Footer-->
    <footer id="footer">
