@@ -31,6 +31,10 @@ button.navbar-toggler{
     padding: 10px 0;
 }
 
+#headerline{
+   border-bottom: 1px solid #88abff;
+}
+
 .menubar{
 	margin: auto;
 	padding: 0;
