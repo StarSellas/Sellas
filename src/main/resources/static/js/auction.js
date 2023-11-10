@@ -38,23 +38,70 @@ function auctionItemList(sortOption){
 	
 	//alert(sortOption);
 	
+	document.getElementById("sortOption").value = sortOption;
+	document.getElementById("page").value = 0;
+	
 	$.ajax({
 		url : "/auctionItemList",
 		method : "get",
-		data : {sortOption : sortOption},
+		data : {sortOption : sortOption, page : 0},
 		success : function(data) {
 			if(data != null){
 				clearAuctionItemListDiv();
+				data.forEach(function(item){
+					addAuctionItem(item);
+				});
 			}
-			data.forEach(function(item){
-				addAuctionItem(item);
-			});
 		},
 		error : function(error) {
 			alert("ERROR : " + JSON.stringify(error));
 		}
 	});
 }
+
+// 경매 목록 추가
+function addNextList(){
+	
+	let sortOption = document.getElementById("sortOption").value;
+	let page = document.getElementById("page").value = parseInt(document.getElementById("page").value) + 1;
+	
+	$.ajax({
+		url : "/auctionItemList",
+		method : "get",
+		data : {sortOption : sortOption, page : page},
+		success : function(data) {
+			if(data != null){
+				data.forEach(function(item){
+				addAuctionItem(item);
+				});
+			}
+		},
+		error : function(error) {
+			alert("ERROR : " + JSON.stringify(error));
+		}
+	});
+}
+
+$(function(){
+
+	let isBottomHandled = false;
+
+	$(window).on("scroll", function(){
+	
+		let scrollTop=$(window).scrollTop();
+		let windowHeight=$(window).height();
+		let documentHeight=$(document).height();
+	
+		let isBottom = scrollTop+windowHeight + 10 >= documentHeight;
+	
+		if(isBottom && !isBottomHandled){
+			addNextList();
+			isBottomHandled = true;
+		} else if(!isBottom) {
+			isBottomHandled = false;
+		}
+	})
+});
 
 // auctionItemListDiv에 item 추가
 function addAuctionItem(item){
@@ -125,6 +172,11 @@ function addAuctionItem(item){
 	
 	// 카테고리번호(ino)	: 카테고리 필터 적용 시 필요
 	auctionItemDiv.classList.add("category"+item.ino);
+	// 현재 활성화된 필터 즉시 적용
+	let targetButton = document.getElementById("categoryButton" + item.ino);
+	if(!targetButton.classList.contains("activated")){
+		auctionItemDiv.style.display = "none";
+	}
 	
 	// onclick 이벤트 처리	: 디테일 페이지 요청
 	auctionItemDiv.onclick = function() {

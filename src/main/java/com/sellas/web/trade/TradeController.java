@@ -2,6 +2,7 @@ package com.sellas.web.trade;
 
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,6 @@ public class TradeController {
 	@Autowired
 	private Util util;
 	
-	
 	/* 거래 물품 등록 */
 	
 	@GetMapping("/addTradeItem")
@@ -36,14 +36,21 @@ public class TradeController {
 		return "addTradeItem";
 	}
 	
+	@ResponseBody
 	@PostMapping("/addTradeItem")
 	public String addTradeItem(@RequestParam Map<String, Object> map) {
 		
+		JSONObject json = new JSONObject();
 		int result = tradeService.addTradeItem(map);
-		System.out.println(result);
 		
-		// TODO : detail 페이지로 이동하도록 수정
-		return "main";
+		if(result == 1) {
+			int LastTno = (int) map.get("tno");
+			json.put("tradeType", map.get("tradeType"));
+			json.put("tno", LastTno);
+			json.put("addSuccess", 1);
+		}
+		
+		return json.toString();
 	}
 	
 	/* 거래 진행 */

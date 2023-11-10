@@ -38,6 +38,9 @@
         
         <div class="page" id="page0">
         ${auctionItemDetail }
+        
+        <!-- TODO : 거래 희망 장소 -->
+        
         <c:if test="${auctionItemDetail.isItemSeller eq false}">
         <c:if test="${auctionItemDetail.isCurrentBidder eq false}">
 

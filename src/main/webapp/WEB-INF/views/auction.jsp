@@ -55,6 +55,7 @@
         <button id="openCategoryFilter">카테고리</button>
         	
         <!-- 정렬 기준 -->
+        <input type="hidden" id="sortOption" value="none">
         
 		<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 			<li class="nav-item dropdown">
@@ -71,6 +72,8 @@
 		
 		</div>
 		</div>
+		
+		<input type="hidden" id="page" value="0">
 		
 		<div id="auctionItemListDiv"></div>
 

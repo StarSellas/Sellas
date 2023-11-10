@@ -22,23 +22,27 @@
 	WHERE trade.ttype = 1
 </sql>
 
-<select id="getAuctionItemList" resultType="Map">
+<select id="getAuctionItemList" parameterType="Integer" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
+	LIMIT #{page}, 10
 </select>
 
-<select id="getAuctionItemListPriceDESC" resultType="Map">
+<select id="getAuctionItemListPriceDESC" parameterType="Integer" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
 	ORDER BY minbidprice DESC
+	LIMIT #{page}, 10
 </select>
 
-<select id="getAuctionItemListPriceASC" resultType="Map">
+<select id="getAuctionItemListPriceASC" parameterType="Integer" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
 	ORDER BY minbidprice ASC
+	LIMIT #{page}, 10
 </select>
 
-<select id="getAuctionItemListReadDESC" resultType="Map">
+<select id="getAuctionItemListReadDESC" parameterType="Integer" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
 	ORDER BY trade.tread DESC
+	LIMIT #{page}, 10
 </select>
 
 <select id="auctionItemDetail" parameterType="Object" resultType="Map">
@@ -96,5 +100,32 @@
 	INSERT INTO auctionhistory (tno, abidder, abidprice, abidcharge)
 	VALUES (#{tno}, #{muuid}, #{bidPrice}, #{bidPrice}*0.1)
 </insert>
+
+<select id="auctionDeadlineCheck" resultType="Map">
+	SELECT tno
+	FROM trade
+	WHERE ttype = 1 AND trade.tauctionstate = 2 AND tdate + INTERVAL 2 DAY &lt;= NOW();
+</select>
+
+<select id="auctionInfo" parameterType="Map" resultType="Map">
+	SELECT trade.tno,
+	COALESCE(auctionhistory.ano, null) AS ano
+	FROM trade
+		LEFT JOIN auctionhistory
+		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
+	WHERE trade.ttype = 1 AND trade.tno = #{tno}
+</select>
+
+<update id="auctionTerminating" parameterType="Map">
+	UPDATE trade
+	SET tauctionstate = #{endtype}
+	WHERE trade.ttype = 1 AND tno = #{tno}
+</update>
+
+<update id="setWinningBidder" parameterType="Map">
+	UPDATE auctionhistory
+	SET astate = 0
+	WHERE ano = #{ano} AND tno = #{tno}
+</update>
 
 </mapper>
