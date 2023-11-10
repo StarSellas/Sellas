@@ -209,9 +209,7 @@
             <button onclick="location.href='./normalWrite'"
                style="background-color: red; width: 50px; height: 50px;">물품
                등록</button>
-            <button onclick="location.href='./fillPay'"
-               style="background-color: yellow; width: 50px; height: 50px;">머니
-               충전</button>
+            엌ㅋㅋ 이대원 머니충전 내가 가져간다
             <br>
          </div>
          <div

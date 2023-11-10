@@ -86,7 +86,11 @@
 		</div>
 		    <div class="card">
         <div class="card-body">
-            <p class="card-text">여기가 웨일페이충전구역임</p>
+            <div class="payname">WhalePay</div>
+            <div class="balance">${mbalance}</div>
+                 <button onclick="location.href='./fillPay'">머니충전</button>
+            <p class="card-text">
+            </p>
         </div>
         </div>
 		        <h6>나의 거래</h6>
