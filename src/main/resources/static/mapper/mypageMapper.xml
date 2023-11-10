@@ -112,11 +112,12 @@ DELETE FROM wishlist WHERE muuid=#{muuid} AND tno=#{tno}
 <select id="getMyPost" parameterType="String" resultType="Map">
 	SELECT * FROM boardview
 	WHERE mnickname=#{nickname}
+	ORDER BY bno DESC;
 	
 </select>
 
 <select id="getMyComment" parameterType="String" resultType="Map">
-	SELECT c.*, b.sno
+	SELECT c.*, b.sno, b.btitle
 	FROM commentview c
 	JOIN board b ON c.bno = b.bno
 	WHERE mnickname=#{nickname}
