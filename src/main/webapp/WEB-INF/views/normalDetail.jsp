@@ -28,7 +28,7 @@
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="./js/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="../js/wishlist.js"></script>
+
 </head>
 <body>
 	<!-- Navigation-->
@@ -75,7 +75,6 @@
 					<div id="detailID">${detail.mnickname}</div>
 					<div id="detailDate">${detail.tdate}&nbsp;
 						&nbsp;&nbsp;&nbsp;작성자: ${detail.mnickname}</div>
-						<div id="detailWriter">작성자 ${detail.mnickname}</div>
 
 					<c:if test="${normalDetailImage ne null }">
 						<c:forEach items="${normalDetailImage }" var="i">
@@ -94,15 +93,7 @@
 						<button id="normalDeleteBtn">등록 취소</button>
 					</c:if>
 					<c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 0}">
-					<c:choose>
-    				<c:when test="${hasWish eq '0' or empty hasWish}">
-    				<!-- 중복 없으면 빈하트 -->
-        			<img src="../img/heartbin.png" id="addWishList" align="left" style="cursor:pointer; width: 20px;">
-    				</c:when>
-    				<c:otherwise>
-        			<img src="../img/heart.png" id="delWishList" align="left" style="cursor:pointer; width: 20px;">
-    				</c:otherwise>
-					</c:choose>
+						<button id="addWishList">찜하기☆</button>
 						<button id="requestChatBtn">채팅 신청</button>
 					</c:if>
 						
@@ -152,9 +143,7 @@
 		let sellerMuuid = $(".sellerMuuid").val();
 		let buyerMuuid = '${sessionScope.muuid}';
 		$("#normalEditBtn").click(function(){
-			alert(tno);
 			if(confirm("수정하시겠습니까?")){
-				alert("ㅎㅎ");
 				location.href='./normalEdit?tno='+tno;
 			}
 		});//수정 버튼 눌렀을 때 끝
@@ -210,28 +199,30 @@
 						alert("잔액이 부족합니다.");
 						if(confirm("현재 보고 계신 물품의 가격보다 가지고 있는 잔액이 부족합니다.\n그래도 채팅방을 개설할까요?")){
 							//location.href='./fillPay';
-							
+						}else{
+							return false;
 						}
 					}
-					
-					
-					if(data.success == 1){
-						alert("거래 신청이 완료되었습니다.");
-						//가상 form 만들어서  submit하기
-						   var form = $("<form></form>").attr({
-      						   action: "./chat/onlyalarm",
-        					   method: "post",
-  							    });
+							if(data.success == 1){
+								alert("거래 신청이 완료되었습니다.");
+								//가상 form 만들어서  submit하기
+								   var form = $("<form></form>").attr({
+		      						   action: "./chat/onlyalarm",
+		        					   method: "post",
+		  							    });
 
-						// 필요한 hidden input 추가
-						      form.append($("<input>").attr({ type: "hidden", name: "tno", value: tno }));
-						      form.append($("<input>").attr({ type: "hidden", name: "obuyer", value: buyerMuuid }));
-						      form.append($("<input>").attr({ type: "hidden", name: "oseller", value: sellerMuuid }));
-						      form.append($("<input>").attr({ type: "hidden", name: "tnormalprice", value: tnormalprice }));
-						      
-						      // 폼을 body에 추가하고 자동으로 submit
-						      form.appendTo("body").submit();
-					}
+								// 필요한 hidden input 추가
+								      form.append($("<input>").attr({ type: "hidden", name: "tno", value: tno }));
+								      form.append($("<input>").attr({ type: "hidden", name: "obuyer", value: buyerMuuid }));
+								      form.append($("<input>").attr({ type: "hidden", name: "oseller", value: sellerMuuid }));
+								      form.append($("<input>").attr({ type: "hidden", name: "tnormalprice", value: tnormalprice }));
+								      
+								      // 폼을 body에 추가하고 자동으로 submit
+								      form.appendTo("body").submit();
+							}
+					
+					
+					
 					
 				},
 				error : function(error){
@@ -241,11 +232,6 @@
 			}
 		});// 거래 신청 버튼 끝
 		
-		//글쓴이프로필페이지이동
-		$('#detailWriter').click(function() {
-	        var muuid = '${detail.muuid}';
-	        window.location.href = '/profileMember?muuid=' + muuid;
-	    });
 		
 /* 		$("#requestChatBtn").click(function(){
 			alert("!");
