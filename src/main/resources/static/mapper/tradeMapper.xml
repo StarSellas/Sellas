@@ -11,17 +11,21 @@
 <insert id="addNormalTradeItem" parameterType="Map">
 	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tnormalprice, tnormalstate)
 	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{normalPrice}, 0)
+	
+	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID() AS tno
+    </selectKey>
 </insert>
 
 <insert id="addAuctionTradeItem" parameterType="Map">
 	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tauctionstartprice, tauctionminbidunit, tauctionstate)
 	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{auctionStartPrice}, #{auctionMinBidUnit}, 0)
+	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer">
+        SELECT LAST_INSERT_ID() AS tno
+    </selectKey>
+	
 </insert>
 
-<select id="checkBalance" parameterType="String" resultType="Integer">
-	SELECT mbalance
-	FROM member
-	WHERE muuid=#{muuid}
-</select>
+
 
 </mapper>

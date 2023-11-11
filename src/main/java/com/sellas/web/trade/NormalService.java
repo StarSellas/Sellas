@@ -1,5 +1,5 @@
 package com.sellas.web.trade;
-
+ 
 import java.util.List;
 import java.util.Map;
 
@@ -14,19 +14,12 @@ public class NormalService {
 	public List<Map<String, Object>> cateList() {
 		// TODO Auto-generated method stub
 		return normalDAO.cateList();
-	}
+	} 
 
 	public List<Map<String, Object>> normalBoardList() {
 		// TODO Auto-generated method stub
 		return normalDAO.normalBoardList();
 	}
-	
-	/**************  스크롤 **************/
-	
-	public List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map) {
-		return normalDAO.nextNormalBoardList(map);
-	}
-	
 
 	public Map<String, Object> mainMember(String muuid) {
 		// TODO Auto-generated method stub
@@ -38,6 +31,12 @@ public class NormalService {
 		return normalDAO.insertTradeimg(map);
 		
 	}
+
+	
+	
+	
+	
+	
 	
 	public int normalWrite(Map<String, Object> map) {
 		//tnormalstate값 넣어주기
@@ -196,13 +195,21 @@ public class NormalService {
 		return normalDAO.obuyerUuid(map);
 	}
 
-	public Map<String, Object> hasWish(Map<String, Object> wishInfo) {
-		return normalDAO.hasWish(wishInfo);
+	public List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.nextNormalBoardList(map);
 	}
 
 	public List<Map<String, Object>> normalSearchList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
 		return normalDAO.normalSearchList(map);
 	}
+
+	public List<Map<String, Object>> sortNormalList(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.sortNormalList(map);
+	}
+
 
 	
 

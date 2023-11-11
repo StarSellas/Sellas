@@ -43,14 +43,14 @@
 	                 <div class="itemcategoryBox">
 	                 <div><a href="/">카테고리</a></div>	
 						 <ul class="itemcategory">
-		                      <li><a href="/">디지털기기 / 가전</a></li>
-		                      <li><a href="/">가구 / 인테리어</a></li>
-		                      <li><a href="/">생활 / 주방</a></li>
-		                      <li><a href="/">도서</a></li>
-		                      <li><a href="/">티켓 / 교환권</a></li>
-		                      <li><a href="/">의류 / 잡화</a></li>
-		                      <li><a href="/">가공식품</a></li>
-		                      <li><a href="/">기타</a></li>
+		                      <li><a href="/sortcate?ino=1">디지털기기 / 가전</a></li>
+		                      <li><a href="/sortcate?ino=2">가구 / 인테리어</a></li>
+		                      <li><a href="/sortcate?ino=3">생활 / 주방</a></li>
+		                      <li><a href="/sortcate?ino=4">도서</a></li>
+		                      <li><a href="/sortcate?ino=5">티켓 / 교환권</a></li>
+		                      <li><a href="/sortcate?ino=6">의류 / 잡화</a></li>
+		                      <li><a href="/sortcate?ino=7">가공식품</a></li>
+		                      <li><a href="/sortcate?ino=8">기타</a></li>
 		                 </ul>
 	                 </div>
 	                 
