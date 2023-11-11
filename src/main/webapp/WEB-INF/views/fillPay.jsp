@@ -23,13 +23,7 @@
     </head>
     <body>
 	<!-- Navigation-->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light"
-		style="z-index: 10">
-		<div class="container px-4 px-lg-5">
-			<a class="navbar-brand" href="">SellAS</a>
-            <button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon"></button>
-		</div>
-	</nav>
+ <%@ include file="menubar.jsp" %>
 	<!-- Header-->
         <header>
 
@@ -37,10 +31,13 @@
         <!-- Section-->
         <section class="py-5">
         
-            <div class="container px-4 px-lg-5 mt-5 tradecontainter" style="z-index: 10" id="productContainer">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    
-                  ${muuid }
+<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
+		<div class="d-flex inside-bar align-items-center">
+				<div class="back col-auto" onclick="location.href='/'">
+				<a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
+				</div>
+				<div class="location col">충전하기</div>
+			</div>			     
                    충전할 금액을 입력해주세요
                    <form action="./fillRequset" method="post">
                    <input value="${mnickname }" name="mnickname" type="hidden">
@@ -57,15 +54,6 @@
             
         </section>
         <!-- Footer-->
-        <footer id="footer">
-            <div class="container">
-	            <ul class="menubar">
-	            	<li onclick="location.href='./'"><i class="xi-home xi-2x"></i><div id="menu">홈</div></li>
-	            	<li><i class="xi-message xi-2x"></i><div id="menu">채팅</div></li>
-	            	<li><i class="xi-profile xi-2x"></i><div id="menu">마이페이지</div></li>
-	            </ul>
-            </div>
-        </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

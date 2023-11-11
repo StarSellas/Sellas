@@ -39,7 +39,7 @@
 
 			<div class="nav">
 				<div class="user-img">
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
 				</div>
 				<div class="user-nickname">${nickname}</div>
 				<div class="user-level">
@@ -47,16 +47,15 @@
 								<c:if test="${exp >= 30 && exp <= 70}">고래</c:if>
 								<c:if test="${exp > 70 }">슈퍼고래</c:if>
 				</div>
-
+<div class="profilediv">
 				<button class=profile onclick="window.location.href='profile'">프로필보기</button>
 			</div>
+			</div>
 		</div>
-		    <div class="card">
-       
+		    <div class="card pay">
             <div class="payname">WhalePay</div>
         <div class="row1">
             <div class="balance"><fmt:formatNumber value="${mbalance}" pattern="#,###원"/></div>
-          
                  <button class="movefill" onclick="location.href='./fillPay'"> 충전</button>
         </div>
         </div>

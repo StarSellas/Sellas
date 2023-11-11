@@ -27,10 +27,20 @@
 <link rel="stylesheet" href="../css/profileEdit.css">
 <style type="text/css">
 </style>
+<script src="../js/jquery-3.7.0.min.js"></script>
+<script src="../js/wnInterface.js"></script> 
+      <script src="../js/mcore.min.js"></script> 
+      <script src="../js/mcore.extends.js"></script>
 </head>
 <body>
 	<!-- Navigation-->
-   <%@ include file="menubar.jsp" %>
+		<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 10">
+           <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="../"><img src="../img/sellastext.png" class="header" alt="SellAS"></a>
+				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="./menu"><img src="../img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
+           </div>
+        </nav>
 	<!-- Header-->
 	<header> </header>
 	<!-- Section-->
@@ -47,20 +57,54 @@
 			<div class="edit-div">
 				
 				<div class="user-img">
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
 				</div>
-				<img src="../img/camera.png" alt="camera" class="camera" onclick="picChange()">
+				<div class="camera" onclick="picChange()">
+				프로필 수정
+				</div>
+		<!-- 지은이수정 -->
+
+						<div id="addPhoto">
+							<button id="picker2" type="button">앨범에서 추가</button>
+							<button id="camera" type="button">카메라에서 추가</button>
+							<div id="box"></div>
+							<div id="progress"></div>
+							<div id="upload-box"></div>
+						</div>
+
+
+							<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
+							
+							<div class="bwriteBtnBox">
+								<button type="button" class="bwriteButton">글쓰기</button>
+							</div>
+
+
+	<!-- 지은이수정 -->
+
+		
+
+
 				</div>
 				
 				
 			<div class="form-floating" id="nicknameDIV">
-				<input class="form-control" id="newNickname" value=${nickname}>
+				<input class="form-control" id="newNickname" value="${nickname}">
 			</div>
 				<button id="nickChangeBtn" onclick="nickChange()">닉네임 변경</button>
 		</div>
 
 	</section>
 	<!-- Footer-->
+	 <footer id="footer">
+            <div class="container">
+	            <ul class="menubar">
+	            	<li onclick="location.href='../'"><img src="../img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
+	            	<li onclick="location.href='#'"><img src="../img/chat.png" class="footericon" alt="chat"><div id="menu">채팅</div></li>
+	            	<li onclick="location.href='../mypage'"><img src="../img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
+	            </ul>
+            </div>
+        </footer>
 	<!-- Bootstrap core JS-->
 	<script src="../js/jquery-3.7.0.min.js"></script>
 	<script src="../js/mypage.js"></script>

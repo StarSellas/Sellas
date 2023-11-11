@@ -45,7 +45,7 @@
 			</div>
 			<div class="nav">
 				<div class="user-img">
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
 				</div>
 				<div class="user-nickname">${nickname}</div>
 				<div class="user-level">

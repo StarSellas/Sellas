@@ -8,7 +8,6 @@ WHERE tno=#{tno} AND pstate=0
 </select>
 
 
-
 <insert id="inputReview" parameterType="com.sellas.web.myPage.ReviewDTO">
 INSERT INTO review (pno, mwriter, rcontent, rpoint, mtarget)
 VALUES(#{pno}, #{muuid}, #{rcontent}, #{rpoint},#{targetMember})
@@ -21,7 +20,7 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 
 
 <select id="getprofileReview" parameterType="Object" resultType="Map">
-    SELECT r.rno, r.pno, r.mwriter, r.rcontent, r.rdate, m.mnickname
+    SELECT r.rno, r.pno, r.mwriter, r.rcontent, r.rdate, m.mnickname, m.mphoto
     FROM review r
     JOIN member m ON r.mwriter = m.muuid
     WHERE r.mtarget = #{muuid}
@@ -30,7 +29,7 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 
 
 <select id="memberInfo" parameterType="String" resultType="Map">
-	SELECT mnickname, mpoint, mbalance
+	SELECT mnickname, mpoint, mbalance, mphoto
 	FROM member
 	WHERE muuid=#{uuid}
 </select>
@@ -46,6 +45,18 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 <update id="nicknameModify" parameterType="Map">
 UPDATE member SET mnickname=#{newNickname} WHERE muuid=#{uuid}
 </update>
+
+
+<update id="photoModify" parameterType="Map">
+UPDATE member SET mphoto=#{mphoto} WHERE muuid=#{uuid}
+</update>
+
+<select id="photoModifySubmit" parameterType="String">
+SELECT COUNT(*)
+	FROM member
+	WHERE muuid=#{uuid}
+</select>
+
 
 <select id="reviewDetail" parameterType="Map" resultType="Map">
 SELECT r.mwriter, r.mtarget, m1.mnickname as writer_nickname, m2.mnickname as target_nickname,

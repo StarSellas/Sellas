@@ -45,7 +45,7 @@
 			</div>
 			<div class="nav">
 				<div class="user-img">
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
 				</div>
 				<div class="user-nickname">${nickname}</div>
 				<div class="user-level">
@@ -53,8 +53,9 @@
 					<c:if test="${exp >= 30 && exp <= 70}">고래</c:if>
 					<c:if test="${exp > 70}">슈퍼고래</c:if>
 				</div>
-				<button class=profile onclick="window.location.href='profileEdit/${sessionScope.muuid}'">프로필수정</button>
-	
+				<div class="profileDiv">
+				<button class="profile" id="profileButton" onclick="window.location.href='profileEdit/${sessionScope.muuid}'">프로필수정</button>
+				</div>
 			
 			
 			</div>
@@ -94,8 +95,11 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
-	<script src="js/scripts.js">
-		
-	</script>
+	<script type="text/javascript">
+    document.getElementById('profileButton').addEventListener('click', function() {
+        window.location.href = 'profileEdit/${sessionScope.muuid}';
+    });
+</script>
+
 </body>
 </html>
