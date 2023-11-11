@@ -1,4 +1,18 @@
 
+window.onload = function() {
+    auctionItemList();
+};
+
+/* 검색 */
+
+// 검색
+document.getElementById("search").addEventListener("click", function () {
+	
+	eod = false;
+	
+    auctionItemList();
+});
+
 /* 카테고리 필터 */
 
 // 열기
@@ -31,24 +45,34 @@ function applyCategoryFilter(categoryNumber){
 	}
 }
 
+/* 정렬옵션 */
+
+// 정렬옵션 설정
+function setSortOption(option){
+	
+	eod = false;
+	
+	document.getElementById("sortOption").value = option;
+	auctionItemList();
+}
+
 /* 경매물품 리스트 생성 */
 
 let eod = false;
 
 // 리스트 ajax 요청
-function auctionItemList(sortOption){
+function auctionItemList(){
 	
-	//alert(sortOption);
-	
-	document.getElementById("sortOption").value = sortOption;
-	document.getElementById("page").value = 0;
-	
+	let sortOption = document.getElementById("sortOption").value;
+	let keyword = document.getElementById("keyword").value;
+	let page = document.getElementById("page").value = 0;
+
 	if(!eod){
 	
 	$.ajax({ 
 		url : "/auctionItemList",
 		method : "get",
-		data : {sortOption : sortOption, page : 0},
+		data : {sortOption : sortOption, keyword : keyword, page : page},
 		success : function(data) {
 			if(data.length > 0){
 				
@@ -80,12 +104,13 @@ function addNextList(){
 	if(!eod){
 	
 	let sortOption = document.getElementById("sortOption").value;
+	let keyword = document.getElementById("keyword").value;
 	let page = document.getElementById("page").value = parseInt(document.getElementById("page").value) + 1;
 	
 	$.ajax({
 		url : "/auctionItemList",
 		method : "get",
-		data : {sortOption : sortOption, page : page},
+		data : {sortOption : sortOption, keyword : keyword, page : page},
 		success : function(data) {
 			if(data.length > 0){
 				

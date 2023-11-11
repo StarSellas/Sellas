@@ -37,17 +37,20 @@ public class AuctionService {
 		return itemCategory;
 	}
 	
-	public List<Map<String, Object>> auctionItemList(String sortOption, int page) {
+	public List<Map<String, Object>> auctionItemList(Map<String, Object> map) {
+		
+		System.out.println("KEYWORD : " + map.get("keyword"));
+		map.put("page", Integer.parseInt(map.get("page").toString()) * 10);
 
-		switch(sortOption) {
+		switch(map.get("sortOption").toString()) {
 			case "priceDESC":
-				return auctionDAO.getAuctionItemListPriceDESC(page);
+				return auctionDAO.getAuctionItemListPriceDESC(map);
 			case "priceASC":
-				return auctionDAO.getAuctionItemListPriceASC(page);
+				return auctionDAO.getAuctionItemListPriceASC(map);
 			case "readDESC":
-				return auctionDAO.getAuctionItemListReadDESC(page);
+				return auctionDAO.getAuctionItemListReadDESC(map);
 			default:
-				return auctionDAO.getAuctionItemList(page);
+				return auctionDAO.getAuctionItemList(map);
 		}
 	}
 

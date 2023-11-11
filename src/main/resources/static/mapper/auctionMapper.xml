@@ -22,25 +22,41 @@
 	WHERE trade.ttype = 1
 </sql>
 
-<select id="getAuctionItemList" parameterType="Integer" resultType="Map">
+<sql id="searchKeywordSQL">
+    AND (trade.ttitle LIKE CONCAT('%', #{keyword}, '%') OR member.mnickname LIKE CONCAT('%', #{keyword}, '%'))
+</sql>
+
+<select id="getAuctionItemList" parameterType="Map" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
+	<if test="keyword != null and keyword != ''">
+        <include refid="searchKeywordSQL"/>
+    </if>
 	LIMIT #{page}, 10
 </select>
 
-<select id="getAuctionItemListPriceDESC" parameterType="Integer" resultType="Map">
+<select id="getAuctionItemListPriceDESC" parameterType="Map" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
+	<if test="keyword != null and keyword != ''">
+        <include refid="searchKeywordSQL"/>
+    </if>
 	ORDER BY minbidprice DESC
 	LIMIT #{page}, 10
 </select>
 
-<select id="getAuctionItemListPriceASC" parameterType="Integer" resultType="Map">
+<select id="getAuctionItemListPriceASC" parameterType="Map" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
+	<if test="keyword != null and keyword != ''">
+        <include refid="searchKeywordSQL"/>
+    </if>
 	ORDER BY minbidprice ASC
 	LIMIT #{page}, 10
 </select>
 
-<select id="getAuctionItemListReadDESC" parameterType="Integer" resultType="Map">
+<select id="getAuctionItemListReadDESC" parameterType="Map" resultType="Map">
 	<include refid="auctionListBaseSQL"/>
+	<if test="keyword != null and keyword != ''">
+        <include refid="searchKeywordSQL"/>
+    </if>
 	ORDER BY trade.tread DESC
 	LIMIT #{page}, 10
 </select>
