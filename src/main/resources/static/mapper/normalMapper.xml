@@ -14,6 +14,7 @@ SELECT *
 FROM normaltradeview
 WHERE ino = #{ino}
 ${orderBy}
+LIMIT 10
 </select>
 
 <select id="normalSearchList" parameterType="Map"
@@ -25,7 +26,7 @@ ${orderBy}
       <when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
       <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
    </choose>
-   ) as scount
+   ) as count
    FROM normaltradeview
    WHERE
    <choose>
@@ -34,17 +35,31 @@ ${orderBy}
       <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
    </choose>
    ORDER BY tno DESC
-   LIMIT 0, 10
+   LIMIT 10
 </select>
 
 <select id="nextNormalBoardList" parameterType="Map" resultType="Map">
-<![CDATA[ 
-SELECT *, (SELECT COUNT(*) FROM normaltradeview) as count
+
+SELECT *, (SELECT COUNT(*) FROM normaltradeview
+   WHERE
+   <choose>
+      <when test="searchCate == 'title'">ttitle LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+   </choose>
+   ) as count
 FROM normaltradeview
-WHERE tno < #{lasttno}
-ORDER BY tno DESC
-LIMIT 10
+<![CDATA[ 
+WHERE tno < #{lasttno} AND
 ]]>
+   <choose>
+      <when test="searchCate == 'title'">ttitle LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+   </choose>
+   ORDER BY tno DESC
+   LIMIT 10
+
 </select>
 
 

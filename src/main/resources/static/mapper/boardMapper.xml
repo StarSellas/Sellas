@@ -15,8 +15,7 @@
 	
 	<select id="nextPage" parameterType="Map" resultType="Map">
 		
-			SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count,
-			(SELECT COUNT(*) FROM boardview
+			SELECT *, (SELECT COUNT(*) FROM boardview
             WHERE
 			sno = #{cate} AND
             <choose>
@@ -24,7 +23,7 @@
                 <when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
                 <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
             </choose>
-       		 ) as scount
+       		 ) as count
 			FROM boardview
 			<![CDATA[ 
 			WHERE sno=#{cate } and bno < #{lastbno} AND
@@ -56,7 +55,6 @@
 	<select id="mnextPage" parameterType="Map" resultType="Map">
     
         SELECT *,
-        (SELECT COUNT(*) FROM boardview) AS count,
         (SELECT COUNT(*) FROM boardview
             WHERE
             <choose>
@@ -64,7 +62,7 @@
                 <when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
                 <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
             </choose>
-        ) as scount
+        ) as count
         FROM boardview
         <![CDATA[ 
         WHERE bno < #{lastbno} AND 

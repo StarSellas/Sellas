@@ -120,7 +120,7 @@ public class BoardController {
 		if(cate == 0) {
 			
 			List<Map<String, Object>> nextList = boardService.mnextPage(map);
-			//System.out.println("searchList 다음페이지 : " + nextList);
+			System.out.println("메인 다음페이지 : " + nextList);
 			json.put("list", nextList);
 			
 			return json.toString();
@@ -131,8 +131,9 @@ public class BoardController {
 			json.put("list", nextList);
 			
 			return json.toString();
-		
 	}
+	
+	
 	
 	// 글쓰기 페이지
 	@GetMapping("/boardWrite")

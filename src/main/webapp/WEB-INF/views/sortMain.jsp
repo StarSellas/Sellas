@@ -66,7 +66,7 @@
          let wholePage = Math.ceil(count/10);	// 전체페이지수(글의갯수/10의 올림) 
          
          //console.log("firsttno : " + firsttno);
-         //console.log("count : " + count);
+         //console.log("count : " + count); 
          //console.log("wholePage : " + wholePage);
          //console.log("currentPage : " + currentPage);
          //console.log("nextPage : " + currentPage);

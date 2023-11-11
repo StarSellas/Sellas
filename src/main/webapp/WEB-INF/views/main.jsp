@@ -32,9 +32,12 @@
    
    $(function() {
 	   
-	   console.log("tno : " + $(".rowNum:first").attr("data-tno"))
+	   	let search = "${param.search }";
+	   	console.log(search);
 	    let currentPage = 1;
    		let isBottomHandled = false;
+   		let scount = $(".tradeRow").attr("data-count");
+   		console.log("scount : " + scount)
    	
    	$(window).on("scroll",function(){
 
@@ -66,11 +69,11 @@
          let wholePage = Math.ceil(count/10);	// 전체페이지수(글의갯수/10의 올림) 
          
          //console.log("firsttno : " + firsttno);
-         //console.log("count : " + count);
+         console.log("count : " + count);
          //console.log("wholePage : " + wholePage);
          //console.log("currentPage : " + currentPage);
          //console.log("nextPage : " + currentPage);
-         //lastRow.css("color", "red");
+         lastRow.css("color", "red");
 		
          
      	 // 다음페이지가 없다면 진행X
@@ -90,9 +93,10 @@
          data.sort = sort;
          data.lasttno = lasttno;
          data.count = count;
+         data.search = search;
          
-         //console.log("lasttno : " + data.lasttno);
-         //console.log("count : " + data.count);
+         console.log("lasttno : " + data.lasttno);
+         console.log("search : " + data.search);
      	 
          $.ajax({
              url: './nextTradePage',
@@ -109,11 +113,11 @@
            	    	 
            	    	for (let i = 0; i < this.list.length; i++) {
            	    		
-           	    		newRow = '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' + this.list[i].count + '">'
+           	    		newRow = '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' + this.list[i].count + '" data-scount="' + this.list[i].scount + '">'
 	           	            + '<div class="card h-100"><img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/' + this.list[i].thumbnail : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />'
 	           	            + '<div class="card-body p-4">'
 	           	            + '<div class="text-center;">'
-	           	            + '<h5 class="fw-bolder normalTtitle">' + this.list[i].title + '</h5>'
+	           	            + '<h5 class="fw-bolder normalTtitle">' + this.list[i].ttitle + '</h5>'
 	           	            + '작성자 : ' + this.list[i].mnickname + '<br>' + this.list[i].tnormalprice + ' 웨일페이<br>'
 	           	            + '</div>'
 	           	            + '<input type="hidden" class="rowNum" data-tno="' + this.list[i].tno + '">' + this.list[i].tno
@@ -297,7 +301,7 @@
             
 	            <c:forEach items="${normalBoardList }" var="i" varStatus="loop">
 	            
-	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}">
+	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}" data-scount="${i.scount}">
 	                  <div class="card h-100">
 	                     <!-- Product image-->
 	                     <c:choose>
@@ -349,7 +353,7 @@
 			
 				<c:forEach items="${normalSearchList }" var="s" varStatus="loop">
 	            
-	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}">
+	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}" data-scount="${i.scount}">
 	                  <div class="card h-100">
 	                     <!-- Product image-->
 	                     <c:choose>

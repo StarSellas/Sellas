@@ -45,7 +45,6 @@ public class NormalController {
 	                  @RequestParam(value = "search", required = false) String search,
 	                  Model model, HttpSession session) {
 	      
-	      // ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
 	      String muuid = String.valueOf(session.getAttribute("muuid"));
 
 	      // 세션에 저장된 uuid를 가지고 회원 정보 조회
@@ -64,7 +63,7 @@ public class NormalController {
 	         map.put("search", search);
 	         
 	         List<Map<String, Object>> normalSearchList = normalService.normalSearchList(map);
-	         //System.out.println("normalSearchList : " + normalSearchList);
+	         System.out.println("normalSearchList : " + normalSearchList);
 	         model.addAttribute("normalSearchList", normalSearchList);
 	         
 	      }
@@ -80,14 +79,16 @@ public class NormalController {
 	   // 스크롤페이징
 	      @ResponseBody
 	      @PostMapping("nextTradePage")
-	      public String nextPage(@RequestParam Map<String, Object> pmap, HttpSession session) {
-	         
-	         System.out.println("pmap ; " + pmap);
-	         // {sort=0, lasttno=49, count=19}
+	      public String nextPage(@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+					    		  @RequestParam(value = "search", required = false) String search,
+					    		  @RequestParam Map<String, Object> map, HttpSession session) {
+					    
+	    	 map.put("searchCate", searchCate);
+	    	 map.put("search", search);
+	         System.out.println("map : " + map);
+	         // map : {sort=0, lasttno=238, count=16, searchCate=title, search=null}
 	         JSONObject json = new JSONObject();
-	         int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
 	         
-	         // ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
 	         String muuid = String.valueOf(session.getAttribute("muuid"));
 
 	         // 세션에 저장된 uuid를 가지고 회원 정보 조회
@@ -96,15 +97,11 @@ public class NormalController {
 
 	         // 거래 리스트를 뽑아옵니다.
 	         
-	         Map<String, Object> map = new HashMap<String, Object>();
-	         map.put("lasttno", lasttno);
-	         
 	         //System.out.println("쿼리문실행할 MAP: " + map);
 	         List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
 	         System.out.println("다음리스트 : " + nextNormalBoardList);
 
 	         // 정렬도 모델에 넣습니다.
-	         
 	         json.put("list", nextNormalBoardList);
 
 	         return json.toString();
