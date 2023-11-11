@@ -12,8 +12,6 @@ public interface NormalDAO {
 
 	List<Map<String, Object>> normalBoardList();
 
-	List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map);	/**************  스크롤 **************/
-
 	Map<String, Object> mainMember(String muuid);
 
 	int insertTradeimg(Map<String, Object> map);
@@ -78,9 +76,11 @@ public interface NormalDAO {
 	int obuyerAmounts(String obuyer);
 
 	String obuyerUuid(Map<String, Object> map);
-	
-	Map<String, Object> hasWish(Map<String, Object> hasWish);
+
+	List<Map<String, Object>> nextNormalBoardList(Map<String, Object> map);
 
 	List<Map<String, Object>> normalSearchList(Map<String, Object> map);
+
+	List<Map<String, Object>> sortNormalList(Map<String, Object> map);
 
 }

@@ -9,25 +9,32 @@ ORDER BY tno DESC
 LIMIT 10 
 </select>
 
+<select id="sortNormalList" parameterType="Map" resultType="Map">
+SELECT *
+FROM normaltradeview
+WHERE ino = #{ino}
+${orderBy}
+</select>
+
 <select id="normalSearchList" parameterType="Map"
-	resultType="Map">
-	SELECT *, (SELECT COUNT(*) FROM normaltradeview
-	WHERE
-	<choose>
-		<when test="searchCate == 'title'">ttitle LIKE CONCAT('%', #{search}, '%')</when>
-		<when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
-		<when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
-	</choose>
-	) as scount
-	FROM normaltradeview
-	WHERE
-	<choose>
-		<when test="searchCate == 'title'">ttitle LIKE CONCAT('%', #{search}, '%')</when>
-		<when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
-		<when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
-	</choose>
-	ORDER BY tno DESC
-	LIMIT 0, 10
+   resultType="Map">
+   SELECT *, (SELECT COUNT(*) FROM normaltradeview
+   WHERE
+   <choose>
+      <when test="searchCate == 'title'">ttitle LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+   </choose>
+   ) as scount
+   FROM normaltradeview
+   WHERE
+   <choose>
+      <when test="searchCate == 'title'">ttitle LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'content'">tcontent LIKE CONCAT('%', #{search}, '%')</when>
+      <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+   </choose>
+   ORDER BY tno DESC
+   LIMIT 0, 10
 </select>
 
 <select id="nextNormalBoardList" parameterType="Map" resultType="Map">
@@ -39,6 +46,7 @@ ORDER BY tno DESC
 LIMIT 10
 ]]>
 </select>
+
 
 <select id="cateList" resultType="Map">
 SELECT *
@@ -112,16 +120,23 @@ VALUES ((SELECT muuid FROM member WHERE mnickname = #{mnickname}), #{money})
 
 <update id="normalEdit" parameterType="Map">
 UPDATE trade
-SET ttitle = #{ttitle},  ino = #{category}, tcontent = #{tcontent}, tnormalprice = #{tnormalprice}
+SET ttitle = #{ttitle},  ino = #{ino}, tcontent = #{tcontent}, tnormalprice = #{tnormalprice}
 where tno =#{tno}
 </update>
 
 <delete id="normalDeleteEditImage" parameterType="Map">
-DELETE FROM tradeimage
-WHERE tno = #{tno} and timage = #{selectedImage0} <if test="selectedImage1 != ''">or timage =#{selectedImage1}</if>
-<if test="selectedImage2 !=''">or timage =#{selectedImage2}</if>
-
-
+    DELETE FROM tradeimage
+    WHERE tno = #{tno}
+        and timage = #{Original1}
+    <if test="Original2 != null">
+        or timage = #{Original2}
+    </if>
+    <if test="Original3 != null">
+        or timage = #{Original3}
+    </if>
+    <if test="Original4 != null">
+        or timage = #{Original4}
+    </if>
 </delete>
 
 <select id="SelectnormalThumbnail" parameterType="Map" resultType="Integer">
@@ -241,11 +256,5 @@ WHERE muuid = #{buyer}
 	select obuyer from onlinechat where ouuid = #{roomId} and oseller = #{pseller}
 </select>
 
-<select id="hasWish" parameterType="Map" resultType="Map">
-    SELECT wno
-    FROM wishlist
-    WHERE tno=#{tno} 
-    AND muuid=#{muuid}
-</select>
 
 </mapper>

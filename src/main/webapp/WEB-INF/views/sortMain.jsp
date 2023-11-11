@@ -255,7 +255,24 @@
        --%>
       
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
-         
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+			<li class="nav-item dropdown">
+				<div class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+					role="button" data-bs-toggle="dropdown" aria-expanded="false">${sortList }</div>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<li><div class="dropdown-item sortOption sortLowPrice" onclick="location.href='/sortcate?ino=${ino}&sort=1'">가격
+							낮은 순</div></li>
+					<li><hr class="dropdown-divider" /></li>
+					<li><div class="dropdown-item sortOption sortHighPrice"  onclick="location.href='/sortcate?ino=${ino}&sort=2'">가격
+							높은 순</div></li>
+					<li><hr class="dropdown-divider" /></li>
+					<li><div class="dropdown-item sortOption sortPopularity"  onclick="location.href='/sortcate?ino=${ino}&sort=3'">인기순</div></li>
+					<li><hr class="dropdown-divider" /></li>
+					<li><div class="dropdown-item sortOption sortRecent"  onclick="location.href='/sortcate?ino=${ino}&sort=0'">최신순</div></li>
+					<!--  => 기준 : 조회수 =1 , 찜 = 5? 두 개 더해서 -->
+				</ul>
+			</li>
+		</ul>
          <div class="searchBox justify-content-center">
 
 					<form action="./" method="get" class="searchFrom">

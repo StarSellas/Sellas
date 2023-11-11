@@ -34,94 +34,121 @@ public class NormalController {
 	@Autowired
 	private NormalService normalService;
 
-	@GetMapping("/menu")
-	public String menu() {
-		return "menu";
-	}
-	
-	// main.jsp로 보내주는 메소드입니다.
-	@GetMapping("/")
-	public String index(@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
-						@RequestParam(value = "search", required = false) String search,
-						Model model, HttpSession session) {
-		
-		// ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
+	 @GetMapping("/menu")
+	   public String menu() {
+	      return "menu";
+	   }
+	   
+	   // main.jsp로 보내주는 메소드입니다.
+	   @GetMapping("/")
+	   public String index(@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+	                  @RequestParam(value = "search", required = false) String search,
+	                  Model model, HttpSession session) {
+	      
+	      // ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
+	      String muuid = String.valueOf(session.getAttribute("muuid"));
+
+	      // 세션에 저장된 uuid를 가지고 회원 정보 조회
+	      Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
+	      // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
+	      model.addAttribute("memberInfo", mainMemberInfo);
+	      
+	      Map<String, Object> map = new HashMap<String, Object>();
+	      
+	      // 검색값 있는 경우 
+	      if(search != null && searchCate != null) {
+	         
+	         //System.out.println("메인에서 잡는 searchCate : " + searchCate);
+	         //System.out.println("메인에서 잡는 search : " + search);
+	         map.put("searchCate", searchCate);
+	         map.put("search", search);
+	         
+	         List<Map<String, Object>> normalSearchList = normalService.normalSearchList(map);
+	         //System.out.println("normalSearchList : " + normalSearchList);
+	         model.addAttribute("normalSearchList", normalSearchList);
+	         
+	      }
+	      
+	      // 거래 리스트를 뽑아옵니다. (최신순10개)
+	      List<Map<String, Object>> normalBoardList = normalService.normalBoardList();
+	      //System.out.println("보드 리스트 : " + normalBoardList);
+	      model.addAttribute("normalBoardList", normalBoardList);
+
+	      return "main";
+	   }
+	   
+	   // 스크롤페이징
+	      @ResponseBody
+	      @PostMapping("nextTradePage")
+	      public String nextPage(@RequestParam Map<String, Object> pmap, HttpSession session) {
+	         
+	         System.out.println("pmap ; " + pmap);
+	         // {sort=0, lasttno=49, count=19}
+	         JSONObject json = new JSONObject();
+	         int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
+	         
+	         // ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
+	         String muuid = String.valueOf(session.getAttribute("muuid"));
+
+	         // 세션에 저장된 uuid를 가지고 회원 정보 조회
+	         Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
+	         // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
+
+	         // 거래 리스트를 뽑아옵니다.
+	         
+	         Map<String, Object> map = new HashMap<String, Object>();
+	         map.put("lasttno", lasttno);
+	         
+	         //System.out.println("쿼리문실행할 MAP: " + map);
+	         List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
+	         System.out.println("다음리스트 : " + nextNormalBoardList);
+
+	         // 정렬도 모델에 넣습니다.
+	         
+	         json.put("list", nextNormalBoardList);
+
+	         return json.toString();
+	      }
+	   
+
+	// 카테고리별 정렬 메소드입니다.
+	@GetMapping("/sortcate")
+	public String sortNormalTradeList(@RequestParam(value = "ino",required = true, defaultValue = "1")int ino,
+			@RequestParam(name = "sort", defaultValue = "0") int sort,
+			Model model, HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("들어오는 map 값입니다 : " + ino); 
+		String orderBy = "";
+		switch (sort) {
+		case 1:
+			orderBy = "ORDER BY tnormalprice ASC";
+			break;
+		case 2:
+			orderBy = "ORDER BY tnormalprice DESC";
+			break;
+		case 3:
+			orderBy = "ORDER BY tread DESC";
+			break;
+		default:
+			// 기본 정렬은 tno DESC
+			orderBy = "ORDER BY tno DESC";
+			break;
+		}
+		map.put("orderBy", orderBy);
+		map.put("ino", ino);
+		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
+		List<Map<String, Object>> sortNormalList = normalService.sortNormalList(map);
 		String muuid = String.valueOf(session.getAttribute("muuid"));
 
-		// 세션에 저장된 uuid를 가지고 회원 정보 조회
-		Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
-		// System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
-		model.addAttribute("memberInfo", mainMemberInfo);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		// 검색값 있는 경우 
-		if(search != null && searchCate != null) {
-			
-			//System.out.println("메인에서 잡는 searchCate : " + searchCate);
-			//System.out.println("메인에서 잡는 search : " + search);
-			map.put("searchCate", searchCate);
-			map.put("search", search);
-			
-			List<Map<String, Object>> normalSearchList = normalService.normalSearchList(map);
-			//System.out.println("normalSearchList : " + normalSearchList);
-			model.addAttribute("normalSearchList", normalSearchList);
-			
-		}
-		
-		// 거래 리스트를 뽑아옵니다. (최신순10개)
-		List<Map<String, Object>> normalBoardList = normalService.normalBoardList();
-		//System.out.println("보드 리스트 : " + normalBoardList);
-		model.addAttribute("normalBoardList", normalBoardList);
-
-		return "main";
-	}
-	
-	// 스크롤페이징
-		@ResponseBody
-		@PostMapping("nextTradePage")
-		public String nextPage(@RequestParam Map<String, Object> pmap, HttpSession session) {
-			
-			System.out.println("pmap ; " + pmap);
-			// {sort=0, lasttno=49, count=19}
-			JSONObject json = new JSONObject();
-			int lasttno = Integer.parseInt(String.valueOf(pmap.get("lasttno")));
-			
-			// ==========================하드코딩 해놨습니다~~~~~ 합쳐지면 지움===================
-			String muuid = String.valueOf(session.getAttribute("muuid"));
-
-			// 세션에 저장된 uuid를 가지고 회원 정보 조회
-			Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
-			// System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
-
-			// 거래 리스트를 뽑아옵니다.
-			
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("lasttno", lasttno);
-			
-			//System.out.println("쿼리문실행할 MAP: " + map);
-			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
-			System.out.println("다음리스트 : " + nextNormalBoardList);
-
-			// 정렬도 모델에 넣습니다.
-			
-			json.put("list", nextNormalBoardList);
-
-			return json.toString();
-		}
-	
-
-	// 메인 화면 리스트 정렬 메소드입니다.
-	@ResponseBody
-	@GetMapping("sortNormalTradeList")
-	public String sortNormalTradeList(@RequestParam Map<String, Object> map) {
-		System.out.println("들어오는 map 값입니다 : " + map);
-		// List<Map<String, Object>> sortNormalBoradList =
-		// normalService.normalBoardList(map);
-		JSONObject json = new JSONObject();
-		// json.put("sortNormalBoradList", sortNormalBoradList);
-		System.out.println("제이슨 값입니다 : " + json.toString());
-		return json.toString();
+	      // 세션에 저장된 uuid를 가지고 회원 정보 조회
+	      Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
+	      // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
+	      model.addAttribute("memberInfo", mainMemberInfo);
+	      model.addAttribute("normalBoardList", sortNormalList);
+	      System.out.println("정렬된 보드 리스트 입니다." + sortNormalList);
+	      model.addAttribute("sortList", sortList[sort]);
+	      model.addAttribute("ino", ino);
+		return "/sortMain";
 	}
 
 	// default jsp로 보내주는 메소드입니다.
@@ -219,7 +246,7 @@ public class NormalController {
 	}
 
 	@GetMapping("/normalDetail")
-	public String tradeDetail(@RequestParam(name = "tno", required = true, defaultValue = "1") int tno, Model model, HttpSession session) {
+	public String tradeDetail(@RequestParam(name = "tno", required = true, defaultValue = "1") int tno, Model model) {
 		System.out.println("tno 값은 : " + tno);
 		// tno값에 맞는 값을 가져오기
 		Map<String, Object> normalDetail = normalService.normalDetail(tno);
@@ -235,19 +262,9 @@ public class NormalController {
 			System.out.println("실제 파일 이름입니당 : " + normalDetailImage);
 			// 모델에 값 넣기
 			model.addAttribute("normalDetailImage", normalDetailImage);
+			
 		}
 
-		//TODO 지은추가 세션도넣었음
-		//찜여부 확인
-		Map<String,Object> wishInfo = new HashMap<>();
-		wishInfo.put("tno", tno);
-		wishInfo.put("muuid",session.getAttribute("muuid"));
-		System.out.println("세션이담겨져있나요"+wishInfo.get("muuid"));
-		Map<String,Object> hasWish = normalService.hasWish(wishInfo);
-		System.out.println("님아 뭐있음?" + wishInfo);
-		System.out.println(hasWish);
-				
-		model.addAttribute("hasWish",hasWish);
 		model.addAttribute("detail", normalDetail);
 		return "normalDetail";
 	}
@@ -327,110 +344,49 @@ public class NormalController {
 		// 결제 성공하면 어디로 보낼지 정해봅시당
 		return "redirect:/";
 	}
-
+	
+	@ResponseBody
 	@PostMapping("/normalEdit")
-	public String normalEdit(@RequestParam(value = "tradeimg", required = false) List<MultipartFile> tradeimg,
-			@RequestParam Map<String, Object> map) {
-		System.out.println("이미지 값이 어떻게 올까요? " + tradeimg);
-		System.out.println(map);
-
+	public String normalEdit( @RequestParam Map<String, Object> map) {
+		JSONObject json = new JSONObject();
+		System.out.println("맵 값은 어떻게 오나요?" + map);
 		int normalEditResult = normalService.normalEdit(map);
-		if (normalEditResult == 1) {
-
-			if ((map.get("selectedImage0") != null && !(map.get("selectedImage0").equals("")))
-					|| (map.get("selectedImage1") != null && !(map.get("selectedImage1").equals("")))
-					|| (map.get("selectedImage2") != null && !(map.get("selectedImage2").equals("")))) {
-				// 수정된 사진이 있다면 삭제하는 식.
-				Map<String, Object> deleteImage = new HashMap<String, Object>();
-				deleteImage.put("tno", map.get("tno"));
-				for (Map.Entry<String, Object> entry : map.entrySet()) {
-					String selectedImage = entry.getKey();
-					Object Imagesrc = entry.getValue();
-
-					if (selectedImage.startsWith("selectedImage")) {
-						deleteImage.put(selectedImage, Imagesrc);
-					}
+		
+		
+		if(map.get("OriginalImgArray[0]") != null) {
+		Map<String, Object> deleteImage = new HashMap<String, Object>();
+		deleteImage.put("tno", map.get("tno"));
+		if(map.get("OriginalImgArray[0]") != null) {
+			deleteImage.put("Original1", map.get("OriginalImgArray[0]"));
+		}if(map.get("OriginalImgArray[1]") != null) {
+			deleteImage.put("Original2", map.get("OriginalImgArray[1]"));
+		}if(map.get("OriginalImgArray[2]") != null) {
+			deleteImage.put("Original3", map.get("OriginalImgArray[2]"));
+		}if(map.get("OriginalImgArray[3]") != null) {
+			deleteImage.put("Original4", map.get("OriginalImgArray[3]"));
+		}
+		 
+		
+			int normalDeleteEditImage = normalService.normalDeleteEditImage(deleteImage);
+				if(normalDeleteEditImage == 1) {   
+				json.put("ImgdeleteSuccess", 1);
 				}
-				System.out.println("deleteImage의 값입니당 왔으면 좋겠다 : " + deleteImage);
-
-				int normalDeleteEditImageResult = normalService.normalDeleteEditImage(deleteImage);
-				System.out.println("수정되었을 때 사진이 삭제되는지 ?? : " + normalDeleteEditImageResult);
-
-			} // if(!(map.get("selectedImage0").equals(""))) 끝
-
-			// 사진 업로드
-			if (tradeimg != null && !tradeimg.isEmpty()) {
-				System.out.println("이게 왜 안나옴?????????????????????????????????????????");
-				for (int i = 0; i < tradeimg.size(); i++) {
-
-					// 저장할 경로명 뽑기 request뽑기
-					HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder
-							.currentRequestAttributes()).getRequest();
-					String path = req.getServletContext().getRealPath("/tradeImgUpload");
-					System.out.println("이미지 오리지널 파일 이름 : " + tradeimg.get(i).getOriginalFilename());
-					LocalDateTime ldt = LocalDateTime.now();
-					String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
-					String realFileName = format + "num" + i + tradeimg.get(i).getOriginalFilename();
-
-					// 확장자 자르기
-					String[] parts = tradeimg.get(i).getOriginalFilename().split("\\.");
-					String lastPart = parts[parts.length - 1];
-					System.out.println(lastPart);
-
-					// 확장자 아니면 파일 없애보리기
-
-					if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
-							|| lastPart.equals("bmp") || lastPart.equals("gif") || lastPart.equals("jpe"))) {
-						continue;
-					}
-
-					File newFileName = new File(path, realFileName);
-
-					// 진짜 이름을 맵에 넣기
-					map.put("realFileName", realFileName);
-
-					try {
-						FileCopyUtils.copy(tradeimg.get(i).getBytes(), newFileName);
-
-						int insertTradeimgResult = normalService.insertTradeimg(map);
-
-						if (insertTradeimgResult == 1 && i == 0) {
-
-							int ThumbnailCount = normalService.SelectnormalThumbnail(map);
-							if (ThumbnailCount == 0) {
-								normalService.setThumbnail(realFileName);
-
-							}
-
-						}
-
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				} // for문의 끝
-			} // (!tradeimg.isEmpty()) 의 끝(사진 넣기 끝)
-
+		}else {
+			json.put("justDelete", 1);
 		}
 
-		return "redirect:/normalDetail?tno=" + map.get("tno");
+		return json.toString();
 	}
-
+	
+	@ResponseBody
+	@PostMapping("/insertEditImage")
+	public String insertEditImage(@RequestParam Map<String, Object> map) {
+		System.out.println("넣을 이미지 목록입니다 :" +map);
+		return "";
+	}
 	
 	
-	//채팅 신청하기버튼 > 여기 조건이 충족되면 jsp에서 필요한 값 들고 채팅방 생성(requestChat)으로 보냅니다.
 	
-	
-	/*
-	 * var form = $("<form></form>").attr({ action: "./requestChat", method: "post",});
-	 * 
-	 * // 필요한 hidden input 추가 
-	 * form.append($("<input>").attr({ type: "hidden", name: "tno", value: tno }));
-	 * form.append($("<input>").attr({ type: "hidden", name: "obuyer", value: buyerMuuid }));
-	 * form.append($("<input>").attr({ type: "hidden", name: "oseller", value: sellerMuuid }));
-	 * form.append($("<input>").attr({ type: "hidden", name: "tnormalprice", value: tnormalprice }));
-	 * form.appendTo("body").submit(); }
-	 */
 	 
 	
 	@PostMapping("/checkTnormalstate")
@@ -461,6 +417,7 @@ public class NormalController {
 				System.out.println("이게 돈도없는게");
 				json.put("nomoney", 1);
 			}
+
 
 				// 이미 채팅창이 생성되어 있는거 아녀??
 				int paymentCount = normalService.normalTradePaymentCountCount(map);

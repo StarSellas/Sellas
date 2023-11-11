@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.upload.UploadDAO">
+<insert id="insertTradeimg" parameterType="Map">
+	INSERT INTO tradeimage (tno, timage)
+	VALUES (#{tno}, #{realFileName})
+</insert>
+
+<update id="setThumbnail" parameterType="String">
+UPDATE tradeimage
+SET tthumbnail = 0
+WHERE timage = #{realFileName}
+</update>
+
+<select id="countThumbnail" parameterType="Map" resultType="Integer">
+SELECT COUNT(*)
+FROM tradeimage
+WHERE tno = #{tno} and tthumbnail = 0
+</select>
+
+</mapper>
