@@ -25,15 +25,12 @@
     </head>
     <body>
     <%@ include file="menubar.jsp" %>
-    
-
-		<!-- Section-->
-		<section class="py-5">
-			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
-				<div class="justify-content-center">
-				</div>
-			</div>
-		</section>
+    	
+    	<br>
+    	<br>
+    	<br>
+    	
+    	<button onclick="countBlockDiv()">눌러봐.</button>
         
         <!-- 카테고리 필터 -->
         
