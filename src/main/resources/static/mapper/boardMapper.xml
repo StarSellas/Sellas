@@ -14,13 +14,29 @@
 	</select>
 	
 	<select id="nextPage" parameterType="Map" resultType="Map">
-		<![CDATA[ 
-			SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count 
+		
+			SELECT *, (SELECT COUNT(*) FROM boardview WHERE sno = #{cate}) AS count,
+			(SELECT COUNT(*) FROM boardview
+            WHERE
+			sno = #{cate} AND
+            <choose>
+                <when test="searchCate == 'title'">btitle LIKE CONCAT('%', #{search}, '%')</when>
+                <when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
+                <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+            </choose>
+       		 ) as scount
 			FROM boardview
-			WHERE sno=#{cate } and bno < #{lastbno}
+			<![CDATA[ 
+			WHERE sno=#{cate } and bno < #{lastbno} AND
+			]]>
+			<choose>
+				<when test="searchCate == 'title'">btitle LIKE CONCAT('%', #{search}, '%')</when>
+				<when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
+				<when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+			</choose>
 			ORDER BY bno DESC
 			LIMIT 10
-		]]>
+		
 	</select>
 	
 	<select id="setupboardList" resultType="Map">
@@ -38,17 +54,30 @@
 	</select>
 	
 	<select id="mnextPage" parameterType="Map" resultType="Map">
-		<![CDATA[ 
-			SELECT *, (SELECT COUNT(*) FROM boardview) AS count 
-				FROM(
-					SELECT CAST(@ROWNUM:=@ROWNUM+1 AS UNSIGNED) AS rowNum,
-					b.* FROM boardview b, (SELECT @ROWNUM:= 0) AS R
-					ORDER BY b.bno DESC) bb
-				WHERE bno < #{lastbno}
-				ORDER BY bb.bno DESC
-				LIMIT 0, 10
-		]]>
-	</select>
+    
+        SELECT *,
+        (SELECT COUNT(*) FROM boardview) AS count,
+        (SELECT COUNT(*) FROM boardview
+            WHERE
+            <choose>
+                <when test="searchCate == 'title'">btitle LIKE CONCAT('%', #{search}, '%')</when>
+                <when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
+                <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+            </choose>
+        ) as scount
+        FROM boardview
+        <![CDATA[ 
+        WHERE bno < #{lastbno} AND 
+        ]]>
+        <choose>
+            <when test="searchCate == 'title'">btitle LIKE CONCAT('%', #{search}, '%')</when>
+            <when test="searchCate == 'content'">bcontent LIKE CONCAT('%', #{search}, '%')</when>
+            <when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
+        </choose>
+        ORDER BY bno DESC
+        LIMIT 10
+    
+</select>
 
 	<select id="searchList" parameterType="Map" resultType="Map">
 		SELECT *, (SELECT COUNT(*) FROM boardview
@@ -72,7 +101,7 @@
 			<when test="searchCate == 'writer'">mnickname LIKE CONCAT('%', #{search}, '%')</when>
 		</choose>
 		ORDER BY bno DESC
-		LIMIT 0, 10
+		LIMIT 10
 	</select>
 
 	<select id="boardDetail" parameterType="Map" resultType="Map">

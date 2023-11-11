@@ -45,17 +45,26 @@
             	
             	// 게시판 드롭다운 스타일조정
 				$(".division2").hide();
-            	            	
+            	
             	cutTitle(); // 글제목 자르기
             	
             	// 글번호 숨김
-            	$(".rowNum").hide();
+            	//$(".rowNum").hide();
             	
             	// 스크롤 페이징
             	let cate;
+            	let search = "${param.search }";	// 값이 없는 경우에도 서버로 보내야함
+            	let searchCate = "";
             	let currentPage = 1;	// 현재페이지
             	let isBottomHandled = false;	// 연속적인 요청 방지용
             	
+            	if(${empty param}){	// 메인게시판인 경우 
+            		cate = 0;
+            	} else {
+            		cate = $(".cateNum").val();
+            	}
+            	
+            	console.log("search값 잡아: " + search);
             	
             	// 스크롤 이벤트 발생
             	$(window).on("scroll",function(){
@@ -80,22 +89,17 @@
             // 다음페이지 불러오는 함수	
            	 function nextPage(currentPage){
             	
-           		if(${empty param}){
-            		cate = 0;
-            	} else {
-            		cate = $(".cateNum").val();
-            	}
-           		
                let firstbno = $(".rowNum:first").attr("data-bno");	// 최상단글bno ***** 확인용 *****
-               //let lastbno = firstbno; 
+               let lastbno = firstbno; 
                let lastRow = $(".boardRow:last");					// 최하단row
                let count = $(".boardRow").attr("data-count");		// 해당 카테고리의 글갯수
                let wholePage = Math.ceil(count/10);					// 전체페이지수(글의갯수/10의 올림) 
-               console.log("wholePage : " + wholePage);
-               console.log("count : " + count);
-               console.log("firstbno : " + firstbno);
                
-        		
+               //console.log("wholePage : " + wholePage);
+               console.log("count : " + count);
+               //console.log("firstbno : " + firstbno);
+               
+               
                   // 다음페이지가 없다면 진행X
                   if(wholePage < currentPage){
                 	  	alert("마지막 페이지 입니다.");
@@ -115,6 +119,7 @@
                      data.cate = cate;
                      data.lastbno = lastbno;
                      data.count = count;
+                     data.search = search;
                      
                      $.ajax({
                           url: './nextPage',
@@ -183,21 +188,22 @@
 					// 검색
 						$(function(){
 							
-							$(".dropdown-menu a").click(function() {
+							$(".searchA").click(function() {
 	   							 // 클릭된 항목에 active 클래스 추가
 	    						$(this).addClass("active");
 	    						// 다른 항목에서 active 클래스 제거
-	   							$(".dropdown-menu a").not(this).removeClass("active");
+	   							$(".searchA").not(this).removeClass("active");
 	    						
-	    						let searchCate = $(".active").text();
-	    						$("#navbarDropdown").text(searchCate);	// 선택한 카테고리 보여주기
+	    						let searchCate = $(this).text();
+	    						console.log(searchCate);
+	    						$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
 							});
 							
 							// 검색버튼 클릭
 							$(".swriteButton").click(function(){
 								
-								if($(".dropdown-menu a").hasClass("active")){
-									let selectedOption = $(".dropdown-menu a.active").data("option");
+								if($(".searchA").hasClass("active")){
+									let selectedOption = $(".searchA.active").data("option");
 									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
 									console.log(selectedOption)
 								} 
@@ -215,8 +221,8 @@
 			            	
 			            	if (searchCate != ""){
 			            		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
-								console.log("선택한카테 : " + pick);
-								$("#navbarDropdown").text(pick);
+								//console.log("선택한카테 : " + pick);
+								$("#navbarSDropdown").text(pick);
 			            		$(".swrite").val(search);
 			            	}
 							
@@ -246,13 +252,13 @@
 
 							<ul class="navbar-nav">
 								<li class="nav-item dropdown">
-									<a	class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
-									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<li><a class="dropdown-item title" href="#" data-option="title">제목</a></li>
+									<a	class="nav-link dropdown-toggle" id="navbarSDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarSDropdown">
+										<li><a class="dropdown-item searchA" href="#" data-option="title">제목</a></li>
 										<li><hr class="dropdown-divider" /></li>
-										<li><a class="dropdown-item content" href="#" data-option="content">내용</a></li>
+										<li><a class="dropdown-item searchA" href="#" data-option="content">내용</a></li>
 										<li><hr class="dropdown-divider" /></li>
-										<li><a class="dropdown-item writer" href="#" data-option="writer">글쓴이</a></li>
+										<li><a class="dropdown-item searchA" href="#" data-option="writer">글쓴이</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -269,21 +275,28 @@
 			            <ul class="navbar-nav">
 			               <li class="nav-item dropdown">
 			               <c:choose>
-			                  <c:when test="${empty param}">
+			                  <c:when test="${!empty param}">
+			                     <c:forEach items="${board}" var="board">
+				                        <c:if test="${param.cate eq board.sno}">
+				                           <a class="dropdown-toggle" id="navbarDropdown" href="#"
+				                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				                           ${board.sname }
+				                           </a>
+				                         </c:if>
+			                     </c:forEach>
+			                     <c:if test="${param.cate eq ''}">
+				                         	<a class="nav-link dropdown-toggle" id="navbarMain" href="#"
+			                    			 role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			                     			게시판
+			                     			</a>
+				                 </c:if>
+			                  </c:when>
+			                  
+			                  <c:otherwise>
 			                     <a class="nav-link dropdown-toggle" id="navbarMain" href="#"
 			                     role="button" data-bs-toggle="dropdown" aria-expanded="false">
 			                     게시판
 			                     </a>
-			                  </c:when>
-			                  <c:otherwise>
-			                     <c:forEach items="${board}" var="board">
-			                        <c:if test="${param.cate eq board.sno}">
-			                           <a class="dropdown-toggle" id="navbarDropdown" href="#"
-			                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
-			                           ${board.sname }
-			                           </a>
-			                         </c:if> 
-			                     </c:forEach>
 			                  </c:otherwise>
 			               </c:choose>
 			               
@@ -363,8 +376,6 @@
                </table>
               
             </div>
-            
-            <div class="nextBtnBox"> 현재페이지 : <span class="currentPage">1</span></div>
             
         		 </div>
             </div>

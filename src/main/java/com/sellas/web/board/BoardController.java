@@ -100,29 +100,40 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("/nextPage")
 	public String nextPage(@RequestParam(value = "cate", required = false, defaultValue = "0") int cate,
+							@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+							@RequestParam(value = "search", required = false) String search,
 							@RequestParam Map<String, Object> map) {
 		
 		//System.out.println(cate);
 		//System.out.println("map : " + map);
 		// {cate=2, lastbno=68, firstbno=98, count=25}
 		
+		map.put("cate", cate);
+		map.put("searchCate", searchCate);
+		map.put("search", search);
+		
+		System.out.println("map : " + map);
+		// map : {currentPage=1, cate=0, lastbno=152, count=98, search=, searchCate=title}
+		
 		JSONObject json = new JSONObject();
 		
 		if(cate == 0) {
 			
 			List<Map<String, Object>> nextList = boardService.mnextPage(map);
-			//System.out.println("메인다음리스트 : " + nextList);
+			//System.out.println("searchList 다음페이지 : " + nextList);
 			json.put("list", nextList);
+			
 			return json.toString();
 		}
+			
+			List<Map<String, Object>> nextList = boardService.nextPage(map);
+			 System.out.println("검색&cate있을때 nextList : " + nextList);
+			json.put("list", nextList);
+			
+			return json.toString();
 		
-		List<Map<String, Object>> nextList = boardService.nextPage(map);
-		// System.out.println("nextList : " + nextList);
-		json.put("list", nextList);
-
-		return json.toString();
 	}
-
+	
 	// 글쓰기 페이지
 	@GetMapping("/boardWrite")
 	public String boardWrite(@RequestParam Map<String, Object> map, Model model) {

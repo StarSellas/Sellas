@@ -68,7 +68,15 @@
 	                    			<div class="addPhotoBtnBox">
 										<button id="addPhotoButton" type="button">사진 추가하기</button>
 									</div>
-								</div>
+
+									<div id="addPhoto">
+										<button id="picker2" type="button">앨범에서 추가</button>
+										<button id="camera" type="button">카메라에서 추가</button>
+										<div id="box"></div>
+										<div id="progress"></div>
+										<div id="upload-box"></div>
+									</div>/
+							</div>
 							
 							<div class="buttonBox">
 								<button type="button" class="editbtn">수정하기</button>
@@ -365,7 +373,7 @@
 								document.body.appendChild(form);
 
 								// 폼 전송
-								form.submit();
+								//form.submit();
 									
 							}
 						},
