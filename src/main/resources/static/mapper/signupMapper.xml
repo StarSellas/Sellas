@@ -31,4 +31,10 @@
 	WHERE mphone=#{value}
 </select>
 
+<select id="uuidDuplicationCheck" parameterType="String" resultType="Integer">
+	SELECT COUNT(*) as count
+	FROM member
+	WHERE muuid=#{uuid}
+</select>
+
 </mapper>
