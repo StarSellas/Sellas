@@ -132,18 +132,36 @@
 		VALUES (#{bno}, #{bimage})
 	</insert>
 
-	<update id="setThumbnail" parameterType="Map">
-		UPDATE boardimage SET bthumbnail=0
-		WHERE bimage=#{bimage} and bno=#{bno}
-	</update>
-
 	<update id="boardEdit" parameterType="Map">
 		UPDATE board SET bdelete=1, btitle=#{btitle}, bcontent=#{bcontent}, bdate=CURRENT_TIMESTAMP
 		WHERE bno=#{bno}
 	</update>
+	
+	<update id="setThumbnail" parameterType="Map">
+		UPDATE boardimage SET bthumbnail=0
+		WHERE bimage=#{bimage} and bno=#{bno}
+	</update>
+	
+	
+	<select id="countThumbnail" parameterType="Map" resultType="Integer">
+		SELECT COUNT(*)
+		FROM boardimage
+		WHERE bno = #{bno} and bthumbnail = 0
+	</select>
 
 	<delete id="imgDelete" parameterType="Map">
-		DELETE FROM boardimage WHERE bimage=#{imgDel} and bno=#{bno}
+	    DELETE FROM boardimage
+	    WHERE bno = #{bno}
+	        and bimage = #{Original1}
+	    <if test="Original2 != null">
+	        or bimage = #{Original2}
+	    </if>
+	    <if test="Original3 != null">
+	        or bimage = #{Original3}
+	    </if>
+	    <if test="Original4 != null">
+	        or bimage = #{Original4}
+	    </if>
 	</delete>
 
 	<update id="boardDelete" parameterType="Map">

@@ -210,7 +210,10 @@ public class NormalService {
 		return normalDAO.sortNormalList(map);
 	}
 
+	public List<Map<String, Object>> nextsortNormalList(Map<String, Object> map) {
+		return normalDAO.nextsortNormalList(map);
+	}
 
-	
+
 
 }
