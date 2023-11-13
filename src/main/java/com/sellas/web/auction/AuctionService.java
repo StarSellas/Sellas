@@ -24,6 +24,7 @@ public class AuctionService {
 
 	/* 경매물품 목록 */
 	
+	// 카테고리 목록
 	public Map<String, String> getItemCategoryList() {
 		
 		List<Map<String, Object>> itemCategoryList = auctionDAO.getItemCategoryList();
@@ -37,9 +38,9 @@ public class AuctionService {
 		return itemCategory;
 	}
 	
+	// 경매물품 목록
 	public List<Map<String, Object>> auctionItemList(Map<String, Object> map) {
-		
-		System.out.println("KEYWORD : " + map.get("keyword"));
+
 		map.put("page", Integer.parseInt(map.get("page").toString()) * 10);
 
 		switch(map.get("sortOption").toString()) {

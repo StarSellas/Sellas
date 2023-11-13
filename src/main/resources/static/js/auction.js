@@ -189,7 +189,7 @@ function addAuctionItem(item){
 	sellerNickname.textContent = item.mnickname;
 	
 	let startDate = document.createElement("span");
-	startDate.textContent = item.tdate;
+	startDate.textContent = item.tdate + "/";
 	
 	let readNumber = document.createElement("span");
 	readNumber.textContent = item.tread;
@@ -252,7 +252,7 @@ function clearAuctionItemListDiv(){
 
 /* 스크롤 이벤트 발생 시 페이징 처리 */
 
-// 표해현 board scroll 코드 참고
+// 표해현 board scroll 코드 참고 ヽ(´▽`)/
 $(function(){
 
 	let isBottomHandled = false;

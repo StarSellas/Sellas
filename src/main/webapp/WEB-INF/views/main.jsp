@@ -36,6 +36,7 @@
                     <h1 class="display-4 fw-bolder"></h1>
                     <p class="lead fw-normal text-white-50 mb-0">경매물품</p>
                     <a href="/addTradeItem">물건추가 테스트</a>
+                    <a href="/addTradeLocation">장소추가 테스트</a>
                 </div>
             </div>
         </header>

@@ -1,5 +1,6 @@
 package com.sellas.web.trade;
 
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -30,8 +31,13 @@ public class TradeController {
 			return "redirect:/login";
 		}
 		
+		// 물품 카테고리 목록
 		Map<String, String> itemCategory = tradeService.getItemCategoryList();
 		model.addAttribute("itemCategory", itemCategory);
+		
+		// 거래 장소 목록
+		List<Map<String, Object>> locationList = tradeService.getLocationList();
+		model.addAttribute("locationList", locationList);
 		
 		return "addTradeItem";
 	}
