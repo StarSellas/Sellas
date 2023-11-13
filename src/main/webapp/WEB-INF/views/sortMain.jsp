@@ -42,12 +42,14 @@
 		
 		if(sort == ""){
 			sort = 0
-			console.log(sort)
+			console.log("sort : " + sort)
 		} 
-		
 		$(".sortForSearch").val(sort);
 		
-   		
+		if(searchCate == ""){
+			searchCate = "title";
+		}
+		
    	$(window).on("scroll",function(){
 
    		let scrollTop=$(window).scrollTop(); 		// 스크롤된 길이
@@ -316,7 +318,7 @@
             <!---------------- 메인화면(검색X) ------------>
             <c:if test="${param.search eq null}">
             
-	            <c:forEach items="${normalBoardList }" var="i" varStatus="loop">
+	            <c:forEach items="${SnormalBoardList }" var="i" varStatus="loop">
 	            
 	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}">
 	                  <div class="card h-100">
@@ -369,7 +371,7 @@
             
 			 <!---------------- 메인화면(검색O) ------------>
 			<c:if test="${param.search ne null && param.searchCate ne null}">
-				<c:forEach items="${normalSearchList }" var="s" varStatus="loop">
+				<c:forEach items="${SnormalSearchList }" var="s" varStatus="loop">
 	            
 	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}">
 	                  <div class="card h-100">

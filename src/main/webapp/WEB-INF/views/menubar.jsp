@@ -33,17 +33,29 @@
 		
         
        <!-- Footer-->
-        <footer id="footer">
-            <div class="container">
-	            <ul class="menubar">
-	            	<li onclick="location.href='./'"><img src="./img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
-	            	<li onclick="location.href='#'"><img src="./img/chat.png" class="footericon" alt="chat"><div id="menu">채팅</div></li>
-	            	<li onclick="location.href='./mypage'"><img src="./img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
-	            </ul>
-            </div>
-        </footer>
+	<footer id="footer">
+		<c:if test="${addTradeItem == 1 }">
+			<div style="position: absolute; right: 0px; bottom: 80px;"
+				class="swrite" onclick="location.href='./addTradeItem'">
+				<button>물품 등록</button>
+			</div>
+		</c:if>
+		<div class="container">
+			<ul class="menubar">
+				<li onclick="location.href='./'"><img src="./img/home.png"
+					class="footericon" alt="home">
+				<div id="menu">홈</div></li>
+				<li onclick="location.href='#'"><img src="./img/chat.png"
+					class="footericon" alt="chat">
+				<div id="menu">채팅</div></li>
+				<li onclick="location.href='./mypage'"><img
+					src="./img/mypage.png" class="footericon" alt="mypage">
+				<div id="menu">마이페이지</div></li>
+			</ul>
+		</div>
+	</footer>
 
-        <!-- Bootstrap core JS-->
+	<!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

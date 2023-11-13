@@ -32,14 +32,13 @@
 	        	    //console.log(title);
 	        	    //console.log(title.length);
 	        	    
-	        	    if(title.length > 12){
-	            		titlecut = title.substring(0, 10) + " ...";
+	        	    if(title.length > 10){
+	            		titlecut = title.substring(0, 9) + " ...";
 	            		//console.log("titlecut : " + titlecut);
 	            		$(this).children(".title").text(titlecut);
 	            	}
 	        	});
 	    	}	
-        
         
             $(function(){
             	
@@ -49,7 +48,7 @@
             	cutTitle(); // 글제목 자르기
             	
             	// 글번호 숨김
-            	//$(".rowNum").hide();
+            	$(".rowNum").hide();
             	
             	// 스크롤 페이징
             	let cate;
@@ -142,7 +141,8 @@
 	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
 	                    	                    + "<span class='title'>"
 	                    	                    + this.list[i].btitle + "</span>"
-	                    	                    + " <span class='commentcount'>(" + this.list[i].commentcount + ")</span>"
+	                    	                    + " <i class='" + 'xi-speech-o count' + "' id='counticon'></i>"
+	                    	                    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
 	                    	                    + "<div class='mnickname'>" + this.list[i].mnickname + "</div>"
 	                    	                    + "</td>"
 	                    	                    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
@@ -329,7 +329,7 @@
 		                     <tr class="boardRow" data-count="${mainList.count}">
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
-		                        	<span class="title">${mainList.btitle}</span> <span class="commentcount">(${mainList.commentcount})</span>
+		                        	<span class="title">${mainList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${mainList.commentcount}</span>
 		                        	<div class="mnickname">${mainList.mnickname}</div>
 		                        </td>
 		                       	<td class="bdate">${mainList.bdate}</td>
@@ -346,7 +346,7 @@
 		                     <tr class="boardRow" data-count="${list.count}">
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
-		                        	 <span class="title">${list.btitle}</span> <span class="commentcount">(${list.commentcount})</span>
+		                        	 <span class="title">${list.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${list.commentcount}</span>
 		                        	<div class="mnickname">${list.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${list.bdate}</td>
@@ -364,7 +364,7 @@
 							<tr class="boardRow" data-count="${searchList.scount}">
 		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
-		                        	 <span class="title">${searchList.btitle}</span> <span class="commentcount">(${searchList.commentcount})</span>
+		                        	 <span class="title">${searchList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${searchList.commentcount}</span>
 		                        	<div class="mnickname">${searchList.mnickname}</div>
 		                        </td>
 		                        <td class="bdate">${searchList.bdate}</td>
