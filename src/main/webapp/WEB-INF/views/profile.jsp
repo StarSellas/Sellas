@@ -61,7 +61,7 @@
 			</div>
 			<div class="experience-section"
 				style="position: relative; margin-top: 100px;">
-				<span class="rabel">🐳경험치</span>
+				<span class="rabel">경험치</span>
 				<div class="progress" role="progressbar"
 					aria-label="Example with label"
 					aria-valuenow="${(exp) * 100}" aria-valuemin="0"

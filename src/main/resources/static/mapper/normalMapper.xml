@@ -256,5 +256,11 @@ WHERE muuid = #{buyer}
 	select obuyer from onlinechat where ouuid = #{roomId} and oseller = #{pseller}
 </select>
 
+<select id="hasWish" parameterType="Map" resultType="Map">
+    SELECT wno
+    FROM wishlist
+    WHERE tno=#{tno} 
+    AND muuid=#{muuid}
+</select>
 
 </mapper>

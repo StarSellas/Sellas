@@ -210,6 +210,10 @@ public class NormalService {
 		return normalDAO.sortNormalList(map);
 	}
 
+	public Map<String, Object> hasWish(Map<String, Object> wishInfo) {
+		return normalDAO.hasWish(wishInfo);
+	}
+
 
 	
 

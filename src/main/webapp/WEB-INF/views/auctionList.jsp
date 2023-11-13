@@ -88,6 +88,10 @@
 				</div>
 			</c:forEach>
 			</div>
+			
+			<c:if test="${exp < 15}">아기고래</c:if>
+								<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
+								<c:if test="${exp > 20 }">슈퍼고래</c:if>
 		</div>
 
 	</section>
