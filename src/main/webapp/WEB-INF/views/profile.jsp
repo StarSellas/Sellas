@@ -77,7 +77,7 @@
 			<c:forEach items="${profileReview}" var="review">
 			<div class="movedetail" onclick="location.href='./reviewDetail?rno=${review.rno}'">
 							<div class="reviewimg">
-					<img src="../img/흰배경셀라스.jpg" alt="user-img" class="user-img-img">
+					<img src="../userImgUpload/${review.mphoto}" alt="user-img" class="user-img-img">
 				</div>
 			<div class=nickname>${review.mnickname}</div>
 			<div class="content">${review.rcontent}</div>

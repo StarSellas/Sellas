@@ -28,6 +28,14 @@
 
 </head>
 <body>
+<script>
+    $(document).ready(function() {
+        let error = '${error}';
+        if (error !== '') {
+            alert(error);
+        }
+    });
+</script>
 	<!-- Navigation-->
 	 <%@ include file="menubar.jsp" %>
 	<!-- Header-->
@@ -81,6 +89,9 @@
 📝 활동내역
 </div>
 </div>
+
+
+  <h6 class="logout" onclick="location.href='./logout'">로그아웃</h6>
 
 
 

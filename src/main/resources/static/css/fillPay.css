@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+
+.location {
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+
+a {
+	color: inherit;
+}
+
+.fillbox{
+    width: 350px;
+    height: auto;
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 20px;
+    margin-top: 40px;
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+#fillPayDIV {
+position: relative;
+  width: 150px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 0;
+}
+
+
+#fillmonney{
+padding: 0;
+padding-left: 15px;
+	}
+
+label {
+	position: absolute;
+	right: 0;
+	margin-left: 100px;
+
+	}
+	
+.fill{
+	width: 150px;
+	height: 40px;
+	background-color: white;
+	border: 1px solid #88abff ;
+	box-shadow: 0 0 7px #88abff , 0 0 10px #fff, 0 0 21px #fff;
+	border-radius: 5px;
+
+	}
+	
+	
+	 

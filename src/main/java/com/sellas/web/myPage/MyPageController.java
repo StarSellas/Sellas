@@ -238,15 +238,17 @@ public class MyPageController {
 	//TODO 전환페이지 다시만들기
 	//후기작성등록
 	@PostMapping("review")
-	public String review(ReviewDTO reviewDTO, HttpSession session) {
+	public String review(ReviewDTO reviewDTO, HttpSession session, Model model) {
 
 		int result = myPageService.inputReview(reviewDTO, session);
 		
 		if (result == 1) {
-			return "mypage";
+			return "redirect:/mypage";
 			
 		} else {
-			return "profile";
+			String error = "오류가 발생했습니다.";
+	         model.addAttribute("error", error);
+			return "redirect:/mypage";
 		}
 	}
 	
@@ -306,6 +308,8 @@ public class MyPageController {
 		//판매내역불러오기
 		List<Map<String, Object>> sellList = myPageService.getSell(uuid);
 		model.addAttribute("sellList",sellList);
+		
+		System.out.println("날짜가바꿔서있어야하는거아니야!?" + sellList);
 
 		return "sellList";
 		
@@ -345,7 +349,6 @@ public class MyPageController {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		List<Map<String, Object>> wishList = myPageService.getWish(uuid);
-		System.out.println("위시리스트안담기세요?" + wishList);
 		
 		model.addAttribute("wishList",wishList);
 		return "wishList";
