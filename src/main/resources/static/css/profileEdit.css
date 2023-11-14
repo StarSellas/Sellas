@@ -1,5 +1,14 @@
 @charset "UTF-8";
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 
+*{
+	font-family: 'NanumSquareNeo-Variable';
+}
 .nav {
 	float: left;
 	display: flex; /* 추가 */
@@ -78,15 +87,10 @@ height: 50px;
 	margin-top: 50px;
 }
 
-
 .camera{
-    position: absolute;
-    top: 70%;
-    left: 55%;
-    width: 30px;
-    height: 30px;
+text-align: center;
+margin-top: 10px;
 }
-
 
 
 h6{

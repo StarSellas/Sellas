@@ -41,4 +41,8 @@ public interface MyPageDAO {
 
 	List<Map<String, Object>> getMyComment(String uuid);
 
+	int photoModify(Map<String, Object> memberphoto);
+
+	int photoModifySubmit(String uuid);
+
 }

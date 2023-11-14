@@ -100,12 +100,12 @@ var loading = "";
         
         <form action="./addTradeItem" method="post" id="productContainer">
         
-		<div>
+		<div class="page" id="page1">
 		
 			<div>카테고리
 				<select name="category">
-				<c:forEach var="itemCategory" items="${itemCategory}">
-					<option value="${itemCategory.key }">${itemCategory.value}</option>
+				<c:forEach var="itemCategory" items="${itemCategory }">
+					<option value="${itemCategory.key }">${itemCategory.value }</option>
 				</c:forEach>
 				</select>
 			</div>
@@ -127,14 +127,8 @@ var loading = "";
 				<div id="upload-box"></div>
 			</div>
 			
-			<button type="button" onclick="showLocationDiv()">거래 희망 장소 선택하기</button>
-			<div id="setLocationDiv">
-				<div id="map" style="width: 90%; height: 350px"></div>
-				<div>
-					<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
-					<button type="button" onclick="hideLocationDiv()">선택 완료</button>
-				</div>
-			</div>
+			<button type="button" onclick="showPage('page2')">거래 희망 장소 선택하기</button>
+			
 			<input type="hidden" id="locationLat" name="locationLat">
 			<input type="hidden" id="locationLng" name="locationLng">
 			
@@ -144,20 +138,38 @@ var loading = "";
 				<input type="hidden" id="tradeType" name="tradeType" value="0">
 			</div>
 			
-			<div class="page" id="page0">일반거래
+			<div id="normalTradeDiv">일반거래
 				<div>
 					<input type="number" id="normalPrice" name="normalPrice" step="100">
 				</div>
 			</div>
 			
-			<div class="page" id="page1" style="display:none">경매거래
+			<div id="auctionTradeDiv" style="display:none">경매거래
 				<div>
 					<input type="number" id="auctionStartPrice" name="auctionStartPrice" step="100">
 					<input type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" step="100">
 				</div>
 			</div>
 			<button type="button" id="addTradeItemBtn">확인</button>
-			
+		
+		</div>
+		
+		<div class="page" id="page2">
+		
+			<div id="map" style="width: 100%; height: 350px"></div>
+			<div id="userLocationDiv"></div>
+			<div>
+				${locationList }
+				<c:forEach var="locationList" items="${locationList }">
+					<div>
+						<button type="button" onclick="selectLocation('${locationList.lname}')">${locationList.lname }</button>
+						<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
+						<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
+					</div>
+				</c:forEach>
+				<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
+				<button type="button" onclick="showPage('page1')">선택 완료</button>
+			</div>
 			
 		</div>
 		
@@ -167,12 +179,13 @@ var loading = "";
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 		<!-- Core theme JS-->
 		<script src="js/addTradeItem.js"></script>
+		
 	</body>
 
 <script type="text/javascript">
 
 // 모피어스 사진 촬영 및 앨범 사진 업로드
-// 작성자 : 이대원 ㅇ_ㅇb
+// 작성자 : 이대원 ヽ(´▽`)/
 
 let cameraImagePath ='';
 let selectImagePath = [];

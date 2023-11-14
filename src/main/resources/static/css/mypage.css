@@ -1,10 +1,9 @@
 @charset "UTF-8";
 
 .nav {
-	float: left;
-	display: flex; /* 추가 */
+	display: flex;
 	margin-top: 20px;
-	margin-bottom: 15px;
+	margin-bottom: 100px;
 }
 
 .user-img {
@@ -31,7 +30,17 @@
 	align-items: center;
 }
 
+.user-level{
+	float: left;
+	margin-right: 5rem;
+}
+
+.profilediv{
+	float: right;
+	
+}
 .profile {
+	float: right;
 	width: 100px;
 	height: 40px;
 	padding: 5px;
@@ -39,7 +48,6 @@
 	margin-top: 15px;
 	border-radius: 5px;
 	border: solid #e3e3e3 1px;
-	margin-left: 7rem;
 }
 
 
@@ -48,10 +56,6 @@
 	font-weight: bold;
 	font-size: 20px;
 }
-
-/* 프로필페이지거래후기 */
-
-
 
 
 .movedetail{
@@ -73,7 +77,8 @@
     height: auto;
     margin: 0 auto; /* 중앙 정렬 */
     padding: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    margin-top: 15px;
 }
 
 h6{
@@ -83,6 +88,7 @@ h6{
 }
 
 
+
 .payname{
 	color: #88abff ;
 	font-weight: 800;
@@ -90,6 +96,9 @@ h6{
 
 .balance{
 	float: left;
+}
+.movediv{
+	float: right;
 }
 
 .movefill{
@@ -102,6 +111,10 @@ h6{
     font-size: 12px;
 }
 
+
+
 .row1{
 	margin-top: 15px;
 }
+
+	

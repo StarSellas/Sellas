@@ -16,8 +16,13 @@ public class SignupService {
 	/* SIGNUP : 회원가입 */
 	
 	public int signup(Map<String, String> map) {
-
-		map.put("uuid", UUID.randomUUID().toString());	// TODO : 중복 검사 필요
+	
+		String uuid = UUID.randomUUID().toString();
+		while(signupDAO.uuidDuplicationCheck(uuid) != 0) {
+			uuid = UUID.randomUUID().toString();
+		}
+		map.put("uuid", uuid);
+		
 		map.put("address", "");							// TODO : 수정 필요
 		map.put("detailaddress", "");					// TODO : 수정 필요
 				
