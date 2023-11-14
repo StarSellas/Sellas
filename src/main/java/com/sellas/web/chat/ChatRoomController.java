@@ -240,8 +240,6 @@ public class ChatRoomController {
 		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
 			String muuid = String.valueOf(session.getAttribute("muuid"));
 			int setcheckzero = chatRoomService.setCheckZero(muuid);
-			JSONObject json = new JSONObject();
-			json.put("count", setcheckzero);
 		}
 	}
 	

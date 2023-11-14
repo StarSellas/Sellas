@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>채팅방</title>
-<link href="../css/chatbuyer.css" rel="stylesheet">
+<link href="../css/chatroom.css" rel="stylesheet">
 <script src="../js/jquery-3.7.0.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -15,6 +15,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 	<script>
+	$(function(){
+		$(".search-bar").hide();
+		$("#searchButton").click(function(){
+			$(".search-bar").show();
+		});
+	});
 	let sock = new SockJS("/ws/chat");
 	let emessage = '${mnickname}' + "님이 입장하셨습니다."; //입장 메시지
 	//console.log("emessage : " + emessage);
@@ -454,7 +460,7 @@
               <div class="stylish-input-group">
                 <input type="text" class="search-bar"  placeholder="Search" >
                 <span class="input-group-addon">
-                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                <button type="button" id="searchButton"> <i class="fa fa-search" aria-hidden="true"></i> </button>
                 </span> </div>
             </div>
           </div>
@@ -485,7 +491,7 @@
           </div>
           <div class="type_msg">
             <div class="input_msg_write">
-              <input type="text" class="write_msg" id="messages"placeholder="Type a message" />
+              <input type="text" class="write_msg" id="messages" />
               <button class="msg_send_btn" type="button" onclick="sendMessage()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
             </div>
           </div>

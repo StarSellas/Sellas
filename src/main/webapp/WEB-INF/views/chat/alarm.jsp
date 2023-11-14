@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!-- 채팅방은 두고 알람만 지운다. muuid의 dcheck가 0으로 수정함과 동시에 채팅방을 만듭니다. -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>alarm</title>
 <style>
-        #alarmroomhidden {
+        .alarmroomhidden {
             display: none; /* 숨김 */
         }
     </style>
@@ -41,11 +42,6 @@
     			
     		}
     	});
-    });
-    $(document).ready(function() { //ouuid(채팅룸uuid)를 가리는 코드입니다.
-        $(document).on('DOMNodeInserted', function() {
-            $(".alarmroomhidden").hide();
-        });
     });
     
     $(function(){ //roomalarm.jsp로 보내는 가상폼입니다.
@@ -109,19 +105,20 @@
         function recvMessage(recv) { //실시간으로 알람을 받아 화면에 보여주는 코드입니다.
             var realtimealarm = document.querySelector(".realtimealarm");
             var alarmcontent = document.createElement("div");
-            alarmcontent.className = "alarmcontent";
+            alarmcontent.className = "alarmcontent0";
             alarmcontent.textContent = recv.message;
             
             let alarmhidden = document.createElement("div");
             alarmhidden.className = "alarmhidden";
             alarmhidden.textContent = recv.roomId;
+            alarmhidden.style.display = "none";
             
             realtimealarm.appendChild(alarmcontent); 
             realtimealarm.appendChild(alarmhidden);
         } 
         
        $(function(){
-        	$(".list-group-item").click(function(){ //위에서 연결한 웹소켓으로 온 실시간 알람을 클릭하면 판매자 채팅룸(roomalarm.jsp)으로 이동하는 코드입니다.
+        	$(".alarmcontent0").click(function(){ //위에서 연결한 웹소켓으로 온 실시간 알람을 클릭하면 판매자 채팅룸(roomalarm.jsp)으로 이동하는 코드입니다.
         		var roomId = $(this).nextAll(".alarmhidden").text();
         		var form = document.createElement("form"); 
                 form.setAttribute("action", "/chat/alarmChat");
