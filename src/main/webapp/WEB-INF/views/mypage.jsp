@@ -79,7 +79,7 @@
 <div class="listdiv" onclick="location.href='./getbuy'">
 🧺 구매내역
 </div>
-<div class="listdiv" onclick="location.href='./getaction'">
+<div class="listdiv" onclick="location.href='./getauction'">
 ⌛ 경매내역
 </div>
 </div>

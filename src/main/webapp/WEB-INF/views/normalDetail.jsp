@@ -84,51 +84,52 @@
   </div>
 
 </div>
-					<div class="normalDiv">
-					
-					
-					<div class="userDiv">
-					<div class="user-img">
-					<img src="./userImgUpload/${detail.mphoto}" alt="user-img" class="user-img-img">
-				</div>
+               <div class="normalDiv">
+               
+               
+               <div class="userDiv">
+               <div class="user-img">
+               <img src="./userImgUpload/${detail.mphoto}" alt="user-img" class="user-img-img">
+            </div>
 
                <div id="detailID">${detail.mnickname}</div>
                
                <div class="expDiv">
-					경험치 ${detail.mpoint}%
-               	<div class="progress" role="progressbar"
-					aria-label="Example with label"
-					aria-valuenow="${(detail.mpoint) * 100}" aria-valuemin="0"
-					aria-valuemax="100">
-					<div class="progress-bar" style="width: ${detail.mpoint}%; background-color: #88abff; color:black">
-					</div>
-				</div>
-				</div>
-				               					<div class="user-level">
-				<c:if test="${detail.mpoint < 30}">아기고래</c:if>
-								<c:if test="${detail.mpoint >= 30 && detail.mpoint <= 70}">고래</c:if>
-								<c:if test="${detail.mpoint > 70 }">슈퍼고래</c:if>
-				</div>
-				</div><!--유저정보담은구역  -->
-				
-				
-				
-				<div class="detailDiv">
+               경험치 ${detail.mpoint}%
+                  <div class="progress" role="progressbar"
+               aria-label="Example with label"
+               aria-valuenow="${(detail.mpoint) * 100}" aria-valuemin="0"
+               aria-valuemax="100">
+               <div class="progress-bar" style="width: ${detail.mpoint}%; background-color: #88abff; color:black">
+               </div>
+            </div>
+            </div>
+                                          <div class="user-level">
+            <c:if test="${detail.mpoint < 30}">아기고래</c:if>
+                        <c:if test="${detail.mpoint >= 30 && detail.mpoint <= 70}">고래</c:if>
+                        <c:if test="${detail.mpoint > 70 }">슈퍼고래</c:if>
+            </div>
+            </div><!--유저정보담은구역  -->
+            
+         
+            
+            <div class="detailDiv">
                               <div class="dtitle">${detail.ttitle}</div>
-               <div>카테고리 : ${detail.iname }</div>
+               <div class="drow">
+               <div class="diname">${detail.iname}</div>
+               <div id="detailDate">${detail.ttdate}</div>
+               </div>
+               <div class="dprice">
                  <fmt:formatNumber value="${detail.tnormalprice}" pattern="#,###원"/>
-               <div id="detailDate">${detail.tdate}</div>
-               
+                 </div>
                               <div class="dstate">
                               <c:if test="${detail.tnormalstate eq 0}">판매중</c:if>
-								<c:if test="${detail.tnormalstate eq 1}">거래중</c:if>
-								<c:if test="${detail.tnormalstate eq 2}">거래완료</c:if>
+                        <c:if test="${detail.tnormalstate eq 1}">거래중</c:if>
+                        <c:if test="${detail.tnormalstate eq 2}">거래완료</c:if>
                               </div>
-               
-  
-
+       <div class="dcontent">
                ${detail.tcontent}
-               <br>
+               </div>
                
                <!-- 판매중일때 -->
                
@@ -137,7 +138,17 @@
                   <button id="normalDeleteBtn">등록 취소</button>
                </c:if>
                <c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 0}">
-                  <button id="addWishList">찜하기☆</button>
+    <!-- 중복 없으면 빈하트 최지은 -->
+                	<c:choose>
+   				 <c:when test="${hasWish eq '0' or empty hasWish}">
+       			 <img src="../img/heartbin.png" 
+             id="addWishList" align="left" style="cursor:pointer; width: 30px;">
+    		</c:when>
+    			<c:otherwise>
+   			     <img src="../img/heart.png" 
+              id="delWishList" align="left" style="cursor:pointer; width: 30px;">
+    			</c:otherwise>
+				</c:choose>
                   <button id="requestChatBtn">채팅 신청</button>
                </c:if>
                
@@ -264,6 +275,12 @@
          }
       });// 거래 신청 버튼 끝
       
+      /* 		최지은이건드림 */
+	    $('detailID').click(function() {
+	        var muuid = '${detail.muuid}';
+	        window.location.href = '/profileMember?muuid=' + muuid;
+	    });
+		
       
 /*       $("#requestChatBtn").click(function(){
          alert("!");

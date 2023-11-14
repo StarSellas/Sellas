@@ -5,8 +5,8 @@
 
 
 .swiper-button-prev{
-	background-size: 30% auto;
-	
+   background-size: 30% auto;
+   
 }
 
 
@@ -22,60 +22,114 @@ background-size: 30% auto;
 }
 
 .progress{
-	width: 60px;
+   width: 60px;
 }
 
 .progress-bar{
-	font-size: 9px;
+   font-size: 9px;
 }
 
 .user-img {
-	width: 60px;
-	height: 60px;
-	border-radius: 70%;
-	border: solid #e3e3e3 1px;
-	overflow: hidden;
-	float: left;
+   width: 60px;
+   height: 60px;
+   border-radius: 70%;
+   border: solid #e3e3e3 1px;
+   overflow: hidden;
+   float: left;
 }
 
 .user-img-img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 }
 
 .expDiv{
-	padding-top: 10px;
-	font-size: 10px;
-	float: right;
-	margin-right: 10px;
-	
+   padding-top: 10px;
+   font-size: 10px;
+   float: right;
+   margin-right: 10px;
+   
 }
 
 .normalDiv{
-	padding: 25px;
-	padding-top: 10px;
-	}
-	
-	.detailDiv{
+   padding: 25px;
+   padding-top: 10px;
+   }
+   
+   .detailDiv{
 
-	margin-top: 10px;
-	}
+   margin-top: 10px;
+   }
 
-	#detailID{
-	float: left;
-	padding: 20px;
-	padding-right : 10px;
-	font-weight: bold;
-	}
-	
-	.user-level{
-	padding: 20px;
-	padding-bottom: 25px;
-	border-bottom: solid #e3e3e3 1px;
-	}
-	
-	
-	.dtitle{
-	font-weight: bold;
-	}
+   #detailID{
+   float: left;
+   padding: 20px;
+   padding-right : 10px;
+   font-weight: bold;
+   }
+   
+   .user-level{
+   padding: 20px;
+   padding-bottom: 25px;
+   border-bottom: solid #e3e3e3 1px;
+   }
+   
+   
+   .dtitle{
+   font-weight: bold;
+   }
+   
+   
+   .dprice{
+font-weight: bold;
+float: left;
+   }
+   
+   
+   .dstate{
+    border: solid #e3e3e3 1px;
+    border-radius: 10px;
+    width: 70px;
+    text-align: center;
+    font-size: 15px;
+    float: right;
+}
+
+.dcontent{
+   margin-top: 50px;
+   min-height: 100px;
+   padding: 10px;
+}
+
+.diname{
+   float: left;
+   margin-right: 20px;
+}
+
+.drow{
+   color: gray;
+   font-size: 14px;
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+#normalEditBtn, #normalDeleteBtn,#requestChatBtn{
+   
+   width: 90px;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px;
+   float: right;
+}
+
+#normalDeleteBtn{
+	 border: 1px solid gray ;
+}
+
+
+#delWishList{
+	margin: 5px;
+}

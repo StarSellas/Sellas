@@ -121,6 +121,12 @@ public class MyPageService {
 		return formatDates(buyList);
 	}
 
+	public List<Map<String, Object>> getAucSell(String uuid) {
+		List<Map<String, Object>> aucSellList= myPageDAO.getAucSell(uuid);
+		return formatDates(aucSellList);
+	}
+
+
 	public int addWish(Map<String, Object> map) {
 		return myPageDAO.addWish(map);
 	}
@@ -233,7 +239,6 @@ public class MyPageService {
 	    private Date convertToDate(LocalDateTime dateTime) {
 	        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
 	    }
-	}
-	
 
 
+}

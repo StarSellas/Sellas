@@ -41,30 +41,31 @@
 				<div class="back col-auto" onclick="location.href='/'">
 				<a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a>
 				</div>
-				<div class="location col">${sessionScope.mnickname}님의 활동내역</div>
+				<div class="location col">${sessionScope.mnickname}님의 경매내역</div>
 			</div>
 			
 		<div class="index">	
 		<ul class="uldix">
-			<li class="my showPostList on">내 글 보기</li>
-			<li class="my showCommentList">내 댓글보기</li>
+			<li class="my showPostList on">구매 내역</li>
+			<li class="my showCommentList">판매 내역</li>
 		</ul>
 		</div>
 		
 			<div class="postList">
 			<div class="activities-div">
-<c:forEach items="${myPost}" var="p">
-			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${p.bno }'">
-			<div class="btitle">${p.btitle}</div>
-			<div class="bdate">${p.bdate}</div>
+<c:forEach items="${aucSellList}" var="p">
+			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${p.tno}'">
+			<div class="btitle">${p.ttitle}</div>
+			<div class="bdate">${p.displayDate}</div>
 			<div class="row1">
-				<div id="commentcount"><i class="xi-speech-o xi-x count">
-				</i>${p.commentcount}</div>
 			<div class="setup">
-			<c:if test="${p.sno eq 1}">공지사항</c:if>
-			<c:if test="${p.sno eq 2}">판매요청</c:if>
-			<c:if test="${p.sno eq 3}">나눔</c:if>
+			<c:if test="${p.tauctionstate eq 0}">낙찰</c:if>
+			<c:if test="${p.tauctionstate eq 2}">유찰</c:if>
+			<c:if test="${p.tauctionstate eq 3}">진행중</c:if>
 				</div>
+			</div>
+			<div class="ttitle">
+			${p.ttitle}
 			</div>
 			</div>
 			</c:forEach>
