@@ -83,4 +83,10 @@ public interface NormalDAO {
 
 	List<Map<String, Object>> sortNormalList(Map<String, Object> map);
 
+
+	Map<String, Object> hasWish(Map<String, Object> wishInfo);
+
+	List<Map<String, Object>> nextsortNormalList(Map<String, Object> map);
+
+
 }

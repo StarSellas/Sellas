@@ -45,4 +45,6 @@ public interface MyPageDAO {
 
 	int photoModifySubmit(String uuid);
 
+	List<Map<String, Object>> getAucSell(String uuid);
+
 }

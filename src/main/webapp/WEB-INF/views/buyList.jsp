@@ -64,7 +64,7 @@
     </p>
     <p class="card-text">
         <small class="text-body-secondary">
-   ${row.tdate}
+   ${row.displayDate}
         </small>
     </p>
     ${row.hastno}
@@ -113,7 +113,7 @@
                     </p>
                     <p class="card-text">
                         <small class="text-body-secondary">
-                            ${row.tdate}
+                             ${row.displayDate}
                         </small>
                     </p>
                     ${row.hastno}

@@ -60,6 +60,10 @@ public class BoardService {
 		return boardDAO.boardEdit(map);
 	}
 
+	public int countThumbnail(Map<String, Object> map) {
+		return boardDAO.countThumbnail(map);
+	}
+	
 	public int boardDelete(Map<String, Object> map) {
 		return boardDAO.boardDelete(map);
 	}
@@ -104,6 +108,8 @@ public class BoardService {
 			int result = boardDAO.imgDelete(map);
 			return result;
 	}
+	
+
 	
 	// **************************************** 댓글 ****************************************
 

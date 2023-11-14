@@ -32,12 +32,6 @@ public class NormalService {
 		
 	}
 
-	
-	
-	
-	
-	
-	
 	public int normalWrite(Map<String, Object> map) {
 		//tnormalstate값 넣어주기
 				map.put("tnormalstate", 0);
@@ -208,6 +202,15 @@ public class NormalService {
 	public List<Map<String, Object>> sortNormalList(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return normalDAO.sortNormalList(map);
+	}
+
+
+	public Map<String, Object> hasWish(Map<String, Object> wishInfo) {
+		return normalDAO.hasWish(wishInfo);
+	}
+	
+	public List<Map<String, Object>> nextsortNormalList(Map<String, Object> map) {
+		return normalDAO.nextsortNormalList(map);
 	}
 
 

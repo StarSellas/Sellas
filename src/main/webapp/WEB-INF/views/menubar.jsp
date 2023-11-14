@@ -24,7 +24,7 @@
     </head>
     <body>
 		<!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 10">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 9999">
            <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="./"><img src="./img/sellastext.png" class="header" alt="SellAS"></a>
 				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="./img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
@@ -33,20 +33,30 @@
 		
         
        <!-- Footer-->
-        <footer id="footer">
-            <div class="container">
-	            <ul class="menubar">
-	            	<li onclick="location.href='./'"><img src="./img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
-	            	<li onclick="location.href='./chat/alarm'"><img src="./img/chat.png" class="footericon" id="chat" alt="chat">
+	<footer id="footer" style="z-index: 9999">
+		<c:if test="${addTradeItem == 1 }">
+			<div style="position: absolute; right: 0px; bottom: 80px;"
+				class="swrite" onclick="location.href='./addTradeItem'">
+				<button>물품 등록</button>
+			</div>
+		</c:if>
+		<div class="container">
+			<ul class="menubar">
+				<li onclick="location.href='./'"><img src="./img/home.png"
+					class="footericon" alt="home">
+				<div id="menu">홈</div></li>
+				<li onclick="location.href='./chat/alarm'"><img src="./img/chat.png" class="footericon" id="chat" alt="chat">
                         <!-- 알림이 오면 채팅 아이콘이 숨겨지고, 알림 아이콘이 보이게 함 -->
                         <img src="./img/chaton.png" class="footericon" id="chaton" alt="chat" style="display: none;">
                         <div id="menu">채팅</div></li>
-	            	<li onclick="location.href='./mypage'"><img src="./img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
-	            </ul>
-            </div>
-        </footer>
+				<li onclick="location.href='./mypage'"><img
+					src="./img/mypage.png" class="footericon" alt="mypage">
+				<div id="menu">마이페이지</div></li>
+			</ul>
+		</div>
+	</footer>
 
-        <!-- Bootstrap core JS-->
+	<!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../js/jquery-3.7.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
