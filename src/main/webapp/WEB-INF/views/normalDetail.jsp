@@ -91,7 +91,7 @@
                <div class="user-img">
                <img src="./userImgUpload/${detail.mphoto}" alt="user-img" class="user-img-img">
             </div>
-
+				<div class="moveprofile">
                <div id="detailID">${detail.mnickname}</div>
                
                <div class="expDiv">
@@ -110,7 +110,7 @@
                         <c:if test="${detail.mpoint > 70 }">슈퍼고래</c:if>
             </div>
             </div><!--유저정보담은구역  -->
-            
+            </div>
          
             
             <div class="detailDiv">
@@ -276,7 +276,7 @@
       });// 거래 신청 버튼 끝
       
       /* 		최지은이건드림 */
-	    $('detailID').click(function() {
+	    $('.moveprofile').click(function() {
 	        var muuid = '${detail.muuid}';
 	        window.location.href = '/profileMember?muuid=' + muuid;
 	    });

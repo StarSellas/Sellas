@@ -51,49 +51,51 @@
 			<li class="my showCommentList">구매 내역</li>
 		</ul>
 		</div>
-		<!-- [{ttitle=경매 어떻게돌아가는거냐고, ino=4, timage=20231114101053e707b323756420cf89b21fb09efe397fc36a100d.jpeg.jpg
-		tauctionstate=0, tread=6, tdate=2023-11-14T10:10:53, tno=301, ttype=1, displayDate=10시 10분, tauctionstartprice=52000000, tcontent=김민성이자식아, tauctionminbidunit=60000000, muuid=39e0ee63-43ef-4434-b676-3597d28ec217}] -->
 			<div class="postList">
 			<div class="activities-div">
 			<c:forEach items="${aucSellList}" var="row">
-			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${p.tno}'">
+			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${row.tno}'">
+			<div class="timage">
+			<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+			</div>
+			<div class="auctionInfo">
 			<div class="btitle">${row.ttitle}</div>
 			<div class="bdate">${row.displayDate}</div>
-			<div class="timage"></div>
-			<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
-			<div class="row1">
+			<div class="price">
+			<div class="startprice">시작가
+			 <fmt:formatNumber value="${row.tauctionstartprice}" pattern="#,###원"/>
+			</div>
+		<div class="lastprice">현재 낙찰가
+			<c:if test="${row.abidprice ne null}">
+			 <fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
+			</c:if>
+			<c:if test="${row.abidprice eq null}">
+			 현재 낙찰을 기다리고 있습니다.
+			</c:if>
+			</div>
+				</div> <!--price 끝  -->
 			<div class="setup">
 			<c:if test="${row.tauctionstate eq 0}">낙찰</c:if>
 			<c:if test="${row.tauctionstate eq 2}">유찰</c:if>
 			<c:if test="${row.tauctionstate eq 3}">진행중</c:if>
 				</div>
 			</div>
-			<div class="ttitle">
-			${p.ttitle}
-			</div>
-			<div>시작가
-			 <fmt:formatNumber value="${p.tauctionstartprice}" pattern="#,###원"/>
-			</div>
-			<c:if test="${p.abidprice ne null}">현재 낙찰가
-			 <fmt:formatNumber value="${p.abidprice}" pattern="#,###원"/>
-			</c:if>
-			</div>
+			</div><!--경매정보info  -->
 			</c:forEach>
 				</div>
 			</div>
 			<div class="commentList">
 			<c:forEach items="${aucBuyList}" var="row">
-			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${c.tno}'">
+			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${row.tno}'">
 			<div class="timage">
 				<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
 			</div>
 			<div class="auctionInfo">
-			<div id="btitle">${row.ttitle}</div>
+			<div class="btitle">${row.ttitle}</div>
 			<div class="bdate">${row.displayDate}</div>
-			<div>
-			       <fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
+			<div class="price2">
+			<fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
 			</div>
-		
 			<div class="setup">
 			<c:if test="${row.astate eq 0}">낙찰</c:if>
 			<c:if test="${row.astate eq 1}">미낙찰</c:if>

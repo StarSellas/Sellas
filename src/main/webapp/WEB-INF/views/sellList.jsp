@@ -52,7 +52,7 @@
 <div class="card" style="width: 330px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
-      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
     </div>
     <div class="col-8">
       <div class="card-body">
@@ -67,8 +67,8 @@
          ${row.displayDate}
         </small>
     </p>
-    ${row.hastno}
-    ${row.writeYN}
+<%--     ${row.hastno}
+    ${row.writeYN} --%>
       </div>
     </div>
   </div>
@@ -98,7 +98,7 @@
 <!--   버튼 -->
 	 </c:when>
 <c:when test="${fn:length(sellList) gt 0 && row.hastno eq 'Y' && row.writeYN eq 'Y'}">
-    <div class="card mb-3" style="max-width: 400px;">
+    <div class="card" style="width: 330px;">
         <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
             <div class="col-4">
                 <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
@@ -115,8 +115,8 @@
                             ${row.displayDate}
                         </small>
                     </p>
-                    ${row.hastno}
-                    ${row.writeYN}
+                 <%--    ${row.hastno}
+                    ${row.writeYN} --%>
                 </div>
             </div>
         </div>

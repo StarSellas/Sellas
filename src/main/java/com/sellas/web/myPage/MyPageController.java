@@ -32,20 +32,15 @@ public class MyPageController {
 
 	@GetMapping("/mypage")
 	public String myPage(Model model, HttpSession session) {
+
 		
 		if(!util.checkLogin()) {
-			return "redirect/login";
+			return "/login";
 		}
-		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		
 		//세션에 저장된 uuid를 가지고 멤버조회
 		Map<String, Object> member = myPageService.memberInfo(uuid);
-		
-		//일치하는 정보가 없다면
-		if(member == null) {
-			return "login";
-		}
 		
 		 model.addAttribute("nickname", session.getAttribute("mnickname"));
 		 model.addAttribute("exp", member.get("mpoint"));

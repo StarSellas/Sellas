@@ -97,8 +97,8 @@ public class MyPageService {
 	}
 
 	public List<Map<String, Object>> getprofileReview(Object attribute) {
-		
-		return myPageDAO.getprofileReview(attribute);
+		 List<Map<String, Object>> profileReview = myPageDAO.getprofileReview(attribute);
+		return formatDates(profileReview);
 	}
 
 	public Map<String, Object> reviewDetail(Map<String, Object> map) {
