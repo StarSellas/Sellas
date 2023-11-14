@@ -102,7 +102,7 @@
 				${locationList }
 				<c:forEach var="locationList" items="${locationList }">
 					<div>
-						<button onclick="selectLocation('${locationList.lname}')">${locationList.lname }</button>
+						<button type="button" onclick="selectLocation('${locationList.lname}')">${locationList.lname }</button>
 						<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
 						<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
 					</div>
