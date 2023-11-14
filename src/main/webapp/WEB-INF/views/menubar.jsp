@@ -24,7 +24,7 @@
     </head>
     <body>
 		<!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 10">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 9999">
            <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="./"><img src="./img/sellastext.png" class="header" alt="SellAS"></a>
 				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="./img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
@@ -33,7 +33,7 @@
 		
         
        <!-- Footer-->
-	<footer id="footer">
+	<footer id="footer" style="z-index: 9999">
 		<c:if test="${addTradeItem == 1 }">
 			<div style="position: absolute; right: 0px; bottom: 80px;"
 				class="swrite" onclick="location.href='./addTradeItem'">
