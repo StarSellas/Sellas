@@ -34,7 +34,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="../js/wishlist.js"></script>
-<script src="../js/nomalTrade.js"></script>
+<script src="../js/normalTrade.js"></script>
 </head>
 <body>
    <!-- Navigation-->
