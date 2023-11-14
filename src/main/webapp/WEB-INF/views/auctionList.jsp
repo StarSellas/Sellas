@@ -26,7 +26,7 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="../css/myActivities.css">
+<link rel="stylesheet" href="../css/auctionList.css">
 
 </head>
 <body>
@@ -36,6 +36,7 @@
 	<header> </header>
 	<!-- Section-->
 	<section class="py-5">
+	
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="d-flex inside-bar align-items-center">
 				<div class="back col-auto" onclick="location.href='/'">
@@ -50,57 +51,61 @@
 			<li class="my showCommentList">구매 내역</li>
 		</ul>
 		</div>
-		
+		<!-- [{ttitle=경매 어떻게돌아가는거냐고, ino=4, timage=20231114101053e707b323756420cf89b21fb09efe397fc36a100d.jpeg.jpg
+		tauctionstate=0, tread=6, tdate=2023-11-14T10:10:53, tno=301, ttype=1, displayDate=10시 10분, tauctionstartprice=52000000, tcontent=김민성이자식아, tauctionminbidunit=60000000, muuid=39e0ee63-43ef-4434-b676-3597d28ec217}] -->
 			<div class="postList">
 			<div class="activities-div">
-<c:forEach items="${aucSellList}" var="p">
+			<c:forEach items="${aucSellList}" var="row">
 			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${p.tno}'">
-			<div class="btitle">${p.ttitle}</div>
-			<div class="bdate">${p.displayDate}</div>
+			<div class="btitle">${row.ttitle}</div>
+			<div class="bdate">${row.displayDate}</div>
 			<div class="timage"></div>
-			<img src="../tradeImgUpload/${p.timage}" alt="sssdsd" class="sdsd" width="100px">
+			<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
 			<div class="row1">
 			<div class="setup">
-			<c:if test="${p.tauctionstate eq 0}">낙찰</c:if>
-			<c:if test="${p.tauctionstate eq 2}">유찰</c:if>
-			<c:if test="${p.tauctionstate eq 3}">진행중</c:if>
+			<c:if test="${row.tauctionstate eq 0}">낙찰</c:if>
+			<c:if test="${row.tauctionstate eq 2}">유찰</c:if>
+			<c:if test="${row.tauctionstate eq 3}">진행중</c:if>
 				</div>
 			</div>
 			<div class="ttitle">
 			${p.ttitle}
 			</div>
-			<div>
-			       <fmt:formatNumber value="${p.tauctionstartprice}" pattern="#,###원"/>
+			<div>시작가
+			 <fmt:formatNumber value="${p.tauctionstartprice}" pattern="#,###원"/>
 			</div>
-			
+			<c:if test="${p.abidprice ne null}">현재 낙찰가
+			 <fmt:formatNumber value="${p.abidprice}" pattern="#,###원"/>
+			</c:if>
 			</div>
 			</c:forEach>
 				</div>
 			</div>
 			<div class="commentList">
-			${aucBuyList}
-			<c:forEach items="${aucBuyList}" var="c">
-			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${c.bno }'">
-			
-			<div class="btitle">${c.ccontent}</div>
-			<div class="bdate">${c.cdate}</div>
-			<div class="row1">
-			<div id="commentcount">${c.btitle}</div>
-			<div class="setup">
-			<c:if test="${c.sno eq 1}">공지사항</c:if>
-			<c:if test="${c.sno eq 2}">판매요청</c:if>
-			<c:if test="${c.sno eq 3}">나눔</c:if>
-				</div>
+			<c:forEach items="${aucBuyList}" var="row">
+			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${c.tno}'">
+			<div class="timage">
+				<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
 			</div>
+			<div class="auctionInfo">
+			<div id="btitle">${row.ttitle}</div>
+			<div class="bdate">${row.displayDate}</div>
 			<div>
-			
-			</div>
-			
-				</div>
-			</c:forEach>
+			       <fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
 			</div>
 		
-		</div>
+			<div class="setup">
+			<c:if test="${row.astate eq 0}">낙찰</c:if>
+			<c:if test="${row.astate eq 1}">미낙찰</c:if>
+			<c:if test="${row.astate eq 2}">최고가입찰</c:if>
+				</div>
+			</div>
+			</div>
+			</c:forEach>
+			
+			</div>
+			</div>
+
 
 	</section>
 	<!-- Footer-->

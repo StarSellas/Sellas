@@ -108,13 +108,9 @@ WHERE pbuyer =#{uuid} AND pstate = 0 AND ti.tthumbnail = 0;
 
 
 <select id="getAucSell" parameterType="String" resultType="Map">
-SELECT t.*, r.*, ti.timage, a.abidprice,
-       CASE WHEN r.mwriter=#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
-       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
+SELECT t.*, ti.timage, a.abidprice
 FROM trade t
 JOIN tradeimage ti ON t.tno = ti.tno
-LEFT JOIN payment p ON t.tno = p.tno
-LEFT JOIN review r ON r.pno = p.pno
 LEFT JOIN (
     SELECT tno, MAX(ano) as max_ano
     FROM auctionhistory
@@ -122,10 +118,11 @@ LEFT JOIN (
 ) a_max ON a_max.tno = t.tno
 LEFT JOIN auctionhistory a ON a.tno = a_max.tno AND a.ano = a_max.max_ano
 WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0 AND ttype = 1;
+
 </select>
 
 <select id="getAucBuy" parameterType="String" resultType="Map">
-SELECT ah.*, ah.abiddate AS tdate, ti.timage
+SELECT ah.*, ah.abiddate AS tdate, ti.timage, t.ttitle
 FROM auctionhistory ah
 JOIN trade t ON ah.tno = t.tno
 LEFT JOIN tradeimage ti ON t.tno = ti.tno
