@@ -244,6 +244,34 @@ public class ChatRoomController {
 			json.put("count", setcheckzero);
 		}
 	}
+	
+	@PostMapping("/auctionchat")
+	public String auctionChat(@RequestParam String roomId, Model model) {
+		
+		Map<String, Object> map = chatRoomService.auctionChat(roomId);
+		String tno = String.valueOf(map.get("tno"));
+		String oseller = String.valueOf(map.get("oseller"));
+		String obuyer = String.valueOf(map.get("obuyer"));
+		
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("tno", tno);
+		model.addAttribute("oseller", oseller);
+		model.addAttribute("obuyer", obuyer);
+		
+		map.put("roomId", roomId);
+		
+		List<Map<String, Object>> lastchatlist = chatRoomService.lastChatList(map);
+		
+		model.addAttribute("lastchatlist", lastchatlist);
+		
+		int searchchatroom = chatRoomService.searchChatRoom(map);
+		
+		if(searchchatroom == 1) {
+			model.addAttribute("lastroomcheck", searchchatroom);
+		}
+		
+		return "/chat/auctionchat";
+	}
 
 
 }

@@ -37,5 +37,7 @@ public interface ChatRoomDAO {
 	Map<String, Object> selectPayment(Map<String, Object> map);
 
 	int alarmcount(String oseller);
+
+	Map<String, Object> auctionChat(String roomId);
 	
 }

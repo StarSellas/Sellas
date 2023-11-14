@@ -71,4 +71,8 @@ ORDER BY
 	<select id="alarmcount" parameterType="String" resultType="Integer">
 		select count(*) from dialogue where muuid = #{oseller} and dtype="ALARM" and dcheck = 1
 	</select>
+	
+	<select id="auctionChat" parameterType="String" resultType="Map">
+		select tno, oseller, obuyer from onlinechat where ouuid = #{roomId}
+	</select>
 </mapper>
