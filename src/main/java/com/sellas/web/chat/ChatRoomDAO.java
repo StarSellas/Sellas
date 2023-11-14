@@ -35,5 +35,9 @@ public interface ChatRoomDAO {
 	int selectTnormalstate(Map<String, Object> map);
 
 	Map<String, Object> selectPayment(Map<String, Object> map);
+
+	int alarmcount(String oseller);
+
+	Map<String, Object> auctionChat(String roomId);
 	
 }
