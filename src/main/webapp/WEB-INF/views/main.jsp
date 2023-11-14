@@ -25,8 +25,69 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
    href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+   
 <script src="./js/jquery-3.7.0.min.js"></script>
+<style type="text/css">
+.loading {
+	background-color: white;
+	z-index: 9999;
+}
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* 배경색을 흰색으로 지정 */
+    z-index: 8;
+    text-align: center;
+}
 
+#loading_img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 8;
+    max-width: 100%;
+    max-height: 100%;
+}
+</style>
+<script type="text/javascript">
+var loading = "";
+$(function() {
+	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
+	
+	// 로딩바 적용
+	loading.show();
+	
+	//로딩바를 위해 1.5초 뒤 ajax 실행
+	timer = setTimeout(function(){
+        jQuery.ajax({
+			type : "POST",
+			url : "ajax.php",
+			data : $("#frm").serialize(),
+			cache: false,
+			success : function(data) {
+				if(data == "0000"){
+					alert("작업성공");
+					// 로딩바 해제
+					loading.hide();
+				} else{
+					// 로딩바 해제
+					loading.hide();	
+				}
+			},
+			error : function(e) {
+				// 로딩바 해제
+				loading.hide();
+			}, timeout:10000
+		});
+    },1000);		
+});
+</script>
    <script type="text/javascript">
    	
    

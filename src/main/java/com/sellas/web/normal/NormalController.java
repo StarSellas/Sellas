@@ -131,7 +131,7 @@ public class NormalController {
 			break;
 		default:
 			// 기본 정렬은 tno DESC
-			orderBy = "ORDER BY tno DESC";
+			orderBy = "ORDER BY ttdate DESC";
 			break;
 		}
 		map.put("orderBy", orderBy);

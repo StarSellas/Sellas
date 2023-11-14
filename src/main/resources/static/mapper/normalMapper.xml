@@ -5,7 +5,7 @@
 <select id="normalBoardList" parameterType="String" resultType="Map"> 
 SELECT *, (SELECT COUNT(*) FROM normaltradeview) as count 
 FROM normaltradeview 
-ORDER BY tno DESC
+ORDER BY ttdate DESC
 LIMIT 10 
 </select>
 

@@ -37,7 +37,7 @@
     width: 100%;
     height: 100%;
     background-color: white; /* 배경색을 흰색으로 지정 */
-    z-index: 9999;
+    z-index: 8;
     text-align: center;
 }
 
@@ -48,7 +48,7 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    z-index: 9999;
+    z-index: 8;
     max-width: 100%;
     max-height: 100%;
 }
