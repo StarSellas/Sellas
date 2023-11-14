@@ -69,13 +69,17 @@
 			<div class="ttitle">
 			${p.ttitle}
 			</div>
+			<div>
+			       <fmt:formatNumber value="${p.tauctionstartprice}" pattern="#,###원"/>
+			</div>
+			
 			</div>
 			</c:forEach>
 				</div>
 			</div>
-			
 			<div class="commentList">
-			<c:forEach items="${myComment}" var="c">
+			${aucBuyList}
+			<c:forEach items="${aucBuyList}" var="c">
 			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${c.bno }'">
 			
 			<div class="btitle">${c.ccontent}</div>
@@ -88,13 +92,14 @@
 			<c:if test="${c.sno eq 3}">나눔</c:if>
 				</div>
 			</div>
+			<div>
+			
+			</div>
+			
 				</div>
 			</c:forEach>
 			</div>
-			
-			<c:if test="${exp < 15}">아기고래</c:if>
-								<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
-								<c:if test="${exp > 20 }">슈퍼고래</c:if>
+		
 		</div>
 
 	</section>

@@ -107,7 +107,6 @@ WHERE pbuyer =#{uuid} AND pstate = 0 AND ti.tthumbnail = 0;
 </select>
 
 
-
 <select id="getAucSell" parameterType="String" resultType="Map">
 SELECT t.*, r.*, ti.timage, a.abidprice,
        CASE WHEN r.mwriter=#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
@@ -124,6 +123,38 @@ LEFT JOIN (
 LEFT JOIN auctionhistory a ON a.tno = a_max.tno AND a.ano = a_max.max_ano
 WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0 AND ttype = 1;
 </select>
+
+<select id="getAucBuy" parameterType="String" resultType="Map">
+SELECT ah.*, ah.abiddate AS tdate, ti.timage
+FROM auctionhistory ah
+JOIN trade t ON ah.tno = t.tno
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
+WHERE ah.abidder =#{uuid} AND ti.tthumbnail = 0
+  AND (
+    ah.tno IN (
+      SELECT ah_sub.tno
+      FROM auctionhistory ah_sub
+      WHERE ah_sub.abidder =#{uuid}
+      GROUP BY ah_sub.tno
+      HAVING COUNT(*) > 1
+    )
+    OR (
+      SELECT ah_sub.tno
+      FROM auctionhistory ah_sub
+      WHERE ah_sub.abidder =#{uuid}
+      GROUP BY ah_sub.tno
+      HAVING COUNT(*) = 1
+    )
+  )
+  AND (ah.tno, ah.abiddate) IN (
+    SELECT ah_sub.tno, MAX(ah_sub.abiddate)
+    FROM auctionhistory ah_sub
+    WHERE ah_sub.abidder =#{uuid}
+    GROUP BY ah_sub.tno
+  );
+
+</select>
+
 
 
 <select id="getWish" parameterType="String" resultType="Map">

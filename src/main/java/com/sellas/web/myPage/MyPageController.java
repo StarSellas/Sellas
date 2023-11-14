@@ -334,8 +334,12 @@ public class MyPageController {
 		//판매내역
 		List<Map<String, Object>> aucSellList = myPageService.getAucSell(uuid);
 		model.addAttribute("aucSellList",aucSellList);
+		System.out.println("판매내역뭐있어"+aucSellList);
 		
 		//구매내역
+		List<Map<String, Object>> aucBuyList = myPageService.getAucBuy(uuid);
+		model.addAttribute("aucBuyList", aucBuyList);
+		System.out.println("구매내역뭐있어"+aucBuyList);
 		
 		return "auctionList";
 		
