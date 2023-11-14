@@ -278,14 +278,14 @@
 			                  <c:when test="${!empty param}">
 			                     <c:forEach items="${board}" var="board">
 				                        <c:if test="${param.cate eq board.sno}">
-				                           <a class="dropdown-toggle" id="navbarDropdown" href="#"
+				                           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
 				                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
 				                           ${board.sname }
 				                           </a>
 				                         </c:if>
 			                     </c:forEach>
 			                     <c:if test="${param.cate eq ''}">
-				                         	<a class="nav-link dropdown-toggle" id="navbarMain" href="#"
+				                         	<a class="nav-link dropdown-toggle" id="" href="#"
 			                    			 role="button" data-bs-toggle="dropdown" aria-expanded="false">
 			                     			게시판
 			                     			</a>

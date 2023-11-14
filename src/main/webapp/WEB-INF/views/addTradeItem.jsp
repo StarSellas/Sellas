@@ -210,7 +210,6 @@ $("#camera").click(function(){
 		alert('더 이상 이미지를 추가할 수 없습니다.');
 		return false;
 	}
-	$("#picker2").hide();
    	 
 	selectImagePath = [];
 	M.media.camera({
@@ -227,9 +226,8 @@ $("#camera").click(function(){
 				.then(({ status, result }) => {
 				if (status === 'SUCCESS') {
 					$previewImg = $(document.createElement('img'))
-					$previewImg.attr('height', '200px')
-					$previewImg.attr('width', '200px');
-					$previewImg.attr('src', "data:image/png;base64," + result[0].data)
+					$previewImg.attr('width', '250px');
+					$previewImg.attr('src', "data:image/png;base64," + result[count].data)
            
 					$box.append($previewImg);
 					count++;
@@ -249,7 +247,6 @@ $("#camera").click(function(){
 }); 
 
 $picker2.on('click', () => {
-	$("#camera").hide();
 	if ($box.find('img').length >= 4) {
 		alert('더 이상 이미지를 추가할 수 없습니다.');
 		return false;

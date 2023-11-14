@@ -46,8 +46,10 @@
 							
 							<div class="contentBox">
 								<textarea class="bcontent" name="bcontent">${bdetail.bcontent }</textarea>
-								<input type="hidden" class="bno" name="bno" value="${bdetail.bno}">
+								<input type="hidden" class="bno" name="bno" value="${bdetail.bno }">
 								<input type="hidden" class="cate" name="cate" value="${param.cate}">
+								<input type="hidden" class="bimagecount" name="bimagecount" value="${bdetail.bimagecount}">
+								
 							</div>
 
 							<div class="bimageBox">
@@ -57,6 +59,8 @@
 											<div class="boardImgBox editImgBox">
 												<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
 												<button class="imgEditbtn" type="button" data-image-name="${imageList.bimage}">수정</button>
+												<button class="imgDelbtn" type="button" data-image-name="${imageList.bimage}">삭제</button>
+												<div class="box"></div>
 											</div>
 										</c:forEach>
 									</c:if>
@@ -64,14 +68,23 @@
 									<div id="photoInputs">
 	                    				<div id="imagePreviews"></div>
 	                    			</div>
+										<div id="box"></div>
 	                    			
 	                    			<div class="addPhotoBtnBox">
 										<button id="addPhotoButton" type="button">사진 추가하기</button>
 									</div>
-								</div>
+									<div class="otherBtnBox hide" id="addPhoto">
+										<button id="picker2" type="button">앨범에서 추가</button>
+										<button id="camera" type="button">카메라에서 추가</button>
+										<div id="progress"></div>
+										<div id="upload-box"></div>
+									</div>
+							</div>
 							
 							<div class="buttonBox">
 								<button type="button" class="editbtn">수정하기</button>
+								<button type="button"  onclick="history.back()" class="editCancelbtn">취소</button>
+								<a href="javascript:history.back()"></a>
 							</div>
 					
 					</div>
@@ -81,11 +94,33 @@
             
         </section>
         
-	<script type="text/javascript">
+        <script type="text/javascript">
+			 
+               $(function(){
+            	   
+                  $(".addPhotoBtn").click(function(){
+                     
+                     //$(".otherBtnBox").toggle(800);   // 속도조절
+                     $(".addPhotoBtnBox").toggleClass("btnClicked");   // 버튼위로이동
+                     $(".otherBtnBox").toggleClass("hide");
+                     
+                     if($(".addPhotoBtnBox").hasClass("btnClicked")){
+                        $(".otherBtnBox").addClass("tBtnBox");
+                        
+                     } else {
+                        $(".otherBtnBox").removeClass("tBtnBox");
+                     }
+                  })
+               });
+               
+    </script>
         
+        
+	<script type="text/javascript">
+     
+	//모피어스를 이용한 카메라 사진 및 앨범 사진 수정 by 대원
+	
 	 $(function () {
-		 
-		 
 		 
 	        $(".imgEditbtn").click(function () {
 	            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
@@ -93,20 +128,137 @@
 	            container.find("input[type=hidden]").val(imageName); // hidden input의 값을 설정
 	        });
 	    });
-	
-	
-	
-       
-        
+
+	 
 	 $(function () {
-		    var editPhotoSize = 0;
-		    var maxPhotos = 3;
-		    var nextPhotoId = 1 + editPhotoSize;
+	        let bimagecount = $(".bimagecount").val();
+		    var maxPhotos = 4;
+		    var nextPhotoId = 1 + bimagecount;
 		    let $previewImgArray = [];
 		    let count = 0;
 		    let selectImagePath = '';
 		    let $previewImg = null;
 			let OriginalImgArray = {};
+			let addCount = 0;
+	        let deleteCount = 0;
+	        const $picker2 = $('#picker2');
+	        const $box = $('#box');
+	        const $camera = $('#camera');
+	        
+	        $("#addPhoto").hide();
+	         $("#addPhotoButton").click(function(){
+	            alert("사진은 앨범과 카메라 중 하나만 선택 가능합니다.");
+	            $("#addPhoto").show();
+	         });
+	        
+	         
+	         $("#camera").click(function(){
+	        		if ($box.find('img').length + bimagecount >= 4) {
+	        			alert('더 이상 이미지를 추가할 수 없습니다.');
+	        			return false;
+	        		}
+	        		$("#picker2").hide();
+	        	   	 
+	        		selectImagePath = [];
+	        		M.media.camera({
+	        			path: "/media",
+	        			mediaType: "PHOTO",
+	        			saveAlbum: true,
+	        			callback: function(status, result, option) {
+	        				if (status == 'SUCCESS') {
+	        	        	   
+	        					var photo_path = result.fullpath;
+	        					$previewImgArray[count] = result.path;
+	        	               
+	        					$.convertBase64ByPath2($previewImgArray)
+	        					.then(({ status, result }) => {
+	        					if (status === 'SUCCESS') {
+	        						$previewImg = $(document.createElement('img'))
+	        						$previewImg.attr('width', '250px');
+	        						$previewImg.attr('src', "data:image/png;base64," + result[count].data)
+	        	           
+	        						$box.append($previewImg);
+	        						count++;
+	        						} else {
+	        							return Promise.reject('BASE64 변환 실패')
+	        						}
+	        					})
+	        					.catch((err) => {
+	        						if (typeof err === 'string') alert(err)
+	        						console.error(err)
+	        					})
+	        	               
+	        					//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
+	        				}
+	        			}
+	        		});
+	        	}); 
+	         
+	         
+	         
+	         
+	        
+	         $picker2.on('click', () => {
+	             $("#camera").hide();
+	             if ($box.find('img').length + bimagecount >= 4) {
+	                alert('더 이상 이미지를 추가할 수 없습니다.');
+	                return false;
+	             }
+	        
+	             
+	             if ($previewImg !== null) {
+	                 $previewImg.remove();
+	                 $previewImg = null;
+	              }
+	              selectImagePath = '';
+	              $.imagePicker2()
+	              .then(({ status, result }) => {
+	                 if (status === 'SUCCESS') {
+	                    for (let i = 0; i < result.length; i++) {
+	                       $previewImgArray[i] = result[i].path;
+	                       
+	                    }
+	                    return $.convertBase64ByPath2($previewImgArray)
+	                 } else {
+	                    return Promise.reject('이미지 가져오기 실패')
+	                 }
+	              })
+	              .then(({ status, result }) => {
+	                 if (status === 'SUCCESS') {
+	                    for (let i = 0; i < result.length; i++) {
+	                       if ($box.find('img').length + bimagecount >= 4) {
+	                          
+	                          $previewImgArray[i] = null;
+	                          continue;
+	                          }
+	                       let imageSrc = "data:image/png;base64," + result[i].data;
+	                       let $previewImg = $(document.createElement('img'));
+	                       $previewImg.attr('width', '250px');
+	                       $previewImg.attr('src', imageSrc);
+	                       $box.append($previewImg);
+	                       count++;
+	                    }
+	                 } else {
+	                    return Promise.reject('이미지 가져오기 실패');
+	                 }
+	              })
+	              .catch((err) => {
+	                 if (typeof err === 'string') alert(err);
+	                    console.error(err);
+	              });
+	           })
+	           
+	           //사진 삭제하기
+	           $(".imgDelbtn").click(function(){
+	               var imageName = $(this).data("image-name");
+	                   var container = $(this).closest(".boardImgBox");
+	                   OriginalImgArray[deleteCount] = imageName;
+	                   deleteCount++;
+	                   bimagecount--;
+	                   container.remove();
+	           });
+   
+	         
 		    $(".imgEditbtn").click(function () {
 		        // 선택한 이미지 이름 가져오기
 		        var imageName = $(this).data("image-name");
@@ -115,12 +267,14 @@
 		        container.find("input[type=hidden]").val(imageName);
 		    });
 
+		    
 		    $(".imgEditbtn").each(function (index) {
 		        // 현재 .normalTradeChangeBtn에 대한 상위 .image-container 찾기
 		        var container = $(this).closest(".boardImgBox");
 		        // .box 엘리먼트 찾기
 		        var boxElement = container.find(".box");
 		        var imageName = $(this).data("image-name");
+		        
 		        $(this).click(function () {
 		            // 이미 미리보기가 있으면 제거
 		            if ($previewImg !== null) {
@@ -146,7 +300,7 @@
 		                        // 이미지를 Base64로 변환하여 프리뷰 이미지 만들기
 		                        let imageSrc = "data:image/png;base64," + result[count].data;
 		                        let $previewImg = $(document.createElement('img'));
-		                        $previewImg.attr('height', '200px');
+		                        $previewImg.attr('width', '250px');
 		                        container.find(".boardImg").attr('src', imageSrc);
 		                        // .box 엘리먼트에 프리뷰 이미지 추가
 		                        //boxElement.append($previewImg);
@@ -177,6 +331,21 @@
 		        });
 		      })
 		    }
+        
+        $.imagePicker2 = function () {
+        	return new Promise((resolve) => {
+        		M.media.picker({
+        			mode: "MULTI",
+        			media: "PHOTO",
+        			maxCount : 4,
+        			// path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+        			column: 3,
+        			callback: (status, result) => {
+        				resolve({ status, result })	          
+        			}
+        		});
+        	})
+        }
         
         $.convertBase64ByPath2 = function ($previewImgArray) {
 	    	  if (!Array.isArray($previewImgArray)) {
@@ -269,7 +438,8 @@
 						data : {bno : bno, cate : cate, btitle : btitle, bcontent : bcontent, muuid : muuid, OriginalImgArray : OriginalImgArray},
 						dataType : "json",
 						success : function(data){
-							if(data.ImgdeleteSuccess==1){
+							
+							if(data.ImgdeleteSuccess==1 || $previewImgArray.length > 0){
 								if($previewImgArray.length > 0){
 									$.uploadImageByPath2($previewImgArray,bno, cate,(total, current) => {
 										console.log(`total: ${total} , current: ${current}`)
@@ -293,9 +463,32 @@
 												
 								}
 							}
+							alert("작성이 완료되었습니다.");
+							var form = document.createElement("form");
+							form.method = "GET";
+							form.action = "./boardDetail"; // 컨트롤러 경로 설정
+							var inputForbno = document.createElement("input");
+							inputForbno.type = "hidden"; // 숨겨진 필드
+							inputForbno.name = "bno"; // 파라미터 이름
+							inputForbno.value = bno; // 파라미터 값
+							var inputForcate = document.createElement("input");
+							inputForcate.type = "hidden"; // 숨겨진 필드
+							inputForcate.name = "cate"; // 파라미터 이름
+							inputForcate.value = cate; // 파라미터 값
+
+							// input을 form에 추가
+							form.appendChild(inputForbno);
+							form.appendChild(inputForcate);
+							
+							document.body.appendChild(form);
+
+							// 폼 전송
+							form.submit();
+							
 							setTimeout(function() {
 		                         form.submit();
 		                     }, 3000);
+							
 						},
 						error : function(error){
 							
@@ -303,27 +496,6 @@
 					});
 					
 					
-					alert("작성이 완료되었습니다.");
-					var form = document.createElement("form");
-					form.method = "GET";
-					form.action = "./boardDetail"; // 컨트롤러 경로 설정
-					var inputForbno = document.createElement("input");
-					inputForbno.type = "hidden"; // 숨겨진 필드
-					inputForbno.name = "bno"; // 파라미터 이름
-					inputForbno.value = bno; // 파라미터 값
-					var inputForcate = document.createElement("input");
-					inputForcate.type = "hidden"; // 숨겨진 필드
-					inputForcate.name = "cate"; // 파라미터 이름
-					inputForcate.value = cate; // 파라미터 값
-
-					// input을 form에 추가
-					form.appendChild(inputForbno);
-					form.appendChild(inputForcate);
-					
-					document.body.appendChild(form);
-
-					// 폼 전송
-					form.submit();
 				}
 			});
 	 });
