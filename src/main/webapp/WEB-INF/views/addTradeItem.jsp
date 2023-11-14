@@ -24,10 +24,70 @@
 		<script src="./js/wnInterface.js"></script> 
 		<script src="./js/mcore.min.js"></script> 
 		<script src="./js/mcore.extends.js"></script> 
-		
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
+		<style type="text/css">
+#loading {
+	height: 100%;
+	left: 0px;
+	position: fixed;
+	_position: absolute;
+	top: 0px;
+	width: 100%;
+	filter: alpha(opacity = 50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+}
+.loading {
+	background-color: white;
+	z-index: 999999;
+}
+#loading_img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 100px;
+	margin-top: -75px; 
+	margin-left: -100px; 
+	z-index: 999999;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+var loading = "";
+	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/whale2.gif" />').appendTo(document.body).hide();
+	
+	// 로딩바 적용
+	loading.show();
+	
+	//로딩바를 위해 1.5초 뒤 ajax 실행
+	timer = setTimeout(function(){
+        jQuery.ajax({
+			type : "POST",
+			url : "ajax.php",
+			data : $("#frm").serialize(),
+			cache: false,
+			success : function(data) {
+				if(data == "0000"){
+					alert("작업성공");
+					// 로딩바 해제
+					loading.hide();
+				} else{
+					// 로딩바 해제
+					loading.hide();	
+				}
+			},
+			error : function(e) {
+				// 로딩바 해제
+				loading.hide();
+			}, timeout:10000
+		});
+    },3000);	
+});
+</script>
+
 	</head>
 	<body>
+	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 	<%@ include file="menubar.jsp" %>
 		<!-- Section-->
 		<section class="py-5">
