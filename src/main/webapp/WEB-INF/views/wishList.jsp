@@ -46,10 +46,10 @@
                     </c:when>
                     <c:otherwise>
                         <c:forEach items="${wishList}" var="row">
-                            <div class="card mb-3" style="max-width: 400px;">
+                            <div class="card mb-3" style="width: 330px;">
                                 <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
                                     <div class="col-4">
-                                        <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+                                        <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" id="timage" alt="상품이미지">
                                     </div>
                                     <div class="col-8">
                                         <div class="card-body">
@@ -58,19 +58,15 @@
                                                 <p class="card-text">
                                                     <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
                                                 </p>
-                                                <p class="card-text">
-                                                    <small class="text-body-secondary">
-                                                    </small>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" value="${row.tno}" class="normalTno">
-                                    	<div class="card-text">
+        <small class="text-body-secondary tdate">
+         ${row.displayDate}
+        </small>
+                                    <div class="row2">
+                                    	<div class="setup">
 								<c:if test="${row.tnormalstate eq 0 }">판매중</c:if>
 								<c:if test="${row.tnormalstate eq 1 }">거래중</c:if>
 								<c:if test="${row.tnormalstate eq 2 }">판매완료</c:if>
 							</div>
-                                    </div>
                                     <c:choose>
                                         <c:when test="${row.wno eq 0 or empty row.wno}">
                                             위시리스트가 없습니다.
@@ -79,6 +75,12 @@
                                             <img src="../img/heart.png" id="delWishList" align="left" style="cursor:pointer; width: 20px;">
                                         </c:otherwise>
                                     </c:choose>
+                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                        <input type="hidden" value="${row.tno}" class="normalTno">
+                                    </div>
                                 </div>
                                 <br>
                         </c:forEach>

@@ -80,12 +80,15 @@
     </c:otherwise>
     </c:choose>
 <div>
-  <c:if test="${reviewDetail.mtarget eq sessionScope.muuid}">
-<button id="reviewBtn" class="submitbtn reviewBtn" type="button"
+  <c:if test="${reviewDetail.mtarget eq sessionScope.muuid && reviewDetail.hastno == 'Y'}">
+<button id="reviewBtn" class="submitbtn" type="button"
 onclick="location.href='./reviewDetailByMe?rno=${reviewDetail.rno}'">내가 쓴 후기 보러가기</button>
 </c:if>
+  <c:if test="${reviewDetail.mtarget eq sessionScope.muuid && reviewDetail.hastno != 'Y'}">
+<button id="reviewBtn" class="submitbtn" type="button"
+onclick="location.href='./review?tno=${reviewDetail.tno}'">나도 후기 쓰러가기</button>
+</c:if>
 </div>
-
 </div>
 	
 	</section>

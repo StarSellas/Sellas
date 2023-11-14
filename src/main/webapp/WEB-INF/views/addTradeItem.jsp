@@ -28,7 +28,7 @@
 		<style type="text/css">
 .loading {
 	background-color: white;
-	z-index: 9999;
+	z-index: 999;
 }
 #loading {
     position: fixed;
@@ -37,7 +37,7 @@
     width: 100%;
     height: 100%;
     background-color: white; /* 배경색을 흰색으로 지정 */
-    z-index: 8;
+    z-index: 999;
     text-align: center;
 }
 
@@ -48,7 +48,7 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    z-index: 8;
+    z-index: 999;
     max-width: 100%;
     max-height: 100%;
 }
@@ -344,7 +344,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
 	return new Promise((resolve) => {
 		const _options = {
-			url: 'http://172.30.1.52:8080/file/upload2',
+			url: 'http://172.30.1.02:8080/file/upload2',
 			header: {},
 			params: { tno: tno },
 			body: $previewImgArray.map((filePath) => ({

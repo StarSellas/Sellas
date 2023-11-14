@@ -1,292 +1,135 @@
-<<<<<<< HEAD
-@charset "UTF-8";
-.divTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-.divTableCell{
-	border-bottom: 1px black solid;
-}
-
-.divTable .divTableHeading {
-    background-color: #f2f2f2;
-}
-
-.divTable .divTableHeading .divTableHead {
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-}
-
-.divTable .divTableBody .divTableRow:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.divTable .divTableBody .divTableRow .divTableCell {
-    padding: 10px;
-    text-align: center;
+.swiper {
+  width: 330px;
+  height: 310px;
 }
 
 
-.divTable .divTableBody .divTableRow .cdel:hover,
-.divTable .divTableBody .divTableRow .cedit:hover {
-    background-color: gray;
+.swiper-button-prev{
+   background-size: 30% auto;
+   
 }
 
 
-.tradecontainter{
-	border: 1px black solid;
 
-}
-.divTableRow{
-	border-bottom: 1px black solid;
-	border-top:  1px black solid;
-}
-.divTableBody{
-		border-bottom: 1px black solid;
+.swiper-button-next{
+background-size: 30% auto;
 }
 
 
-/* 게시판에 맞게 수정한 스타일 */
-.divTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
 }
 
-.divTable .divTableHeading {
-    background-color: #f2f2f2;
+.progress{
+   width: 60px;
 }
 
-.divTable .divTableHeading .divTableHead {
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
+.progress-bar{
+   font-size: 9px;
 }
 
-.divTable .divTableBody .divTableRow:nth-child(even) {
-    background-color: #f2f2f2;
+.user-img {
+   width: 60px;
+   height: 60px;
+   border-radius: 70%;
+   border: solid #e3e3e3 1px;
+   overflow: hidden;
+   float: left;
 }
 
-.divTable .divTableBody .divTableRow .divTableCell {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd; /* 각 행을 선으로 구분 */
+.user-img-img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
 }
 
-.divTable .divTableBody .divTableRow:last-child .divTableCell {
-    border-bottom: none; /* 마지막 행의 선 제거 */
+.expDiv{
+   padding-top: 10px;
+   font-size: 10px;
+   float: right;
+   margin-right: 10px;
+   
 }
 
-.divTable .divTableBody .divTableRow .cdel,
-.divTable .divTableBody .divTableRow .cedit {
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
+.normalDiv{
+   padding: 25px;
+   padding-top: 10px;
+   }
+   
+   .detailDiv{
 
-.divTable .divTableBody .divTableRow .cdel:hover,
-.divTable .divTableBody .divTableRow .cedit:hover {
-    background-color: gray;
-}
-/* 선을 추가하여 행을 구분 */
-.divTable .divTableBody .divTableRow {
-    border-bottom: 1px solid #ddd;
-}
+   margin-top: 10px;
+   }
 
-/* 마지막 행의 선 제거 */
-.divTable .divTableBody .divTableRow:last-child {
-    border-bottom: none;
-}
-/* 글쓴이는 작은 칸, 내용은 큰 칸 */
-.divTable .divTableHead .divTableHead:nth-child(1),
-.divTable .divTableBody .divTableRow .divTableCell:nth-child(1) {
-    width: 20%; /* 글쓴이의 너비 조정 */
-    text-align: left; /* 글쓴이 텍스트 왼쪽 정렬 */
-}
-
-.divTable .divTableHead .divTableHead:nth-child(2),
-.divTable .divTableBody .divTableRow .divTableCell:nth-child(2) {
-    width: 80%; /* 내용의 너비 조정 */
-    text-align: left; /* 내용 텍스트 왼쪽 정렬 */
-}
-.divTableHead{
-   border: 1px black solid;
-}
-
-
-/* DivTable.com */
-.divTable{ display: table; }
-.divTableRow { display: table-row; }
-.divTableHeading { display: table-header-group;}
-.divTableCell, .divTableHead { display: table-cell;}
-.divTableHeading { display: table-header-group;}
-.divTableFoot { display: table-footer-group;}
-.divTableBody { display: table-row-group;}
-
-button{
-   border: 0;
-   background-color: #303F9F;;
-   border-radius: 7px;
-   padding: 7px;
-   color: white;
+   #detailID{
+   float: left;
+   padding: 20px;
+   padding-right : 10px;
    font-weight: bold;
-   font-family: 'Noto Sans KR', sans-serif;
-   width: 65px;
-   height: 40px;
-   margin-right: 0px;
-}
-button:hover{
-   cursor: pointer;
-   background-color: #1A237E;;
-}
-.cedit{
-	margin-right: 5px;
-=======
-@charset "UTF-8";
-.divTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-.divTableCell{
-	border-bottom: 1px black solid;
-}
-
-.divTable .divTableHeading {
-    background-color: #f2f2f2;
-}
-
-.divTable .divTableHeading .divTableHead {
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-}
-
-.divTable .divTableBody .divTableRow:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.divTable .divTableBody .divTableRow .divTableCell {
-    padding: 10px;
-    text-align: center;
-}
-
-
-.divTable .divTableBody .divTableRow .cdel:hover,
-.divTable .divTableBody .divTableRow .cedit:hover {
-    background-color: gray;
-}
-
-
-.tradecontainter{
-	border: 1px black solid;
-
-}
-.divTableRow{
-	border-bottom: 1px black solid;
-	border-top:  1px black solid;
-}
-.divTableBody{
-		border-bottom: 1px black solid;
-}
-
-
-/* 게시판에 맞게 수정한 스타일 */
-.divTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.divTable .divTableHeading {
-    background-color: #f2f2f2;
-}
-
-.divTable .divTableHeading .divTableHead {
-    font-weight: bold;
-    padding: 10px;
-    text-align: center;
-}
-
-.divTable .divTableBody .divTableRow:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.divTable .divTableBody .divTableRow .divTableCell {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd; /* 각 행을 선으로 구분 */
-}
-
-.divTable .divTableBody .divTableRow:last-child .divTableCell {
-    border-bottom: none; /* 마지막 행의 선 제거 */
-}
-
-.divTable .divTableBody .divTableRow .cdel,
-.divTable .divTableBody .divTableRow .cedit {
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.divTable .divTableBody .divTableRow .cdel:hover,
-.divTable .divTableBody .divTableRow .cedit:hover {
-    background-color: gray;
-}
-/* 선을 추가하여 행을 구분 */
-.divTable .divTableBody .divTableRow {
-    border-bottom: 1px solid #ddd;
-}
-
-/* 마지막 행의 선 제거 */
-.divTable .divTableBody .divTableRow:last-child {
-    border-bottom: none;
-}
-/* 글쓴이는 작은 칸, 내용은 큰 칸 */
-.divTable .divTableHead .divTableHead:nth-child(1),
-.divTable .divTableBody .divTableRow .divTableCell:nth-child(1) {
-    width: 20%; /* 글쓴이의 너비 조정 */
-    text-align: left; /* 글쓴이 텍스트 왼쪽 정렬 */
-}
-
-.divTable .divTableHead .divTableHead:nth-child(2),
-.divTable .divTableBody .divTableRow .divTableCell:nth-child(2) {
-    width: 80%; /* 내용의 너비 조정 */
-    text-align: left; /* 내용 텍스트 왼쪽 정렬 */
-}
-.divTableHead{
-   border: 1px black solid;
-}
-
-
-/* DivTable.com */
-.divTable{ display: table; }
-.divTableRow { display: table-row; }
-.divTableHeading { display: table-header-group;}
-.divTableCell, .divTableHead { display: table-cell;}
-.divTableHeading { display: table-header-group;}
-.divTableFoot { display: table-footer-group;}
-.divTableBody { display: table-row-group;}
-
-button{
-   border: 0;
-   background-color: #303F9F;;
-   border-radius: 7px;
-   padding: 7px;
-   color: white;
+   }
+   
+   .user-level{
+   padding: 20px;
+   padding-bottom: 25px;
+   border-bottom: solid #e3e3e3 1px;
+   }
+   
+   
+   .dtitle{
    font-weight: bold;
-   font-family: 'Noto Sans KR', sans-serif;
-   width: 65px;
-   height: 40px;
-   margin-right: 0px;
+   }
+   
+   
+   .dprice{
+font-weight: bold;
+float: left;
+   }
+   
+   
+   .dstate{
+    border: solid #e3e3e3 1px;
+    border-radius: 10px;
+    width: 70px;
+    text-align: center;
+    font-size: 15px;
+    float: right;
 }
-button:hover{
-   cursor: pointer;
-   background-color: #1A237E;;
+
+.dcontent{
+   margin-top: 50px;
+   min-height: 100px;
+   padding: 10px;
 }
-.cedit{
-	margin-right: 5px;
->>>>>>> branch 'leedaewon' of https://github.com/StarSellas/Sellas.git
+
+.diname{
+   float: left;
+   margin-right: 20px;
+}
+
+.drow{
+   color: gray;
+   font-size: 14px;
+   margin-top: 5px;
+   margin-bottom: 5px;
+}
+
+#normalEditBtn, #normalDeleteBtn,#requestChatBtn{
+   
+   width: 90px;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px;
+   float: right;
+}
+
+#normalDeleteBtn{
+	 border: 1px solid gray ;
+}
+
+
+#delWishList{
+	margin: 5px;
 }

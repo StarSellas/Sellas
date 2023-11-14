@@ -100,29 +100,41 @@ public class BoardController {
 	@ResponseBody
 	@PostMapping("/nextPage")
 	public String nextPage(@RequestParam(value = "cate", required = false, defaultValue = "0") int cate,
+							@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+							@RequestParam(value = "search", required = false) String search,
 							@RequestParam Map<String, Object> map) {
 		
 		//System.out.println(cate);
 		//System.out.println("map : " + map);
 		// {cate=2, lastbno=68, firstbno=98, count=25}
 		
+		map.put("cate", cate);
+		map.put("searchCate", searchCate);
+		map.put("search", search);
+		
+		System.out.println("map : " + map);
+		// map : {currentPage=1, cate=0, lastbno=152, count=98, search=, searchCate=title}
+		
 		JSONObject json = new JSONObject();
 		
 		if(cate == 0) {
 			
 			List<Map<String, Object>> nextList = boardService.mnextPage(map);
-			//System.out.println("메인다음리스트 : " + nextList);
+			System.out.println("메인 다음페이지 : " + nextList);
 			json.put("list", nextList);
+			
 			return json.toString();
 		}
-		
-		List<Map<String, Object>> nextList = boardService.nextPage(map);
-		// System.out.println("nextList : " + nextList);
-		json.put("list", nextList);
-
-		return json.toString();
+			
+			List<Map<String, Object>> nextList = boardService.nextPage(map);
+			 System.out.println("검색&cate있을때 nextList : " + nextList);
+			json.put("list", nextList);
+			
+			return json.toString();
 	}
-
+	
+	
+	
 	// 글쓰기 페이지
 	@GetMapping("/boardWrite")
 	public String boardWrite(@RequestParam Map<String, Object> map, Model model) {
@@ -195,8 +207,10 @@ public class BoardController {
 					 
 					LocalDateTime ldt = LocalDateTime.now();
 					String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
-					String realFileName = format + "num" + i + split[split.length-1];
+					String realFileName = format + "num" + i + split[split.length-2];
 
+					System.out.println("이름잘라 : " + realFileName);
+					
 					// 확장자 자르기
 					String[] parts = boardimgList.get(i).getOriginalFilename().split("\\.");
 					String lastPart = parts[parts.length - 1];
@@ -228,10 +242,11 @@ public class BoardController {
 					
 					System.out.println("imgResult " + (i + 1) + " 번째 : " + imgResult);
 
-					if (imgResult == 1 && i == 0) {
-						System.out.println("이걸넣을건데 :" + map.get("bimage"));
-						int result = boardService.setThumbnail(map);
-						System.out.println("제발요: " + result);
+					if (imgResult == 1 && i == 0) { 
+						int Thumbnail = boardService.countThumbnail(map);
+						if(Thumbnail == 0) {
+							int result  = boardService.setThumbnail(map);
+						}
 					}
 
 				} // for문
@@ -270,6 +285,7 @@ public class BoardController {
 
 		Map<String, Object> detailList = boardService.boardDetail(map);
 		List<Map<String, Object>> imageList = boardService.imageList(map);
+		System.out.println(imageList);
 		// System.out.println(detailList);
 		// {bno=107, bread=5, mnickname=pyo, commentcount=0, bdate=14:39:53, sno=2,
 		// bimagecount=0, sname=판매요청, btitle=제목, bcontent=내용, mno=96}
@@ -280,91 +296,41 @@ public class BoardController {
 		return "boardedit";
 	}
 
-	// 이미지 삭제 로직 (ajax)
+	// 게시글수정 로직
 	@ResponseBody
-	@PostMapping("imgDelete")
-	public String imgDelete(@RequestParam Map<String, Object> map) {
+	@PostMapping("boardEdit")
+	public String boardEdit(
+			@RequestParam Map<String, Object> map) {
 		JSONObject json = new JSONObject();
-		// System.out.println("지울사진들 map :" + map);
-		// 지울사진들 map :{imgDel0=20231031095234num0라이언2.png, bno=68,
-		// imgDel1=20231031095234num1라이언2.png}
-		int result = boardService.imgDelete(map);
-		System.out.println("컨트롤러result : " + result);
-		json.put("result", result);
+		System.out.println("맵 값은 어떻게 오나요?" + map);
+		int normalEditResult = boardService.boardEdit(map);
+		 
+		
+		if(map.get("OriginalImgArray[0]") != null) {
+		Map<String, Object> deleteImage = new HashMap<String, Object>();
+		deleteImage.put("bno", map.get("bno")); 
+		if(map.get("OriginalImgArray[0]") != null) {
+			deleteImage.put("Original1", map.get("OriginalImgArray[0]"));
+		}if(map.get("OriginalImgArray[1]") != null) {
+			deleteImage.put("Original2", map.get("OriginalImgArray[1]"));
+		}if(map.get("OriginalImgArray[2]") != null) {
+			deleteImage.put("Original3", map.get("OriginalImgArray[2]"));
+		}if(map.get("OriginalImgArray[3]") != null) {
+			deleteImage.put("Original4", map.get("OriginalImgArray[3]"));
+		}
+		 
+		System.out.println("deleteImage : " + deleteImage);
+		
+		
+			int boardDeleteEditImage = boardService.imgDelete(deleteImage);
+				if(boardDeleteEditImage == 1) {   
+				json.put("ImgdeleteSuccess", 1);
+				}
+		}else {
+			json.put("justDelete", 1);
+		}
 
 		return json.toString();
-	}
-
-	// 게시글수정 로직
-	@PostMapping("boardEdit")
-	public String boardEdit(@RequestParam(value = "boardimg", required = false) List<MultipartFile> boardimgList,
-			@RequestParam Map<String, Object> map) {
-
-		// System.out.println("map : " + map);
-		// System.out.println("boardimgList : " + boardimgList);
-		// map : {btitle=테스트이미지, bcontent=업로드, bno=68, cate=2, boardimg1=pyos.png,
-		// boardimg3=pyos2.png}
-		int writeResult = boardService.boardEdit(map);
-		if (writeResult == 1) {
-
-			// 파일이 있다면 업로드
-			if (boardimgList != null && !boardimgList.isEmpty()) {
-
-				for (int i = 0; i < boardimgList.size(); i++) {
-
-					HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-							.currentRequestAttributes()).getRequest();
-					String path = request.getServletContext().getRealPath("/boardImgUpload");
-					System.out.println("경로: " + path); // 경로: C:\Users\gogus\git\sellas\src\main\webapp\boardImgUpload
-
-					System.out.println("사진이름 : " + boardimgList.get(i).getOriginalFilename()); // resource-28.jpg
-					// System.out.println(boardimgList.get(i).getSize()); //81618
-					// System.out.println(boardimgList.get(i).getContentType()); // image/jpeg
-
-					LocalDateTime ldt = LocalDateTime.now();
-					String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
-					String realFileName = format + "num" + i + boardimgList.get(i).getOriginalFilename();
-
-					// 확장자 자르기
-					String[] parts = boardimgList.get(i).getOriginalFilename().split("\\.");
-					String lastPart = parts[parts.length - 1];
-					System.out.println(lastPart);
-
-					// 확장자 아니면 파일 없애보리기
-					if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
-							|| lastPart.equals("bmp") || lastPart.equals("gif") || lastPart.equals("jpe"))) {
-						continue;
-					}
-
-					File boardimgName = new File(path, realFileName);
-					System.out.println(boardimgName);
-
-					try {
-						FileCopyUtils.copy(boardimgList.get(i).getBytes(), boardimgName);
-					} catch (IllegalStateException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-					map.put("bimage", realFileName);
-					System.out.println("map " + (i + 1) + "번째 : " + map);
-					int imgResult = boardService.boardImage(map);
-					System.out.println("imgResult " + (i + 1) + " 번째 : " + imgResult);
-
-					if (imgResult == 1 && i == 0) {
-						System.out.println("이걸넣을건데 :" + map.get("bimage"));
-						int result = boardService.setThumbnail(map);
-						System.out.println("제발요: " + result);
-					}
-
-				} // for문
-				System.out.println("글수정완");
-			} // if(!boardimg.isEmpty()
-			return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
-		} // if(writeResult == 1)
-		System.out.println("글쓰기&파일업로드 실패");
-		return "redirect:/boardDetail?cate=" + map.get("cate");
 	}
 
 	// 게시글삭제 로직

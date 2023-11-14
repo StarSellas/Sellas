@@ -46,6 +46,8 @@ public interface BoardDAO {
 
 	List<Map<String, Object>> mnextPage(Map<String, Object> map);
 
+	int countThumbnail(Map<String, Object> map);
+
 
 
 }

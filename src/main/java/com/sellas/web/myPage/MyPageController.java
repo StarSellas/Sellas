@@ -1,11 +1,9 @@
 package com.sellas.web.myPage;
 
-import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sellas.web.util.Util;
@@ -235,18 +231,19 @@ public class MyPageController {
 
 	}
 
-	//TODO 전환페이지 다시만들기
 	//후기작성등록
 	@PostMapping("review")
-	public String review(ReviewDTO reviewDTO, HttpSession session) {
+	public String review(ReviewDTO reviewDTO, HttpSession session, Model model) {
 
 		int result = myPageService.inputReview(reviewDTO, session);
 		
 		if (result == 1) {
-			return "mypage";
+			return "redirect:/mypage";
 			
 		} else {
-			return "profile";
+			String error = "오류가 발생했습니다.";
+	         model.addAttribute("error", error);
+			return "redirect:/mypage";
 		}
 	}
 	
@@ -261,7 +258,6 @@ public class MyPageController {
 		
 		Map<String, Object> reviewDetail = myPageService.reviewDetail(map);
 		model.addAttribute("reviewDetail", reviewDetail);
-		System.out.println("리뷰디테일"+reviewDetail);
 	
 		return "reviewDetail";
 		
@@ -286,7 +282,6 @@ public class MyPageController {
 		Map<String, Object> reviewDetail = myPageService.reviewDetailByMe(map);
 		model.addAttribute("reviewDetail", reviewDetail);
 		
-		System.out.println("넌없어?"+reviewDetail);
 		
 		return "reviewDetail";
 	}
@@ -306,7 +301,7 @@ public class MyPageController {
 		//판매내역불러오기
 		List<Map<String, Object>> sellList = myPageService.getSell(uuid);
 		model.addAttribute("sellList",sellList);
-
+		
 		return "sellList";
 		
 	}
@@ -329,8 +324,25 @@ public class MyPageController {
 		
 	}
 	
-	
 	//TODO 경매내역
+	@GetMapping("getauction")
+	public String getAuction(Model model, HttpSession session) {
+		
+		String uuid = String.valueOf(session.getAttribute("muuid"));
+		
+	
+		//판매내역
+		List<Map<String, Object>> aucSellList = myPageService.getAucSell(uuid);
+		model.addAttribute("aucSellList",aucSellList);
+		
+		//구매내역
+		
+		return "auctionList";
+		
+	}
+	
+	
+	
 	
 	
 	
@@ -345,7 +357,6 @@ public class MyPageController {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		List<Map<String, Object>> wishList = myPageService.getWish(uuid);
-		System.out.println("위시리스트안담기세요?" + wishList);
 		
 		model.addAttribute("wishList",wishList);
 		return "wishList";
