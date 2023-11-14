@@ -1,4 +1,4 @@
-package com.sellas.web.trade;
+package com.sellas.web.normal;
 
 import java.io.File;
 import java.io.IOException;
