@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class UploadService {
 	@Autowired
 	UploadDAO uploadDAO;
+
 	public int insertTradeimg(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return uploadDAO.insertTradeimg(map);

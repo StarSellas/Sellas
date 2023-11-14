@@ -56,7 +56,7 @@
 										<c:forEach items="${imageList}" var="imageList">
 											<div class="boardImgBox editImgBox">
 												<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
-												<button class="imgEditbtn" type="button">수정</button>
+												<button class="imgEditbtn" type="button" data-image-name="${imageList.bimage}">수정</button>
 											</div>
 										</c:forEach>
 									</c:if>
@@ -81,304 +81,254 @@
             
         </section>
         
-        <script type="text/javascript">
+	<script type="text/javascript">
+        
+	 $(function () {
+		 
+		 
+		 
+	        $(".imgEditbtn").click(function () {
+	            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
+	            var container = $(this).closest(".boardImgBox");
+	            container.find("input[type=hidden]").val(imageName); // hidden input의 값을 설정
+	        });
+	    });
 	
-	//모피어스를 이용한 카메라 사진 및 앨범 사진 넣기 by 대원
-	let cameraImagePath ='';
-	let selectImagePath = [];
-    let $previewImg = null;
-    let $uploadImg = null;
-    let $previewImgArray = [];
 	
-    
-    const $box = $('#box');
-    const $uploadBox = $('#upload-box');
-    const $progress = $('#progress');
-    const $picker = $('#picker');
-    const $upload = $('#upload');
-    const $camera = $('#camera');
-    const $picker2 = $('#picker2');
-    
-    
-    $("#camera").click(function(){
-    	
-    	$("#picker2").hide();
-    	
-   	 if ($previewImg !== null) {
-		        $previewImg.remove();
-		        $previewImg = null;
-		      }
-		      selectImagePath = [];
-	M.media.camera({
-       path: "/media",
-       mediaType: "PHOTO",
-       saveAlbum: true,
-       callback: function(status, result, option) {
-           if (status == 'SUCCESS') {
-        	   //alert("뜨나?11")
-               var photo_path = result.fullpath;
-               selectImagePath[0] = result.path;
-               
-                $.convertBase64ByPath2(selectImagePath)
-                .then(({ status, result }) => {
-         if (status === 'SUCCESS') {
-        	 //alert("뜨나?22")
-           $previewImg = $(document.createElement('img'))
-           $previewImg.attr('height', '200px')
-           $previewImg.attr('src', "data:image/png;base64," + result[0].data)
-           
-           $box.append($previewImg);
-         } else {
-           return Promise.reject('BASE64 변환 실패')
-         }
-       })
-       .catch((err) => {
-         if (typeof err === 'string') alert(err)
-         console.error(err)
-       })
-               
-            // return $.uploadImageByPath2(selectImagePath); 이거 쓰면 업로드됩니당
-               
-           }
-       }
-     
-		 });
-  }); 
-    
-    
-    
-   			 $picker2.on('click', () => {
-   				 $("#camera").hide();
-   				 if ($box.find('img').length >= 5) {s
-   			        alert('더 이상 이미지를 추가할 수 없습니다.');
-   			        return false;
-   			    }
-   				 
-   				 
-    	  		if ($previewImg !== null) {
-    	   				 $previewImg.remove();
-    	   				 $previewImg = null;
-    	 			 }
-    		  selectImagePath = '';
-    	 		 $.imagePicker2()
-    	   		 .then(({ status, result }) => {
-    	     	 	if (status === 'SUCCESS') {
-    	    	 		 for (let i = 0; i < result.length; i++) {
-    	    	 			 $previewImgArray[i] = result[i].path;
-    	    	 		 }
-    	       		 return $.convertBase64ByPath2($previewImgArray)
-    	       		 } else {
-    	            return Promise.reject('이미지 가져오기 실패')
-    	       		 }
-    	      })
-    	      .then(({ status, result }) => {
-    	        if (status === 'SUCCESS') {
-    	        for (let i = 0; i < result.length; i++) {
-    	        	
-    	          let imageSrc = "data:image/png;base64," + result[i].data;
-    	          let $previewImg = $(document.createElement('img'));
-    	          $previewImg.attr('height', '200px');
-    	          $previewImg.attr('src', imageSrc);
-    	          $box.append($previewImg);
-    	        }
-    	      } else {
-    	        return Promise.reject('이미지 가져오기 실패');
-    	      }
-    	    })
-    	    .catch((err) => {
-    	      if (typeof err === 'string') alert(err);
-    	      console.error(err);
-    	    });
-    	})
 	
-    	
-    	$.imagePicker2 = function () {
-				      return new Promise((resolve) => {
-				        M.media.picker({
-				          mode: "MULTI",
-				          media: "PHOTO",
-				          maxCount : 4,
-				          // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
-				          column: 3,
-				          callback: (status, result) => {
-				            resolve({ status, result })
-				            
-				          
-				          }
-				        });
-				      })
-				    }
-   			 
-   			$.convertBase64ByPath2 = function ($previewImgArray) {
-		    	  if (!Array.isArray($previewImgArray)) {
-		    	    throw new Error('$previewImgArray must be an array');
-		    	  }
+       
+        
+	 $(function () {
+		    var editPhotoSize = 0;
+		    var maxPhotos = 3;
+		    var nextPhotoId = 1 + editPhotoSize;
+		    let $previewImgArray = [];
+		    let count = 0;
+		    let selectImagePath = '';
+		    let $previewImg = null;
+			let OriginalImgArray = {};
+		    $(".imgEditbtn").click(function () {
+		        // 선택한 이미지 이름 가져오기
+		        var imageName = $(this).data("image-name");
+		        var container = $(this).closest(".boardImgBox");
+		        // hidden input의 값을 설정
+		        container.find("input[type=hidden]").val(imageName);
+		    });
 
+		    $(".imgEditbtn").each(function (index) {
+		        // 현재 .normalTradeChangeBtn에 대한 상위 .image-container 찾기
+		        var container = $(this).closest(".boardImgBox");
+		        // .box 엘리먼트 찾기
+		        var boxElement = container.find(".box");
+		        var imageName = $(this).data("image-name");
+		        $(this).click(function () {
+		            // 이미 미리보기가 있으면 제거
+		            if ($previewImg !== null) {
+		                $previewImg.remove();
+		                $previewImg = null;
+		            }
+		            selectImagePath = '';
+		            OriginalImgArray[count] = imageName;
+		            // 이미지 피커 열기
+		            $.imagePicker()
+		                .then(({ status, result }) => {
+		                    if (status === 'SUCCESS') {
+		                        // 선택한 이미지 경로 저장
+		                        $previewImgArray[count] = result.path;
+		                        return $.convertBase64ByPath2($previewImgArray);
+		                    } else {
+		                    	OriginalImgArray[count] = null;
+		                        return Promise.reject('이미지 가져오기 실패')
+		                    }
+		                })
+		                .then(({ status, result }) => {
+		                    if (status === 'SUCCESS') {
+		                        // 이미지를 Base64로 변환하여 프리뷰 이미지 만들기
+		                        let imageSrc = "data:image/png;base64," + result[count].data;
+		                        let $previewImg = $(document.createElement('img'));
+		                        $previewImg.attr('height', '200px');
+		                        container.find(".boardImg").attr('src', imageSrc);
+		                        // .box 엘리먼트에 프리뷰 이미지 추가
+		                        //boxElement.append($previewImg);
+		                        count++;
+		                    } else {
+		                        return Promise.reject('이미지 가져오기 실패');
+		                    }
+		                })
+		                .catch((err) => {
+		                    if (typeof err === 'string') alert(err);
+		                    console.error(err);
+		                });
+		        });
+		    });
+        
+        
+        $.imagePicker = function () {
+		      return new Promise((resolve) => {
+		        M.media.picker({
+		          mode: "SINGLE",
+		          media: "PHOTO",
+		          // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+		          column: 3,
+		          callback: (status, result) => {
+		            resolve({ status, result })
+		            
+		          }
+		        });
+		      })
+		    }
+        
+        $.convertBase64ByPath2 = function ($previewImgArray) {
+	    	  if (!Array.isArray($previewImgArray)) {
+	    	    throw new Error('$previewImgArray must be an array');
+	    	  }
+
+	    	  return new Promise((resolve) => {
+	    	    const results = [];
+
+	    	    const readNextFile = (index) => {
+	    	      if (index < $previewImgArray.length) {
+	    	        M.file.read({
+	    	          path: $previewImgArray[index],
+	    	          encoding: 'BASE64',
+	    	          indicator: true,
+	    	          callback: function (status, result) {
+	    	            if (status === 'SUCCESS') {
+	    	              results.push(result);
+	    	              readNextFile(index + 1);
+	    	            } else {
+	    	              // Handle error
+	    	              results.push(null); // Push null for failed file
+	    	              readNextFile(index + 1);
+	    	            }
+	    	          }
+	    	        });
+	    	      } else {
+	    	        resolve({ status: 'SUCCESS', result: results });
+	    	      }
+	    	    };
+
+	    	    readNextFile(0);
+	    	  });
+	    	};
+	    	
+	    	$.uploadImageByPath2 = function ($previewImgArray, bno,cate, progress) {
 		    	  return new Promise((resolve) => {
-		    	    const results = [];
-
-		    	    const readNextFile = (index) => {
-		    	      if (index < $previewImgArray.length) {
-		    	        M.file.read({
-		    	          path: $previewImgArray[index],
-		    	          encoding: 'BASE64',
-		    	          indicator: true,
-		    	          callback: function (status, result) {
-		    	            if (status === 'SUCCESS') {
-		    	              results.push(result);
-		    	              readNextFile(index + 1);
-		    	            } else {
-		    	              // Handle error
-		    	              results.push(null); // Push null for failed file
-		    	              readNextFile(index + 1);
-		    	            }
-		    	          }
-		    	        });
-		    	      } else {
-		    	        resolve({ status: 'SUCCESS', result: results });
-		    	      }
+		    	    const _options = {
+		    	      url: 'http://172.30.1.4:8080/fileUpload',
+		    	      header: {},
+		    	      params: { bno: bno, cate: cate },
+		    	      body: $previewImgArray.map((filePath) => ({
+		    	        name: 'file',
+		    	        content: filePath,
+		    	        type: 'FILE',
+		    	      })),
+		    	      encoding: 'UTF-8',
+		    	      finish: (status, header, body, setting) => {
+		    	        resolve({ status, header, body });
+		    	      },
+		    	      progress: function (total, current) {
+		    	        progress(total, current);
+		    	      },
 		    	    };
 
-		    	    readNextFile(0);
+		    	    M.net.http.upload(_options);
 		    	  });
 		    	};
-		    	
-		    	$.uploadImageByPath2 = function ($previewImgArray, bno, cate, progress) {
-			    	  return new Promise((resolve) => {
-			    	    const _options = {
-			    	      url: 'http://172.30.1.4:8080/fileUpload',
-			    	      header: {},
-			    	      params: { bno: bno, cate: cate },
-			    	      body: $previewImgArray.map((filePath) => ({
-			    	        name: 'file',
-			    	        content: filePath,
-			    	        type: 'FILE',
-			    	      })),
-			    	      encoding: 'UTF-8',
-			    	      finish: (status, header, body, setting) => {
-			    	        resolve({ status, header, body });
-			    	      },
-			    	      progress: function (total, current) {
-			    	        progress(total, current);
-			    	      },
-			    	    };
 
-			    	    M.net.http.upload(_options);
-			    	  });
-			    	};
-   			 
-			  $(function(){
-				  $("#addPhoto").hide();
-				  $("#addPhotoBtn").click(function(){
-					  alert("사진은 앨범과 카메라 중 하나만 선택 가능합니다.");
-					  $("#addPhoto").show();
-				  });
-				  
-				  
-				  $(".editbtn").click(function(){
-					  
-					let muuid = $(this).parent().siblings(".contentBox").children(".cno").val();
-					let cate = $(this).parent().siblings(".contentBox").children(".cate").val();
-        			let btitle = $(this).parent().siblings(".titleBox").children(".btitle").val();
-        			let bcontent = $(this).parent().siblings(".contentBox").children(".bcontent").val();
-        			
-        			alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
-					
-        			// 글쓰기 유효성 검사 (로그인&빈칸)
-					if(btitle.length < 3){
-						alert("제목을 입력하세요.");
-						return false;
+			
+			
+			$(".editbtn").click(function(){
+				let muuid = $(this).parent().siblings(".contentBox").children(".cno").val();
+				let cate = $(this).parent().siblings(".contentBox").children(".cate").val();
+    			let btitle = $(this).parent().siblings(".titleBox").children(".btitle").val();
+    			let bcontent = $(this).parent().siblings(".contentBox").children(".bcontent").val();
+    			let bno = $(this).parent().siblings(".contentBox").children(".bno").val();	
+				 
+				
+				//카테고리 설정 안 했을 때
+				
+				if(btitle.length < 3){
+					alert("제목을 입력하세요.");
+					return false;
+				}
+				
+				if(bcontent.length < 3){
+					alert("내용을 입력하세요.");
+					return false;
+				}	
+		
+				if(confirm("글을 수정하시겠습니까?")){
+					let  OriImgMap = {};
+					for (let i = 0; i < OriginalImgArray.length; i++) {
+						OriImgMap[i] = OriginalImgArray[i];
 					}
-					
-					if(bcontent.length < 3){
-						alert("내용을 입력하세요.");
-						return false;
-					}		
-					
 					$.ajax({
 						url : "./boardEdit",
 						type : "post",
-						data : {cate : cate, btitle : btitle, bcontent : bcontent, muuid : muuid},
+						data : {bno : bno, cate : cate, btitle : btitle, bcontent : bcontent, muuid : muuid, OriginalImgArray : OriginalImgArray},
 						dataType : "json",
-						
 						success : function(data){
-							if(data.addSuccess == 1){
-								
-								let bno = data.bno;
-								let cate = data.cate;
-								
-								alert("이건? : "+ bno);
-								
-								if($previewImgArray[0].length > 0){
-									if ($previewImgArray[0] === ''){
-											 if ($uploadImg) {
-											        $uploadImg.remove();
-											        $uploadImg = null;
-											}
-									 }
-								      
-								      $progress.text('')
-								      $.uploadImageByPath2($previewImgArray, bno, cate, (total, current) => {
-								        console.log(`total: ${total} , current: ${current}`)
-								        $progress.text(`${current}/${total}`)
-								      })
-								        .then(({
-								          status, header, body
-								        }) => {
-								          // status code
-								          if (status === '200') {
-								        	  alert("떠라");
-								            $progress.text('업로드 완료')
-								            const bodyJson = JSON.parse(body)
-								            $uploadImg = $(document.createElement('img'))
-								            $uploadImg.attr('height', '200px')
-								            $uploadImg.attr('src', bodyJson.fullpath)
-								            $uploadBox.append($uploadImg)
-								          } else {
-								            return Promise.reject(status)
-								          }
-								        })
-								        .catch((err) => {
-								          if (typeof err === 'string') alert(err)
-								          console.error(err)
-								        })
-									
+							if(data.ImgdeleteSuccess==1){
+								if($previewImgArray.length > 0){
+									$.uploadImageByPath2($previewImgArray,bno, cate,(total, current) => {
+										console.log(`total: ${total} , current: ${current}`)
+									})
+									.then(({
+										status, header, body
+									}) => {
+										// status code
+										if (status === '200') {
+											alert("성공!!");
+											const bodyJson = JSON.parse(body)
+											
+										} else {
+											return Promise.reject(status)
+										}
+									})
+									.catch((err) => {
+										if (typeof err === 'string') alert(err)
+										console.error(err)
+									})
+												
 								}
-								
-								alert("작성이 완료되었습니다.");
-								var form = document.createElement("form");
-								form.method = "GET";
-								form.action = "./boardDetail"; // 컨트롤러 경로 설정
-								var inputForbno = document.createElement("input");
-								inputForbno.type = "hidden"; // 숨겨진 필드
-								inputForbno.name = "bno"; // 파라미터 이름
-								inputForbno.value = bno; // 파라미터 값
-								var inputForcate = document.createElement("input");
-								inputForcate.type = "hidden"; // 숨겨진 필드
-								inputForcate.name = "cate"; // 파라미터 이름
-								inputForcate.value = cate; // 파라미터 값
-
-								// input을 form에 추가
-								form.appendChild(inputForbno);
-								form.appendChild(inputForcate);
-								
-								document.body.appendChild(form);
-
-								// 폼 전송
-								form.submit();
-									
 							}
+							setTimeout(function() {
+		                         form.submit();
+		                     }, 3000);
 						},
 						error : function(error){
-							alert("흑흑");
+							
 						}
-						
 					});
 					
-				  });
-			  });
-			    	
-	</script>
+					
+					alert("작성이 완료되었습니다.");
+					var form = document.createElement("form");
+					form.method = "GET";
+					form.action = "./boardDetail"; // 컨트롤러 경로 설정
+					var inputForbno = document.createElement("input");
+					inputForbno.type = "hidden"; // 숨겨진 필드
+					inputForbno.name = "bno"; // 파라미터 이름
+					inputForbno.value = bno; // 파라미터 값
+					var inputForcate = document.createElement("input");
+					inputForcate.type = "hidden"; // 숨겨진 필드
+					inputForcate.name = "cate"; // 파라미터 이름
+					inputForcate.value = cate; // 파라미터 값
+
+					// input을 form에 추가
+					form.appendChild(inputForbno);
+					form.appendChild(inputForcate);
+					
+					document.body.appendChild(form);
+
+					// 폼 전송
+					form.submit();
+				}
+			});
+	 });
+     
+        </script>
 
     </body>
 </html>

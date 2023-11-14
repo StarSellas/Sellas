@@ -14,7 +14,6 @@
 <title>일반거래 디테일</title>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-
 <link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
@@ -34,7 +33,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="../js/wishlist.js"></script>
-<script src="../js/nomalTrade.js"></script>
+<script src="../js/normalTrade.js"></script>
 </head>
 <body>
    <!-- Navigation-->
@@ -77,10 +76,10 @@
 
   <!-- If we need navigation buttons -->
   <div class="swiper-button-prev">
-  <img alt="" src="../img/pre.png" style="width: 30px; height: 30px;">
+  <img alt="" src="./img/pre.png" style="width: 30px; height: 30px;">
   </div>
   <div class="swiper-button-next">
-   <img alt="" src="../img/next.png" style="width: 30px; height: 30px;">
+   <img alt="" src="./img/next.png" style="width: 30px; height: 30px;">
   </div>
 
 </div>
@@ -141,11 +140,11 @@
     <!-- 중복 없으면 빈하트 최지은 -->
                 	<c:choose>
    				 <c:when test="${hasWish eq '0' or empty hasWish}">
-       			 <img src="../img/heartbin.png" 
+       			 <img src="../img/heartbin.png" alt="빈하트"
              id="addWishList" align="left" style="cursor:pointer; width: 30px;">
     		</c:when>
     			<c:otherwise>
-   			     <img src="../img/heart.png" 
+   			     <img src="../img/heart.png" alt="하트"
               id="delWishList" align="left" style="cursor:pointer; width: 30px;">
     			</c:otherwise>
 				</c:choose>

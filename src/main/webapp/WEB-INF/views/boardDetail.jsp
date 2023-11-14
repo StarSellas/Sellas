@@ -129,8 +129,8 @@
          <!-- Section-->
         <section class="py-5">
         
-            <div class="cateName mt-4"><a href="/board?cate=${bdetail.sno }">${bdetail.sname } (${bdetail.bno })</a></div>
-            <div class="container mt-5" style="z-index: 10" id="productContainer">
+            <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a> (${bdetail.bno })</div>
+            <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     
 

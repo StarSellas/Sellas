@@ -36,9 +36,11 @@ public class AuctionController {
 	
 	@ResponseBody
 	@GetMapping("/auctionItemList")
-	public List<Map<String, Object>> auctionItemList(@RequestParam String sortOption) {
+	public List<Map<String, Object>> auctionItemList(@RequestParam Map<String, Object> map) {
 		
-		List<Map<String, Object>> auctionItemList = auctionService.auctionItemList(sortOption);
+		System.out.println(map);
+		
+		List<Map<String, Object>> auctionItemList = auctionService.auctionItemList(map);
 		System.out.println(auctionItemList);
 		
 		return auctionItemList;

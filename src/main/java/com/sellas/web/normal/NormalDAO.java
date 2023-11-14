@@ -1,4 +1,4 @@
-package com.sellas.web.trade;
+package com.sellas.web.normal;
 
 import java.util.List;
 import java.util.Map;
@@ -83,6 +83,10 @@ public interface NormalDAO {
 
 	List<Map<String, Object>> sortNormalList(Map<String, Object> map);
 
+
 	Map<String, Object> hasWish(Map<String, Object> wishInfo);
+
+	List<Map<String, Object>> nextsortNormalList(Map<String, Object> map);
+
 
 }

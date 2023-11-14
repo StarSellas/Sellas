@@ -38,6 +38,10 @@
         
         <div class="page" id="page0">
         ${auctionItemDetail }
+        
+        <!-- TODO : 거래 희망 장소 -->
+        
+        <c:if test="${sessionScope.muuid ne null }">
         <c:if test="${auctionItemDetail.isItemSeller eq false}">
         <c:if test="${auctionItemDetail.isCurrentBidder eq false}">
 
@@ -50,6 +54,7 @@
 				<button id="biddingButton" onclick="bidding()" disabled="disabled">입찰</button>
 			</div>
 
+		</c:if>
 		</c:if>
 		</c:if>
 		</div>

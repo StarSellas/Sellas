@@ -8,24 +8,22 @@
 	ORDER BY ino
 </select>
 
+<select id="getLocationList" resultType="Map">
+	SELECT lname, llat, llng
+	FROM location
+	WHERE muuid = #{muuid}
+</select>
+
 <insert id="addNormalTradeItem" parameterType="Map">
-	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tnormalprice, tnormalstate)
-	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{normalPrice}, 0)
-	
-	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer">
-        SELECT LAST_INSERT_ID() AS tno
-    </selectKey>
+	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tlocationlat, tlocationlng, tnormalprice, tnormalstate, tnormalhikeup)
+	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{locationLat}, #{locationLng}, #{normalPrice}, 0, 0)
+	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer"> SELECT LAST_INSERT_ID() AS tno </selectKey>
 </insert>
 
 <insert id="addAuctionTradeItem" parameterType="Map">
-	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tauctionstartprice, tauctionminbidunit, tauctionstate)
-	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{auctionStartPrice}, #{auctionMinBidUnit}, 0)
-	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer">
-        SELECT LAST_INSERT_ID() AS tno
-    </selectKey>
-	
+	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tlocationlat, tlocationlng, tauctionstartprice, tauctionminbidunit, tauctionstate)
+	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{locationLat}, #{locationLng}, #{auctionStartPrice}, #{auctionMinBidUnit}, 2)
+	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer"> SELECT LAST_INSERT_ID() AS tno </selectKey>
 </insert>
-
-
 
 </mapper>
