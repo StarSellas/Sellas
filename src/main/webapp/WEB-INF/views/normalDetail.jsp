@@ -128,17 +128,23 @@
                         <c:if test="${detail.tnormalstate eq 1}">거래중</c:if>
                         <c:if test="${detail.tnormalstate eq 2}">거래완료</c:if>
                               </div>
-       <div class="dcontent">
+       		<div class="dcontent">
                ${detail.tcontent}
                </div>
                
                <!-- 판매중일때 -->
+               <div class="TradeBtnBox">
+	               <c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
+		               <div class="toggleBtnBox"><button id="toggleBtn">나와라얍</button></div>
+		               <div class="otherBtnBox hide">
+			                  <button id="normalHikeUpBtn">끌올하기</button>
+			                  <button id="normalEditBtn">수정하기</button>
+			                  <button id="normalDeleteBtn">등록 취소</button>
+		               </div>
+	               </c:if>
+               </div>
                
-               <c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
-                  <button id="normalHikeUpBtn">끌올하기</button>
-                  <button id="normalEditBtn">수정하기</button>
-                  <button id="normalDeleteBtn">등록 취소</button>
-               </c:if>
+               
                <c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 0}">
     <!-- 중복 없으면 빈하트 최지은 -->
                    <c:choose>
@@ -178,8 +184,27 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-   <script type="text/javascript">
-   
+<script type="text/javascript">
+
+	$(function() {
+		$("#toggleBtn").click(function() {
+
+			$(".otherBtnBox").toggle(800); // 속도조절
+			$(".toggleBtnBox").toggleClass("btnClicked"); // 버튼위로이동
+			$(".otherBtnBox").toggleClass("hide");
+
+			if ($(".toggleBtnBox").hasClass("btnClicked")) {
+				$(".otherBtnBox").addClass("tBtnBox");
+
+			} else {
+				$(".otherBtnBox").removeClass("tBtnBox");
+			}
+		})
+	});
+	
+</script>
+
+<script type="text/javascript">
    
    
    

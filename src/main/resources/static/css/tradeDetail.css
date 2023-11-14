@@ -114,8 +114,7 @@ float: left;
    margin-bottom: 5px;
 }
 
-#normalEditBtn, #normalDeleteBtn,#requestChatBtn{
-   
+#toggleBtn, #requestChatBtn{
    width: 90px;
    height: 35px;
    background-color: white;
@@ -125,11 +124,33 @@ float: left;
    float: right;
 }
 
-#normalDeleteBtn{
-	 border: 1px solid gray ;
-}
-
-
 #delWishList{
 	margin: 5px;
 }
+
+.TradeBtnBox{
+	display: initial;
+}
+.hide{
+    display: none;
+ }
+.tBtnBox{
+	display:flex !important;
+}
+.toggleBtnBox{
+	display: inline-block;
+}
+#normalHikeUpBtn, #normalEditBtn, #normalDeleteBtn{
+	width: 90px;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px 5px;
+   float: right;
+}
+
+.btnClicked{
+	transition: transform 0.5s ease;
+}
+

@@ -418,6 +418,7 @@ $(function(){
 						}) => {
 							// status code
 							if (status === '200') {
+								alert("업로드!!!!");
 								$progress.text('업로드 완료')
 								const bodyJson = JSON.parse(body)
 								$uploadImg = $(document.createElement('img'))
@@ -460,7 +461,7 @@ $(function(){
 				}
 			},
 			error : function(error){
-				alert("흑학힉");
+				alert("오류가 발생했습니다"+error);
 			}	
 		});
 	});
