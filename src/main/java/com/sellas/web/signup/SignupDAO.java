@@ -17,4 +17,6 @@ public interface SignupDAO {
 
 	int phoneDuplicationCheck(String value);
 
+	int uuidDuplicationCheck(String uuid);
+
 }

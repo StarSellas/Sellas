@@ -38,6 +38,17 @@ public class TradeService {
 		
 		return itemCategory;
 	}
+	
+	// 거래 장소 목록
+	public List<Map<String, Object>> getLocationList() {
+		
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+
+		List<Map<String, Object>> locationList = tradeDAO.getLocationList(session.getAttribute("muuid").toString());
+		//System.out.println(locationList);
+		
+		return locationList;
+	}
 
 	public int addTradeItem(Map<String, Object> map) {
 

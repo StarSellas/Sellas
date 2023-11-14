@@ -1,27 +1,16 @@
 package com.sellas.web.trade;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sellas.web.upload.UploadService;
 import com.sellas.web.util.Util;
@@ -40,17 +29,22 @@ public class TradeController {
 	
 	@GetMapping("/addTradeItem")
 	public String addTradeItem(Model model) {
-		
+
 		if(!util.checkLogin()) {
 			return "redirect:/login";
 		}
-		
+
+		// 물품 카테고리 목록
 		Map<String, String> itemCategory = tradeService.getItemCategoryList();
 		model.addAttribute("itemCategory", itemCategory);
+
+		// 거래 장소 목록
+		List<Map<String, Object>> locationList = tradeService.getLocationList();
+		model.addAttribute("locationList", locationList);
+
 		return "addTradeItem";
 	}
-	
-	
+
 	@ResponseBody
 	@PostMapping("/addTradeItem")
 	public String addTradeItem(@RequestParam Map<String, Object> map) {
@@ -63,18 +57,14 @@ public class TradeController {
 		}if(Integer.parseInt(String.valueOf(map.get("tradeType"))) == 0) {
 			System.out.println("트레이드 타입은 0");
 		}
-		
-		
+
 		if(result == 1) {
 			int LastTno = (int) map.get("tno");
 			json.put("tradeType", map.get("tradeType"));
 			json.put("tno", LastTno);
 			json.put("addSuccess", 1);
 		}
-		
-		// TODO : detail 페이지로 이동하도록 수정
+
 		return json.toString();
 	}
-
-	
 }

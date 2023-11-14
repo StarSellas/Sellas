@@ -27,7 +27,6 @@ UploadService uploadService;
 //모피어스 파일 업로드입니다 -이대원
 @PostMapping("/file/upload2")
 public String comeOnFile2(@RequestParam(value = "file") List<MultipartFile> tradeimg, @RequestParam(value = "tno")int tno) {
-	System.out.println("나와라 맵의 값!!" + tradeimg + "너도 나와라 tno의 값!! : " + tno);
 	Map<String, Object> map = new HashMap<String, Object>();
 	map.put("tno", tno);
 	
@@ -51,7 +50,6 @@ public String comeOnFile2(@RequestParam(value = "file") List<MultipartFile> trad
 		// 확장자 자르기
 		String[] parts = tradeimg.get(i).getOriginalFilename().split("\\.");
 		String lastPart = parts[parts.length - 1];
-		System.out.println(lastPart);
 
 		// 확장자 아니면 파일 없애보리기
 

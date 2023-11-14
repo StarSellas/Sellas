@@ -1,4 +1,4 @@
-package com.sellas.web.trade;
+package com.sellas.web.normal;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class NormalController {
 	      model.addAttribute("memberInfo", mainMemberInfo);
 	      model.addAttribute("addTradeItem", 1);
 	      
-	      // 검색누른경우(검색값 없는경우 포함)
+	   // 검색누른경우(검색값 없는경우 포함)
 	      if(search != null && searchCate != null) {
 	         
 	         //System.out.println("메인에서 잡는 searchCate : " + searchCate);
@@ -84,13 +84,13 @@ public class NormalController {
 	    	  List<Map<String, Object>> normalBoardList = normalService.normalBoardList();
 	    	  //System.out.println("보드 리스트 : " + normalBoardList);
 	    	  model.addAttribute("normalBoardList", normalBoardList);
-	    	  
 	      }
 	      
 	      return "main";
 	   }
 	   
-	   @ResponseBody
+	   // 스크롤페이징
+	      @ResponseBody
 	      @PostMapping("/nextTradePage")
 	      public String nextPage(@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
 					    		  @RequestParam(value = "search", required = false) String search,
@@ -104,175 +104,176 @@ public class NormalController {
 		   System.out.println("search : " + search);
 		   System.out.println("searchCate : " + searchCate);
 		   
-		   // 메인(ino없)
-			if(sort == 0 && ino == 0) {
-				
-				System.out.println("sort도0, ino도0 (메인next)");
-				
-				map.put("searchCate", searchCate);
-		  		map.put("orderBy", "ORDER BY tno DESC");
-		  		
-		  		// 메인 & 검색했을때
-		  		if(search != "" && searchCate != null) {
-		  			
-		  			map.put("search", search);
-		  			System.out.println("쿼리갈map (sort는0 + 검색O + next): " + map);
-		  			// {lasttno=233, count=14, search=ㅇㅇ, startpage=20, pageCount=10, searchCate=title, orderBy=ORDER BY tno DESC}
-		  			System.out.println("검색했을때는 맞는데");
-		  			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
-			        System.out.println("다음리스트 : " + nextNormalBoardList);
-			        
-			        json.put("list", nextNormalBoardList);
-		  			
-			    // 메인 & 검색안했을때 (검색값 없는경우 포함)
-		  		} else {
-		  			
-		  			map.put("search", "");
-		  			System.out.println("쿼리갈map (sort는0 + 검색X + next): " + map);
-		  			//  {lasttno=245, count=23, search=, startpage=10, pageCount=10, searchCate=title, orderBy=ORDER BY tno DESC}
-		  			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
-		  			System.out.println("다음리스트 : " + nextNormalBoardList);
-		  			
-		  			json.put("list", nextNormalBoardList);
-		  		}
-		  		
-		  	// 메인(ino있 + sort있)
-			} else {
-				
-				String orderBy = "";
-		  		switch (sort) {
-		  		case 1:
-		  			orderBy = "ORDER BY tnormalprice ASC";
-		  			break;
-		  		case 2:
-		  			orderBy = "ORDER BY tnormalprice DESC";
-		  			break;
-		  		case 3:
-		  			orderBy = "ORDER BY tread DESC";
-		  			break;
-		  		default:
-		  			// 기본 정렬은 tno DESC
-		  			orderBy = "ORDER BY tno DESC";
-		  			break;
-		  		}
-		  		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" }; 
-		  		
-		  		map.put("orderBy", orderBy);
-		    	System.out.println("다음페이지순서는 : " + map.get("orderBy"));
-		    	
-		 		// 검색한경우
-		    	if(search != "" && searchCate != null) {
-		  			
-		  			map.put("search", search);
-		  			System.out.println("쿼리문MAP (sortnext+검색O): " + map);
-		  			
-		  			List<Map<String, Object>> nextNormalBoardList = normalService.nextsortNormalList(map);
-			        System.out.println("다음리스트(검색O) : " + nextNormalBoardList);
-			        json.put("list", nextNormalBoardList);
-		  		
-			     // 검색안한경우 (검색값 없는경우 포함)
-		  		} else {
-		  			
-		  			System.out.println("쿼리문MAP (sortnext_검색x): " + map);
-		  			List<Map<String, Object>> nextsortNormalList = normalService.nextsortNormalList(map);
-		  			System.out.println("다음리스트(검색x) : " + nextsortNormalList);
-		  			json.put("list", nextsortNormalList);
-		  		}
-	         
-			}
-			
-			 String muuid = String.valueOf(session.getAttribute("muuid"));
+		// 메인(ino없)
+					if(sort == 0 && ino == 0) {
+						
+						System.out.println("sort도0, ino도0 (메인next)");
+						
+						map.put("searchCate", searchCate);
+				  		map.put("orderBy", "ORDER BY tno DESC");
+				  		
+				  		// 메인 & 검색했을때
+				  		if(search != "" && searchCate != null) {
+				  			
+				  			map.put("search", search);
+				  			System.out.println("쿼리갈map (sort는0 + 검색O + next): " + map);
+				  			// {lasttno=233, count=14, search=ㅇㅇ, startpage=20, pageCount=10, searchCate=title, orderBy=ORDER BY tno DESC}
+				  			System.out.println("검색했을때는 맞는데");
+				  			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
+					        System.out.println("다음리스트 : " + nextNormalBoardList);
+					        
+					        json.put("list", nextNormalBoardList);
+				  			
+					    // 메인 & 검색안했을때 (검색값 없는경우 포함)
+				  		} else {
+				  			
+				  			map.put("search", "");
+				  			System.out.println("쿼리갈map (sort는0 + 검색X + next): " + map);
+				  			//  {lasttno=245, count=23, search=, startpage=10, pageCount=10, searchCate=title, orderBy=ORDER BY tno DESC}
+				  			List<Map<String, Object>> nextNormalBoardList = normalService.nextNormalBoardList(map);
+				  			System.out.println("다음리스트 : " + nextNormalBoardList);
+				  			
+				  			json.put("list", nextNormalBoardList);
+				  		}
+				  		
+				  	// 메인(ino있 + sort있)
+					} else {
+						
+						String orderBy = "";
+				  		switch (sort) {
+				  		case 1:
+				  			orderBy = "ORDER BY tnormalprice ASC";
+				  			break;
+				  		case 2:
+				  			orderBy = "ORDER BY tnormalprice DESC";
+				  			break;
+				  		case 3:
+				  			orderBy = "ORDER BY tread DESC";
+				  			break;
+				  		default:
+				  			// 기본 정렬은 tno DESC
+				  			orderBy = "ORDER BY ttdate DESC";
+				  			break;
+				  		}
+				  		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" }; 
+				  		
+				  		map.put("orderBy", orderBy);
+				    	System.out.println("다음페이지순서는 : " + map.get("orderBy"));
+				    	
+				 		// 검색한경우
+				    	if(search != "" && searchCate != null) {
+				  			
+				  			map.put("search", search);
+				  			System.out.println("쿼리문MAP (sortnext+검색O): " + map);
+				  			
+				  			List<Map<String, Object>> nextNormalBoardList = normalService.nextsortNormalList(map);
+					        System.out.println("다음리스트(검색O) : " + nextNormalBoardList);
+					        json.put("list", nextNormalBoardList);
+				  		
+					     // 검색안한경우 (검색값 없는경우 포함)
+				  		} else {
+				  			
+				  			System.out.println("쿼리문MAP (sortnext_검색x): " + map);
+				  			List<Map<String, Object>> nextsortNormalList = normalService.nextsortNormalList(map);
+				  			System.out.println("다음리스트(검색x) : " + nextsortNormalList);
+				  			json.put("list", nextsortNormalList);
+				  		}
+			         
+					}
+					
+					 String muuid = String.valueOf(session.getAttribute("muuid"));
 
-	         // 세션에 저장된 uuid를 가지고 회원 정보 조회
-	         Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
-	         // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
-	         json.put("memberInfo", mainMemberInfo);
-	         
+			         // 세션에 저장된 uuid를 가지고 회원 정보 조회
+			         Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
+			         // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
+			         json.put("memberInfo", mainMemberInfo);
+			         
 
-	         return json.toString();
-	         
-	      }
+			         return json.toString();
+			         
+			      }
 	   
+	   // 카테고리별 정렬 메소드입니다.
+	  	@GetMapping("/sortcate")
+	  	public String sortNormalTradeList(@RequestParam(value = "ino",required = true, defaultValue = "1")int ino,
+	  										@RequestParam(name = "sort", defaultValue = "0") int sort,
+	  										@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
+	  							            @RequestParam(value = "search", required = false) String search,
+	  										Model model, HttpSession session) {
+	  		
+	  		Map<String, Object> map = new HashMap<String, Object>();
+	  		
+	  		System.out.println("*********************");
+	  		System.out.println("ino: " + ino);
+	  		System.out.println("sort: " + sort);
+	  		System.out.println("searchCate: " + searchCate);
+	  		System.out.println("search: " + search);	// null
+	  		// {search=, searchCate=, ino=1, sort=0}
+	  		
+	  		
+	  		String orderBy = "";
+	  		switch (sort) {
+	  		case 1:
+	  			orderBy = "ORDER BY tnormalprice ASC";
+	  			break;
+	  		case 2:
+	  			orderBy = "ORDER BY tnormalprice DESC";
+	  			break;
+	  		case 3:
+	  			orderBy = "ORDER BY tread DESC";
+	  			break;
+	  		default:
+	  			// 기본 정렬은 tno DESC
+	  			orderBy = "ORDER BY ttdate DESC";
+	  			break;
+	  		}
+	  		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
+	  		
+	  		map.put("orderBy", orderBy);
+	  		map.put("ino", ino);
+	  		map.put("sort", sort);
+	  		map.put("search", "");
+	  		
+	  		// 검색했을때
+	  		if(search != null && searchCate != null) {
+	  	         
+	  	         System.out.println("sort메인에서 보낸 searchCate : " + searchCate);
+	  	         System.out.println("sort메인에서 보낸 search : " + search);
+	  	    	 map.put("searchCate", searchCate);
+	  	         map.put("search", search);
+	  	         
+	  	         System.out.println("쿼리문MAP (정렬O+검색O) : " + map);
+	  	         // {search=ㅇㅇ, searchCate=title, ino=1, sort=0, orderBy=ORDER BY tno DESC}
+	  	         List<Map<String, Object>> normalSearchList = normalService.normalSearchList(map);
+	  	         System.out.println("정렬O + 검색O : " + normalSearchList);
+	  	         model.addAttribute("SnormalSearchList", normalSearchList);
+	  	         
+	  	       // 검색안했을 때
+	  	      } else {
+	  	    	  
+	  	    	  map.put("searchCate", searchCate);
+	  	    	  System.out.println("쿼리문MAP (정렬O+검색X): " + map);
+	  	    	  List<Map<String, Object>> sortNormalList = normalService.sortNormalList(map);
+	  	    	  
+	  	    	  System.out.println("정렬O + 검색X" + sortNormalList);
+	  	    	  model.addAttribute("SnormalBoardList", sortNormalList);
+	  	    	  
+	  	      }
+	  		
+	  		String muuid = String.valueOf(session.getAttribute("muuid"));
 
-	// 카테고리별 정렬 메소드입니다.
-	@GetMapping("/sortcate")
-	public String sortNormalTradeList(@RequestParam(value = "ino",required = true, defaultValue = "1")int ino,
-										@RequestParam(name = "sort", defaultValue = "0") int sort,
-										@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
-							            @RequestParam(value = "search", required = false) String search,
-										Model model, HttpSession session) {
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		System.out.println("*********************");
-		System.out.println("ino: " + ino);
-		System.out.println("sort: " + sort);
-		System.out.println("searchCate: " + searchCate);
-		System.out.println("search: " + search);	// null
-		// {search=, searchCate=, ino=1, sort=0}
-		
-		
-		String orderBy = "";
-		switch (sort) {
-		case 1:
-			orderBy = "ORDER BY tnormalprice ASC";
-			break;
-		case 2:
-			orderBy = "ORDER BY tnormalprice DESC";
-			break;
-		case 3:
-			orderBy = "ORDER BY tread DESC";
-			break;
-		default:
-			// 기본 정렬은 tno DESC
-			orderBy = "ORDER BY tno DESC";
-			break;
-		}
-		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
-		
-		map.put("orderBy", orderBy);
-		map.put("ino", ino);
-		map.put("sort", sort);
-		map.put("search", "");
-		
-		// 검색했을때
-		if(search != null && searchCate != null) {
-	         
-	         System.out.println("sort메인에서 보낸 searchCate : " + searchCate);
-	         System.out.println("sort메인에서 보낸 search : " + search);
-	    	 map.put("searchCate", searchCate);
-	         map.put("search", search);
-	         
-	         System.out.println("쿼리문MAP (정렬O+검색O) : " + map);
-	         // {search=ㅇㅇ, searchCate=title, ino=1, sort=0, orderBy=ORDER BY tno DESC}
-	         List<Map<String, Object>> normalSearchList = normalService.normalSearchList(map);
-	         System.out.println("정렬O + 검색O : " + normalSearchList);
-	         model.addAttribute("SnormalSearchList", normalSearchList);
-	         
-	       // 검색안했을 때
-	      } else {
-	    	  
-	    	  map.put("searchCate", searchCate);
-	    	  System.out.println("쿼리문MAP (정렬O+검색X): " + map);
-	    	  List<Map<String, Object>> sortNormalList = normalService.sortNormalList(map);
-	    	  
-	    	  System.out.println("정렬O + 검색X" + sortNormalList);
-	    	  model.addAttribute("SnormalBoardList", sortNormalList);
-	    	  
-	      }
-		
-		String muuid = String.valueOf(session.getAttribute("muuid"));
+	  	      // 세션에 저장된 uuid를 가지고 회원 정보 조회
+	  	      Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
+	  	      // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
+	  	      model.addAttribute("memberInfo", mainMemberInfo);
+	  	      model.addAttribute("sortList", sortList[sort]);
+	  	      model.addAttribute("ino", ino);
+	  	      
+	  		return "/sortMain";
+	  	}
 
-	      // 세션에 저장된 uuid를 가지고 회원 정보 조회
-	      Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
-	      // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
-	      model.addAttribute("memberInfo", mainMemberInfo);
-	      model.addAttribute("sortList", sortList[sort]);
-	      model.addAttribute("ino", ino);
-	      
-		return "/sortMain";
-	}
-
+	
+	
 	// 글 쓰기를 눌렀을 때 tradeWrite로 보내주는 메소드입니다.
 	@GetMapping("/normalWrite")
 	public String tradeWrite(Model model, HttpSession session) {
@@ -290,6 +291,7 @@ public class NormalController {
 		return "normalWrite";
 	}
 
+	
 	// 글쓰기 버튼을 눌렀을 때 실행되는 메소드입니다.
 	// 사진 파일 업로드 사용하실거면 매개변수 tradeimg랑 주석 참고
 	@PostMapping("/normalWirte")

@@ -1,14 +1,24 @@
 package com.sellas.web.myPage;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.mail.Multipart;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MyPageService {
@@ -127,6 +137,65 @@ public class MyPageService {
 
 	public List<Map<String, Object>> getMyComment(String uuid) {
 		return myPageDAO.getMyComment(uuid);
+	}
+
+	public int photoModify(Map<String, Object> memberphoto) {
+		  
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+					.currentRequestAttributes()).getRequest();
+			String path = request.getServletContext().getRealPath("/userImgUpload");
+			
+			Object fileObject = memberphoto.get("mphoto");
+
+			if (fileObject instanceof MultipartFile) {
+				
+				//멀티파트파일
+			    MultipartFile file = (MultipartFile) fileObject;
+			    String[] split = file.getOriginalFilename().split("/");
+			    System.out.println("split : " + split);
+			    
+			    LocalDateTime ldt = LocalDateTime.now();
+				String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
+				String realFileName = format + "num" + split[split.length-1];
+			    
+				// 확장자 자르기
+				String[] parts = file.getOriginalFilename().split("\\.");
+				String lastPart = parts[parts.length - 1];
+				
+				System.out.println(lastPart);
+				System.out.println(parts);
+
+				
+				if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
+				        || lastPart.equals("bmp") || lastPart.equals("gif") || lastPart.equals("jpe"))) {
+				    // 허용된 확장자가 아니면 처리하지 않음
+				  return -1;
+				  
+				} else {
+				
+				File mphoto = new File(path, realFileName);
+				System.out.println("mphoto : " + mphoto);
+				
+				try {
+					FileCopyUtils.copy(file.getBytes(), mphoto);
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				memberphoto.put("mphoto", realFileName);
+				}		
+			    
+			} else {
+			    System.out.println("해당 키에 해당하는 파일이 MultipartFile이 아닙니다.");
+			    return -1;
+			}
+		
+		return myPageDAO.photoModify(memberphoto);
+	}
+
+	public int photoModifySubmit(String uuid) {
+		return myPageDAO.photoModifySubmit(uuid);
 	}
 
 	

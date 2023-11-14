@@ -24,6 +24,7 @@ public class AuctionService {
 
 	/* 경매물품 목록 */
 	
+	// 카테고리 목록
 	public Map<String, String> getItemCategoryList() {
 		
 		List<Map<String, Object>> itemCategoryList = auctionDAO.getItemCategoryList();
@@ -37,17 +38,20 @@ public class AuctionService {
 		return itemCategory;
 	}
 	
-	public List<Map<String, Object>> auctionItemList(String sortOption) {
+	// 경매물품 목록
+	public List<Map<String, Object>> auctionItemList(Map<String, Object> map) {
 
-		switch(sortOption) {
+		map.put("page", Integer.parseInt(map.get("page").toString()) * 10);
+
+		switch(map.get("sortOption").toString()) {
 			case "priceDESC":
-				return auctionDAO.getAuctionItemListPriceDESC();
+				return auctionDAO.getAuctionItemListPriceDESC(map);
 			case "priceASC":
-				return auctionDAO.getAuctionItemListPriceASC();
+				return auctionDAO.getAuctionItemListPriceASC(map);
 			case "readDESC":
-				return auctionDAO.getAuctionItemListReadDESC();
+				return auctionDAO.getAuctionItemListReadDESC(map);
 			default:
-				return auctionDAO.getAuctionItemList();
+				return auctionDAO.getAuctionItemList(map);
 		}
 	}
 

@@ -73,7 +73,7 @@
          console.log("currentPage : " + currentPage);
          console.log("startpage : " + startpage);
          //console.log("nextPage : " + currentPage);
-         lastRow.css("color", "red");
+         //lastRow.css("color", "red");
 		
          
      	 // 다음페이지가 없다면 진행X
@@ -171,34 +171,26 @@
 							let searchCate = "${param.searchCate}";
 			            	let search = "${param.search}";
 							
-							$(".searchA").click(function() {
+			            	$(".searchA").click(function() {
 	   							 // 클릭된 항목에 active 클래스 추가
 	    						$(this).addClass("active");
 	    						// 다른 항목에서 active 클래스 제거
 	   							$(".searchA").not(this).removeClass("active");
 	    						
-	   							if($(".searchA").hasClass("active")){
-									selectedOption = $(".searchA.active").data("option");
-									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
-									console.log("서버로갈cate : " + $(".searchCate").val())
-								} else {
-									selectedOption = $("#ReSearchCate").val();
-									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
-									console.log("서버로갈cate(22) : " + $(".searchCate").val())
-								}
-	   							
 	    						let searchCate = $(this).text();
-	    						console.log("선택한cate : " + searchCate);
+	    						console.log(searchCate);
 	    						$("#navbarDropdown").text(searchCate);	// 선택한 카테고리 보여주기
-	    						
-	    						console.log("보여지는값 : " + $("#navbarDropdown").text())
+								
+	    						if($(".searchA").hasClass("active")){
+									let selectedOption = $(".searchA.active").data("option");
+									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
+									console.log(selectedOption)
+								} 
 	    					
 							});
 							
 							// 검색버튼 클릭
 							$(".swriteButton").click(function(){
-								
-								
 								$(".searchFrom").submit();	// form 제출
 							});
 							
@@ -254,7 +246,7 @@
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
          
          <div class="searchBox justify-content-center">
-			${searchCate }
+         
 					<form action="./" method="get" class="searchFrom">
 
 						<ul class="navbar-nav">
@@ -278,14 +270,6 @@
 					<input type="hidden" class="ReSearchCate" value="${searchCate }">
 		</div>
          
-         <div style="text-align: center;">
-
-				<button onclick="location.href='./addTradeItem'"
-               style="background-color: red; width: 50px; height: 50px;">물품
-               등록</button>
-            엌ㅋㅋ 이대원 머니충전 내가 가져간다
-            <br>
-         </div>
          <div
             class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
             id="sortContainer">
@@ -311,7 +295,7 @@
 	                     <div class="card-body p-4">
 	                        <div class="text-center">
 	                           <!-- Product name-->
-	                           <h5 class="fw-bolder normalTtitle">${i.ttitle }</h5>
+	                           <h6 class="fw-bolder normalTtitle">${i.ttitle }</h5>
 	                           <!-- Product price-->
 	                           작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
 	                        </div>
@@ -438,9 +422,6 @@
       });
    });
    
-      
-
-
    function startPing() {
       let oseller = "${sessionScope.muuid}"
       let imessage = "INTERVAL";

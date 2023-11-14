@@ -34,20 +34,6 @@ function drawMap(mapOption) {
 	});
 }
 
-// 등록된 거래장소 선택
-function selectLocation(locationName) {
-	
-	let lat = document.getElementById(locationName + "lat").value;
-	let lng = document.getElementById(locationName + "lng").value;
-	
-	let options = {
-		center : new kakao.maps.LatLng(lat, lng),
-		level : 3
-	};
-	
-	drawMap(options);
-}
-
 function setLocation(latlng) {
 	
 	document.getElementById("locationLat").value = latlng.getLat();
@@ -56,7 +42,6 @@ function setLocation(latlng) {
 
 // 현재 위치로 설정하기
 function markingCurrentLocation() {
-	
 	M.plugin("location").current({
 		timeout: 10000,
 		maximumAge:1,
@@ -100,42 +85,5 @@ window.onload = function() {
 
 	drawMap(mapOption);
 	
-	showPage("page1");
+	hideLocationDiv();
 };
-
-/* 거래 타입 설정 */
-function selectTradeType(type){
-	
-	// 거래 타입이 추가될 경우 새로운 case 작성
-	switch(type){
-		
-		case "0":
-			
-			document.getElementById("normalTradeDiv").style.display = "block";
-			document.getElementById("auctionTradeDiv").style.display = "none";
-			document.getElementById("type0").setAttribute("disabled", "disabled");
-			document.getElementById("type1").removeAttribute("disabled");
-			document.getElementById("tradeType").value = type;
-			break;
-		
-		case "1":
-		
-			document.getElementById("normalTradeDiv").style.display = "none";
-			document.getElementById("auctionTradeDiv").style.display = "block";
-			document.getElementById("type0").removeAttribute("disabled");
-			document.getElementById("type1").setAttribute("disabled", "disabled");
-			document.getElementById("tradeType").value = type;
-			break;
-		
-	}
-}
-
-/* 거래 물품 등록 페이징 */
-function showPage(pageId){
-	
-	let pages = document.querySelectorAll(".page");
-	for (let i = 0; i < pages.length; i++) {
-		pages[i].style.display = "none";
-	}
-	document.getElementById(pageId).style.display = "block";
-}

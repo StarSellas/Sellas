@@ -1,10 +1,11 @@
 package com.sellas.web.myPage;
 
+import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.sellas.web.util.Util;
 
 
@@ -32,6 +37,10 @@ public class MyPageController {
 	@GetMapping("/mypage")
 	public String myPage(Model model, HttpSession session) {
 		
+		if(!util.checkLogin()) {
+			return "redirect/login";
+		}
+		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		
 		//세션에 저장된 uuid를 가지고 멤버조회
@@ -45,6 +54,7 @@ public class MyPageController {
 		 model.addAttribute("nickname", session.getAttribute("mnickname"));
 		 model.addAttribute("exp", member.get("mpoint"));
 		 model.addAttribute("mbalance", member.get("mbalance"));
+		 model.addAttribute("mphoto", member.get("mphoto"));
 		 
 		 
 		return "mypage";
@@ -70,6 +80,7 @@ public class MyPageController {
 		
 		 model.addAttribute("nickname", session.getAttribute("mnickname"));
 		 model.addAttribute("exp", member.get("mpoint"));
+		 model.addAttribute("mphoto", member.get("mphoto"));
 		 model.addAttribute("profileReview" , profileReview );
 
 		return "profile";
@@ -90,6 +101,7 @@ public class MyPageController {
 		Map<String, Object> member = myPageService.memberInfo(uuid);
 		model.addAttribute("nickname", member.get("mnickname"));
 		model.addAttribute("exp", member.get("mpoint"));
+		model.addAttribute("mphoto", member.get("mphoto"));
 		
 		//TODO 판매내역띄우기
 		
@@ -107,11 +119,62 @@ public class MyPageController {
 	   @GetMapping("/profileEdit/{muuid}")
 	   public String profileEdit(@PathVariable("muuid") String uuid, Model model, HttpSession session) {
 	      
-	      model.addAttribute("nickname", session.getAttribute("mnickname"));
-	      
+			Map<String, Object> member = myPageService.memberInfo(uuid);
+			model.addAttribute("nickname", member.get("mnickname"));
+			model.addAttribute("mphoto", member.get("mphoto"));
 	      
 	      return "profileEdit";
 	   }
+	   
+	   
+	   
+	/**
+	 * 조원 이대원의 코드를 가져와서 수정함
+	 * @param mphotoList
+	 * @param uuid
+	 * @return
+	 */
+	   //업로드된 사진을 저장 및 디비에 저장
+	   @PostMapping("/profileEdit/photoModify")
+	   public String photoModify(@RequestParam(value = "file") List<MultipartFile> mphotoList,
+			   @RequestParam(value="uuid") String uuid){
+	   
+		   //0번째 배열에 있는 이미지만 담는다.
+		   MultipartFile mphoto = mphotoList.stream().findFirst().orElse(null);
+		   
+		   //사용자정보와 이미지경로를 담는다.
+		   Map<String, Object> memberphoto = new HashMap<String, Object>();
+		   
+		   memberphoto.put(uuid, memberphoto);
+		   memberphoto.put("mphoto", mphoto);
+		   
+		   int result = myPageService.photoModify(memberphoto);
+		   
+		   if (result != 1) {
+			   System.out.println("사진 업로드 실패");
+		   }
+		   
+	   return "";
+	   }
+	   
+	
+	   /**
+	    * 사용자가 변경버튼 누를시
+	    * @param uuid
+	    * @return json
+	    */
+	   @ResponseBody
+	   @PostMapping("/profileEdit/photoModifySubmit")
+	   public String photoModifySubmit(@RequestParam("uuid") String uuid) {
+		   
+		   int result = myPageService.photoModifySubmit(uuid);
+		   JSONObject json = new JSONObject();
+		if(result ==1) {
+			json.put("result", 1);
+			json.put("uuid", uuid);
+		}
+			return json.toString();
+		}
 	   
 	
 	/**

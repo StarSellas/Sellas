@@ -10,6 +10,8 @@ public interface TradeDAO {
 
 	List<Map<String, Object>> getItemCategoryList();
 
+	List<Map<String, Object>> getLocationList(String muuid);
+	
 	int addNormalTradeItem(Map<String, Object> map);
 
 	int addAuctionTradeItem(Map<String, Object> map);

@@ -1,4 +1,4 @@
-package com.sellas.web.trade;
+package com.sellas.web.normal;
  
 import java.util.List;
 import java.util.Map;
@@ -32,12 +32,6 @@ public class NormalService {
 		
 	}
 
-	
-	
-	
-	
-	
-	
 	public int normalWrite(Map<String, Object> map) {
 		//tnormalstate값 넣어주기
 				map.put("tnormalstate", 0);
@@ -215,5 +209,6 @@ public class NormalService {
 	}
 
 
+	
 
 }

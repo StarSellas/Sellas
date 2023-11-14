@@ -26,7 +26,36 @@
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="./js/jquery-3.7.0.min.js"></script>
+<style type="text/css">
+#loading {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.75);
+}
 
+.spinner {
+  position: relative;
+  top: 50%;
+  margin: auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #03114E;
+  animation: spin 0.6s infinite linear;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
 </head>
 <body>
 	<!-- Navigation-->
@@ -73,7 +102,9 @@
 					<button type="submit" id="normalWriteBtn">글쓰깅</button>
 					<button type="button" onclick="location.href='./'">취소</button>
 				</form>
-
+ <div id="loading">
+    <div class="spinner"></div>
+  </div>
 				제이쿼리를 사용해서 유효성을 검사하고 카테고리 값도 ino로 바꾼 후 잘못된 값이 없으면 서브밋하게 만들어야지
 
 			</div>
@@ -100,7 +131,22 @@
 	<script src="js/scripts.js"></script>
 
 	<script type="text/javascript">
-        
+	const loading = {
+			  start: () => {
+			    // @로딩 시작
+			    const loading = document.querySelector('#loading');
+			    loading.style.display = 'block';
+			  },
+			  end: () => {
+			    // @로딩 종료
+			    const loading = document.querySelector('#loading');
+			    loading.style.display = 'none';
+			  },
+			}
+	
+	
+	
+	
         function resizeImage(input, maxWidth, maxHeight, callback) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

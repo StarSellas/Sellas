@@ -24,10 +24,72 @@
 		<script src="./js/wnInterface.js"></script> 
 		<script src="./js/mcore.min.js"></script> 
 		<script src="./js/mcore.extends.js"></script> 
-		
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
+		<style type="text/css">
+.loading {
+	background-color: white;
+	z-index: 9999;
+}
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* 배경색을 흰색으로 지정 */
+    z-index: 9999;
+    text-align: center;
+}
+
+#loading_img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 9999;
+    max-width: 100%;
+    max-height: 100%;
+}
+</style>
+<script type="text/javascript">
+var loading = "";
+$(function() {
+	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
+	
+	// 로딩바 적용
+	loading.show();
+	
+	//로딩바를 위해 1.5초 뒤 ajax 실행
+	timer = setTimeout(function(){
+        jQuery.ajax({
+			type : "POST",
+			url : "ajax.php",
+			data : $("#frm").serialize(),
+			cache: false,
+			success : function(data) {
+				if(data == "0000"){
+					alert("작업성공");
+					// 로딩바 해제
+					loading.hide();
+				} else{
+					// 로딩바 해제
+					loading.hide();	
+				}
+			},
+			error : function(e) {
+				// 로딩바 해제
+				loading.hide();
+			}, timeout:10000
+		});
+    },3000);		
+});
+</script>
+
 	</head>
 	<body>
+	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 	<%@ include file="menubar.jsp" %>
 		<!-- Section-->
 		<section class="py-5">
@@ -40,12 +102,12 @@
         
         <form action="./addTradeItem" method="post" id="productContainer">
         
-		<div>
+		<div class="page" id="page1">
 		
 			<div>카테고리
 				<select name="category">
-				<c:forEach var="itemCategory" items="${itemCategory}">
-					<option value="${itemCategory.key }">${itemCategory.value}</option>
+				<c:forEach var="itemCategory" items="${itemCategory }">
+					<option value="${itemCategory.key }">${itemCategory.value }</option>
 				</c:forEach>
 				</select>
 			</div>
@@ -67,14 +129,8 @@
 				<div id="upload-box"></div>
 			</div>
 			
-			<button type="button" onclick="showLocationDiv()">거래 희망 장소 선택하기</button>
-			<div id="setLocationDiv">
-				<div id="map" style="width: 90%; height: 350px"></div>
-				<div>
-					<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
-					<button type="button" onclick="hideLocationDiv()">선택 완료</button>
-				</div>
-			</div>
+			<button type="button" onclick="showPage('page2')">거래 희망 장소 선택하기</button>
+			
 			<input type="hidden" id="locationLat" name="locationLat">
 			<input type="hidden" id="locationLng" name="locationLng">
 			
@@ -84,20 +140,38 @@
 				<input type="hidden" id="tradeType" name="tradeType" value="0">
 			</div>
 			
-			<div class="page" id="page0">일반거래
+			<div id="normalTradeDiv">일반거래
 				<div>
 					<input type="number" id="normalPrice" name="normalPrice" step="100">
 				</div>
 			</div>
 			
-			<div class="page" id="page1" style="display:none">경매거래
+			<div id="auctionTradeDiv" style="display:none">경매거래
 				<div>
 					<input type="number" id="auctionStartPrice" name="auctionStartPrice" step="100">
 					<input type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" step="100">
 				</div>
 			</div>
 			<button type="button" id="addTradeItemBtn">확인</button>
-			
+		
+		</div>
+		
+		<div class="page" id="page2">
+		
+			<div id="map" style="width: 100%; height: 350px"></div>
+			<div id="userLocationDiv"></div>
+			<div>
+				${locationList }
+				<c:forEach var="locationList" items="${locationList }">
+					<div>
+						<button type="button" onclick="selectLocation('${locationList.lname}')">${locationList.lname }</button>
+						<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
+						<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
+					</div>
+				</c:forEach>
+				<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
+				<button type="button" onclick="showPage('page1')">선택 완료</button>
+			</div>
 			
 		</div>
 		
@@ -107,12 +181,13 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 		<!-- Core theme JS-->
 		<script src="js/addTradeItem.js"></script>
+		
 	</body>
 
 <script type="text/javascript">
 
 // 모피어스 사진 촬영 및 앨범 사진 업로드
-// 작성자 : 이대원 ㅇ_ㅇb
+// 작성자 : 이대원 ヽ(´▽`)/
 
 let cameraImagePath ='';
 let selectImagePath = [];

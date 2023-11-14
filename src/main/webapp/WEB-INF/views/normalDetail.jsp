@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -22,39 +21,26 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
-<link rel="stylesheet" href="../css/tradeDetail.css">
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="./js/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
+<link href="css/normaldetail.css" rel="stylesheet">
 </head>
 <body>
-	<!-- Navigation-->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light"
-		style="z-index: 10">
-		<div class="container px-4 px-lg-5">
-			<a class="navbar-brand" href="">SellAS</a>
-			<button class="navbar-toggler" type="button" data-bs-target=""
-				aria-controls="navbarSupportedContent">
-				<img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon">
-			</button>
-		</div>
-	</nav>
-	<!-- Header-->
-	<header> </header>
+<%@ include file="menubar.jsp" %>
+	
 	<!-- Section-->
 
 
 	<section class="py-5">
-
-		<div class="container px-4 px-lg-5 mt-5 tradecontainter"
+<div class="container mt-5" style="z-index: 10" id="productContainer">
+		<div class="container px-4 px-lg-5 mt-3 tradecontainter"
 			style="z-index: 10" id="productContainer">
 			<div
 				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-				<div id="detail">
 					<input type="hidden" value="${detail.mnickname}" class="sellerMnickname">
 					<input type="hidden" value="${sessionScope.mnickname }" class="mnickname">
 					<input type="hidden" value="${sessionScope.muuid }" class="buyerMuuid">
@@ -63,34 +49,43 @@
 					<input type="hidden" value="${detail.tnormalprice }" class="tnormalprice">
 					<input type="hidden" value="${detail.muuid }" class="sellerMuuid">
 					
-				
-					세션값이오나용 ${sessionScope.mnickname } 여기에 수정삭제를 만들까 아래에 수정삭제를 만들까 고민해봅시다
-
-					<h2>제목 : ${detail.ttitle} , 상태 : ${detail.tnormalstate}</h2>
-					<br>
-					가격 : ${detail.tnormalprice } 웨일 페이
-					<h6>카테고리 : ${detail.iname }</h6>
-
+				<div class="titleBox">
+						<div class="btitle">
+							${detail.ttitle }
+						</div>
+						<div class="mnickname">${detail.mnickname } 
+							<span class="bdate">${detail.tdate }</span>
+						</div>
+					</div>
+					<div class="contentBox">
+						<div class="tcontent">${detail.tcontent }</div>
+					</div>
+					<div class="bimageBox">
+					<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
+						<c:if test="${normalDetailImage ne null}">
+							<c:forEach items="${normalDetailImage }" var="i">
+								<div class="boardImgBox">
+									<img alt="" src="./tradeImgUpload/${i.timage }"
+								style="width: 200px; height: 200px;">
+								</div>
+								<!--<span>${imageList.bimage}</span>-->
+							</c:forEach>
+						</c:if>
+					</div>
 
 					<div id="detailID">${detail.mnickname}</div>
 					<div id="detailDate">${detail.tdate}&nbsp;
 						&nbsp;&nbsp;&nbsp;작성자: ${detail.mnickname}</div>
 
-					<c:if test="${normalDetailImage ne null }">
-						<c:forEach items="${normalDetailImage }" var="i">
-							<img alt="" src="./tradeImgUpload/${i.timage }"
-								style="width: 200px; height: 200px;">
-						</c:forEach>
-					</c:if>
-
-					${detail.tcontent}
-					<br>
 					
+
+
 					<!-- 판매중일때 -->
 					
 					<c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
 						<button id="normalEditBtn">수정하기</button>
 						<button id="normalDeleteBtn">등록 취소</button>
+						<button id="hikeUpBtn">끌올하기</button>
 					</c:if>
 					<c:if test="${sessionScope.muuid != detail.muuid &&detail.tnormalstate == 0}">
 						<button id="addWishList">찜하기☆</button>
@@ -110,23 +105,9 @@
 					</c:if>
 				</div>
 			</div>
-		</div>
-
+</div>
 
 	</section>
-	<!-- Footer-->
-	<footer id="footer">
-		<div class="container">
-			<ul class="menubar">
-				<li onclick="location.href='./'"><i class="xi-home xi-2x"></i>
-				<div id="menu">홈</div></li>
-				<li><i class="xi-message xi-2x"></i>
-				<div id="menu">채팅</div></li>
-				<li><i class="xi-profile xi-2x"></i>
-				<div id="menu">마이페이지</div></li>
-			</ul>
-		</div>
-	</footer>
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

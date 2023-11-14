@@ -181,51 +181,55 @@
 });    
    </script>
    
-               		<!---------------- 검색 ------------------>
-					<script type="text/javascript">
-					
-						$(function(){
-							
-							$(".searchA").click(function() {
-	   							 // 클릭된 항목에 active 클래스 추가
-	    						$(this).addClass("active");
-	    						// 다른 항목에서 active 클래스 제거
-	   							$(".searchA").not(this).removeClass("active");
-	    						
-	    						let searchCate = $(this).text();
-	    						console.log(searchCate);
-	    						$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
-							});
-							
-							// 검색버튼 클릭
-							$(".swriteButton").click(function(){
-								
-								if($(".searchA").hasClass("active")){
-									let selectedOption = $(".searchA.active").data("option");
-									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
-									console.log(selectedOption)
-								} 
-								
-								$(".searchFrom").submit();	// form 제출
-							});
-							
-							
-							// 검색카테고리 & 검색단어 검색창에 남기기
-			            	let searchCate = "${param.searchCate}";
-			            	let search = "${param.search}";
-			            	
-			        		let firstOption = $(".searchCate option:first").val();
-			        		$(".searchCate").val(firstOption);
-			            	
-			            	if (searchCate != ""){
-			            		let pick = $(".searchA[data-option="+searchCate+"]").text();
-								console.log("선택한카테 : " + pick);
-								$("#navbarSDropdown").text(pick);
-			            		$(".swrite").val(search);
-			            	}
-							
-						})
-					</script>
+		<!---------------- 검색 ------------------>
+	<script type="text/javascript">
+	
+		$(function(){
+			
+			let selectedOption;
+			let searchCate = "${param.searchCate}";
+       		let search = "${param.search}";
+			
+       	$(".searchA").click(function() {
+					 // 클릭된 항목에 active 클래스 추가
+				$(this).addClass("active");
+				// 다른 항목에서 active 클래스 제거
+					$(".searchA").not(this).removeClass("active");
+				
+				let searchCate = $(this).text();
+				console.log(searchCate);
+				$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
+				
+				if($(".searchA").hasClass("active")){
+					let selectedOption = $(".searchA.active").data("option");
+					$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
+					console.log(selectedOption)
+				} 
+			
+			});
+			
+			// 검색버튼 클릭
+			$(".swriteButton").click(function(){
+				$(".searchFrom").submit();	// form 제출
+			});
+			
+			
+			// 검색카테고리 & 검색단어 검색창에 남기기
+       	
+   		let firstOption = $(".searchCate option:first").val();
+   		$(".searchCate").val(firstOption);
+       	
+       	if (searchCate != ""){
+       		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
+				console.log("선택한카테 : " + pick);
+				$("#navbarDropdown").text(pick);
+       		$(".swrite").val(search);
+       	}
+       	
+       	console.log("검색이후 value값 : " + $(".ReSearchCate").val())
+       	
+		})
+	</script>
    
    
    
@@ -303,14 +307,6 @@
 					</form>
 		</div>
          
-         <div style="text-align: center;">
-
-				<button onclick="location.href='./addTradeItem'"
-               style="background-color: red; width: 50px; height: 50px;">물품
-               등록</button>
-            엌ㅋㅋ 이대원 머니충전 내가 가져간다
-            <br>
-         </div>
          <div
             class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
             id="sortContainer">
