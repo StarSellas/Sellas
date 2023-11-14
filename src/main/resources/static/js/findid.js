@@ -21,6 +21,7 @@ function findid(filtering) {
 					showPage("page2");
 				} else {
 					setMessage("emailMessage", "가입된 아이디가 없습니다.", false);
+					invalidInput(document.getElementById("email"));
 				}
 			} else {
 				document.getElementById("unfilteredid").textContent = result;
@@ -79,8 +80,13 @@ function validateEmailCode() {
 			if(result){
 				emailCodeChecked = true;
 				findid(false);
+				clearMessage("emailCodeMessage");
+				validInput(document.getElementById("emailCode"));
 			} else {
 				emailCodeChecked = false;
+				let msg = "인증번호가 일치하지 않습니다.";
+				setMessage("emailCodeMessage", msg, false);
+				invalidInput(document.getElementById("emailCode"));
 			}
 		},
 		error : function(error){
@@ -211,6 +217,20 @@ function clearMessage(msgDiv) {
 	let messageDiv = document.getElementById(msgDiv);
 	
 	messageDiv.textContent = "　";
+}
+
+/* Invalid input */
+function invalidInput(field) {
+	
+	field.classList.remove("is-valid");
+	field.classList.add("is-invalid");
+}
+
+/* Valid input */
+function validInput(field) {
+	
+	field.classList.add("is-valid");
+	field.classList.remove("is-invalid");
 }
 
 /* 버튼 상태 변경 */
