@@ -144,4 +144,32 @@
 	WHERE ano = #{ano} AND tno = #{tno}
 </update>
 
+<select id="obuyer" parameterType="String" resultType="String">
+	select abidder from auctionhistory where ano = #{ano}
+</select>
+
+<select id="oseller" parameterType="String" resultType="String">
+	select muuid from trade where tno = #{tno}
+</select>
+
+<insert id="createAuctionChatRoom" parameterType="Map">
+	insert into onlinechat (ouuid, tno, oseller, obuyer) values (#{ouuid}, #{tno}, #{oseller}, #{obuyer})
+</insert>
+
+<insert id="insertDialogueSeller" parameterType="Map">
+	insert into dialogue (ouuid, muuid, dcontent, dtype, dcheck) values (#{ouuid}, #{oseller}, #{auctionselleralarm}, "ALARM", 1)
+</insert>
+
+<insert id="insertDialogueBuyer" parameterType="Map">
+	insert into dialogue (ouuid, muuid, dcontent, dtype, dcheck) values (#{ouuid}, #{obuyer}, #{auctionbuyeralarm}, "ALARM", 1)
+</insert>
+
+<select id="getAbidPrice" parameterType="String">
+	select abidprice from auctionhistory where ano = #{ano}
+</select>
+
+<insert id="insertPayment" parameterType="Map">
+	insert into payment (tno, pseller, pbuyer, pamount) values (#{tno}, #{oseller}, #{obuyer}, #{abidprice})
+</insert>
+
 </mapper>
