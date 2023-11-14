@@ -25,15 +25,13 @@
     </head>
     <body>
     <%@ include file="menubar.jsp" %>
-    
-
-		<!-- Section-->
-		<section class="py-5">
-			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
-				<div class="justify-content-center">
-				</div>
-			</div>
-		</section>
+    	
+    	<br>
+    	<br>
+    	<br>
+    	
+    	<input type="text" id="keyword" value="">
+    	<button id="search">검색</button>
         
         <!-- 카테고리 필터 -->
         
@@ -51,26 +49,29 @@
         
 		<div class="container mt-3">
 		<div class="d-flex justify-content-between align-items-center">
- 	
+ 		
         <button id="openCategoryFilter">카테고리</button>
         	
         <!-- 정렬 기준 -->
+        <input type="hidden" id="sortOption" value="">
         
 		<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 			<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">정렬기준</a>
 			<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<li><a class="dropdown-item" href="#" onclick="auctionItemList('priceDESC')">가격 높은순</a></li>
+				<li><a class="dropdown-item" href="#" onclick="setSortOption('priceDESC')">가격 높은순</a></li>
 				<li><hr class="dropdown-divider" /></li>
-				<li><a class="dropdown-item" href="#" onclick="auctionItemList('priceASC')">가격 낮은순</a></li>
+				<li><a class="dropdown-item" href="#" onclick="setSortOption('priceASC')">가격 낮은순</a></li>
 				<li><hr class="dropdown-divider" /></li>
-				<li><a class="dropdown-item" href="#" onclick="auctionItemList('readDESC')">조회순</a></li>
+				<li><a class="dropdown-item" href="#" onclick="setSortOption('readDESC')">조회순</a></li>
 			</ul>
 			</li>
 		</ul>
 		
 		</div>
 		</div>
+		
+		<input type="hidden" id="page" value="0">
 		
 		<div id="auctionItemListDiv"></div>
 

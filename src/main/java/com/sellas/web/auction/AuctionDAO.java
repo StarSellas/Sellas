@@ -10,13 +10,13 @@ public interface AuctionDAO {
 
 	List<Map<String, Object>> getItemCategoryList();
 
-	List<Map<String, Object>> getAuctionItemList();
+	List<Map<String, Object>> getAuctionItemList(Map<String, Object> map);
 
-	List<Map<String, Object>> getAuctionItemListPriceDESC();
+	List<Map<String, Object>> getAuctionItemListPriceDESC(Map<String, Object> map);
 	
-	List<Map<String, Object>> getAuctionItemListPriceASC();
+	List<Map<String, Object>> getAuctionItemListPriceASC(Map<String, Object> map);
 	
-	List<Map<String, Object>> getAuctionItemListReadDESC();
+	List<Map<String, Object>> getAuctionItemListReadDESC(Map<String, Object> map);
 
 	Map<String, Object> auctionItemDetail(Object object);
 
@@ -31,5 +31,13 @@ public interface AuctionDAO {
 	void addBiddingHistory(Map<String, Object> map);
 
 	void changeHistoryState(Map<String, Object> map);
+	
+	public List<Map<String, Integer>> auctionDeadlineCheck();
+	
+	public Map<String, Object> auctionInfo(Integer integer);
+
+	public void auctionTerminating(Map<String, Object> auctionInfo);
+
+	public void setWinningBidder(Map<String, Object> auctionInfo);
 
 }
