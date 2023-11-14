@@ -26,35 +26,37 @@
 		<script src="./js/mcore.extends.js"></script> 
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 		<style type="text/css">
-#loading {
-	height: 100%;
-	left: 0px;
-	position: fixed;
-	_position: absolute;
-	top: 0px;
-	width: 100%;
-	filter: alpha(opacity = 50);
-	-moz-opacity: 0.5;
-	opacity: 0.5;
-}
 .loading {
 	background-color: white;
-	z-index: 999999;
+	z-index: 9999;
 }
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* 배경색을 흰색으로 지정 */
+    z-index: 9999;
+    text-align: center;
+}
+
 #loading_img {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	height: 100px;
-	margin-top: -75px; 
-	margin-left: -100px; 
-	z-index: 999999;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 9999;
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>
 <script type="text/javascript">
-$(function() {
 var loading = "";
-	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/whale2.gif" />').appendTo(document.body).hide();
+$(function() {
+	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
 	
 	// 로딩바 적용
 	loading.show();
@@ -81,7 +83,7 @@ var loading = "";
 				loading.hide();
 			}, timeout:10000
 		});
-    },3000);	
+    },3000);		
 });
 </script>
 
