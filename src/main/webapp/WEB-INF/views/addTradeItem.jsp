@@ -31,14 +31,14 @@
 	<%@ include file="menubar.jsp" %>
 		<!-- Section-->
 		<section class="py-5">
-			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
+			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10" >
 				<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 				</div>
 			</div>
 		</section>
         
         
-        <form action="./addTradeItem" method="post">
+        <form action="./addTradeItem" method="post" id="productContainer">
         
 		<div class="page" id="page1">
 		
@@ -90,9 +90,8 @@
 					<input type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" step="100">
 				</div>
 			</div>
-			
 			<button type="button" id="addTradeItemBtn">확인</button>
-			
+		
 		</div>
 		
 		<div class="page" id="page2">
@@ -133,7 +132,8 @@ let selectImagePath = [];
 let $previewImg = null;
 let $uploadImg = null;
 let $previewImgArray = [];
-   
+let tradeType = 0;
+let count = 0;
 
 const $box = $('#box');
 const $uploadBox = $('#upload-box');
@@ -148,7 +148,6 @@ $("#camera").click(function(){
 		alert('더 이상 이미지를 추가할 수 없습니다.');
 		return false;
 	}
-    	
 	$("#picker2").hide();
    	 
 	selectImagePath = [];
@@ -160,16 +159,18 @@ $("#camera").click(function(){
 			if (status == 'SUCCESS') {
         	   
 				var photo_path = result.fullpath;
-				selectImagePath[0] = result.path;
+				$previewImgArray[count] = result.path;
                
-				$.convertBase64ByPath2(selectImagePath)
+				$.convertBase64ByPath2($previewImgArray)
 				.then(({ status, result }) => {
 				if (status === 'SUCCESS') {
 					$previewImg = $(document.createElement('img'))
 					$previewImg.attr('height', '200px')
+					$previewImg.attr('width', '200px');
 					$previewImg.attr('src', "data:image/png;base64," + result[0].data)
            
 					$box.append($previewImg);
+					count++;
 					} else {
 						return Promise.reject('BASE64 변환 실패')
 					}
@@ -191,8 +192,7 @@ $picker2.on('click', () => {
 		alert('더 이상 이미지를 추가할 수 없습니다.');
 		return false;
 	}
-   				 
-   				 
+	 
 	if ($previewImg !== null) {
 		$previewImg.remove();
 		$previewImg = null;
@@ -216,6 +216,7 @@ $picker2.on('click', () => {
 				let imageSrc = "data:image/png;base64," + result[i].data;
 				let $previewImg = $(document.createElement('img'));
 				$previewImg.attr('height', '200px');
+				$previewImg.attr('width', '200px');
 				$previewImg.attr('src', imageSrc);
 				$box.append($previewImg);
 			}
@@ -312,27 +313,32 @@ $(function(){
 				  
 				  
 	$("#addTradeItemBtn").click(function(){
-		let category = $("select[name='category']").val();
-		let title = $("input[name='title']").val();
-		let content = $("textarea[name='content']").val();
-		let locationLat = $("input[name='locationLat']").val();
-		let locationLng = $("input[name='locationLng']").val();
-		let tradeType = $("input[name='tradeType']").val();
-		let normalPrice = $("input[name='normalPrice']").val();
-		let auctionStartPrice = $("input[name='auctionStartPrice']").val();
-		let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
-					
+	      let category = $("select[name='category']").val();
+	      let title = $("input[name='title']").val();
+	      let content = $("textarea[name='content']").val();
+	      let locationLat = $("input[name='locationLat']").val();
+	      let locationLng = $("input[name='locationLng']").val();
+	      let tradeType = $("input[name='tradeType']").val();
+	      let normalPrice = $("input[name='normalPrice']").val();
+	      let auctionStartPrice = $("input[name='auctionStartPrice']").val();
+	      let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
+
+			
 		$.ajax({
 			url : "./addTradeItem",
 			type : "post",
 			data : {category : category, title : title, content : content, tradeType : tradeType,
-					locationLat : locationLat, locationLng : locationLng, normalPrice : normalPrice, 
-					auctionStartPrice: auctionStartPrice, auctionMinBidUnit : auctionMinBidUnit},
+	               locationLat : locationLat, locationLng : locationLng, normalPrice : normalPrice, 
+	               auctionStartPrice: auctionStartPrice, auctionMinBidUnit : auctionMinBidUnit},
 			dataType : "json",
 			success : function(data){
+				tradeType = data.tradeType;
 				if(data.addSuccess == 1){
+					
 					let tno = data.tno;
+
 					if($previewImgArray.length > 0){
+					
 						if ($previewImgArray[0] === ''){
 							if ($uploadImg) {
 								$uploadImg.remove();
@@ -367,15 +373,15 @@ $(function(){
 									
 					}
 					alert("작성이 완료되었습니다.");
+					
 					var form = document.createElement("form");
 					form.method = "GET";
 					if(tradeType == 0){
-						form.action = "./normalDetail"; // 컨트롤러 경로 설정
+					form.action = "./normalDetail"; // 컨트롤러 경로 설정
 					}
 					if(tradeType == 1){
 						form.action = "./auctionDetail";
 					}
-
 					var input = document.createElement("input");
 					input.type = "hidden"; // 숨겨진 필드
 					input.name = "tno"; // 파라미터 이름
@@ -392,7 +398,7 @@ $(function(){
 				}
 			},
 			error : function(error){
-				alert("흑흑");
+				alert("흑학힉");
 			}	
 		});
 	});

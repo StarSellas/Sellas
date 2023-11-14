@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+
+#ratePromise {
+ display: inline-block; 
+    direction: rtl;
+    border:0;
+    width: 100%;
+}
+
+#rateResponse {
+ display: inline-block; 
+    direction: rtl;
+    border:0;
+    width: 100%;
+}
+
+#rateManner {
+ display: inline-block; 
+    direction: rtl;
+    border:0;
+    width: 100%;
+}
+
+#ratePromise input[type=radio]{
+    display: none;
+}
+
+#rateResponse input[type=radio]{
+    display: none;
+}
+
+#rateManner input[type=radio]{
+    display: none;
+}
+
+#ratePromise label{
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+
+#rateResponse label{
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+
+#rateManner label{
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+
+#reviewContents {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: solid 1.5px #D3D3D3;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+}
+
+
+.question {
+	margin-top: 20px;
+}

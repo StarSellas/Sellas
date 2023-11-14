@@ -24,10 +24,10 @@
     </head>
     <body>
 		<!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 10">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 10">
            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="./">SellAS</a>
-				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon"></a></button>
+                <a class="navbar-brand" href="./"><img src="./img/sellastext.png" class="header" alt="SellAS"></a>
+				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="./img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>
 		
@@ -36,13 +36,13 @@
         <footer id="footer">
             <div class="container">
 	            <ul class="menubar">
-	            	<li onclick="location.href='./'"><i class="xi-home xi-2x"></i><div id="menu">홈</div></li>
-	            	<li onclick="location.href='#'"><i class="xi-message xi-2x"></i><div id="menu">채팅</div></li>
-	            	<li onclick="location.href='#'"><i class="xi-profile xi-2x"></i><div id="menu">마이페이지</div></li>
+	            	<li onclick="location.href='./'"><img src="./img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
+	            	<li onclick="location.href='#'"><img src="./img/chat.png" class="footericon" alt="chat"><div id="menu">채팅</div></li>
+	            	<li onclick="location.href='./mypage'"><img src="./img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
 	            </ul>
             </div>
         </footer>
-        
+
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>

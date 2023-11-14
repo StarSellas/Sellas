@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sellas.web.chat.ChatRoomDAO">
+	
+	<insert id="room" parameterType="Map">
+		insert into onlinechat (ouuid, tno, oseller, obuyer) values (#{ouuid}, #{tno}, #{oseller}, #{obuyer})
+	</insert>
+	
+	<insert id="alarmIn" parameterType="Map">
+		insert into alarm (ouuid, acontent, oseller, acheck) values(#{roomId}, #{acontent}, #{oseller}, 1)
+	</insert>
+	
+	<select id="tnoName" parameterType="Map" resultType="String">
+		select ttitle from trade where tno = #{tno}
+	</select>
+	
+	<select id="mNickName" parameterType="String" resultType="String">
+		select mnickname from member where muuid = #{me}
+	</select>
+	
+	<select id="alarmChat" parameterType="String" resultType="Map">
+		select tno, oseller, obuyer from onlinechat where ouuid = #{roomId}
+	</select>
+	
+	<select id="obuyerName" parameterType="String" resultType="String">
+		select mnickname from member where muuid = #{me}
+	</select>
+	
+	<select id="lastChatList" parameterType="Map" resultType="Map">
+		select (select mnickname from member where muuid = #{me}) as chatnick, dcontent, dtype, ddate 
+		from dialogue where ouuid = #{roomId} and dtype IN ('ENTER', 'TALK', 'OUT', 'PAYMENT', 'TRADEOK', 'TRADENO')
+		order by dno asc
+	</select>
+	
+	<select id="searchChatRoom" parameterType="Map" resultType="Integer">
+		select count(ouuid) from onlinechat where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}
+	</select>
+	
+	<select id="getOuuid" parameterType="Map" resultType="String">
+		select ouuid from onlinechat where tno = #{tno} and obuyer = #{obuyer} and oseller = #{oseller}
+	</select>
+	
+	<select id="alarmList" parameterType="String" resultType="Map">
+		select ouuid, dcontent from dialogue where muuid = #{muuid} and dcheck = 1 order by dno asc
+	</select>
+	
+	<update id="setCheckZero" parameterType="String">
+		update dialogue set dcheck = 0 where muuid = #{muuid} and dcheck = 1
+	</update>
+	
+	<select id="selectTnormalstate" parameterType="Map" resultType="Integer">
+	SELECT tnormalstate FROM trade WHERE tno = #{tno}
+	</select>
+	
+	<select id="selectPayment" parameterType="Map" resultType="Map">
+	SELECT *
+	FROM payment
+	WHERE tno= #{tno} and pseller = #{oseller} and pbuyer= #{obuyer}
+	</select>
+</mapper>

@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+.backButton{
+	margin-bottom: 5px;
+}
+.HeaderBox{
+	width: 90%;
+	padding: 0;
+	margin: auto;
+	display: flex;
+	align-items: flex-end;
+}
+.searchBox{
+	display: flex;
+	align-items: flex-end;
+	flex: 1;
+}
+
+.searchFrom{
+	width: inherit;
+	display: flex;
+	align-items: flex-end; 
+	border-bottom: 1px gray solid;
+}
+.swrite, .searchCate{
+	margin: 0;
+	padding: 1px 2px;
+	height: 30px;
+}
+.swrite{
+	width: 150px;
+	border: none;
+}
+.swriteButton{
+	border: 0.5px solid white;
+	border-radius: 30px;
+	background-color: inherit;
+	margin: 0;
+	padding: 2px 2px 8px 2px;
+	width: 35px;
+	height: 35px;
+}
+#searchIcon{
+	width: 80%;
+}
+
+.cateBox{
+	margin: 0;
+	margin-left: 10px; 
+}
+
+#navbarDropdown{
+	text-decoration: none;
+	color: black;
+	padding-left: 5px;
+	margin-right: 5px;
+}
+
+/****************** board *******************/
+
+.boardListBox{
+	margin: auto;
+	padding: 0;
+	width: 90%;
+}
+
+#boardList{
+   margin: auto;
+   margin-top: 20px;
+   margin-bottom: 20px;
+   padding: 0;
+   width: 100%;
+   height: 70%;
+}
+
+.boardRow{
+	width: 100%;
+	height: 70px;
+	border-bottom: solid gray thin;
+}
+
+.btitle{
+	width: 60%; 
+	padding-left: 10px;
+}
+
+.bdate, .mainbdate, .bread {
+	text-align: right;
+}
+
+.bdate, .mainbdate, .bread {
+	text-align: right;
+}
+
+.bdateBox{
+	margin-right: 10px;
+	text-align: left;
+}
+
+.bread, .bdate, .mainbdate, .commentcount, .mnickname{
+	font-size: 14px;
+}
+.bread{
+	font-weight: bolder;
+	padding-right: 10px;
+}
+
+#cateBtn{
+	text-decoration: none;
+	color: gray;
+}
+
+#otherCateBtn{
+   width: 150px;
+   height: 30px;
+}
+
+.NoSearchList{
+	width: inherit;
+	margin: 30px 10px;
+	padding: 20px 0px;
+	text-align: center;
+	color: #88abff;
+	opacity: 0.5;
+}
+.writeBtnBox{
+   margin: 20px;
+}
+.writeBtn{
+   flex: right;
+}

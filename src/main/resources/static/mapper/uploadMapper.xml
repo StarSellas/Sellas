@@ -12,4 +12,10 @@ SET tthumbnail = 0
 WHERE timage = #{realFileName}
 </update>
 
+<select id="countThumbnail" parameterType="Map" resultType="Integer">
+SELECT COUNT(*)
+FROM tradeimage
+WHERE tno = #{tno} and tthumbnail = 0
+</select>
+
 </mapper>

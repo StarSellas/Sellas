@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+
+.review-box {
+    width: 350px;
+    height: auto;
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.logo {
+    max-width: 100%; /* 최대 너비 100% */
+    height: auto;
+    object-fit: cover;
+}
+
+.card-body  {
+	padding: 30px;
+	}
+
+
+h5 {
+	margin-top:10px;
+	font-weight: bold;
+}
+
+h6 {
+	color: gray;
+}
+
+.location {
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+
+.notYet{
+	margin-top: 50px;
+}
+
+a {
+	color: inherit;
+}
+
