@@ -26,7 +26,7 @@
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <script src="./js/jquery-3.7.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<link href="css/normaldetail.css" rel="stylesheet">
+<link href="./css/normaldetail.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="menubar.jsp" %>

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +92,7 @@ public class ChatRoomController {
 			int lastroomcheck = Integer.parseInt(String.valueOf(map.get("lastroomcheck")));
 			int searchchatroom = chatRoomService.searchChatRoom(map);
 			int tnormalstate = chatRoomService.selectTnormalstate(map);
+			String tnoname = chatRoomService.tnoName(tno);
 			String tcmessage = mnickname+ "   거래가 취소되었습니다. 자세한 사항은"+ "<a href='/'>"+"마이페이지"+"</a>"+ "에서 확인해주세요.";
 			
 			if(tnormalstate == 1) {
@@ -121,6 +123,7 @@ public class ChatRoomController {
 				model.addAttribute("emessage", emessage);
 				model.addAttribute("obuyer", obuyer);
 				model.addAttribute("tcmessage", tcmessage);
+				model.addAttribute("tnoname", tnoname);
 				return "/chat/roomdetail";
 
 			} else if(lastroomcheck == 0) {
@@ -133,6 +136,7 @@ public class ChatRoomController {
 				model.addAttribute("emessage", emessage);
 				model.addAttribute("obuyer", obuyer);
 				model.addAttribute("tcmessage", tcmessage);
+				model.addAttribute("tnoname", tnoname);
 				return "/chat/roomdetail";
 
 			}
@@ -149,7 +153,7 @@ public class ChatRoomController {
 	//판매자는 구매자에게 알람을 보내지 않아서 alarm은 없습니다.
 	@PostMapping("/alarmChat")
 	public String alarmChat(@RequestParam String roomId, Model model) {
-		System.out.println("roomId의 값은 : " + roomId);
+		//System.out.println("roomId의 값은 : " + roomId);
 		
 		// System.out.println("룸 아이디는 " + roomId); 오는거 확인했어요.
 		// System.out.println("roomId는 " + roommap.get("roomId"));
@@ -175,6 +179,7 @@ public class ChatRoomController {
 		String oseller = String.valueOf(map.get("oseller"));
 		String mnickname = chatRoomService.mNickName(oseller); //판매자 닉네임입니다.
 		String econtent = mnickname + "님이 입장하셨습니다.";
+		String tnoname = chatRoomService.tnoName(tno);
 		
 		if(tnormalstate == 1) {
 			Map<String, Object> payment = chatRoomService.selectPayment(map);
@@ -192,6 +197,7 @@ public class ChatRoomController {
 		model.addAttribute("oseller", oseller);
 		model.addAttribute("mnickname", mnickname);
 		model.addAttribute("econtent", econtent);
+		model.addAttribute("tnoname", tnoname);
 		return "/chat/roomalarm";
 	}
 	
@@ -216,6 +222,15 @@ public class ChatRoomController {
 		
 	}
 	
+	@PostMapping("/alarmcount")
+	@ResponseBody
+	public String alarmcount(@RequestParam String oseller) {
+		int roomcount = chatRoomService.alarmcount(oseller);
+		JSONObject json = new JSONObject();
+		json.put("count",roomcount);
+		return json.toString();
+	}
+	
 	//알람 리스트 페이지에 들어가면 세션을 사용해서 받아온 알람들의 acheck 값을 다 0으로 update합니다.
 	@PostMapping("/alarmcheck")
 	public void alarm(HttpSession session) {
@@ -225,6 +240,8 @@ public class ChatRoomController {
 		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
 			String muuid = String.valueOf(session.getAttribute("muuid"));
 			int setcheckzero = chatRoomService.setCheckZero(muuid);
+			JSONObject json = new JSONObject();
+			json.put("count", setcheckzero);
 		}
 	}
 

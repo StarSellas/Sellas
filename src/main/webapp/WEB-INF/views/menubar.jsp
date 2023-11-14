@@ -37,7 +37,10 @@
             <div class="container">
 	            <ul class="menubar">
 	            	<li onclick="location.href='./'"><img src="./img/home.png" class="footericon" alt="home"><div id="menu">홈</div></li>
-	            	<li onclick="location.href='#'"><img src="./img/chat.png" class="footericon" alt="chat"><div id="menu">채팅</div></li>
+	            	<li onclick="location.href='./chat/alarm'"><img src="./img/chat.png" class="footericon" id="chat" alt="chat">
+                        <!-- 알림이 오면 채팅 아이콘이 숨겨지고, 알림 아이콘이 보이게 함 -->
+                        <img src="./img/chaton.png" class="footericon" id="chaton" alt="chat" style="display: none;">
+                        <div id="menu">채팅</div></li>
 	            	<li onclick="location.href='./mypage'"><img src="./img/mypage.png" class="footericon" alt="mypage"><div id="menu">마이페이지</div></li>
 	            </ul>
             </div>
@@ -45,5 +48,59 @@
 
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../js/jquery-3.7.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+		<script>
+		let sock = new SockJS("/ws/chat");
+		let oseller = '${sessionScope.muuid}';
+		let ws0 = Stomp.over(sock);
+		
+		$(function(){
+			$.ajax({
+				url: '/chat/alarmcount',
+				type: 'post',
+				data: {oseller:oseller},
+				success:function(data) {
+		           	  
+	           	    if(data.count > 0){
+	           	    	$("#chat").hide();
+                        $("#chaton").show();
+	           	    }
+	           	    
+	           	}, error: function(error) {
+	           	}
+	           	
+	                 
+			});
+		});
+			
+			ws0.connect({}, function(frame) {
+				//console.log(frame); 정상적으로 들어옵니다.
+				ws0.subscribe("/sub0/ws/chat/user/" + oseller, function(message) {
+					let recv = JSON.parse(message.body);
+
+                    if (recv.type == 'ALARM') {
+                        // 알림이 오면 채팅 아이콘을 숨기고 알림 아이콘을 보이게 함
+                        $("#chat").hide();
+                        $("#chaton").show();
+                    } else {
+                        return false;
+                    }
+				});
+				startPing();
+			/* 	ws0.disconnect(); */
+			});
+			
+			function startPing() {
+                let imessage = "INTERVAL";
+                ws0.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({
+                    type : 'INTERVAL',
+                    sender : oseller,
+                    message : imessage
+                }));
+                setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
+            }
+		</script>
     </body>
 </html>

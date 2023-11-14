@@ -81,5 +81,10 @@ public class ChatRoomService {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.selectPayment(map);
 	}
+
+	public int alarmcount(String oseller) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.alarmcount(oseller);
+	}
 	
 }
