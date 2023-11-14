@@ -46,8 +46,8 @@
 			
 		<div class="index">	
 		<ul class="uldix">
-			<li class="my showPostList on">구매 내역</li>
-			<li class="my showCommentList">판매 내역</li>
+			<li class="my showPostList on">판매 내역</li>
+			<li class="my showCommentList">구매 내역</li>
 		</ul>
 		</div>
 		
@@ -57,6 +57,8 @@
 			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${p.tno}'">
 			<div class="btitle">${p.ttitle}</div>
 			<div class="bdate">${p.displayDate}</div>
+			<div class="timage"></div>
+			<img src="../tradeImgUpload/${p.timage}" alt="sssdsd" class="sdsd" width="100px">
 			<div class="row1">
 			<div class="setup">
 			<c:if test="${p.tauctionstate eq 0}">낙찰</c:if>
