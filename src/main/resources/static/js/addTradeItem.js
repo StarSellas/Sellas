@@ -120,8 +120,8 @@ function selectTradeType(type){
 
 			document.getElementById("normalTradeDiv").style.display = "block";
 			document.getElementById("auctionTradeDiv").style.display = "none";
-			document.getElementById("type0").setAttribute("disabled", "disabled");
-			document.getElementById("type1").removeAttribute("disabled");
+			document.getElementById("type0").classList.add("selectedType");
+			document.getElementById("type1").classList.remove("selectedType");
 			document.getElementById("tradeType").value = type;
 			break;
 
@@ -129,8 +129,8 @@ function selectTradeType(type){
 
 			document.getElementById("normalTradeDiv").style.display = "none";
 			document.getElementById("auctionTradeDiv").style.display = "block";
-			document.getElementById("type0").removeAttribute("disabled");
-			document.getElementById("type1").setAttribute("disabled", "disabled");
+			document.getElementById("type0").classList.remove("selectedType");
+			document.getElementById("type1").classList.add("selectedType");
 			document.getElementById("tradeType").value = type;
 			break;
 
