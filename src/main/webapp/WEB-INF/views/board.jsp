@@ -330,7 +330,19 @@
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	<span class="title">${mainList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${mainList.commentcount}</span>
-		                        	<div class="mnickname">${mainList.mnickname}</div>
+		                        	<div class="UserBox">
+		                        		<div class="userImgBox">
+												<c:choose>
+													<c:when test="${mainList.mphoto ne null}">
+														<img src="../userImgUpload/${mainList.mphoto}" alt="user-img" class="userImg">
+													</c:when>
+													<c:otherwise>
+														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+													</c:otherwise>
+												</c:choose>
+											</div>
+		                        		<span class="mnickname">${mainList.mnickname}</span>
+		                        	</div>
 		                        </td>
 		                       	<td class="bdate">${mainList.bdate}</td>
 		                     </tr>
@@ -347,7 +359,19 @@
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
 		                        	 <span class="title">${list.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${list.commentcount}</span>
-		                        	<div class="mnickname">${list.mnickname}</div>
+		                        	<div class="UserBox">
+		                        		<div class="userImgBox">
+												<c:choose>
+													<c:when test="${list.mphoto ne null}">
+														<img src="../userImgUpload/${list.mphoto}" alt="user-img" class="userImg">
+													</c:when>
+													<c:otherwise>
+														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+													</c:otherwise>
+												</c:choose>
+											</div>
+		                        		<span class="mnickname">${list.mnickname}</span>
+		                        	</div>
 		                        </td>
 		                        <td class="bdate">${list.bdate}</td>
 		                     </tr>
@@ -365,7 +389,19 @@
 		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
 		                        	 <span class="title">${searchList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${searchList.commentcount}</span>
-		                        	<div class="mnickname">${searchList.mnickname}</div>
+		                        	<div class="UserBox">
+		                        		<div class="userImgBox">
+												<c:choose>
+													<c:when test="${searchList.mphoto ne null}">
+														<img src="../userImgUpload/${searchList.mphoto}" alt="user-img" class="userImg">
+													</c:when>
+													<c:otherwise>
+														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+													</c:otherwise>
+												</c:choose>
+											</div>
+		                        		<span class="mnickname">${searchList.mnickname}</span>
+		                        	</div>
 		                        </td>
 		                        <td class="bdate">${searchList.bdate}</td>
 		                     </tr>

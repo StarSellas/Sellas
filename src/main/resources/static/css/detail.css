@@ -13,11 +13,14 @@
     padding: 2px 10px;
 }
 
+.WholeContainer{
+	height: 700px;
+}
 .detailContainer{
 	margin: auto;
 	padding: auto;
 	width: 90%;
-	height: 90%;
+	height: inherit;
 }
 
 .titleBox, .contentBox{
@@ -26,9 +29,15 @@
 	width: inherit;
 }
 .titleBox{
-	height: 10%;
-	border-bottom: 1px solid #dee2e6;
+	margin-bottom: 0;
+	height: 15%;
 }
+.UserBox{
+	padding: 0;
+	margin: auto;
+	height: inherit;
+}
+
 .bdate{
 	font-size: 14px;
 	color: gray;
@@ -41,27 +50,47 @@
 	color: gray;
 	flex: 1;
 }
+.userImgBox{
+	width: 24px;
+    height: 24px;
+    border-radius: 70%;
+    border: solid #e3e3e3 1px;
+    overflow: hidden;
+    float: left;
+    margin: 0 5px 3px 0;
+}
+.userImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .mnickname{
 	font-size: 14px;
 	font-weight: bold;
 	color: gray;
-	padding-left: 5px;
 	padding-bottom: 5px;
 }
 	
 .contentBox{
-	height: 30%;	
+	margin-top: 3px;
+	border-top: 1px solid #dee2e6;
+	height: 40%;	
+}
+.bcontent{
+	padding: 15px 5px;
+	height: 150px;
 }
 .bimageBox{
 	margin: 10px;
-	height: 30%;
 }
+
 .boardImgBox{
 	margin: 10px;
 	text-align: center;
 }
 .boardImg{
-	width: 300px;
+	width: 250px;
 }
 
 .bBtnBox{
@@ -103,21 +132,23 @@
 }
 
 .cWholeBtnBox{
-	width: 95%;
+	width: 100%;
 }
 .cWholeBtn{
-	width: inherit;
+	width: 100%;
 	margin: 5px;
 	padding: 5px;
 	border: none; 
 	border-radius: 15px;
 	background-color: #88abff;	
-	color: white;	
+	color: white;
+	
 }
 .commentBox{
-	margin: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	padding: 0;
-	width: inherit;
+	width: 100%;
 	display: flex;
 	align-items: flex-end; 
 	border-top: 1px solid #dee2e6;
@@ -130,12 +161,19 @@
 }
 .chead{
 	margin-bottom: 5px;
+	font-size: 14px;
+	font-weight: bold;
+    color: gray;
+    width: 100%;
 }
 .cdate{
-	margin-left: 5px;
-	font-size: 14px;
+	margin-left: 10px;
+	font-size: 13px;
 	color: gray;
 	font-weight: normal;
+}
+.content{
+	font-size: 15px;
 }
 .commentsBtn{
 	margin-left: 10px;
@@ -169,6 +207,7 @@
 	padding: 0;
 	margin-top: 20px;
 	display: flex;
+	align-items: flex-end;
 }
 .newtWriteForm{
 	width: inherit;

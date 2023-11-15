@@ -248,23 +248,25 @@
          <div class="searchBox justify-content-center">
          
 					<form action="./" method="get" class="searchFrom">
-
-						<ul class="navbar-nav">
-							<li class="nav-item dropdown"><a
-								class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
-								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<li><a class="dropdown-item searchA" href="#" data-option="title">제목</a></li>
-									<li><hr class="dropdown-divider" /></li>
-									<li><a class="dropdown-item searchA" href="#" data-option="content">내용</a></li>
-									<li><hr class="dropdown-divider" /></li>
-									<li><a class="dropdown-item searchA" href="#" data-option="writer">글쓴이</a></li>
-								</ul>
-							</li>
-						</ul>
-
-						<input type="text" name="search" class="swrite"> 
-						<input type="hidden" name="searchCate" class="searchCate" value="title">
-						<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+						<div class="searchCateBox">
+							<ul class="navbar-nav">
+								<li class="nav-item dropdown"><a
+									class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item searchA" href="#" data-option="title">제목</a></li>
+										<li><hr class="dropdown-divider" /></li>
+										<li><a class="dropdown-item searchA" href="#" data-option="content">내용</a></li>
+										<li><hr class="dropdown-divider" /></li>
+										<li><a class="dropdown-item searchA" href="#" data-option="writer">글쓴이</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+							<input type="text" name="search" class="swrite"> 
+							<input type="hidden" name="searchCate" class="searchCate" value="title">
+						<div class="swriteBtnBox">
+							<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+						</div>
 					</form>
 					
 					<input type="hidden" class="ReSearchCate" value="${searchCate }">
@@ -303,16 +305,16 @@
 	                     </div>
 	                     <!-- Product actions-->
 	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-	                        <div style="text-align: center;">
+	                        <div class="tradeState">
 	                           <c:if test="${i.tnormalstate ==0 }">
-	                               판매중
-	                               </c:if>
+	                               <span class="state_selling">판매중</span>
+	                           </c:if>
 	                           <c:if test="${i.tnormalstate ==1 }">
-	                               거래중
-	                               </c:if>
+	                               <span class="state_ing">거래중</span>
+	                           </c:if>
 	                           <c:if test="${i.tnormalstate ==2 }">
-	                               판매완료
-	                               </c:if>
+	                              <span class="state_done">판매완료</span>
+	                           </c:if>
 	                        </div>
 	                        <div class="text-center">
 	                           <a class="btn btn-outline-dark mt-auto"

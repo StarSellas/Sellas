@@ -15,7 +15,6 @@
 	align-items: flex-end;
 	flex: 1;
 }
-
 .searchFrom{
 	width: inherit;
 	display: flex;
@@ -31,7 +30,7 @@
 	width: 150px;
 	height: 40px;
 	margin: 0;
-	padding: 1px 2px 0 12px;
+	padding: 1px 2px 0 0;
 	border: none;
 }
 .swrite:focus{
@@ -48,12 +47,10 @@
 #searchIcon{
 	width: 80%;
 }
-
 .cateBox{
 	margin: 0;
 	margin-left: 10px; 
 }
-
 #navbarDropdown, #navbarSDropdown{
 	text-decoration: none;
 	color: black;
@@ -116,6 +113,25 @@
 	color: gray;
 	padding: 2px;
 	font-size: 14px;
+}
+.UserBox{
+	padding: 0;
+	margin: auto;
+	height: inherit;
+}
+.userImgBox{
+	width: 24px;
+    height: 24px;
+    border-radius: 70%;
+    border: solid #e3e3e3 1px;
+    overflow: hidden;
+    float: left;
+    margin: 0 5px 3px 0;
+}
+.userImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .bread{

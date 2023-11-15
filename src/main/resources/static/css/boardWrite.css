@@ -30,10 +30,11 @@
 }
 .btitle{
 	width: inherit;
+	height: 35px;
 }
 .bcontent{
 	width: inherit;
-	height: 200px;
+	height: 250px;
 }
 
 .bimageBox {
