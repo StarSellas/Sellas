@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>alarm</title>
 <link rel="stylesheet" type="text/css" href="../css/alarmlist.css">
-
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <style>
 .alarmroomhidden {
 	display: none; /* 숨김 */

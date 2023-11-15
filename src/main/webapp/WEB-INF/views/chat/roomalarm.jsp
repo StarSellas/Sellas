@@ -18,8 +18,7 @@
 	<script>
 	
 	$(function(){
-		
-		$(".search-bar").hide();
+	
 		$("#findword").click(function(){
 			$(".search-bar").show();
 		});
@@ -423,7 +422,7 @@
             </div>
             <div class="srch_bar">
               <div class="stylish-input-group">
-                <input type="text" class="search-bar">
+                <input type="text" class="search-bar" style="display:none;">
                 <span class="input-group-addon">
                 <i class="fa fa-search" id="findword" aria-hidden="true"></i>
                 </span> </div>

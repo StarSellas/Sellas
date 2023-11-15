@@ -1,15 +1,12 @@
 @charset "UTF-8";
-.container {
-  max-width: 1170px;
-  margin: auto;
-  max-height: 2640px;
-}
-
 img {
   max-width: 100%;
 }
 
 .inbox_people {
+	position: fixed;
+	display: fixed;
+	height: 7%;
   background: #f8f8f8 none repeat scroll 0 0;
   float: left;
   overflow: hidden;
@@ -23,7 +20,6 @@ img {
 
 .headind_srch {
   display: flex;
-  align-items: center; /* 세로 정렬 추가 */
   justify-content: space-between;
   padding: 10px 29px 10px 20px;
   overflow: hidden;
@@ -69,6 +65,12 @@ img {
   margin: 0 0 0 -27px;
 }
 
+.messaging { padding: 0 0 0 0;}
+.msg_history {
+  height: 730px;
+  overflow-y: auto;
+  padding: 30px 15px 0 25px;
+}
 .incoming_msg_img {
   display: inline-block;
   width: 6%;
@@ -95,25 +97,30 @@ img {
   font-size: 12px;
   margin: 8px 0 0;
 }
-.received_withd_msg { width: 57%;}
-.mesgs {
-  float: left;
-  padding: 30px 15px 0 25px;
-  width: 100%;
+.received_withd_msg { 
+	width: 57%;
 }
 
  .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
+  background: #88abff none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
   width:100%;
 }
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.outgoing_msg{ 
+	overflow:hidden; 
+	margin:26px 0 26px;
+}
 .sent_msg {
   float: right;
   width: 46%;
+}
+.type_msg{
+	height: 5%;
+	width: 100%;
+	display: flex;
 }
 .input_msg_write {
   display: flex;
@@ -129,22 +136,16 @@ img {
 }
 
 .write_msg {
-  flex: 1; /* 인풋 창이 남은 공간을 모두 차지하도록 함 */
+  width: 80%;
   border: medium none;
   border-radius: 10px;
   color: #4c4c4c;
   font-size: 15px;
-  min-height: 48px;
   background: #e0e0e0;
 }
 .type_msg {
 	background:#d0d0d0; 
 	position: relative;
-}
-.messaging { padding: 0 0 50px 0;}
-.msg_history {
-  height: 516px;
-  overflow-y: auto;
 }
 .TradeBtnBox{
    display: initial;

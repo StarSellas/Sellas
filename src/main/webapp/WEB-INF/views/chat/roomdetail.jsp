@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
 <title>채팅방</title>
 <link href="../css/chatroom.css" rel="stylesheet">
 <script src="../js/jquery-3.7.0.min.js"></script>
@@ -19,9 +20,9 @@
 	
 $(function(){
 		
-		$(".search-bar").hide();
+		
 		$("#findword").click(function(){
-			$(".search-bar").show();
+			$(".search-bar").css("display", "block");
 		});
 		
 		document.getElementById('messages').addEventListener('keydown', function (e) {
@@ -30,7 +31,7 @@ $(function(){
 	    	}
 		});
 		
-		document.getElementByClassName('search-bar').addEventListener('keydown', function (e) {
+		document.querySelector('.search-bar').addEventListener('keydown', function (e) {
 			if (e.key === 'Enter') {
 	    	}
 		});
@@ -416,25 +417,22 @@ $(function(){
 </script>
 </head>
 <body>
-<div class="container">
-  <div class="messaging">
-     <div class="inbox_msg">
         <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
-            <div><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+            <div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
               <div><h4>${tnoname }</h4></div>
             </div>
             <div class="srch_bar">
               <div class="stylish-input-group">
-                <input type="text" class="search-bar"  placeholder="Search" >
+                <input type="text" class="search-bar"  placeholder="Search" style="display:none;">
                 <span class="input-group-addon">
                 <i class="fa fa-search" id="findword" aria-hidden="true"></i>
                 </span> </div>
             </div>
           </div>
         </div>
-        <div class="mesgs">
+        <div class="inbox_msg">
           <div class="msg_history">
           <c:if test="${lastroomcheck eq 1 }">
           <c:forEach items="${lastchatlist }" var="lastchat">
@@ -482,9 +480,6 @@ $(function(){
               	<input type="text" class="write_msg" id="messages" />
             </div>
           </div>
-        </div>
       </div>
-    </div>
-</div>
 </body>
 </html>

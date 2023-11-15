@@ -107,7 +107,7 @@ public class NormalController {
 		// 메인(ino없)
 					if(sort == 0 && ino == 0) {
 						
-						System.out.println("sort도0, ino도0 (메인next)");
+						//System.out.println("sort도0, ino도0 (메인next)");
 						
 						map.put("searchCate", searchCate);
 				  		map.put("orderBy", "ORDER BY tno DESC");
