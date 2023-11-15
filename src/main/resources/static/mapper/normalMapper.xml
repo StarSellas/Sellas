@@ -5,7 +5,7 @@
 <select id="normalBoardList" parameterType="String" resultType="Map"> 
 SELECT *, (SELECT COUNT(*) FROM normaltradeview) as count 
 FROM normaltradeview 
-ORDER BY ttdate DESC
+ORDER BY tno DESC
 LIMIT 10 
 </select>
 
@@ -290,5 +290,20 @@ WHERE muuid = #{buyer}
 	select obuyer from onlinechat where ouuid = #{roomId} and oseller = #{pseller}
 </select>
 
+<select id="hasWish" parameterType="Map" resultType="Map">
+    SELECT wno
+    FROM wishlist
+    WHERE tno=#{tno} 
+    AND muuid=#{muuid}
+</select>
 
+<select id="SelectLastTno" resultType="Integer">
+SELECT MAX(tno) FROM normaltradeview;
+</select>
+
+<update id="normalHikeUp" parameterType="Map">
+UPDATE trade
+SET tno = #{LastTno}, tnormalhikeup = tnormalhikeup +1
+WHERE tno = #{tno}
+</update>
 </mapper>

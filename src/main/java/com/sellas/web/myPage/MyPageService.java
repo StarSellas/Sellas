@@ -2,8 +2,11 @@ package com.sellas.web.myPage;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -107,17 +110,22 @@ public class MyPageService {
 	}
 	
 	
-	public List<Map<String, Object>> getSell(String uuid) {
-		
-		
-		
-		
-		return myPageDAO.getSell(uuid);
-	}
+    public List<Map<String, Object>> getSell(String uuid) {
+        List<Map<String, Object>> sellList = myPageDAO.getSell(uuid);
+        return formatDates(sellList);
+    }
+
 
 	public List<Map<String, Object>> getBuy(String uuid) {
-		return myPageDAO.getBuy(uuid);
+		List<Map<String, Object>> buyList = myPageDAO.getBuy(uuid);
+		return formatDates(buyList);
 	}
+
+	public List<Map<String, Object>> getAucSell(String uuid) {
+		List<Map<String, Object>> aucSellList= myPageDAO.getAucSell(uuid);
+		return formatDates(aucSellList);
+	}
+
 
 	public int addWish(Map<String, Object> map) {
 		return myPageDAO.addWish(map);
@@ -128,7 +136,8 @@ public class MyPageService {
 	}
 
 	public List<Map<String, Object>> getWish(String uuid) {
-		return myPageDAO.getWish(uuid);
+		List<Map<String, Object>> wishList = myPageDAO.getWish(uuid);
+		return formatDates(wishList);
 	}
 
 	public List<Map<String, Object>> getMyPost(String uuid) {
@@ -199,7 +208,37 @@ public class MyPageService {
 	}
 
 	
+	/**
+	 * 오늘이면 시간, 아니라면 날짜를 보여주는 로직
+	 * @param currentDateTime
+	 * @param targetDateTime
+	 * @return
+	 */
+	  public boolean isToday(LocalDateTime currentDateTime, LocalDateTime targetDateTime) {
+	        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+	        return sdfDate.format(convertToDate(currentDateTime)).equals(sdfDate.format(convertToDate(targetDateTime)));
+	    }
 
-	
+	    private List<Map<String, Object>> formatDates(List<Map<String, Object>> dataList) {
+	        LocalDateTime currentDateTime = LocalDateTime.now();
+	        SimpleDateFormat sdfDateTime = new SimpleDateFormat("HH시 mm분");
+	        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+
+	        for (Map<String, Object> data : dataList) {
+	            LocalDateTime tDateTime = (LocalDateTime) data.get("tdate");
+	            String displayDate = isToday(currentDateTime, tDateTime)
+	                    ? sdfDateTime.format(convertToDate(tDateTime))
+	                    : sdfDate.format(convertToDate(tDateTime));
+	            data.put("displayDate", displayDate);
+
+	        }
+
+	        return dataList;
+	    }
+
+	    private Date convertToDate(LocalDateTime dateTime) {
+	        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+	    }
+
 
 }

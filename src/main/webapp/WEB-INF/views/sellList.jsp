@@ -49,14 +49,14 @@
 			<c:forEach items="${sellList}" var="row">
 	<c:choose>
 	<c:when test="${fn:length(sellList) gt 0 && row.hastno eq null}">
-<div class="card mb-3" style="max-width: 400px;">
+<div class="card" style="width: 330px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
-      <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
     </div>
     <div class="col-8">
       <div class="card-body">
-        <input type="hidden" value="${row.tno}">
+        <input type="hidden" class="tno" value="${row.tno}">
         <h5 class="card-title">${row.ttitle}</h5>
 		<p class="card-text">
   <p class="card-text">
@@ -64,7 +64,7 @@
     </p>
     <p class="card-text">
         <small class="text-body-secondary">
-   ${row.tdate}
+         ${row.displayDate}
         </small>
     </p>
     ${row.hastno}
@@ -77,27 +77,26 @@
 <c:when test="${row.tnormalstate == 2}">
 <c:choose>
     <c:when test="${row.rno == null}">
-        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+       <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:when>
     <c:when test="${row.rno != null && row.writeYN == 'Y'}">
-            <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+            <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기 보러가기</button>
     </c:when>
     <c:when test="${row.rno != null && row.writeYN != 'Y'}">
-     <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+     <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:when>
     <c:otherwise>
-        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:otherwise>
     </c:choose>
 </c:when>
 <c:otherwise>
- <button id="reviewBtn" value="${row.tno}" class="submitbtn reviewBtn" type="button">글 숨기기</button>
+ <button id="reviewBtn" value="${row.tno}" class="normalDeleteBtn" type="button">글 숨기기</button>
 </c:otherwise>
 </c:choose>
 </div>
 <!--   버튼 -->
 	 </c:when>
-
 <c:when test="${fn:length(sellList) gt 0 && row.hastno eq 'Y' && row.writeYN eq 'Y'}">
     <div class="card mb-3" style="max-width: 400px;">
         <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
@@ -106,14 +105,14 @@
             </div>
             <div class="col-8">
                 <div class="card-body">
-                    <input type="hidden" value="${row.tno}">
+                    <input type="hidden" class="tno" value="${row.tno}">
                     <h5 class="card-title">${row.ttitle}</h5>
                     <p class="card-text">
                         <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
                     </p>
                     <p class="card-text">
                         <small class="text-body-secondary">
-                            ${row.tdate}
+                            ${row.displayDate}
                         </small>
                     </p>
                     ${row.hastno}
@@ -122,10 +121,10 @@
             </div>
         </div>
         <!-- 버튼 -->
-        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기 보러가기</button>
     </div>
 </c:when>
-	 <c:when test="${fn:length(sellList) eq 0}">
+	     <c:when test="${empty sellList}">
 	 판매내역이 없어요.
 	 </c:when>
 	</c:choose>
@@ -142,6 +141,30 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 <script>
+
+$(".normalDeleteBtn").click(function(){
+	
+	let tno = $(event.target).val();
+	let uuid = '${sessionScope.muuid}';
+	
+	if(confirm("정말 삭제하시겠습니까?")){
+		$.ajax({
+			url : "normalDelete",
+               type : "post",
+               data : {tno : tno , muuid: uuid},
+               dataType : "json",
+               success:function(data){
+            	   if(data.deleteSuccess == 1){
+            		   alert("삭제가 완료되었습니다.");
+            		   window.location.reload();
+            	   }
+               },
+               error:function(error){
+            	   alert("실패");
+               }
+		});
+	}
+});
 </script>
 </body>
 </html>

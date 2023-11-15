@@ -28,6 +28,14 @@
 
 </head>
 <body>
+<script>
+    $(document).ready(function() {
+        let error = '${error}';
+        if (error !== '') {
+            alert(error);
+        }
+    });
+</script>
 	<!-- Navigation-->
 	 <%@ include file="menubar.jsp" %>
 	<!-- Header-->
@@ -71,7 +79,7 @@
 <div class="listdiv" onclick="location.href='./getbuy'">
 🧺 구매내역
 </div>
-<div class="listdiv" onclick="location.href='./getaction'">
+<div class="listdiv" onclick="location.href='./getauction'">
 ⌛ 경매내역
 </div>
 </div>
@@ -81,6 +89,9 @@
 📝 활동내역
 </div>
 </div>
+
+
+  <h6 class="logout" onclick="location.href='./logout'">로그아웃</h6>
 
 
 

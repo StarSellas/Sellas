@@ -60,7 +60,8 @@ SELECT COUNT(*)
 
 <select id="reviewDetail" parameterType="Map" resultType="Map">
 SELECT r.mwriter, r.mtarget, m1.mnickname as writer_nickname, m2.mnickname as target_nickname,
-       r.rcontent, r.rdate, t.ttitle, r.rno
+       r.rcontent, r.rdate, t.ttitle, r.rno, t.tno,
+       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM review r
 JOIN payment p ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
@@ -71,7 +72,8 @@ WHERE p.pno IN (SELECT pno FROM review WHERE rno=#{rno}) AND r.mtarget=#{uuid};
 
 <select id="reviewDetailByMe" parameterType="Map" resultType="Map">
 SELECT r.mwriter, r.mtarget, m1.mnickname as writer_nickname, m2.mnickname as target_nickname,
-       r.rcontent, r.rdate, t.ttitle
+       r.rcontent, r.rdate, t.ttitle, t.tno,
+       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM review r
 JOIN payment p ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
@@ -89,7 +91,7 @@ FROM trade t
 JOIN tradeimage ti ON t.tno = ti.tno
 LEFT JOIN payment p ON t.tno = p.tno
 LEFT JOIN review r ON r.pno = p.pno
-WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0;
+WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0 AND tnormalstate != 3;
 </select>
 
 
@@ -105,12 +107,31 @@ WHERE pbuyer =#{uuid} AND pstate = 0 AND ti.tthumbnail = 0;
 </select>
 
 
+
+<select id="getAucSell" parameterType="String" resultType="Map">
+SELECT t.*, r.*, ti.timage, a.abidprice,
+       CASE WHEN r.mwriter=#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
+       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
+FROM trade t
+JOIN tradeimage ti ON t.tno = ti.tno
+LEFT JOIN payment p ON t.tno = p.tno
+LEFT JOIN review r ON r.pno = p.pno
+LEFT JOIN (
+    SELECT tno, MAX(ano) as max_ano
+    FROM auctionhistory
+    GROUP BY tno
+) a_max ON a_max.tno = t.tno
+LEFT JOIN auctionhistory a ON a.tno = a_max.tno AND a.ano = a_max.max_ano
+WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0 AND ttype = 1;
+</select>
+
+
 <select id="getWish" parameterType="String" resultType="Map">
 SELECT w.wno, w.muuid, t.tno, t.ttitle, t.tdate, t.tnormalprice, t.tnormalstate, ti.timage
 FROM wishlist w
 JOIN trade t ON w.tno = t.tno
 JOIN tradeimage ti ON t.tno = ti.tno
-WHERE w.muuid =#{uuid} AND ti.tthumbnail = 0
+WHERE w.muuid =#{uuid} AND (ti.tthumbnail = 0 OR ti.timage IS NULL)
 </select>
 
 

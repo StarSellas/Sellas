@@ -6,6 +6,7 @@
     direction: rtl;
     border:0;
     width: 100%;
+    margin-top: 5px;
 }
 
 #rateResponse {
@@ -13,6 +14,7 @@
     direction: rtl;
     border:0;
     width: 100%;
+    margin-top: 5px;
 }
 
 #rateManner {
@@ -20,6 +22,7 @@
     direction: rtl;
     border:0;
     width: 100%;
+    margin-top: 5px;
 }
 
 #ratePromise input[type=radio]{
@@ -63,7 +66,50 @@
     resize: none;
 }
 
+.writeReview{
+	margin-top: 40px;
+	text-align: center;
+}
+
+
 
 .question {
 	margin-top: 20px;
+	text-align: center;
+	border: solid 1.5px #D3D3D3;
+    border-radius: 5px;
+    padding-top: 20px;
+}
+
+.explain-div{
+    white-space: nowrap;
+    padding: 0;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.explain-div > div {
+    display: inline-block;
+    margin-right: 5px;
+     font-size: 12px;
+	 color: gray;
+}
+
+
+.reviewSubmit{
+	width: 150px;
+	height: 40px;
+	background-color: white;
+	border: 1px solid #88abff ;
+	box-shadow: 0 0 7px #88abff , 0 0 10px #fff, 0 0 21px #fff;
+	border-radius: 5px;
+	}
+	
+	form {
+    text-align: right;
+}
+
+.reviewSubmit {
+    margin-top: 20px;
+ 
 }
