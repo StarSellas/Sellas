@@ -88,5 +88,11 @@ public interface NormalDAO {
 
 	List<Map<String, Object>> nextsortNormalList(Map<String, Object> map);
 
+	int normalHikeUp(Map<String, Object> map);
+
+	int SelectLastTno();
+
+	
+
 
 }
