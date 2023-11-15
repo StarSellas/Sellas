@@ -67,4 +67,14 @@ public class TradeController {
 
 		return json.toString();
 	}
+	
+	/* 거래 진행 */
+	
+	// 잔액 확인 필요 시 ajax 요청
+	@ResponseBody
+	@GetMapping("/checkBalance")
+	public boolean checkBalance(@RequestParam int price) {
+		
+		return tradeService.checkBalance(price);
+	}
 }
