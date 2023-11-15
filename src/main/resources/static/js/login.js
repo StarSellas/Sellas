@@ -6,20 +6,36 @@ function login() {
 	var id = document.getElementById("id").value;
 	var pw = document.getElementById("pw").value;
 	
-	$.ajax({
-		url : "./login",
-		method : "post",
-		data : {id : id, pw : pw},
-		dataType : "json",
-		success : function(result){
-			if(result){
-				window.location.href = '/';
-			} else{
-				
+	if(id == null || id == ""){
+		document.getElementById("id").classList.add("is-invalid");
+		document.getElementById("pw").classList.remove("is-invalid");
+	} else if(pw == null || pw == "") {
+		document.getElementById("id").classList.remove("is-invalid");
+		document.getElementById("pw").classList.add("is-invalid");
+	} else {
+		document.getElementById("id").classList.remove("is-invalid");
+		document.getElementById("pw").classList.remove("is-invalid");
+	
+		$.ajax({
+			url : "./login",
+			method : "post",
+			data : {id : id, pw : pw},
+			dataType : "json",
+			success : function(result){
+				if(result){
+					window.location.href = '/';
+				} else{
+					document.getElementById("id").classList.add("is-invalid");
+					document.getElementById("pw").classList.add("is-invalid");
+					document.getElementById("pw").value = "";
+					document.getElementById("errorMessage").textContent="아이디 또는 비밀번호를 확인 후 다시 입력하세요";
+					document.getElementById("errorMessage").style.color="red";
+				}
+			},
+			error : function(error){
+				alert("ERROR : " + JSON.stringify(error));
 			}
-		},
-		error : function(error){
-			alert("ERROR : " + JSON.stringify(error));
-		}
-	});
+		});
+	
+	}
 }

@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.page {
+	margin: 100px 0px;
+}
+
+#content {
+	height: 300px;
+}
+
+.categoryOption {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
