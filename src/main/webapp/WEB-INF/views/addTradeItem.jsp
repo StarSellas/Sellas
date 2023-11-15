@@ -312,7 +312,7 @@ $.imagePicker2 = function () {
          mode: "MULTI",
          media: "PHOTO",
          maxCount : 4,
-         // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+         path: "/media",
          column: 3,
          callback: (status, result) => {
             resolve({ status, result })             
@@ -391,9 +391,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          let title = $("input[name='title']").val();
          let content = $("textarea[name='content']").val();
          let locationLat = $("input[name='locationLat']").val();
-          locationLat = 37.51288350623703;
          let locationLng = $("input[name='locationLng']").val();
-         locationLng = 127.06480017558535;
 
          let tradeType = $("input[name='tradeType']").val();
          let normalPrice = $("input[name='normalPrice']").val();
