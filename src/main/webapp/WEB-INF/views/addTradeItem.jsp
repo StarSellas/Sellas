@@ -134,8 +134,8 @@ $(function() {
 				</h2>
 				<div id="collapsePhoto" class="accordion-collapse collapse">
 					<div class="accordion-body">
-						<button id="picker2"><img src="../img/image.png" width="38"></button>
-						<button id="camera"><img src="../img/camera.png" width="38"></button>
+						<button id="picker2" type="button"><img src="../img/image.png" width="38"></button>
+						<button id="camera" type="button"><img src="../img/camera.png" width="38"></button>
 					</div>
 					<!-- TODO : 미리보기 -->
 					<div id="box"></div>
