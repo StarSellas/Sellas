@@ -16,17 +16,26 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 	<script>
-	$(function(){
+	
+$(function(){
+		
 		$(".search-bar").hide();
-		$("#searchButton").click(function(){
+		$("#findword").click(function(){
 			$(".search-bar").show();
 		});
+		
 		document.getElementById('messages').addEventListener('keydown', function (e) {
 			if (e.key === 'Enter') {
 	        	sendMessage();
 	    	}
 		});
+		
+		document.getElementByClassName('search-bar').addEventListener('keydown', function (e) {
+			if (e.key === 'Enter') {
+	    	}
+		});
 	});
+	
 	let sock = new SockJS("/ws/chat");
 	let emessage = '${emessage}'; //입장 메시지
 	//console.log("emessage : " + emessage);
@@ -210,12 +219,13 @@
 		}));
 		setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
 	};
+	
 	$(function() {
-		$(".tradeRequest").hide();
+		$("#tradeRequest").hide();
 		$(".tradeAcceptOrCancel").hide();
 		
 		
-		$(".tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
+		$("#tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
 			$.ajax({
 				url : '/compareamounts',
 				type : 'post',
@@ -227,40 +237,40 @@
 				success : function(data) { //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
 					if (data.comparecount == 1) {
 						trade = 1;
-						$(".tradeRequest").show();
+						$("#tradeRequest").show();
 						$("#tradeok").hide();
-						let inputElement = $(".form-control");
+						let inputElement = $(".write_msg");
 
 						// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
 						inputElement.attr("placeholder", "거래금액을 입력해주세요");
 						
-							$(".tradeRequest").click(function(){
-								console.log(data.obuyeramounts);
-								if(data.obuyeramounts < $(".form-control").val()){
+							$("#tradeRequest").click(function(){
+								//console.log(data.obuyeramounts);
+								if(data.obuyeramounts < $(".write_msg").val()){
 									alert("제시한 금액이 현재 금액보다 많습니다.");
 									return false;
 								}else{
-									let messageInput = document.getElementById('message');
+									let messageInput = document.getElementById('messages');
 									let message = messageInput.value;
 
 									if (message === "") { // 공백을 제거하지 않음
 										return;
 									}
 						
-									$(".tradeCancel").click(function(){
-						    			$(".tradeCancel").hide();
+									$("#tradeCancel").click(function(){
+						    			$("#tradeCancel").hide();
 						        		var reasonInput = document.createElement("input");
 						        	    reasonInput.type = "text";
 						        	    reasonInput.name = "cancellationReason";
 						        	    reasonInput.placeholder = "취소 사유를 입력하세요";
 						        	    reasonInput.className = "cancellation-reason"; 
 						        	    // 생성한 input 태그를 페이지에 추가
-						        	    $(".input-group").append(reasonInput);
+						        	    $(".input_msg_write").append(reasonInput);
 						        	 // 동적으로 버튼을 생성하고 추가
 						        	    var cancelButton = document.createElement("button");
 						        	    cancelButton.textContent = "거래 취소하기"; // 버튼에 표시할 텍스트
 						        	    cancelButton.className = "cancelbtn"; // 클래스 추가
-						        	    $(".input-group").append(cancelButton);
+						        	    $(".input_msg_write").append(cancelButton);
 
 						        	});// $(".recieveCancelled").click(function()끝
 						        	
@@ -309,14 +319,12 @@
 											requestMoney : message
 										// 숫자로 변환한 값을 전송합니다.
 										}));
-										
-										$("#sendBtn").show();
-										$(".tradeRequest").hide();
-										$(".tradeok").hide();
+										$("#tradeRequest").hide();
+										$("#tradeok").hide();
 										
 										trade = 0;
 										messageInput.value = '';
-										let inputElement = $(".form-control");
+										let inputElement = $(".write_msg");
 
 										// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
 										inputElement.attr("placeholder", "");
@@ -337,7 +345,7 @@
 			});
 		});
 
-		$(".tradeno").click(function() { //거래취소 눌렀을 때 실행할 함수입니다.
+		$("#tradeno").click(function() { //거래취소 눌렀을 때 실행할 함수입니다.
 			trade = 2;
 			let nomessage = sender + "님이 거래를 취소하셨습니다.";
 			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
@@ -349,7 +357,7 @@
 			}));
 		});
 		
-		$(".tradeAccept").click(function(){
+		$("#tradeAccept").click(function(){
 			$.ajax({
 				url : "/recieveChecked",
 				type : "post",
@@ -388,6 +396,7 @@
 			});
 		})	
 	});
+		
 	$(function(){
         $(".xi-plus").click(function(){
            
@@ -403,31 +412,13 @@
            }
         });
      });
+	
 </script>
 </head>
 <body>
-	<%-- 
-			<c:if test="${tnormalstate ==0 }">
-			<div class="trade-buttons">
-				<button class="tradeok" type="button">금액제시</button>
-				<button class="tradeRequest" type="button">제시하기</button>
-			</div>
-			</c:if>
-			<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-				<div class="tradeAcceptOrCancel2">
-					<button class="tradeAccept" type="button">수령완료</button>
-					<button class="tradeCancel" type="button">거래취소</button>
-				</div>
-			</c:if>
-				<div class="tradeAcceptOrCancel">
-					<button class="tradeAccept" type="button">수령완료</button>
-					<button class="tradeCancel" type="button">거래취소</button>
-				</div>
-		</div>
-	</div> --%>
-	<div class="container">
-	<div class="messaging">
-      <div class="inbox_msg">
+<div class="container">
+  <div class="messaging">
+     <div class="inbox_msg">
         <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
@@ -438,7 +429,7 @@
               <div class="stylish-input-group">
                 <input type="text" class="search-bar"  placeholder="Search" >
                 <span class="input-group-addon">
-                <button type="button" id="searchButton"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                <i class="fa fa-search" id="findword" aria-hidden="true"></i>
                 </span> </div>
             </div>
           </div>
@@ -472,13 +463,21 @@
             	<div class="toggleBtnBox"><i class="xi-plus"></i></div>
               	<div class="otherBtnBox hide">
               		<c:if test="${tnormalstate ==0 }">
-                		<button id="tradeok">금액제시</button>
-                      	<button id="tradeRequest">제시하기</button>
+              			<div class="trade-buttons">
+                			<button id="tradeok">금액제시</button>
+                      		<button id="tradeRequest">제시하기</button>
+                      	</div>
                 	</c:if>
                 	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-                		<button id="tradeAccept">수령완료</button>
-                      	<button id="tradeCancel">거래취소</button>
+                		<div class="tradeAcceptOrCancel2">
+                			<button id="tradeAccept">수령완료</button>
+                      		<button id="tradeCancel">거래취소</button>
+                      	</div>
                 	</c:if>
+                	<div class="tradeAcceptOrCancel">
+						<button id="tradeAccept">수령완료</button>
+                      	<button id="tradeCancel">거래취소</button>
+					</div>
                 </div>
               	<input type="text" class="write_msg" id="messages" />
             </div>
@@ -486,6 +485,6 @@
         </div>
       </div>
     </div>
-	</div>
+</div>
 </body>
 </html>

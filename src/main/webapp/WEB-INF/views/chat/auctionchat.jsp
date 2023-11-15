@@ -11,17 +11,31 @@
 <script src="../js/jquery-3.7.0.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 	<script>
-	$(function(){
+	
+$(function(){
+		
 		$(".search-bar").hide();
-		$("#searchButton").click(function(){
+		$("#findword").click(function(){
 			$(".search-bar").show();
 		});
+		
+		document.getElementById('messages').addEventListener('keydown', function (e) {
+			if (e.key === 'Enter') {
+	        	sendMessage();
+	    	}
+		});
+		
+		document.getElementByClassName('search-bar').addEventListener('keydown', function (e) {
+			if (e.key === 'Enter') {
+	    	}
+		});
 	});
+	
 	let sock = new SockJS("/ws/chat");
 	let emessage = '${emessage}'; //입장 메시지
 	//console.log("emessage : " + emessage);
@@ -90,10 +104,6 @@
 				}));
 				trade = 0;
 				messageInput.value = '';
-				let inputElement = $(".form-control");
-
-				// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
-				inputElement.attr("placeholder", "");
 			} else {
 				// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
 				alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
@@ -223,8 +233,8 @@
 					if (data.comparecount == 1) {
 						trade = 1;
 						$(".tradeRequest").show();
-						$("#sendBtn").hide();
-						let inputElement = $(".form-control");
+						$("#tradeok").hide();
+						let inputElement = $(".write_msg");
 
 						// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
 						inputElement.attr("placeholder", "거래금액을 입력해주세요");
@@ -235,7 +245,7 @@
 									alert("제시한 금액이 현재 금액보다 많습니다.");
 									return false;
 								}else{
-									let messageInput = document.getElementById('message');
+									let messageInput = document.getElementById('messages');
 									let message = messageInput.value;
 
 									if (message === "") { // 공백을 제거하지 않음
@@ -250,12 +260,12 @@
 						        	    reasonInput.placeholder = "취소 사유를 입력하세요";
 						        	    reasonInput.className = "cancellation-reason"; 
 						        	    // 생성한 input 태그를 페이지에 추가
-						        	    $(".input-group").append(reasonInput);
+						        	    $(".input_msg_write").append(reasonInput);
 						        	 // 동적으로 버튼을 생성하고 추가
 						        	    var cancelButton = document.createElement("button");
 						        	    cancelButton.textContent = "거래 취소하기"; // 버튼에 표시할 텍스트
 						        	    cancelButton.className = "cancelbtn"; // 클래스 추가
-						        	    $(".input-group").append(cancelButton);
+						        	    $(".input_msg_write").append(cancelButton);
 
 						        	});// $(".recieveCancelled").click(function()끝
 						        	
@@ -292,10 +302,7 @@
 						        	        }
 						        	    });
 						        	});
-									
-									
-									
-									
+						        	
 									if (!isNaN(message)) {
 										// ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
 										ws.send("/pub/ws/chat/message", {}, JSON.stringify({
@@ -308,27 +315,21 @@
 										// 숫자로 변환한 값을 전송합니다.
 										}));
 										
-										$("#sendBtn").show();
 										$(".tradeRequest").hide();
 										$(".tradeok").hide();
 										
 										trade = 0;
 										messageInput.value = '';
-										let inputElement = $(".form-control");
+										let inputElement = $(".write_msg");
 
 										// 'placeholder' 속성을 변경하여 원하는 메시지를 설정합니다.
 										inputElement.attr("placeholder", "");
 									} else {
 										// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
 										alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
-									}
-									
-									
+									}	
 								}
-							})
-						
-						
-						
+							});
 					} else {
 						alert("충전금액이 부족합니다.");
 						location.href = '../fillPay';
@@ -364,7 +365,6 @@
     					location.href='/';
     				}
     				
-    				
     				if(data.tradesuccess==1){
     					ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 							type : 'TRADEACCEPT',
@@ -377,6 +377,7 @@
     					$(".tradeAcceptOrCancel").hide();
     				alert("수락이 완료되었습니다. 상대방의 수락을 기다리고 있습니다.");
     				}
+    				
     				if(data.tradeAllSuccess == 1){
     					ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 							type : 'TRADECOMPLETE',
@@ -385,83 +386,48 @@
 							mnickname : mnickname,
 							message : "거래가 완료되었습니다.",
 						}));
-    					
     				}
 				},
 				error : function(error){
 					alert("에러가 발생했습니다." + error);
 				}
-				
-				
-				
 			});
-			
-		})
-		
-		
+		});	
 	});
+		
+	$(function(){
+        $(".xi-plus").click(function(){
+           
+           $(".otherBtnBox").toggle(800);   // 속도조절
+           $(".toggleBtnBox").toggleClass("btnClicked");   // 버튼위로이동
+           $(".otherBtnBox").toggleClass("hide");
+           
+           if($(".toggleBtnBox").hasClass("btnClicked")){
+              $(".otherBtnBox").addClass("tBtnBox");
+              
+           } else {
+              $(".otherBtnBox").removeClass("tBtnBox");
+           }
+        });
+     });
 	
 </script>
-
-
 </head>
 <body>
-	<%-- <div class="container">
-		<div class="recordchat">
-			<!-- 과거 대화목록 불러옵니다. -->
-			<c:if test="${lastroomcheck eq 1 }">
-				<c:forEach items="${lastchatlist }" var="lastchat">
-					<c:choose>
-						<c:when test="${lastchat.chatnick eq mnickname }">
-							<div>${lastchat.chatnick }-${lastchat.dcontent }</div>
-						</c:when>
-						<c:otherwise>
-							<div>${lastchat.dcontent }-${lastchat.chatnick }</div>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</c:if>
-		</div>
-		<div id="realtimechat"></div>
-		<div class="input-group">
-			<input type="text" class="form-control" id="message">
-			<div class="input-group-append">
-				<button class="btn btn-primary" type="button"
-					onclick="sendMessage()" id="sendBtn">
-					보내기 <i class="bi bi-chevron-right"></i>
-				</button>
-			</div>
-			<c:if test="${tnormalstate ==0 }">
-			<div class="trade-buttons">
-				<button class="tradeok" type="button">금액제시</button>
-				<button class="tradeRequest" type="button">제시하기</button>
-			</div>
-			</c:if>
-			<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-				<div class="tradeAcceptOrCancel2">
-					<button class="tradeAccept" type="button">수령완료</button>
-					<button class="tradeCancel" type="button">거래취소</button>
-				</div>
-			</c:if>
-				<div class="tradeAcceptOrCancel">
-					<button class="tradeAccept" type="button">수령완료</button>
-					<button class="tradeCancel" type="button">거래취소</button>
-				</div>
-		</div>
-	</div> --%>
 	<div class="container">
 <div class="messaging">
       <div class="inbox_msg">
         <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
-              <h4>${tnoname }</h4>
+            <div><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+              <div><h4>${tnoname }</h4></div>
             </div>
             <div class="srch_bar">
               <div class="stylish-input-group">
                 <input type="text" class="search-bar"  placeholder="Search" >
                 <span class="input-group-addon">
-                <button type="button" id="searchButton"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                <i class="fa fa-search" id="findword"aria-hidden="true"></i>
                 </span> </div>
             </div>
           </div>
@@ -492,8 +458,14 @@
           </div>
           <div class="type_msg">
             <div class="input_msg_write">
-              <input type="text" class="write_msg" id="messages" />
-              <button class="msg_send_btn" type="button" onclick="sendMessage()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+            	<div class="toggleBtnBox"><i class="xi-plus"></i></div>
+              	<div class="otherBtnBox hide">
+                	<div class="tradeAcceptOrCancel">
+						<button id="tradeAccept">수령완료</button>
+                      	<button id="tradeCancel">거래취소</button>
+					</div>
+                </div>
+              	<input type="text" class="write_msg" id="messages" />
             </div>
           </div>
         </div>

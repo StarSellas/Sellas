@@ -210,9 +210,28 @@ public class ChatRoomController {
 		
 		List<Map<String, Object>> alarmlist = chatRoomService.alarmList(muuid); //로그아웃해 있던 동안 쌓인 알림 리스트 받아옵니다.
 		
-		System.out.println("알림 리스트: " + alarmlist);
+		//System.out.println("알림 리스트: " + alarmlist);
 		
 		model.addAttribute("alarmlist", alarmlist); //alarmlist(방의 uuid와 alarm 내용을 alarmlist)라는 이름으로 모델로 보냅니다.
+		
+		List<Map<String, Object>> chatroomlist = chatRoomService.chatRoomList(muuid); //ouuid와 tno, oseller, obuyer 가져옵니다.
+		
+		for (int n = 0; n < chatroomlist.size(); n++) {
+		    // chatroomlist에서 n번째 chatroom 맵을 가져옴
+		    Map<String, Object> chatroom = chatroomlist.get(n);
+
+		    // chatroom 맵에 ttitle 키가 없다면, tno를 사용하여 trade 테이블에서 ttitle 조회
+		    if (!chatroom.containsKey("ttitle")) {
+		        Integer tno = (Integer) chatroom.get("tno");
+		        String ttitle = chatRoomService.getTtitleByTno(tno);
+
+		        // 조회된 ttitle을 chatroom 맵에 추가
+		        chatroom.put("ttitle", ttitle);
+		        chatroomlist.set(n, chatroom);
+		    }
+		}
+		
+		model.addAttribute("chatroomlist", chatroomlist);
 		
 		return "/chat/alarm"; //알람리스트 페이지입니다.
 		
@@ -233,14 +252,33 @@ public class ChatRoomController {
 	
 	//알람 리스트 페이지에 들어가면 세션을 사용해서 받아온 알람들의 acheck 값을 다 0으로 update합니다.
 	@PostMapping("/alarmcheck")
-	public void alarm(HttpSession session) {
+	@ResponseBody
+	public String alarm(HttpSession session) {
 		
 		//System.out.println("muuid는 " + muuid);
 		
 		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+			
 			String muuid = String.valueOf(session.getAttribute("muuid"));
 			int setcheckzero = chatRoomService.setCheckZero(muuid);
+			
+			JSONObject json = new JSONObject();
+			
+			if(setcheckzero > 0) {
+				
+				json.put("check", 1);
+				
+			} else {
+				
+				json.put("check", 0);
+				
+			}
+			
+			return json.toString();
+			
 		}
+		
+		return "/";
 	}
 	
 	@PostMapping("/auctionchat")

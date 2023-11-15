@@ -7,39 +7,57 @@
 <head>
 <meta charset="UTF-8">
 <title>alarm</title>
+<link rel="stylesheet" type="text/css" href="../css/alarmlist.css">
+
 <style>
-        .alarmroomhidden {
-            display: none; /* 숨김 */
-        }
-    </style>
-    <script src="../js/jquery-3.7.0.min.js"></script>
+.alarmroomhidden {
+	display: none; /* 숨김 */
+}
+.roomId{
+	display: none;
+}
+</style>
+<script src="../js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 <!-- 일단 alarm 클래스 클릭하면 가상폼써서 requestChat으로 넘어가고, 가져갈 것은 ouuid, oseller, obuyer, tno. 그 다음이 realtimealarm에 실시간 알람 뿌리기  -->
-<div class="realtimealarm">
+<div class="alarmdomain">
+<div><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+	<div class="realtimealarm"></div>
+	<div>
+    	<c:if test="${not empty alarmlist}">
+        	<c:forEach items="${alarmlist}" var="alarm">
+        		<div>
+            		<div class="alarmcontent">${alarm.dcontent}</div><!-- 얘를 클릭하면 채팅룸(roomalarm)으로 가고 밑에 ouuid를 가진 웹소켓 서버와 연결됩니다. -->
+            		<div class="alarmroomhidden">${alarm.ouuid }</div><!-- 얘는 안보여줍니다. -->
+       	 		</div>
+        	</c:forEach>
+    	</c:if>
+	</div>
 </div>
-    
-    <c:if test="${not empty alarmlist}">
-        <c:forEach items="${alarmlist}" var="alarm">
-        <div>
-            <div class="alarmcontent">${alarm.dcontent}</div><!-- 얘를 클릭하면 채팅룸(roomalarm)으로 가고 밑에 ouuid를 가진 웹소켓 서버와 연결됩니다. -->
-            <div class="alarmroomhidden">${alarm.ouuid }</div><!-- 얘는 안보여줍니다. -->
-        </div>
-        </c:forEach>
-        </c:if>
-   
+<div class="chatroomlist">
+	<c:forEach items="${chatroomlist }" var="chatroomlist">
+		<div>
+			<div class="productname">${chatroomlist.ttitle }</div>
+			<div class="roomId">${chatroomlist.ouuid }</div>
+		</div>
+	</c:forEach>
+</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script type="text/javascript">
     $(function(){
+    	
+    	$(".roomId").hide();
+    	
     	$.ajax({ //acheck를 1에서 0으로 수정하는 ajax입니다.
     		url: '/chat/alarmcheck',
     		type: 'post',
     		success : function(data){
-    			
+    			console.log("성공");
     		},
     		error : function(error){
-    			
+    			console.log("error: ", error);
     		}
     	});
     });
@@ -98,6 +116,7 @@
                     } else {
                         return false;
                     }
+                    ws.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message, Recipient: muuid}));
                     startPing(); //웹소켓 연결이 끊기지 않게 30초에 한번씩 자동으로 메시지를 보내는 메소드입니다.
                 });
             }); 
@@ -119,7 +138,7 @@
         
        $(function(){
         	$(".alarmcontent0").click(function(){ //위에서 연결한 웹소켓으로 온 실시간 알람을 클릭하면 판매자 채팅룸(roomalarm.jsp)으로 이동하는 코드입니다.
-        		var roomId = $(this).nextAll(".alarmhidden").text();
+        		var roomId = $(this).nextAll(".alarmhidden").val();
         		var form = document.createElement("form"); 
                 form.setAttribute("action", "/chat/alarmChat");
                 form.setAttribute("method", "post");
@@ -137,9 +156,29 @@
         
         function startPing(){
         	let message = "INTERVAL";
-        	ws.send("/pub/ws/chat/message/" + muuid, {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message, Recipient: muuid}));
+        	ws.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message, Recipient: muuid}));
         	setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
         };
+        
+        $(function(){
+        	$(".productname").click(function(){
+        		
+    			var roomId = $(this).nextAll(".roomId").text();
+    			
+    			let form = document.createElement("form"); 
+                form.setAttribute("action", "/chat/alarmChat");
+                form.setAttribute("method", "post");
+                
+                let ouuidInput = document.createElement("input");
+                ouuidInput.setAttribute("type", "hidden");
+                ouuidInput.setAttribute("name", "roomId");
+                ouuidInput.setAttribute("value", roomId); 
+                form.appendChild(ouuidInput);
+                
+                document.body.appendChild(form); 
+               	form.submit();
+        	});
+        });
     </script>
 </body>
 </html>
