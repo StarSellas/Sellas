@@ -53,6 +53,7 @@
 			max-height: 100%;
 		}
 		</style>
+
 <!--
 <script type="text/javascript">
 var loading = "";
@@ -133,9 +134,10 @@ $(function() {
 				</h2>
 				<div id="collapsePhoto" class="accordion-collapse collapse">
 					<div class="accordion-body">
-						<button id="picker2"><img src="../img/image.png" width="38"></button>
-						<button id="camera"><img src="../img/camera.png" width="38"></button>
+						<button id="picker2" type="button"><img src="../img/image.png" width="38"></button>
+						<button id="camera" type="button"><img src="../img/camera.png" width="38"></button>
 					</div>
+					<!-- TODO : 미리보기 -->
 					<div id="box"></div>
 					<div id="progress"></div>
 					<div id="upload-box"></div>
@@ -175,7 +177,7 @@ $(function() {
 		</div>
 
 		<div class="form-floating">
-			<button type="button" id="addTradeItemBtn">확인</button>
+			<button class="endTypeButton" type="button" id="addTradeItemBtn">확인</button>
 		</div>
 
 	</div>
@@ -196,15 +198,18 @@ $(function() {
 					<div id="collapseLocaiton" class="accordion-collapse collapse">
 						<div class="accordion-body">
 							<c:forEach var="locationList" items="${locationList }">
-								<div class="form-floating">
+								<div>
 									<div class="locationButtonDiv">
 										<div class="locationNameDiv"><div>${locationList.lname }</div></div>
-										<button class="locationButton" type="button" onclick="selectLocation('${locationList.lname}')">선택</button>
+										<button class="locationButton" type="button" onclick="selectLocation('${locationList.lname}')">선택<!-- img src="../img/location.png" width="25" --></button>
 										<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
 										<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
 									</div>
 								</div>
 							</c:forEach>
+							<div class="addLocationDiv">
+								<a class="text" href="./addTradeLocation">내 장소 등록하기</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -213,7 +218,7 @@ $(function() {
 				<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
 			</div>
 			<div class="form-floating">
-				<button type="button" onclick="showPage('page1')">선택 완료</button>
+				<button class="endTypeButton" type="button" onclick="showPage('page1')">선택 완료</button>
 			</div>
 		</div>
 
@@ -429,7 +434,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
               
               
    $("#addTradeItemBtn").click(function(){
-         let category = $("select[name='category']").val();
+         let category = $("input[name='category']").val();
          let title = $("input[name='title']").val();
          let content = $("textarea[name='content']").val();
          let locationLat = $("input[name='locationLat']").val();
