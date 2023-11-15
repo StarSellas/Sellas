@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+button {
+	width: 350px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
+}
+
+.page {
+	margin: 200px 0px;
+}
+
+.form-floating {
+	margin: 0px auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 350px !important;
+	text-align: center;
+}
+
+.text {
+	text-decoration: none;
+}
+
+.idDiv {
+	font-size: 40px;
+	font-weight: bold;
+	color: #88abff;
+	margin-bottom: 50px;
+}
+
+#sendCode {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 70px;
+	height: 50px;
+	border: 0px;
+	margin-bottom: 10px;
+}

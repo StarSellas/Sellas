@@ -81,7 +81,7 @@
 				</div>
 			<div class=nickname>${review.mnickname}</div>
 			<div class="content">${review.rcontent}</div>
-			<div class="date">${review.rdate}</div>
+			<div class="date">${review.displayDate}</div>
 			</div>
 			</c:forEach>
 				</div>

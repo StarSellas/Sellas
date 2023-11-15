@@ -83,14 +83,10 @@ height: 50px;
 
 
 .edit-div {
-	 position: relative;
+	position: relative;
 	margin: 0 auto;
 	margin-top: 50px;
-}
-
-.camera{
-text-align: center;
-margin-top: 10px;
+	text-align: center;
 }
 
 
@@ -98,4 +94,57 @@ h6{
 		margin-left: 40px;
 		font-weight: bold;
 		margin-top: 20px;
+}
+
+
+
+.hide{
+    display: none !important;
+ }
+
+
+.picChange{
+	background-color: white;
+	color: #2478ff;
+	border: none;
+}
+
+
+.toggleBtnBox{
+display: inline-block;
+}
+
+
+#picker2, #camera{
+   width: 120px;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px 5px;
+   font-size: 13px;
+}
+
+.btnClicked{
+   transition: transform 0.5s ease;
+}
+
+
+.otherBtnBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#bwriteButton{
+	width: 100px;
+	height: 40px;
+	background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px 5px;
+}
+
+.bwriteButton{
+  text-align: center;
 }

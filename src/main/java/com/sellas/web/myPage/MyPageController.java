@@ -32,20 +32,15 @@ public class MyPageController {
 
 	@GetMapping("/mypage")
 	public String myPage(Model model, HttpSession session) {
+
 		
 		if(!util.checkLogin()) {
-			return "redirect/login";
+			return "/login";
 		}
-		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
 		
 		//세션에 저장된 uuid를 가지고 멤버조회
 		Map<String, Object> member = myPageService.memberInfo(uuid);
-		
-		//일치하는 정보가 없다면
-		if(member == null) {
-			return "login";
-		}
 		
 		 model.addAttribute("nickname", session.getAttribute("mnickname"));
 		 model.addAttribute("exp", member.get("mpoint"));
@@ -141,7 +136,7 @@ public class MyPageController {
 		   //사용자정보와 이미지경로를 담는다.
 		   Map<String, Object> memberphoto = new HashMap<String, Object>();
 		   
-		   memberphoto.put(uuid, memberphoto);
+		   memberphoto.put("uuid", uuid);
 		   memberphoto.put("mphoto", mphoto);
 		   
 		   int result = myPageService.photoModify(memberphoto);
@@ -324,7 +319,7 @@ public class MyPageController {
 		
 	}
 	
-	//TODO 경매내역
+	//경매내역
 	@GetMapping("getauction")
 	public String getAuction(Model model, HttpSession session) {
 		
@@ -334,8 +329,12 @@ public class MyPageController {
 		//판매내역
 		List<Map<String, Object>> aucSellList = myPageService.getAucSell(uuid);
 		model.addAttribute("aucSellList",aucSellList);
+		System.out.println("판매내역뭐있어"+aucSellList);
 		
 		//구매내역
+		List<Map<String, Object>> aucBuyList = myPageService.getAucBuy(uuid);
+		model.addAttribute("aucBuyList", aucBuyList);
+		System.out.println("구매내역뭐있어"+aucBuyList);
 		
 		return "auctionList";
 		

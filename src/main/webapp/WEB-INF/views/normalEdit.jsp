@@ -20,6 +20,7 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
+<link href="css/normalEdit.css" rel="stylesheet" />
 
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
@@ -28,11 +29,7 @@
 		<script src="./js/wnInterface.js"></script> 
 		<script src="./js/mcore.min.js"></script> 
 		<script src="./js/mcore.extends.js"></script> 
-</head>
-<body>
- <%@ include file="menubar.jsp" %>
-	<!-- Section-->
-	<section class="py-5">
+		
 		<script type="text/javascript">
 		function resizeImage(input, maxWidth, maxHeight, callback) {
 		    if (input.files && input.files[0]) {
@@ -68,33 +65,40 @@
 		}
 
 		</script>
+		
+</head>
 
+<body>
+ <%@ include file="menubar.jsp" %>
+	<!-- Section-->
+	<section class="py-5">
 
-
-		<div class="container px-4 px-lg-5 mt-5 tradecontainter"
-			style="z-index: 10" id="productContainer">
-			<div
-				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-				<form action="./normalEdit" method="post"
-					enctype="multipart/form-data">
+		<div class="container mt-5"	style="z-index: 10" id="productContainer">
+			<div class="justify-content-center">
+			
+			<div class="tradecontainter">
+				<form action="./normalEdit" method="post" enctype="multipart/form-data" class="normalEditFrm">
 					<input type="hidden" value="${detail.tno }" name="tno" id="tno">
-					<input type="hidden" value="${muuid }" name="muuid"> <input
-						type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
-					<br>카테고리
+					<input type="hidden" value="${muuid }" name="muuid"> 
+					
+					<span>카테고리</span>
 					 <select name="category" >
 						<c:forEach items="${categoryList }" var="i">
 							<option value="${i.ino }" id="ino">${i.iname }</option>
 						</c:forEach>
-					</select> <br><br><br>
-					내용
-					<div>
+					</select> 
+					
+					<div class="titleBox">
+						<input type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
+					</div>
+					<div class="bcontentBox">
 						<textarea placeholder="내용을 입력해주세요." name="tcontent" id="tcontent" >${detail.tcontent }</textarea>
 					</div>
-					<br> <br> 가격 : <input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">원
-
-
-					<br>
-					
+					<div class="priceBox">
+						<span>가격 : </span>
+						<input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">
+						<span> 원</span>
+					</div>
 					
 					
 					<c:if test="${normalDetailImage ne null }">
@@ -111,7 +115,10 @@
 					</c:if>
 					<br>
 					<br>
-			<button id="addPhotoBtn" type="button">사진 추가하기</button>
+					
+			<div class="addPhotoBtnBox">
+				<button id="addPhotoBtn" type="button">사진 추가하기</button>
+			</div>
 			<div id="addPhoto">
 				<div id="box"></div>
 				<button id="picker2" type="button">앨범에서 추가</button>
@@ -128,7 +135,7 @@
 
 
 
-
+</div>
 			</div>
 		</div>
 

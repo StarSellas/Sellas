@@ -48,11 +48,18 @@
 
 			<c:forEach items="${buyList}" var="row">
 	<c:choose>
-	<c:when test="${fn:length(buyList) gt 0 && row.hastno eq null}">
-<div class="card mb-3" style="max-width: 400px;">
+<c:when test="${fn:length(buyList) gt 0 && row.hastno eq null}">
+<div class="card mb-3" style="width: 330px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
-      <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+        <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
+    </c:when>
+    <c:otherwise>
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
+    </c:otherwise>
+      </c:choose>
     </div>
     <div class="col-8">
       <div class="card-body">
@@ -67,8 +74,8 @@
    ${row.displayDate}
         </small>
     </p>
-    ${row.hastno}
-    ${row.writeYN}
+<%--     ${row.hastno}
+    ${row.writeYN} --%>
       </div>
     </div>
   </div>
@@ -77,16 +84,16 @@
 <c:when test="${row.tnormalstate == 2}">
 <c:choose>
     <c:when test="${row.rno == null}">
-        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+       <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:when>
     <c:when test="${row.rno != null && row.writeYN == 'Y'}">
-            <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+            <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기 보러가기</button>
     </c:when>
     <c:when test="${row.rno != null && row.writeYN != 'Y'}">
-     <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+     <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:when>
     <c:otherwise>
-        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">✏️ 후기작성하기</button>
+        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:otherwise>
     </c:choose>
 </c:when>
@@ -99,10 +106,17 @@
 	 </c:when>
 
 <c:when test="${fn:length(buyList) gt 0 && row.hastno eq 'Y' && row.writeYN eq 'Y'}">
-    <div class="card mb-3" style="max-width: 400px;">
+    <div class="card" style="width: 330px;">
         <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
             <div class="col-4">
-                <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+                <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
+    </c:when>
+    <c:otherwise>
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
+    </c:otherwise>
+      </c:choose>
             </div>
             <div class="col-8">
                 <div class="card-body">
@@ -116,17 +130,15 @@
                              ${row.displayDate}
                         </small>
                     </p>
-                    ${row.hastno}
-                    ${row.writeYN}
                 </div>
             </div>
         </div>
         <!-- 버튼 -->
-        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">🐋 후기보러가기</button>
+        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기보러가기</button>
     </div>
 </c:when>
 	 <c:when test="${fn:length(buyList) eq 0}">
-	 판매내역이 없어요.
+	 구매 내역이 없어요.
 	 </c:when>
 	</c:choose>
 		</c:forEach>

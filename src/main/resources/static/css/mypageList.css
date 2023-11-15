@@ -30,6 +30,15 @@
 
 }
 
+#reviewDetailBtn{
+	padding: 1%;
+	background-color: #e8f2ff;
+	border: 1px solid #e8f2ff;
+	border-radius: 0 0 0.25rem 0.25rem;
+	font-weight: bold;
+	
+}
+
 .custom-rounded-start {
   border-radius: 0.25rem 0 0 0;
 }

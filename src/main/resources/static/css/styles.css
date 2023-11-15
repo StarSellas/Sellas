@@ -20,6 +20,21 @@ button.navbar-toggler{
 	width: auto;
 }
 
+#tWriteBtnBox{
+	width: 180px;
+	display:  inline-block;
+}
+#tWriteBtn {
+	width: 90px;
+	height: 40px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 5px;
+	padding: 1px 6px;
+}
+
+
 #headerline{
 	border-bottom: 1px solid #88abff;
 }

@@ -91,5 +91,15 @@ public class ChatRoomService {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.auctionChat(roomId);
 	}
+
+	public List<Map<String, Object>> chatRoomList(String muuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.chatRoomList(muuid);
+	}
+
+	public String getTtitleByTno(Integer tno) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getTitleByTno(tno);
+	}
 	
 }

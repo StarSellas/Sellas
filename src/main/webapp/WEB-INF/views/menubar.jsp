@@ -30,14 +30,13 @@
 				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="/menu"><img src="./img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>
-		
-        
+
        <!-- Footer-->
 	<footer id="footer" style="z-index: 9999">
 		<c:if test="${addTradeItem == 1 }">
-			<div style="position: absolute; right: 0px; bottom: 80px;"
-				class="swrite" onclick="location.href='./addTradeItem'">
-				<button>물품 등록</button>
+			<div style="position: absolute; right: 0px; bottom: 95px;"
+				class="swrite" id="tWriteBtnBox" onclick="location.href='./addTradeItem'">
+				<button id="tWriteBtn">물품 등록</button>
 			</div>
 		</c:if>
 		<div class="container">
@@ -62,6 +61,23 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 		<script>
+		 $(document).ready(function () {
+	            // 초기 높이 저장
+	            var initialHeight = window.innerHeight;
+
+	            // 키보드 나타날 때 이벤트 감지
+	            window.addEventListener('resize', function () {
+	                var currentHeight = window.innerHeight;
+
+	                if (currentHeight < initialHeight) {
+	                    // 키보드가 나타났을 때
+	                    $('#footer').css('bottom', currentHeight - initialHeight);
+	                } else {
+	                    // 키보드가 사라졌을 때
+	                    $('#footer').css('bottom', 0);
+	                }
+	            });
+	        });
 		let sock = new SockJS("/ws/chat");
 		let oseller = '${sessionScope.muuid}';
 		let ws0 = Stomp.over(sock);

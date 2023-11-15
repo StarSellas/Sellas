@@ -51,7 +51,7 @@ ORDER BY
 	</select>
 	
 	<select id="alarmList" parameterType="String" resultType="Map">
-		select ouuid, dcontent from dialogue where muuid = #{muuid} and dcheck = 1 order by dno asc
+		select ouuid, dcontent from dialogue where muuid = #{muuid} and dtype = 'ALARM' and dcheck = 1 order by dno asc
 	</select>
 	
 	<update id="setCheckZero" parameterType="String">
@@ -74,5 +74,13 @@ ORDER BY
 	
 	<select id="auctionChat" parameterType="String" resultType="Map">
 		select tno, oseller, obuyer from onlinechat where ouuid = #{roomId}
+	</select>
+	
+	<select id="chatRoomList" parameterType="Map" resultType="Map">
+		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid}
+	</select>
+	
+	<select id="getTitleByTno" parameterType="Integer" resultType="String">
+		select ttitle from trade where tno = #{tno}
 	</select>
 </mapper>

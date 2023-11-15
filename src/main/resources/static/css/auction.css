@@ -1,3 +1,51 @@
+@charset "UTF-8";
+
+button {
+	width: 100px;
+	height: 30px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
+}
+
+#keyword {
+	width: 72%;
+	height: 30px;
+}
+
+.categoryButton {
+	width: 300px;
+	height: 50px;
+	border: none;
+}
+
+.activated {
+	background-color: rgba(12, 77, 255, 0.1);
+}
+
+.auctionDiv {
+	margin: 100px 0px;
+}
+
+.auctionItemDiv {
+	margin: 35px 0px;
+	display: flex;
+}
+
+.auctionItemSubDiv {
+	width: 100%;
+}
+
+.auctionInfoDiv {
+	display: flex;
+}
+
+.itemInfoDiv {
+	margin: 10px 20px;
+	width: 200px;
+}
+
 .categoryFilter {
 	display: none;
 	position: fixed;

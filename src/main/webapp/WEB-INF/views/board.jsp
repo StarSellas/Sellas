@@ -136,17 +136,20 @@
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
                         	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
-	                    	                    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>"
-	                    	                    + "</td>"
-	                    	                    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
-	                    	                    + "<span class='title'>"
-	                    	                    + this.list[i].btitle + "</span>"
-	                    	                    + " <i class='" + 'xi-speech-o count' + "' id='counticon'></i>"
-	                    	                    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
-	                    	                    + "<div class='mnickname'>" + this.list[i].mnickname + "</div>"
-	                    	                    + "</td>"
-	                    	                    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
-	                    	                    + "</tr>";
+	                        	        	    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>"
+	                        	        	    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
+	                        	        	    + "<span class='title'>" + this.list[i].btitle + "</span>"
+	                        	        	    + " <i class='xi-speech-o count' id='counticon'></i>"
+	                        	        	    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
+	                        	        	    + "<div class='UserBox'>"
+	                        	        	    + "<div class='userImgBox'>"
+	                        	        	    + (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>" : "<img src='../img/흰배경셀라스.jpg' alt='basic-user-img' class='userImg'>")
+	                        	        	    + "</div>"
+	                        	        	    + "<span class='mnickname'>" + this.list[i].mnickname + "</span>"
+	                        	        	    + "</div>"
+	                        	        	    + "</td>"
+	                        	        	    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
+	                        	        	    + "</tr>";
 	
 	                    	                    lastRow.after(newRow); // lastRow 뒤에 추가
 	                        	        	  
@@ -278,14 +281,14 @@
 			                  <c:when test="${!empty param}">
 			                     <c:forEach items="${board}" var="board">
 				                        <c:if test="${param.cate eq board.sno}">
-				                           <a class="dropdown-toggle" id="navbarDropdown" href="#"
+				                           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
 				                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
 				                           ${board.sname }
 				                           </a>
 				                         </c:if>
 			                     </c:forEach>
 			                     <c:if test="${param.cate eq ''}">
-				                         	<a class="nav-link dropdown-toggle" id="navbarMain" href="#"
+				                         	<a class="nav-link dropdown-toggle" id="" href="#"
 			                    			 role="button" data-bs-toggle="dropdown" aria-expanded="false">
 			                     			게시판
 			                     			</a>
@@ -324,13 +327,25 @@
 					
 					<!-------------- 메인게시판(전체글_최신순) -------------->
                		<c:if test="${empty param}">
-               		
+               		떠라 : ${sessionScope.muuid}
                			<c:forEach items="${mainList}" var="mainList">
 		                     <tr class="boardRow" data-count="${mainList.count}">
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	<span class="title">${mainList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${mainList.commentcount}</span>
-		                        	<div class="mnickname">${mainList.mnickname}</div>
+		                        	<div class="UserBox">
+		                        		<div class="userImgBox">
+												<c:choose>
+													<c:when test="${sessionScope.muuid ne null && mainList.mphoto ne null}">
+														<img src="../userImgUpload/${mainList.mphoto}" alt="user-img" class="userImg">
+													</c:when>
+													<c:otherwise>
+														<img src="./img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+													</c:otherwise>
+												</c:choose>
+											</div>
+		                        		<span class="mnickname">${mainList.mnickname}</span>
+		                        	</div>
 		                        </td>
 		                       	<td class="bdate">${mainList.bdate}</td>
 		                     </tr>
@@ -347,7 +362,19 @@
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
 		                        	 <span class="title">${list.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${list.commentcount}</span>
-		                        	<div class="mnickname">${list.mnickname}</div>
+		                        	<div class="UserBox">
+		                        		<div class="userImgBox">
+												<c:choose>
+													<c:when test="${list.mphoto ne null}">
+														<img src="../userImgUpload/${list.mphoto}" alt="user-img" class="userImg">
+													</c:when>
+													<c:otherwise>
+														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+													</c:otherwise>
+												</c:choose>
+											</div>
+		                        		<span class="mnickname">${list.mnickname}</span>
+		                        	</div>
 		                        </td>
 		                        <td class="bdate">${list.bdate}</td>
 		                     </tr>
@@ -365,7 +392,19 @@
 		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
 		                        	 <span class="title">${searchList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${searchList.commentcount}</span>
-		                        	<div class="mnickname">${searchList.mnickname}</div>
+		                        	<div class="UserBox">
+		                        		<div class="userImgBox">
+												<c:choose>
+													<c:when test="${searchList.mphoto ne null}">
+														<img src="../userImgUpload/${searchList.mphoto}" alt="user-img" class="userImg">
+													</c:when>
+													<c:otherwise>
+														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+													</c:otherwise>
+												</c:choose>
+											</div>
+		                        		<span class="mnickname">${searchList.mnickname}</span>
+		                        	</div>
 		                        </td>
 		                        <td class="bdate">${searchList.bdate}</td>
 		                     </tr>
