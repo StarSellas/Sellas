@@ -75,7 +75,7 @@
 			받은 거래 후기가 없어요
 			</c:if>
 			<c:forEach items="${profileReview}" var="review">
-			<div class="movedetail" onclick="location.href='./reviewDetailByMe?rno=${review.rno}'">
+			<div class="movedetail">
 							<div class="reviewimg">
 					<img src="../userImgUpload/${review.mphoto}" alt="user-img" class="user-img-img">
 				</div>

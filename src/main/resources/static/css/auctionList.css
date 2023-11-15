@@ -12,6 +12,9 @@
 	font-size: 20px;
 }
 
+a {
+	color: black !important;
+}
 
 .activities-div {
 	margin-top: 10px;
@@ -27,9 +30,6 @@
   align-items: center; 
 }
 
-a {
-	color: inherit;
-}
 
 .index li {
     width: 100px;
@@ -68,9 +68,10 @@ color: #c3c3c3;
 }
 
 .setup{
-   border: 1px solid #88abff ;
-    text-align: center;
     font-size: 13px;
+    width: 50px;
+    float: right;
+    font-weight: bold;
 
 }
 

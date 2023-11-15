@@ -49,7 +49,6 @@
       <div class="container px-4 px-lg-5 mt-5 tradecontainter"
          style="z-index: 10" id="productContainer">
 
-
             <div id="detail">
                <input type="hidden" value="${detail.mnickname}" class="sellerMnickname">
                <input type="hidden" value="${sessionScope.mnickname }" class="mnickname">
@@ -71,7 +70,11 @@
             </div>
          </c:forEach>
       </c:if>
-    ...
+   	 <c:if test="${normalDetailImage eq null}">
+       <div class="swiper-slide">
+       <img alt="" src="./tradeImgUpload/defaultimg.jpg" style="width:100%; height: 100%">
+   	 </div>
+   	 </c:if>
   </div>
   <!-- If we need pagination -->
   <div class="swiper-pagination"></div>
