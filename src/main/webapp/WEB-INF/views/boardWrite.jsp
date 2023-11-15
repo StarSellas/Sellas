@@ -58,7 +58,7 @@
    <%@ include file="menubar.jsp" %>
    
         <!-- Section-->
-        <section class="py-5">
+        <section class="py-5 WholeContainer">
         
             <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
@@ -113,17 +113,17 @@
                      </div>
                <!-------------------- 이미지업로드  -------------------->
 
-                  <div>
-                     <button id="addPhotoBtn">사진 추가하기</button>
+                  <div class="addPhotoBtnBox">
+                     <button id="addPhotoBtn" type="button">사진 추가하기</button>
                   </div>
-                  <div id="addPhoto">
+                  
+                  <div class="otherBtnBox hide" id="addPhoto">
                      <button id="picker2" type="button">앨범에서 추가</button>
                      <button id="camera" type="button">카메라에서 추가</button>
                      <div id="box"></div>
                      <div id="progress"></div>
                      <div id="upload-box"></div>
                   </div>
-
 
                      <input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
                      <input type="hidden" class="cateWrite" name="cate" value="${param.cate}">
@@ -137,9 +137,30 @@
             </div>
             
         </section>
-        
-        
-   <script type="text/javascript">
+
+	<script type="text/javascript">
+			 
+               $(function(){
+            	   
+                  $("#addPhotoBtn").click(function(){
+                	  
+                     $(this).parent(".addPhotoBtnBox").toggleClass("btnClicked");   // 버튼위로이동
+                     $(".otherBtnBox").toggleClass("hide");
+                     
+                     if($(".addPhotoBtnBox").hasClass("btnClicked")){
+                        $(".otherBtnBox").addClass("tBtnBox");
+                        
+                     } else {
+                        $(".otherBtnBox").removeClass("tBtnBox");
+                     }
+                     
+                  })
+               });
+               
+    </script>
+
+
+	<script type="text/javascript">
     $(function(){
    
    //모피어스를 이용한 카메라 사진 및 앨범 사진 넣기 by 대원
@@ -328,11 +349,6 @@
                   });
                 };
              
-              $("#addPhoto").hide();
-              $("#addPhotoBtn").click(function(){
-                 $("#addPhoto").show();
-              });
-              
               
               $(".bwriteButton").click(function(){
                  

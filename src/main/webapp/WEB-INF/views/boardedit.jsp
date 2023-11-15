@@ -51,34 +51,36 @@
                         
                      </div>
 
-                     <div class="bimageBox">
-                           <!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
-                           <c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
-                              <c:forEach items="${imageList}" var="imageList">
-                                 <div class="boardImgBox editImgBox">
-                                    <img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
-                                    <button class="imgEditbtn" type="button" data-image-name="${imageList.bimage}">수정</button>
-                                    <button type="button" class="BoardImageDeleteBtn" data-image-name="${imageList.bimage}">삭제</button>
-                                 </div>
-                              </c:forEach>
-                           </c:if>
-                           
-                           <div id="photoInputs">
-                                   <div id="imagePreviews"></div>
-                                </div>
-                                
-                                <div class="addPhotoBtnBox">
-                              <button id="addPhotoBtn" type="button">사진 추가하기</button>
-                           </div>
-                        </div>
-                     <div id="addPhoto">
-                     <button id="picker2" type="button">앨범에서 추가</button>
-                     <button id="camera" type="button">카메라에서 추가</button>
-                     <div id="box"></div>
-                     <div id="progress"></div>
-                     <div id="upload-box"></div>
-                  </div>
-                     <br>
+					<div class="bimageBox">
+						<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
+						<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
+							<c:forEach items="${imageList}" var="imageList">
+								<div class="boardImgBox editImgBox">
+									<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
+									<button class="imgEditbtn" type="button"
+										data-image-name="${imageList.bimage}">수정</button>
+									<button type="button" class="BoardImageDeleteBtn"
+										data-image-name="${imageList.bimage}">삭제</button>
+								</div>
+							</c:forEach>
+						</c:if>
+
+						<div id="photoInputs">
+							<div id="imagePreviews"></div>
+						</div>
+
+						<div class="addPhotoBtnBox">
+							<button id="addPhotoBtn" type="button">사진 추가하기</button>
+						</div>
+					</div>
+					<div class="otherBtnBox hide" id="addPhoto">
+						<button id="picker2" type="button">앨범에서 추가</button>
+						<button id="camera" type="button">카메라에서 추가</button>
+						<div id="box"></div>
+						<div id="progress"></div>
+						<div id="upload-box"></div>
+					</div>
+					
                      <div class="buttonBox">
                         <button type="button" class="editbtn">수정하기</button>
                      </div>
@@ -88,8 +90,30 @@
             </div>
             
         </section>
-        
-   <script type="text/javascript">
+
+	<script type="text/javascript">
+			 
+               $(function(){
+            	   
+                  $("#addPhotoBtn").click(function(){
+                	  
+                     $(this).parent(".addPhotoBtnBox").toggleClass("btnClicked");   // 버튼위로이동
+                     $(".otherBtnBox").toggleClass("hide");
+                     
+                     if($(".addPhotoBtnBox").hasClass("btnClicked")){
+                        $(".otherBtnBox").addClass("tBtnBox");
+                        
+                     } else {
+                        $(".otherBtnBox").removeClass("tBtnBox");
+                     }
+                     
+                  })
+               });
+               
+    </script>
+
+
+	<script type="text/javascript">
         
     $(function () {
        
@@ -105,12 +129,6 @@
           const $picker2 = $('#picker2');
          const $box = $('#box');
          const $camera = $('#camera');
-       
-       
-       $("#addPhoto").hide();
-        $("#addPhotoBtn").click(function(){
-           $("#addPhoto").show();
-        });
        
         $("#camera").click(function(){
              if ($box.find('img').length + bimagecount >= 4) {

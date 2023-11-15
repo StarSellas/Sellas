@@ -81,12 +81,14 @@
 					<input type="hidden" value="${detail.tno }" name="tno" id="tno">
 					<input type="hidden" value="${muuid }" name="muuid"> 
 					
-					<span>카테고리</span>
-					 <select name="category" >
-						<c:forEach items="${categoryList }" var="i">
-							<option value="${i.ino }" id="ino">${i.iname }</option>
-						</c:forEach>
-					</select> 
+					<div class="ncategoryBox">
+						<label for="ncategory">카테고리 : </label>
+						 <select name="category" id="ncategory">
+							<c:forEach items="${categoryList }" var="i">
+								<option value="${i.ino }" id="ino">${i.iname }</option>
+							</c:forEach>
+						</select> 
+					</div>
 					
 					<div class="titleBox">
 						<input type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
@@ -95,7 +97,7 @@
 						<textarea placeholder="내용을 입력해주세요." name="tcontent" id="tcontent" >${detail.tcontent }</textarea>
 					</div>
 					<div class="priceBox">
-						<span>가격 : </span>
+						<label class="priceLabel" for="tnormalprice">가격 : </label>
 						<input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">
 						<span> 원</span>
 					</div>
@@ -116,23 +118,22 @@
 					<br>
 					<br>
 					
-			<div class="addPhotoBtnBox">
-				<button id="addPhotoBtn" type="button">사진 추가하기</button>
-			</div>
-			<div id="addPhoto">
-				<div id="box"></div>
-				<button id="picker2" type="button">앨범에서 추가</button>
-				<button id="camera" type="button">카메라에서 추가</button>
-				<div id="progress"></div>
-				<div id="upload-box"></div>
-			</div>
-					<br> <br> <br> <br> <br> <br>
-
+				<div class="addPhotoBtnBox">
+					<button id="addPhotoBtn" type="button">사진 추가하기</button>
+				</div>
+				<div class="otherBtnBox hide" id="addPhoto">
+					<div id="box"></div>
+					<button id="picker2" type="button">앨범에서 추가</button>
+					<button id="camera" type="button">카메라에서 추가</button>
+					<div id="progress"></div>
+					<div id="upload-box"></div>
+				</div>
+				
+				<div class="nEditBtnBox">
 					<button type="button" id="normalEditBtn">수정하기</button>
-					<input type="button" onclick="location.href='./normalDetail?tno=${detail.tno}'" value="취소"/>
+					<button type="button" id="normalEditCBtn" onclick="location.href='./normalDetail?tno=${detail.tno}'">취소</button>
+				</div>
 				</form>
-
-
 
 
 </div>
@@ -140,7 +141,27 @@
 		</div>
 
 	</section>
-	
+		<script type="text/javascript">
+			 
+               $(function(){
+            	   
+                  $("#addPhotoBtn").click(function(){
+                	  
+                     $(this).parent(".addPhotoBtnBox").toggleClass("btnClicked");   // 버튼위로이동
+                     $(".otherBtnBox").toggleClass("hide");
+                     
+                     if($(".addPhotoBtnBox").hasClass("btnClicked")){
+                        $(".otherBtnBox").addClass("tBtnBox");
+                        
+                     } else {
+                        $(".otherBtnBox").removeClass("tBtnBox");
+                     }
+                     
+                  })
+               });
+               
+    </script>
+    
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -150,8 +171,6 @@
         
 	 $(function () {
 		 
-		 
-		 
 	        $(".normalTradeChangeBtn").click(function () {
 	            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
 	            var container = $(this).closest(".image-container");
@@ -160,9 +179,6 @@
 	    });
 	
 	
-	
-       
-        
 	 $(function () {
 		    var editPhotoSize = ${normalDetailCount};
 		    var maxPhotos = 4;
@@ -179,15 +195,6 @@
 			const $box = $('#box');
 			const $camera = $('#camera');
 			
-			
-		
-			
-			$("#addPhoto").hide();
-			$("#addPhotoBtn").click(function(){
-				$("#addPhoto").show();
-			});
-	
-
 			
 			 $("#camera").click(function(){
 			       if ($box.find('img').length + editPhotoSize >= 4) {
