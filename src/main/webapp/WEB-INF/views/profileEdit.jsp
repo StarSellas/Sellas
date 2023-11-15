@@ -38,7 +38,11 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 10">
            <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="../"><img src="../img/sellastext.png" class="header" alt="SellAS"></a>
-				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="./menu"><img src="../img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
+                <button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent">
+  <a href="../menu" style="text-decoration: none;">
+    <img src="../img/menu1.png" id="menuIcon" alt="menuIcon">
+  </a>
+</button>
            </div>
         </nav>
 	<!-- Header-->
@@ -51,7 +55,7 @@
 				<div class="back col-auto" onclick="location.href='/profile'">
 					<i class="xi-angle-left xi-x"></i>
 				</div>
-				<div class="location col">프로필수정</div>
+				<div class="location col">프로필 수정</div>
 			</div>
 			
 			<div class="edit-div">
@@ -59,32 +63,17 @@
 				<div class="user-img">
 					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
 				</div>
-				<div class="camera" onclick="picChange()">
-				프로필 수정
-				</div>
-		<!-- 지은이수정 -->
-
-						<div id="addPhoto">
+						<div class="toggleBtnBox">
+						<button class="picChange" type="button">사진 변경</button>
+						</div>
+						<div class="otherBtnBox hide">
 							<button id="picker2" type="button">앨범에서 추가</button>
 							<button id="camera" type="button">카메라에서 추가</button>
-							<div id="box"></div>
-							<div id="progress"></div>
-							<div id="upload-box"></div>
 						</div>
-
-
 							<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
-							
-							<div class="bwriteBtnBox">
-								<button type="button" class="bwriteButton">글쓰기</button>
+							<div class="bwriteBtnBox hide">
+								<button type="button" id="bwriteButton">변경 완료</button>
 							</div>
-
-
-	<!-- 지은이수정 -->
-
-		
-
-
 				</div>
 				
 				

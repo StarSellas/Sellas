@@ -136,7 +136,7 @@ public class MyPageController {
 		   //사용자정보와 이미지경로를 담는다.
 		   Map<String, Object> memberphoto = new HashMap<String, Object>();
 		   
-		   memberphoto.put(uuid, memberphoto);
+		   memberphoto.put("uuid", uuid);
 		   memberphoto.put("mphoto", mphoto);
 		   
 		   int result = myPageService.photoModify(memberphoto);
@@ -319,7 +319,7 @@ public class MyPageController {
 		
 	}
 	
-	//TODO 경매내역
+	//경매내역
 	@GetMapping("getauction")
 	public String getAuction(Model model, HttpSession session) {
 		

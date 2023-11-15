@@ -52,7 +52,14 @@
 <div class="card" style="width: 330px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
+    <c:choose>
+    <c:when test="${row.timage ne null}">
       <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
+    </c:when>
+    <c:otherwise>
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
+    </c:otherwise>
+      </c:choose>
     </div>
     <div class="col-8">
       <div class="card-body">
@@ -101,7 +108,14 @@
     <div class="card" style="width: 330px;">
         <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
             <div class="col-4">
-                <img src="./tradeImgUpload/${row.timage}" class="img-fluid custom-rounded-start object-fit-cover" alt="...">
+             <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
+    </c:when>
+    <c:otherwise>
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
+    </c:otherwise>
+      </c:choose>
             </div>
             <div class="col-8">
                 <div class="card-body">

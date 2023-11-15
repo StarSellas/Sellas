@@ -56,21 +56,32 @@
 			<c:forEach items="${aucSellList}" var="row">
 			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${row.tno}'">
 			<div class="timage">
-			<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+			    <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+    </c:when>
+    <c:otherwise>
+      <img src="../tradeImgUpload/defaultimg.jpg"  alt="기본사진" width="130px" height="130px" />
+    </c:otherwise>
+      </c:choose>
 			</div>
 			<div class="auctionInfo">
 			<div class="btitle">${row.ttitle}</div>
 			<div class="bdate">${row.displayDate}</div>
 			<div class="price">
 			<div class="startprice">시작가
+			<div>
 			 <fmt:formatNumber value="${row.tauctionstartprice}" pattern="#,###원"/>
 			</div>
-		<div class="lastprice">현재 낙찰가
+			</div>
+		<div class="lastprice">현재 입찰가
 			<c:if test="${row.abidprice ne null}">
+			<div>
 			 <fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
+			 </div>
 			</c:if>
 			<c:if test="${row.abidprice eq null}">
-			 현재 낙찰을 기다리고 있습니다.
+			 <div>입찰이 없어요</div>
 			</c:if>
 			</div>
 				</div> <!--price 끝  -->
@@ -87,8 +98,15 @@
 			<div class="commentList">
 			<c:forEach items="${aucBuyList}" var="row">
 			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${row.tno}'">
-			<div class="timage">
-				<img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+				<div class="timage">
+			    <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+    </c:when>
+    <c:otherwise>
+      <img src="../tradeImgUpload/defaultimg.jpg"  alt="기본사진" width="130px" height="130px" />
+    </c:otherwise>
+      </c:choose>
 			</div>
 			<div class="auctionInfo">
 			<div class="btitle">${row.ttitle}</div>
