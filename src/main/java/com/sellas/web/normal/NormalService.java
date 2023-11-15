@@ -213,6 +213,17 @@ public class NormalService {
 		return normalDAO.nextsortNormalList(map);
 	}
 
+	public int normalHikeUp(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return normalDAO.normalHikeUp(map);
+	}
+
+	public int SelectLastTno() {
+		// TODO Auto-generated method stub
+		return normalDAO.SelectLastTno();
+	}
+
+
 
 	
 

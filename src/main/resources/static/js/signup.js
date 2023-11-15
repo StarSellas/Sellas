@@ -213,10 +213,12 @@ function duplicationCheckOnFocusOut(event) {
 							idDuplicationChecked = false;
 							let msg = "이미 사용중인 아이디입니다.";
 							setMessage(msgDiv, msg, false);
+							invalidInput(inputField);
 						} else {
 							idDuplicationChecked = true;
 							let msg = "사용 가능한 아이디입니다.";
 							setMessage(msgDiv, msg, true);
+							validInput(inputField);
 						}
 					}
 					break;
@@ -228,10 +230,12 @@ function duplicationCheckOnFocusOut(event) {
 							nickDuplicationChecked = false;
 							let msg = "이미 사용중인 닉네임입니다.";
 							setMessage(msgDiv, msg, false);
+							invalidInput(inputField);
 						} else {
 							nickDuplicationChecked = true;
 							let msg = "사용 가능한 닉네임입니다.";
 							setMessage(msgDiv, msg, true);
+							validInput(inputField);
 						}
 					}
 					break;
@@ -244,11 +248,13 @@ function duplicationCheckOnFocusOut(event) {
 							emailDuplicationChecked = false;
 							let msg = "이미 가입된 이메일입니다.";
 							setMessage(msgDiv, msg, false);
+							invalidInput(inputField);
 						} else {
 							document.getElementById("emailCodeDiv").style.visibility = "visible";
 							emailDuplicationChecked = true;
 							sendVerificationCode();
 							clearMessage(msgDiv);
+							validInput(inputField);
 						}
 					}
 					break;
@@ -260,10 +266,12 @@ function duplicationCheckOnFocusOut(event) {
 							phoneDuplicationChecked = false;
 							let msg = "이미 가입된 휴대전화 번호입니다.";
 							setMessage(msgDiv, msg, false);
+							invalidInput(inputField);
 						} else {
 							phoneDuplicationChecked = true;
 							let msg = "가입 가능한 휴대전화 번호입니다.";
 							setMessage(msgDiv, msg, true);
+							validInput(inputField);
 						}
 					}
 					break;
@@ -317,10 +325,12 @@ function validateEmailCode() {
 				document.getElementById("checkCode").setAttribute("disabled", "disabled");
 				emailCodeChecked = true;
 				clearMessage("emailCodeMessage");
+				validInput(document.getElementById("emailCode"));
 			} else {
 				emailCodeChecked = false;
 				let msg = "인증번호가 일치하지 않습니다.";
 				setMessage("emailCodeMessage", msg, false);
+				invalidInput(document.getElementById("emailCode"));
 			}
 			controllButton();
 		},
@@ -350,6 +360,20 @@ function clearMessage(msgDiv) {
 	let messageDiv = document.getElementById(msgDiv);
 	
 	messageDiv.textContent = "　";
+}
+
+/* Invalid input */
+function invalidInput(field) {
+	
+	field.classList.remove("is-valid");
+	field.classList.add("is-invalid");
+}
+
+/* Valid input */
+function validInput(field) {
+	
+	field.classList.add("is-valid");
+	field.classList.remove("is-invalid");
 }
 
 /* 버튼 상태 변경 */

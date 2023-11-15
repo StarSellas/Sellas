@@ -126,7 +126,6 @@ public class MyPageService {
 		return formatDates(aucSellList);
 	}
 
-
 	public int addWish(Map<String, Object> map) {
 		return myPageDAO.addWish(map);
 	}

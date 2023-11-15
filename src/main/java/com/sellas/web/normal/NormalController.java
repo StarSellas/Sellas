@@ -152,7 +152,7 @@ public class NormalController {
 				  			break;
 				  		default:
 				  			// 기본 정렬은 tno DESC
-				  			orderBy = "ORDER BY ttdate DESC";
+				  			orderBy = "ORDER BY tno DESC";
 				  			break;
 				  		}
 				  		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" }; 
@@ -179,7 +179,7 @@ public class NormalController {
 				  			json.put("list", nextsortNormalList);
 				  		}
 			         
-					}
+					} 
 					
 					 String muuid = String.valueOf(session.getAttribute("muuid"));
 
@@ -224,7 +224,7 @@ public class NormalController {
 	  			break;
 	  		default:
 	  			// 기본 정렬은 tno DESC
-	  			orderBy = "ORDER BY ttdate DESC";
+	  			orderBy = "ORDER BY tno DESC";
 	  			break;
 	  		}
 	  		String[] sortList = { "최신순", "가격 낮은 순", "가격 높은 순", "인기순" };
@@ -262,6 +262,7 @@ public class NormalController {
 	  		
 	  		String muuid = String.valueOf(session.getAttribute("muuid"));
 
+	
 	  	      // 세션에 저장된 uuid를 가지고 회원 정보 조회
 	  	      Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
 	  	      // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
@@ -362,7 +363,14 @@ public class NormalController {
 
 		return "redirect:/";
 	}
-
+	
+	//노말 디테일로 리다이렉트 해주는 메소드입니다.
+		@GetMapping("/redirectnormalDetail")
+		public String redirectnormalDetail(@RequestParam(value = "tno")int tno) {
+			System.out.println("끌올 tno의 값은 : " + tno);
+			return "redirect:/normalDetail?tno="+tno;
+		}
+	
 	//TODO 지은 찜 추가부분
 	@GetMapping("/normalDetail")
 	public String tradeDetail(@RequestParam(name = "tno", required = true, defaultValue = "1") int tno, Model model, HttpSession session) {
@@ -769,6 +777,25 @@ public class NormalController {
 			json.put("obuyeramounts", obuyeramounts);
 			return json.toString();
 		}
+	@ResponseBody
+	@PostMapping("/normalHikeUp")
+	public String normalHikeUp(@RequestParam Map<String,Object> map) {
+		JSONObject json = new JSONObject();
+		int LastTno = normalService.SelectLastTno();
+		if(Integer.parseInt(String.valueOf(map.get("tno")))==LastTno) {
+			json.put("noNeedToHikeUp", 1);
+			return json.toString();
+		}
+		LastTno = LastTno + 1;
+		map.put("LastTno", LastTno);
+		System.out.println("끌올에서 오는 맵 값입니다 " + map);
+		int normalHikeUpResult = normalService.normalHikeUp(map);
+		if(normalHikeUpResult ==1 ) {
+			json.put("tnormalhikeupok", 1); 
+			json.put("tno", LastTno);
+		}
+		return json.toString();
+	}
 	
- 
+	
 }// 컨트롤러 끝

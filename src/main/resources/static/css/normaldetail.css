@@ -1,0 +1,197 @@
+@charset "UTF-8";
+
+.cateName{
+	text-align: center;
+}
+.cateName a{
+	text-decoration: none;
+	color: gray;
+	font-size: 14px;
+}
+
+.detailContainer{
+	margin: auto;
+	padding: auto;
+	width: 90%;
+	height: 90%;
+}
+
+.titleBox, .contentBox{
+	margin: 10px;
+	padding: 0;
+	width: inherit;
+}
+.titleBox{
+	height: 10%;
+	border-bottom: 1px solid #dee2e6;
+}
+.bdate{
+	font-size: 14px;
+	color: gray;
+	float: right;
+	font-weight: normal;
+}
+.bread{
+	margin: 10px 0 5px 10px;
+	font-size: 14px;
+	color: gray;
+	flex: 1;
+}
+.mnickname{
+	font-size: 14px;
+	font-weight: bold;
+	color: gray;
+	padding-left: 5px;
+	padding-bottom: 5px;
+}
+	
+.contentBox{
+	height: 30%;	
+}
+.bimageBox{
+	margin: 10px;
+	height: 30%;
+}
+.boardImgBox{
+	margin: 10px;
+	text-align: center;
+}
+.boardImg{
+	width: 200px;
+}
+
+.bBtnBox{
+	margin: 5px;;
+	padding: 0;
+	width: inherit;
+	height: 5%;
+	display: flex;
+	align-items: flex-end;
+}
+.bButtons{
+	display: flex;
+ 	align-items: flex-end;
+}
+.bedit, .bdelete{
+	padding: 0;
+	margin: 5px;
+	border: none;
+	background: transparent;
+	font-size: 14px;
+}
+
+/****************** comments *******************/
+.commentContainer{
+	margin: auto;
+	padding: 0;
+	width: 90%;
+}
+.noComments{
+	width: inherit;
+	margin: 30px 10px;
+	padding: 20px 0px;
+	border-top: 1px solid #dee2e6;
+	text-align: center;
+	color: #88abff;
+	opacity: 0.5;
+}
+
+.cWholeBtnBox{
+	width: 95%;
+}
+.cWholeBtn{
+	width: inherit;
+	margin: 5px;
+	padding: 5px;
+	border: none; 
+	border-radius: 15px;
+	background-color: #88abff;	
+	color: white;	
+}
+.commentBox{
+	margin: 10px;
+	padding: 0;
+	width: inherit;
+	display: flex;
+	align-items: flex-end; 
+	border-top: 1px solid #dee2e6;
+	border-bottom: 1px solid #dee2e6;
+}
+.cContentBox{
+	width: 60%;
+	margin: 5px 10px;
+	flex: 1;
+}
+.chead{
+	margin-bottom: 5px;
+}
+.cdate{
+	margin-left: 5px;
+	font-size: 14px;
+	color: gray;
+	font-weight: normal;
+}
+.commentsBtn{
+	margin-left: 10px;
+	display: flex;
+	align-items: flex-end; 
+}
+
+.cedit, .cdelete{
+	border: none;
+	background: transparent;
+	padding: 0;
+	margin: 0 10px 10px 0;
+	font-size: 13.5px;
+	}
+	
+.moreComments{
+	font-size: 15px;
+	text-align: center;
+	opacity: 60%
+}
+
+/****************** commentsWrite *******************/
+
+.cWriteBox, .newWriteBox{
+	margin: 10px;
+	padding: 0;
+	width: 100%;
+}
+.commentWriteForm{
+	margin: 10px;
+	padding: 0;
+	margin-top: 20px;
+	display: flex;
+}
+.newtWriteForm{
+	width: inherit;
+	margin: auto;
+	display: flex;
+}
+.cContent{
+	width: 70%;
+	height: 40px;
+}
+.newcContent{
+	width: 60%;
+	height: 40px;
+	margin: 5px 10px;
+}
+.cWriteBtn{
+  	border: none;
+	background: transparent;
+	padding: 0;
+	padding-left: 10px;
+	margin-bottom: 10px;
+	font-size: 15px;
+}
+.newcWriteBtn{
+	margin-right: 10px;
+}
+.newcWriteBtn, .reset {
+	border: none;
+	background: transparent;
+	padding: 0;
+	margin-bottom: 10px;
+}

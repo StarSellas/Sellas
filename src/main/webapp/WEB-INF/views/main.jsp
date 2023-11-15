@@ -25,8 +25,69 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
    href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+   
 <script src="./js/jquery-3.7.0.min.js"></script>
+<style type="text/css">
+.loading {
+	background-color: white;
+	z-index: 9999;
+}
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* 배경색을 흰색으로 지정 */
+    z-index: 8;
+    text-align: center;
+}
 
+#loading_img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 8;
+    max-width: 100%;
+    max-height: 100%;
+}
+</style>
+<script type="text/javascript">
+var loading = "";
+$(function() {
+	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
+	
+	// 로딩바 적용
+	loading.show();
+	
+	//로딩바를 위해 1.5초 뒤 ajax 실행
+	timer = setTimeout(function(){
+        jQuery.ajax({
+			type : "POST",
+			url : "ajax.php",
+			data : $("#frm").serialize(),
+			cache: false,
+			success : function(data) {
+				if(data == "0000"){
+					alert("작업성공");
+					// 로딩바 해제
+					loading.hide();
+				} else{
+					// 로딩바 해제
+					loading.hide();	
+				}
+			},
+			error : function(e) {
+				// 로딩바 해제
+				loading.hide();
+			}, timeout:10000
+		});
+    },1000);		
+});
+</script>
    <script type="text/javascript">
    	
    
@@ -116,24 +177,25 @@
            	    	for (let i = 0; i < this.list.length; i++) {
            	    		
            	    		newRow = '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' + this.list[i].count + '" data-scount="' + this.list[i].scount + '">'
-	           	            + '<div class="card h-100"><img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/' + this.list[i].thumbnail : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />'
-	           	            + '<div class="card-body p-4">'
-	           	            + '<div class="text-center;">'
-	           	            + '<h5 class="fw-bolder normalTtitle">' + this.list[i].ttitle + '</h5>'
-	           	            + '작성자 : ' + this.list[i].mnickname + '<br>' + this.list[i].tnormalprice + ' 웨일페이<br>'
-	           	            + '</div>'
-	           	            + '<input type="hidden" class="rowNum" data-tno="' + this.list[i].tno + '">' + this.list[i].tno
-	           	            + '</div>'
-	           	            + '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">'
-	           	            + '<div style="text-align: center;">'
-	           	            + (this.list[i].tnormalstate == 0 ? '판매중' : (this.list[i].tnormalstate == 1 ? '거래중' : '판매완료'))
-	           	            + '</div>'
-	           	            + '<div class="text-center">'
-	           	            + '<a class="btn btn-outline-dark mt-auto" href="./normalDetail?tno=' + this.list[i].tno + '">상품 보러가기</a>'
-	           	            + '</div>'
-	           	            + '</div>'
-	           	            + '</div>'
-	           	            + '</div>';
+	           	    	    + '<div class="card h-100">'
+	           	    	    + '<img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/' + this.list[i].thumbnail : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />'
+	           	    	    + '<div class="card-body p-4">'
+	           	    	    + '<div class="text-center">'
+	           	    	    + '<h5 class="fw-bolder normalTtitle">' + this.list[i].ttitle + '</h5>'
+	           	    	    + '작성자 : ' + this.list[i].mnickname + '<br>' + this.list[i].tnormalprice + ' 웨일페이<br>'
+	           	    	    + '</div>'
+	           	    	    + '<input type="hidden" class="rowNum" data-tno="' + this.list[i].tno + '">' + this.list[i].tno
+	           	    	    + '</div>'
+	           	    	    + '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">'
+	           	    	    + '<div class="tradeState">'
+	           	    	    + (this.list[i].tnormalstate == 0 ? '<span class="state_selling">판매중</span>' : (this.list[i].tnormalstate == 1 ? '<span class="state_ing">거래중</span>' : '<span class="state_done">판매완료</span>'))
+	           	    	    + '</div>'
+	           	    	    + '<div class="text-center">'
+	           	    	    + '<a class="btn btn-outline-dark mt-auto" href="./normalDetail?tno=' + this.list[i].tno + '">상품 보러가기</a>'
+	           	    	    + '</div>'
+	           	    	    + '</div>'
+	           	    	    + '</div>'
+	           	    	    + '</div>';
            	    	
 	           	         	lastRow.after(newRow); // lastRow 뒤에 추가
 	           	         	
@@ -248,23 +310,25 @@
          <div class="searchBox justify-content-center">
          
 					<form action="./" method="get" class="searchFrom">
-
-						<ul class="navbar-nav">
-							<li class="nav-item dropdown"><a
-								class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
-								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<li><a class="dropdown-item searchA" href="#" data-option="title">제목</a></li>
-									<li><hr class="dropdown-divider" /></li>
-									<li><a class="dropdown-item searchA" href="#" data-option="content">내용</a></li>
-									<li><hr class="dropdown-divider" /></li>
-									<li><a class="dropdown-item searchA" href="#" data-option="writer">글쓴이</a></li>
-								</ul>
-							</li>
-						</ul>
-
-						<input type="text" name="search" class="swrite"> 
-						<input type="hidden" name="searchCate" class="searchCate" value="title">
-						<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+						<div class="searchCateBox">
+							<ul class="navbar-nav">
+								<li class="nav-item dropdown"><a
+									class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item searchA" href="#" data-option="title">제목</a></li>
+										<li><hr class="dropdown-divider" /></li>
+										<li><a class="dropdown-item searchA" href="#" data-option="content">내용</a></li>
+										<li><hr class="dropdown-divider" /></li>
+										<li><a class="dropdown-item searchA" href="#" data-option="writer">글쓴이</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+							<input type="text" name="search" class="swrite"> 
+							<input type="hidden" name="searchCate" class="searchCate" value="title">
+						<div class="swriteBtnBox">
+							<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+						</div>
 					</form>
 					
 					<input type="hidden" class="ReSearchCate" value="${searchCate }">
@@ -303,16 +367,16 @@
 	                     </div>
 	                     <!-- Product actions-->
 	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-	                        <div style="text-align: center;">
+	                        <div class="tradeState">
 	                           <c:if test="${i.tnormalstate ==0 }">
-	                               판매중
-	                               </c:if>
+	                               <span class="state_selling">판매중</span>
+	                           </c:if>
 	                           <c:if test="${i.tnormalstate ==1 }">
-	                               거래중
-	                               </c:if>
+	                               <span class="state_ing">거래중</span>
+	                           </c:if>
 	                           <c:if test="${i.tnormalstate ==2 }">
-	                               판매완료
-	                               </c:if>
+	                              <span class="state_done">판매완료</span>
+	                           </c:if>
 	                        </div>
 	                        <div class="text-center">
 	                           <a class="btn btn-outline-dark mt-auto"

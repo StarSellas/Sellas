@@ -1,0 +1,49 @@
+.tradecontainter{
+	margin: auto;
+	padding: auto;
+	width: 90%;
+	height: 90%;
+}
+.normalEditFrm{
+	margin: auto;
+	padding: 0;
+	width: inherit;
+	height: inherit;	
+}
+.titleBox, .bcontentBox, .priceBox{
+	width: 100%;
+	margin: 20px 5px;
+	padding: 0;
+}
+#ttitle{
+	width: inherit;
+	height: 35px;
+}
+#tcontent{
+	width: inherit;
+	height: 250px;
+}
+
+/****************** button_toggle *******************/
+
+.hide{
+    display: none;
+ }
+.tBtnBox{
+   display:flex !important;
+}
+.addPhotoBtnBox{
+   display: inline-block;
+}
+#picker2, #camera, #addPhotoBtn, #addPhotoButton{
+   display: inline-block;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px 5px;
+}
+
+.btnClicked{
+   transition: transform 0.5s ease;
+}
