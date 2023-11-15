@@ -81,55 +81,96 @@
 					<input type="hidden" value="${detail.tno }" name="tno" id="tno">
 					<input type="hidden" value="${muuid }" name="muuid"> 
 					
-					<div class="ncategoryBox">
-						<label for="ncategory">카테고리 : </label>
-						 <select name="category" id="ncategory">
-							<c:forEach items="${categoryList }" var="i">
-								<option value="${i.ino }" id="ino">${i.iname }</option>
-							</c:forEach>
-						</select> 
-					</div>
 					
-					<div class="titleBox">
-						<input type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
-					</div>
-					<div class="bcontentBox">
-						<textarea placeholder="내용을 입력해주세요." name="tcontent" id="tcontent" >${detail.tcontent }</textarea>
-					</div>
-					<div class="priceBox">
-						<label class="priceLabel" for="tnormalprice">가격 : </label>
-						<input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">
-						<span> 원</span>
-					</div>
 					
+						<div id="ncategoryBox">
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+								<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
+									role="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</a>
+									
+									<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<c:forEach items="${categoryList }" var="i" varStatus="loop">
+											<li class="category"><div class="dropdown-item" id="category">
+											${i.iname }
+											<input type="hidden" id="ino" name="ino" value="${i.ino }">
+											</div></li>
+											<li class="division${loop.index }"><hr class="dropdown-divider" /></li>
+										</c:forEach>
+									</ul>
+								</li>
+							</ul>
+						</div>
+				
+				<script type="text/javascript">
+				
+				
+					$(function(){
+						
+						// 게시판 드롭다운 스타일조정
+						$(".division7").hide();
+						
+						
+						$(".category").click(function(){
+							let selected = $(this).children("#category").text().trim();
+							$("#navbarDropdown").text(selected);
+							
+						});
+					});
+				
+				</script>
+				
+					<div class="form-floating titleBox">
+						<input type="text" class="form-control" placeholder="제목" name="ttitle" required="required" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
+						<label for="title">제목</label>
+					</div>
+					<div class="form-floating">
+						<textarea class="form-control" placeholder="내용" name="tcontent" id="tcontent" >${detail.tcontent }</textarea>
+						<label for="tcontent">내용</label>
+					</div>
+					<div class="form-floating priceBox">
+						<input class="form-control" placeholder="가격" type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice" placeholder="가격">
+						<label for="tnormalprice">가격</label>
+					</div>
 					
 					<c:if test="${normalDetailImage ne null }">
-					현재 사진입니다.
-					<c:forEach items="${normalDetailImage }" var="i" varStatus="loop">
-					<div  class="image-container">
-					<img alt="" src="./tradeImgUpload/${i.timage }" width="250px" height="200px" class="normalTradeImg"><br>
-					<button type="button" class="normalTradeChangeBtn" data-image-name="${i.timage}">사진 변경하기</button>
-					<button type="button" class="normalTradeImageDeleteBtn" data-image-name="${i.timage}">사진 삭제하기</button>
-					<input type="hidden" name="selectedImage${loop.index}" value="" id="selectedImageInput">
-					<div class="box"></div>
-					</div>
-					</c:forEach>
+						현재 사진입니다.
+						<c:forEach items="${normalDetailImage }" var="i" varStatus="loop">
+							<div  class="image-container">
+							<img alt="" src="./tradeImgUpload/${i.timage }" width="250px" height="200px" class="normalTradeImg"><br>
+							<button type="button" class="normalTradeChangeBtn" data-image-name="${i.timage}">사진 변경하기</button>
+							<button type="button" class="normalTradeImageDeleteBtn" data-image-name="${i.timage}">사진 삭제하기</button>
+							<input type="hidden" name="selectedImage${loop.index}" value="" id="selectedImageInput">
+							<div class="box"></div>
+							</div>
+						</c:forEach>
 					</c:if>
-					<br>
-					<br>
 					
-				<div class="addPhotoBtnBox">
-					<button id="addPhotoBtn" type="button">사진 추가하기</button>
-				</div>
-				<div class="otherBtnBox hide" id="addPhoto">
-					<div id="box"></div>
-					<button id="picker2" type="button">앨범에서 추가</button>
-					<button id="camera" type="button">카메라에서 추가</button>
-					<div id="progress"></div>
-					<div id="upload-box"></div>
-				</div>
-				
-				<div class="nEditBtnBox">
+						<div class="accordion form-floating" id="accordion">
+							<div class="accordion-item">
+								<h2 class="accordion-header">
+									<button class="accordion-button collapsed" id="addPhotoBtn" type="button"
+										data-bs-toggle="collapse" data-bs-target="#collapsePhoto"
+										aria-expanded="false" aria-controls="collapsePhoto">
+										사진 추가하기</button>
+								</h2>
+								<div id="collapsePhoto" class="accordion-collapse collapse">
+									<div class="accordion-body">
+										<button id="picker2" type="button">
+											<img src="../img/image.png" width="38">
+										</button>
+										<button id="camera" type="button">
+											<img src="../img/camera.png" width="38">
+										</button>
+									</div>
+									<div id="box"></div>
+									<div id="progress"></div>
+									<div id="upload-box"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="nEditBtnBox">
 					<button type="button" id="normalEditBtn">수정하기</button>
 					<button type="button" id="normalEditCBtn" onclick="location.href='./normalDetail?tno=${detail.tno}'">취소</button>
 				</div>
@@ -141,32 +182,7 @@
 		</div>
 
 	</section>
-		<script type="text/javascript">
-			 
-               $(function(){
-            	   
-                  $("#addPhotoBtn").click(function(){
-                	  
-                     $(this).parent(".addPhotoBtnBox").toggleClass("btnClicked");   // 버튼위로이동
-                     $(".otherBtnBox").toggleClass("hide");
-                     
-                     if($(".addPhotoBtnBox").hasClass("btnClicked")){
-                        $(".otherBtnBox").addClass("tBtnBox");
-                        
-                     } else {
-                        $(".otherBtnBox").removeClass("tBtnBox");
-                     }
-                     
-                  })
-               });
-               
-    </script>
-    
-	<!-- Bootstrap core JS-->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- Core theme JS-->
-	<script src="js/scripts.js"></script>
+
 	<script type="text/javascript">
         
 	 $(function () {

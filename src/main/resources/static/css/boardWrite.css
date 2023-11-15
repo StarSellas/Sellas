@@ -15,26 +15,45 @@
 	width: 90%;
 	height: 90%;
 }
-.bwriteForm,.beditForm{
-	margin: auto;
-	padding: 0;
-	width: inherit;
-	height: inherit;
+.btitleBox{
+	margin-bottom: 10px;
 }
 
-.btitleBox, .bcontentBox, .titleBox, .contentBox{
-	margin: 20px 5px;
-	padding: 0;
+button {
+	width: 350px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
+}
+
+.form-floating {
+	margin: 0px auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	width: 100%;
-	display: flex;
+	text-align: center;
 }
-.btitle{
-	width: inherit;
-	height: 35px;
+.accordion-item, .accordion-header{
+	width: 100%;
 }
-.bcontent{
+
+#accordion {
+	width: 100%;
+}
+
+#picker2, #camera {
+	width: 50px;
+}
+
+#btitle{
 	width: inherit;
-	height: 250px;
+}
+
+#bcontent{
+	width: inherit;
+	height: 300px;
 }
 
 .bimageBox {
@@ -45,9 +64,7 @@
 .photoInputs, .boardimg{
 	margin: 10px;
 }
-.addPhotoBtnBox{
-	margin-top: 25px;
-}
+
 .bwriteBtnBox {
 	margin: 10px 0;
 	padding: 0;
@@ -56,25 +73,17 @@
 	position: relative;
     top: 100px;
 }
-
 .bwriteButton{
-	width: 90px;
-   	height: 35px;
-	float: right;
-	background-color: white;
-   	border: 1px solid #88abff ;
-   	border-radius: 5px;
-   	margin: 5px;
+	padding: 0;
+	width: 100%;
 }
 
 .buttonBox{			/* boardWrite */
-	margin: 10px 0;
-	padding: 0;
 	width: 100%;
-	display: inline-block;
 	position: relative;
-    top: 50px;
     padding-bottom: 85px;
+    margin-top: 20px;
+    display: inline-block;
 }
 .editbtn, .editCancelbtn{	/* boardEdit */
 	width: 90px;
@@ -85,37 +94,8 @@
    	border-radius: 5px;
    	margin: 5px;
 }
-/****************** button_toggle *******************/
-
-.hide{
-    display: none;
- }
-.tBtnBox{
-   display:flex !important;
-}
-.addPhotoBtnBox{
-   display: inline-block;
-}
-#picker2, #camera, #addPhotoBtn, #addPhotoButton{
-   display: inline-block;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-}
-
-.btnClicked{
-   transition: transform 0.5s ease;
-}
 
 /****************** boardEdit *******************/
-.boardImgBox editImgBox{
-	height: inherit;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
 
 .boardImg{
 	width: 250px;
