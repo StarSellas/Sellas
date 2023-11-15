@@ -193,8 +193,8 @@ function addAuctionItem(item){
 	let startDateTime = item.tdate.split("T");
 	let startDate = document.createElement("span");
 	startDate.textContent = startDateTime[0] + "/";
-	let startTime = document.createElement("span");
-	startTime.textContent = startDateTime[1] + "/";
+	//let startTime = document.createElement("span");
+	//startTime.textContent = startDateTime[1] + "/";
 	
 	let readNumber = document.createElement("span");
 	readNumber.textContent = item.tread;
