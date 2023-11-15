@@ -127,7 +127,7 @@
 	<%@ include file="menubar.jsp" %>
 	
          <!-- Section-->
-        <section class="py-5">
+        <section class="py-5 WholeContainer">
         
             <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a> (${bdetail.bno })</div>
             <div class="container mt-4" style="z-index: 10" id="productContainer">
@@ -141,7 +141,19 @@
 						<div class="btitle">
 							${bdetail.btitle }
 						</div>
-						<div class="mnickname">${bdetail.mnickname } 
+						
+						<div class="UserBox">
+							<div class="userImgBox">
+								<c:choose>
+									<c:when test="${bdetail.mphoto ne null}">
+										<img src="../userImgUpload/${bdetail.mphoto}" alt="user-img" class="userImg">
+									</c:when>
+									<c:otherwise>
+										<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+									</c:otherwise>
+								</c:choose>
+							</div>
+							<span class="mnickname">${bdetail.mnickname }</span> 
 							<span class="bdate">${bdetail.bdate }</span>
 						</div>
 					</div>
@@ -150,17 +162,18 @@
 						<div class="bcontent">${bdetail.bcontent }</div>
 					</div>
 					
-					<div class="bimageBox">
-					<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
-						<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
-							<c:forEach items="${imageList}" var="imageList">
-								<div class="boardImgBox">
-									<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
-								</div>
-								<!--<span>${imageList.bimage}</span>-->
-							</c:forEach>
-						</c:if>
-					</div>
+						<div class="bimageBox">
+						<!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
+							<c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
+								<c:forEach items="${imageList}" var="imageList">
+									<div class="boardImgBox">
+										<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
+									</div>
+									<!--<span>${imageList.bimage}</span>-->
+								</c:forEach>
+							</c:if>
+						</div>
+					
 					
 					<div class="bBtnBox">
 						<span class="bread">조회 : ${bdetail.bread }</span>
@@ -187,13 +200,26 @@
 							
 							<c:choose>
 							<c:when test="${bdetail.commentcount gt 5}">
-								<div class="moreComments">... 🐳 ...</div>
+								<div class="moreComments">......</div>
 								<c:forEach items="${comments }" var="comments" varStatus="loop" begin="${bdetail.commentcount - 5}" end="${bdetail.commentcount - 1}" step="1">
 									<div class="commentBox">
 											<div class="cContentBox">
 												<input type="hidden" name="muuid" class="muuid" value="uuid : ${comments.muuid }">
 												<input type="hidden" class="cno" value="${comments.cno }"/>
-												<div class="chead">${comments.mnickname } <span class="cdate">${comments.cdate }</span></div>
+												<div class="chead">
+													<div class="userImgBox">
+														<c:choose>
+															<c:when test="${comments.mphoto ne null}">
+																<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
+															</c:when>
+															<c:otherwise>
+																<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+															</c:otherwise>
+														</c:choose>
+													</div>
+													${comments.mnickname } 
+													<span class="cdate">${comments.cdate }</span>
+													</div>
 												<div class="content">${comments.ccontent }</div>
 											</div>
 											<div class="commentsBtn">
@@ -211,7 +237,18 @@
 											<div class="cContentBox">
 												<input type="hidden" name="muuid" class="muuid"	value="uuid : ${comments.muuid }"> 
 												<input type="hidden" class="cno" value="${comments.cno }" />
-												<div class="chead">${comments.mnickname }
+												<div class="chead">
+													<div class="userImgBox">
+														<c:choose>
+															<c:when test="${comments.mphoto ne null}">
+																<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
+															</c:when>
+															<c:otherwise>
+																<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+															</c:otherwise>
+														</c:choose>
+													</div>
+													${comments.mnickname }
 													<span class="cdate">${comments.cdate }</span>
 												</div>
 												<div class="content">${comments.ccontent }</div>

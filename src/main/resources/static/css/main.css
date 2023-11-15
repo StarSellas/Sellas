@@ -5,25 +5,34 @@
 	align-items: flex-end;
 	margin-bottom: 10px;
 }
-
 .searchFrom{
-	width: inherit;
+	width: 80%;
+	margin-bottom: 20px;
 	display: flex;
 	align-items: flex-end; 
 	border-bottom: 1px gray solid;
 }
-.swrite, .searchCate{
+.searchCate{
 	margin: 0;
 	padding: 1px 2px;
-	height: 30px;
+	height: inherit;
 }
 .swrite{
-	width: 150px;
+	width: 220px;
+	height: 40px;
+	margin: 0;
+	padding: 1px 2px 0 0;
 	border: none;
+}
+.swrite:focus{
+	outline: none;
+}
+.searchCateBox{
+	margin: 0;
+	flex:1;
 }
 .swriteButton{
 	border: 0.5px solid white;
-	border-radius: 30px;
 	background-color: inherit;
 	margin: 0;
 	padding: 2px 2px 8px 2px;
@@ -35,8 +44,34 @@
 }
 
 #navbarDropdown{
+	width: 65px;
 	text-decoration: none;
 	color: black;
 	padding-left: 5px;
 	margin-right: 5px;
+	border: none;
+}
+
+.tradeState{
+	margin-bottom: 13px;
+	text-align: center;
+}
+
+.tradeState span{
+	text-decoration: none;
+	font-size: 15px;
+	font-weight: bold;
+	border: solid white 1px;
+    border-radius: 10px;
+    padding: 2px 10px;
+}
+
+.state_selling{
+	color: #0080c0;
+}
+.state_ing{
+	color: tomato;
+}
+.state_done{
+	opacity: 50%;
 }

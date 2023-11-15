@@ -40,4 +40,18 @@ public interface AuctionDAO {
 
 	public void setWinningBidder(Map<String, Object> auctionInfo);
 
+	String obuyer(String ano);
+
+	String oseller(String tno);
+
+	int createAuctionChatRoom(Map<String, Object> chatmap);
+
+	int insertDialogueSeller(Map<String, Object> chatmap);
+
+	int insertDialogueBuyer(Map<String, Object> chatmap);
+
+	int getAbidPrice(String ano);
+
+	int insertPayment(Map<String, Object> chatmap);
+
 }

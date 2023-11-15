@@ -27,9 +27,19 @@
 	</select>
 	
 	<select id="lastChatList" parameterType="Map" resultType="Map">
-		select (select mnickname from member where muuid = #{me}) as chatnick, dcontent, dtype, ddate 
-		from dialogue where ouuid = #{roomId} and dtype IN ('ENTER', 'TALK', 'OUT', 'PAYMENT', 'TRADEOK', 'TRADENO')
-		order by dno asc
+		SELECT
+  (SELECT mnickname FROM member WHERE muuid = dialogue.muuid) AS chatnick,
+  dcontent,
+  dtype,
+  ddate
+FROM
+  dialogue
+WHERE
+  ouuid = #{roomId}
+  AND dtype IN ('ENTER', 'TALK', 'OUT', 'PAYMENT', 'TRADEOK', 'TRADENO')
+ORDER BY
+  dno ASC;
+
 	</select>
 	
 	<select id="searchChatRoom" parameterType="Map" resultType="Integer">
@@ -41,7 +51,7 @@
 	</select>
 	
 	<select id="alarmList" parameterType="String" resultType="Map">
-		select ouuid, dcontent from dialogue where muuid = #{muuid} and dcheck = 1 order by dno asc
+		select ouuid, dcontent from dialogue where muuid = #{muuid} and dtype = 'ALARM' and dcheck = 1 order by dno asc
 	</select>
 	
 	<update id="setCheckZero" parameterType="String">
@@ -56,5 +66,21 @@
 	SELECT *
 	FROM payment
 	WHERE tno= #{tno} and pseller = #{oseller} and pbuyer= #{obuyer}
+	</select>
+	
+	<select id="alarmcount" parameterType="String" resultType="Integer">
+		select count(*) from dialogue where muuid = #{oseller} and dtype="ALARM" and dcheck = 1
+	</select>
+	
+	<select id="auctionChat" parameterType="String" resultType="Map">
+		select tno, oseller, obuyer from onlinechat where ouuid = #{roomId}
+	</select>
+	
+	<select id="chatRoomList" parameterType="Map" resultType="Map">
+		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid}
+	</select>
+	
+	<select id="getTitleByTno" parameterType="Integer" resultType="String">
+		select ttitle from trade where tno = #{tno}
 	</select>
 </mapper>

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +92,7 @@ public class ChatRoomController {
 			int lastroomcheck = Integer.parseInt(String.valueOf(map.get("lastroomcheck")));
 			int searchchatroom = chatRoomService.searchChatRoom(map);
 			int tnormalstate = chatRoomService.selectTnormalstate(map);
+			String tnoname = chatRoomService.tnoName(tno);
 			String tcmessage = mnickname+ "   거래가 취소되었습니다. 자세한 사항은"+ "<a href='/'>"+"마이페이지"+"</a>"+ "에서 확인해주세요.";
 			
 			if(tnormalstate == 1) {
@@ -121,6 +123,7 @@ public class ChatRoomController {
 				model.addAttribute("emessage", emessage);
 				model.addAttribute("obuyer", obuyer);
 				model.addAttribute("tcmessage", tcmessage);
+				model.addAttribute("tnoname", tnoname);
 				return "/chat/roomdetail";
 
 			} else if(lastroomcheck == 0) {
@@ -133,6 +136,7 @@ public class ChatRoomController {
 				model.addAttribute("emessage", emessage);
 				model.addAttribute("obuyer", obuyer);
 				model.addAttribute("tcmessage", tcmessage);
+				model.addAttribute("tnoname", tnoname);
 				return "/chat/roomdetail";
 
 			}
@@ -149,7 +153,7 @@ public class ChatRoomController {
 	//판매자는 구매자에게 알람을 보내지 않아서 alarm은 없습니다.
 	@PostMapping("/alarmChat")
 	public String alarmChat(@RequestParam String roomId, Model model) {
-		System.out.println("roomId의 값은 : " + roomId);
+		//System.out.println("roomId의 값은 : " + roomId);
 		
 		// System.out.println("룸 아이디는 " + roomId); 오는거 확인했어요.
 		// System.out.println("roomId는 " + roommap.get("roomId"));
@@ -175,6 +179,7 @@ public class ChatRoomController {
 		String oseller = String.valueOf(map.get("oseller"));
 		String mnickname = chatRoomService.mNickName(oseller); //판매자 닉네임입니다.
 		String econtent = mnickname + "님이 입장하셨습니다.";
+		String tnoname = chatRoomService.tnoName(tno);
 		
 		if(tnormalstate == 1) {
 			Map<String, Object> payment = chatRoomService.selectPayment(map);
@@ -192,6 +197,7 @@ public class ChatRoomController {
 		model.addAttribute("oseller", oseller);
 		model.addAttribute("mnickname", mnickname);
 		model.addAttribute("econtent", econtent);
+		model.addAttribute("tnoname", tnoname);
 		return "/chat/roomalarm";
 	}
 	
@@ -204,9 +210,28 @@ public class ChatRoomController {
 		
 		List<Map<String, Object>> alarmlist = chatRoomService.alarmList(muuid); //로그아웃해 있던 동안 쌓인 알림 리스트 받아옵니다.
 		
-		System.out.println("알림 리스트: " + alarmlist);
+		//System.out.println("알림 리스트: " + alarmlist);
 		
 		model.addAttribute("alarmlist", alarmlist); //alarmlist(방의 uuid와 alarm 내용을 alarmlist)라는 이름으로 모델로 보냅니다.
+		
+		List<Map<String, Object>> chatroomlist = chatRoomService.chatRoomList(muuid); //ouuid와 tno, oseller, obuyer 가져옵니다.
+		
+		for (int n = 0; n < chatroomlist.size(); n++) {
+		    // chatroomlist에서 n번째 chatroom 맵을 가져옴
+		    Map<String, Object> chatroom = chatroomlist.get(n);
+
+		    // chatroom 맵에 ttitle 키가 없다면, tno를 사용하여 trade 테이블에서 ttitle 조회
+		    if (!chatroom.containsKey("ttitle")) {
+		        Integer tno = (Integer) chatroom.get("tno");
+		        String ttitle = chatRoomService.getTtitleByTno(tno);
+
+		        // 조회된 ttitle을 chatroom 맵에 추가
+		        chatroom.put("ttitle", ttitle);
+		        chatroomlist.set(n, chatroom);
+		    }
+		}
+		
+		model.addAttribute("chatroomlist", chatroomlist);
 		
 		return "/chat/alarm"; //알람리스트 페이지입니다.
 		
@@ -216,16 +241,72 @@ public class ChatRoomController {
 		
 	}
 	
+	@PostMapping("/alarmcount")
+	@ResponseBody
+	public String alarmcount(@RequestParam String oseller) {
+		int roomcount = chatRoomService.alarmcount(oseller);
+		JSONObject json = new JSONObject();
+		json.put("count",roomcount);
+		return json.toString();
+	}
+	
 	//알람 리스트 페이지에 들어가면 세션을 사용해서 받아온 알람들의 acheck 값을 다 0으로 update합니다.
 	@PostMapping("/alarmcheck")
-	public void alarm(HttpSession session) {
+	@ResponseBody
+	public String alarm(HttpSession session) {
 		
 		//System.out.println("muuid는 " + muuid);
 		
 		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+			
 			String muuid = String.valueOf(session.getAttribute("muuid"));
 			int setcheckzero = chatRoomService.setCheckZero(muuid);
+			
+			JSONObject json = new JSONObject();
+			
+			if(setcheckzero > 0) {
+				
+				json.put("check", 1);
+				
+			} else {
+				
+				json.put("check", 0);
+				
+			}
+			
+			return json.toString();
+			
 		}
+		
+		return "/";
+	}
+	
+	@PostMapping("/auctionchat")
+	public String auctionChat(@RequestParam String roomId, Model model) {
+		
+		Map<String, Object> map = chatRoomService.auctionChat(roomId);
+		String tno = String.valueOf(map.get("tno"));
+		String oseller = String.valueOf(map.get("oseller"));
+		String obuyer = String.valueOf(map.get("obuyer"));
+		
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("tno", tno);
+		model.addAttribute("oseller", oseller);
+		model.addAttribute("obuyer", obuyer);
+		
+		map.put("roomId", roomId);
+		
+		List<Map<String, Object>> lastchatlist = chatRoomService.lastChatList(map);
+		
+		model.addAttribute("lastchatlist", lastchatlist);
+		
+		int searchchatroom = chatRoomService.searchChatRoom(map);
+		
+		if(searchchatroom == 1) {
+			model.addAttribute("lastroomcheck", searchchatroom);
+		}
+		
+		return "/chat/auctionchat";
 	}
 
 

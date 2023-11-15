@@ -33,18 +33,6 @@ public class BoardController {
 	private BoardService boardService;
 	@Autowired
 	private Util util;
-
-	@GetMapping("/MorpheusTest")
-	public String MorpheusTest() {
-		
-		return "MorpheusTest";
-	}
-	
-	@GetMapping("/boardWriteForTest")
-	public String boardWriteForTest() {
-		
-		return "boardWriteForTest";
-	}
 	
 	// (카테고리별)게시판페이지
 	@GetMapping("/board")
@@ -66,6 +54,7 @@ public class BoardController {
 			System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
 			List<Map<String, Object>> mainList = boardService.mainList(map);
 			List<Map<String, Object>> setupboardList = boardService.setupboardList();
+			System.out.println(mainList);
 			
 			// 메인게시판에서 검색했을 때 
 			if(search != null && searchCate != null) {
@@ -264,8 +253,8 @@ public class BoardController {
 		boardService.boardReadUP(map);
 		List<Map<String, Object>> imageList = boardService.imageList(map);
 		List<Map<String, Object>> commentList = boardService.commentList(map);
-		// System.out.println("commentList : " + commentList);
-
+		//System.out.println("detailList : " + detailList);
+		
 		// [{bthumbnail=1, bno=25, bimage=고래nb.png}]
 		// System.out.println("디테일페이지 : " + detailList);
 		// {bno=5, bread=0, mnickname=셀라스, commentcount=2, bdate=14:27:46, sno=2,
@@ -296,42 +285,43 @@ public class BoardController {
 		return "boardedit";
 	}
 
-	// 게시글수정 로직
-	@ResponseBody
-	@PostMapping("boardEdit")
-	public String boardEdit(
-			@RequestParam Map<String, Object> map) {
-		JSONObject json = new JSONObject();
-		System.out.println("맵 값은 어떻게 오나요?" + map);
-		int normalEditResult = boardService.boardEdit(map);
-		 
-		
-		if(map.get("OriginalImgArray[0]") != null) {
-		Map<String, Object> deleteImage = new HashMap<String, Object>();
-		deleteImage.put("bno", map.get("bno")); 
-		if(map.get("OriginalImgArray[0]") != null) {
-			deleteImage.put("Original1", map.get("OriginalImgArray[0]"));
-		}if(map.get("OriginalImgArray[1]") != null) {
-			deleteImage.put("Original2", map.get("OriginalImgArray[1]"));
-		}if(map.get("OriginalImgArray[2]") != null) {
-			deleteImage.put("Original3", map.get("OriginalImgArray[2]"));
-		}if(map.get("OriginalImgArray[3]") != null) {
-			deleteImage.put("Original4", map.get("OriginalImgArray[3]"));
-		}
-		 
-		System.out.println("deleteImage : " + deleteImage);
-		
-		
-			int boardDeleteEditImage = boardService.imgDelete(deleteImage);
-				if(boardDeleteEditImage == 1) {   
-				json.put("ImgdeleteSuccess", 1);
-				}
-		}else {
-			json.put("justDelete", 1);
-		}
+	   // 게시글수정 로직 by 대원
+	   @ResponseBody
+	   @PostMapping("boardEdit")
+	   public String boardEdit(
+	         @RequestParam Map<String, Object> map) {
+	      JSONObject json = new JSONObject();
+	      System.out.println("맵 값은 어떻게 오나요?" + map);
+	      int normalEditResult = boardService.boardEdit(map);
+	       
+	      
+	      if(map.get("OriImgMap[0]") != null) {
+	      Map<String, Object> deleteImage = new HashMap<String, Object>();
+	      deleteImage.put("bno", map.get("bno")); 
+	      if(map.get("OriImgMap[0]") != null) {
+	         deleteImage.put("Original1", map.get("OriImgMap[0]"));
+	      }if(map.get("OriImgMap[1]") != null) {
+	         deleteImage.put("Original2", map.get("OriImgMap[1]"));
+	      }if(map.get("OriImgMap[2]") != null) {
+	         deleteImage.put("Original3", map.get("OriImgMap[2]"));
+	      }if(map.get("OriImgMap[3]") != null) {
+	         deleteImage.put("Original4", map.get("OriImgMap[3]"));
+	      }
+	       
+	      System.out.println("deleteImage : " + deleteImage);
+	      
+	      
+	         int boardDeleteEditImage = boardService.imgDelete(deleteImage);
+	            if(boardDeleteEditImage == 1) {   
+	            json.put("ImgdeleteSuccess", 1);
+	            }
+	      }else {
+	         json.put("justDelete", 1);
+	      }
 
-		return json.toString();
-	}
+	      return json.toString();
+	   }
+
 
 	// 게시글삭제 로직
 	@GetMapping("boardDelete")

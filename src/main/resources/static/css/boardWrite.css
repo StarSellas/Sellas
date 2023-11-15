@@ -30,10 +30,11 @@
 }
 .btitle{
 	width: inherit;
+	height: 35px;
 }
 .bcontent{
 	width: inherit;
-	height: 200px;
+	height: 250px;
 }
 
 .bimageBox {
@@ -47,14 +48,67 @@
 .addPhotoBtnBox{
 	margin-top: 25px;
 }
-.bwriteBtnBox, .buttonBox{
+.bwriteBtnBox {
 	margin: 10px 0;
 	padding: 0;
 	width: 100%;
+	display: inline-block;
+	position: relative;
+    top: 100px;
 }
-.bwriteButton, .editbtn{
+
+.bwriteButton{
+	width: 90px;
+   	height: 35px;
 	float: right;
+	background-color: white;
+   	border: 1px solid #88abff ;
+   	border-radius: 5px;
+   	margin: 5px;
 }
+
+.buttonBox{			/* boardWrite */
+	margin: 10px 0;
+	padding: 0;
+	width: 100%;
+	display: inline-block;
+	position: relative;
+    top: 50px;
+    padding-bottom: 85px;
+}
+.editbtn, .editCancelbtn{	/* boardEdit */
+	width: 90px;
+   	height: 35px;
+   	float: right;
+   	background-color: white;
+   	border: 1px solid #88abff ;
+   	border-radius: 5px;
+   	margin: 5px;
+}
+/****************** button_toggle *******************/
+
+.hide{
+    display: none;
+ }
+.tBtnBox{
+   display:flex !important;
+}
+.addPhotoBtnBox{
+   display: inline-block;
+}
+#picker2, #camera, #addPhotoBtn, #addPhotoButton{
+   display: inline-block;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px 5px;
+}
+
+.btnClicked{
+   transition: transform 0.5s ease;
+}
+
 /****************** boardEdit *******************/
 .boardImgBox editImgBox{
 	height: inherit;
@@ -76,5 +130,3 @@
 	border: none;
 	padding: 0;
 }
-
-

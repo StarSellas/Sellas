@@ -170,13 +170,15 @@ function addAuctionItem(item){
 	let itemImage = document.createElement("img");
     itemImage.src = "img/icon.png";
 	itemImage.alt = "Auction Item";
-	itemImage.style.width = "50px";
+	itemImage.style.width = "100px";
 	
 	let itemCategory = document.createElement("div");
 	itemCategory.textContent = item.iname;
 	
 	itemInfoDiv.append(itemImage);
 	itemInfoDiv.append(itemCategory);
+	
+	itemInfoDiv.classList.add("itemInfoDiv");
 	
 	
 	// 물품 이름 / 판매자 / 등록일 / 조회수
@@ -188,19 +190,27 @@ function addAuctionItem(item){
 	let sellerNickname = document.createElement("span");
 	sellerNickname.textContent = item.mnickname;
 	
+	let startDateTime = item.tdate.split("T");
 	let startDate = document.createElement("span");
-	startDate.textContent = item.tdate + "/";
+	startDate.textContent = startDateTime[0] + "/";
+	let startTime = document.createElement("span");
+	startTime.textContent = startDateTime[1] + "/";
 	
 	let readNumber = document.createElement("span");
 	readNumber.textContent = item.tread;
 	
 	let auctionInfoSubDiv = document.createElement("div");
 	auctionInfoSubDiv.append(itemTitle);
-	auctionInfoSubDiv.append(sellerNickname);
+	auctionInfoSubDiv.append(startDate);
+	auctionInfoSubDiv.append(startTime);
+	auctionInfoSubDiv.append(readNumber);
+	
+	auctionInfoSubDiv.classList.add("auctionInfoSubDiv");
 	
 	auctionInfoDiv.append(auctionInfoSubDiv);
-	auctionInfoDiv.append(startDate);
-	auctionInfoDiv.append(readNumber);
+	auctionInfoDiv.append(sellerNickname);
+	
+	auctionInfoDiv.classList.add("auctionInfoDiv");
 	
 	
 	// 현재입찰가 / 최소입찰가
@@ -215,13 +225,18 @@ function addAuctionItem(item){
 	priceInfoDiv.append(currentBidPrice);
 	priceInfoDiv.append(minimumBidPrice);
 	
+	priceInfoDiv.classList.add("priceInfoDiv");
+	
 	
 	let auctionItemSubDiv = document.createElement("div");
 	auctionItemSubDiv.append(auctionInfoDiv);
 	auctionItemSubDiv.append(priceInfoDiv);
 	
+	auctionItemSubDiv.classList.add("auctionItemSubDiv");
+	
 	auctionItemDiv.append(itemInfoDiv);
 	auctionItemDiv.append(auctionItemSubDiv);
+	
 	
 	// 기본 class 추가
 	auctionItemDiv.classList.add("auctionItemDiv");

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -20,6 +20,7 @@
 	rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="css/styles.css" rel="stylesheet" />
+<link href="css/normalEdit.css" rel="stylesheet" />
 
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
@@ -28,23 +29,7 @@
 		<script src="./js/wnInterface.js"></script> 
 		<script src="./js/mcore.min.js"></script> 
 		<script src="./js/mcore.extends.js"></script> 
-</head>
-<body>
-	<!-- Navigation-->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light"
-		style="z-index: 10">
-		<div class="container px-4 px-lg-5">
-			<a class="navbar-brand" href="">SellAS</a>
-			<button class="navbar-toggler" type="button" data-bs-target=""
-				aria-controls="navbarSupportedContent">
-				<img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon">
-			</button>
-		</div>
-	</nav>
-	<!-- Header-->
-	<header> </header>
-	<!-- Section-->
-	<section class="py-5">
+		
 		<script type="text/javascript">
 		function resizeImage(input, maxWidth, maxHeight, callback) {
 		    if (input.files && input.files[0]) {
@@ -80,40 +65,47 @@
 		}
 
 		</script>
+		
+</head>
 
+<body>
+ <%@ include file="menubar.jsp" %>
+	<!-- Section-->
+	<section class="py-5">
 
-
-		<div class="container px-4 px-lg-5 mt-5 tradecontainter"
-			style="z-index: 10" id="productContainer">
-			<div
-				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-				<form action="./normalEdit" method="post"
-					enctype="multipart/form-data">
+		<div class="container mt-5"	style="z-index: 10" id="productContainer">
+			<div class="justify-content-center">
+			
+			<div class="tradecontainter">
+				<form action="./normalEdit" method="post" enctype="multipart/form-data" class="normalEditFrm">
 					<input type="hidden" value="${detail.tno }" name="tno" id="tno">
-					<input type="hidden" value="${muuid }" name="muuid"> <input
-						type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
-					<br>카테고리
+					<input type="hidden" value="${muuid }" name="muuid"> 
+					
+					<span>카테고리</span>
 					 <select name="category" >
 						<c:forEach items="${categoryList }" var="i">
 							<option value="${i.ino }" id="ino">${i.iname }</option>
 						</c:forEach>
-					</select> <br><br><br>
-					내용
-					<div>
+					</select> 
+					
+					<div class="titleBox">
+						<input type="text" placeholder="제목을 입력해주세요" name="ttitle" value="${detail.ttitle }" maxlength="30" id="ttitle"><br>
+					</div>
+					<div class="bcontentBox">
 						<textarea placeholder="내용을 입력해주세요." name="tcontent" id="tcontent" >${detail.tcontent }</textarea>
 					</div>
-					<br> <br> 가격 : <input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">원
-
-
-					<br>
-					
+					<div class="priceBox">
+						<span>가격 : </span>
+						<input type="number" name="tnormalprice" value="${detail.tnormalprice }" id="tnormalprice">
+						<span> 원</span>
+					</div>
 					
 					
 					<c:if test="${normalDetailImage ne null }">
 					현재 사진입니다.
 					<c:forEach items="${normalDetailImage }" var="i" varStatus="loop">
 					<div  class="image-container">
-					<img alt="" src="./tradeImgUpload/${i.timage }" width="200px" height="200px" class="normalTradeImg"><br>
+					<img alt="" src="./tradeImgUpload/${i.timage }" width="250px" height="200px" class="normalTradeImg"><br>
 					<button type="button" class="normalTradeChangeBtn" data-image-name="${i.timage}">사진 변경하기</button>
 					<button type="button" class="normalTradeImageDeleteBtn" data-image-name="${i.timage}">사진 삭제하기</button>
 					<input type="hidden" name="selectedImage${loop.index}" value="" id="selectedImageInput">
@@ -123,7 +115,10 @@
 					</c:if>
 					<br>
 					<br>
-			<button id="addPhotoBtn" type="button">사진 추가하기</button>
+					
+			<div class="addPhotoBtnBox">
+				<button id="addPhotoBtn" type="button">사진 추가하기</button>
+			</div>
 			<div id="addPhoto">
 				<div id="box"></div>
 				<button id="picker2" type="button">앨범에서 추가</button>
@@ -140,24 +135,12 @@
 
 
 
-
+</div>
 			</div>
 		</div>
 
 	</section>
-	<!-- Footer-->
-	<footer id="footer">
-		<div class="container">
-			<ul class="menubar">
-				<li onclick="location.href='./'"><i class="xi-home xi-2x"></i>
-				<div id="menu">홈</div></li>
-				<li><i class="xi-message xi-2x"></i>
-				<div id="menu">채팅</div></li>
-				<li><i class="xi-profile xi-2x"></i>
-				<div id="menu">마이페이지</div></li>
-			</ul>
-		</div>
-	</footer>
+	
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -193,15 +176,68 @@
 			let deleteCount = 0;
 			const $picker2 = $('#picker2');
 			const $box = $('#box');
+			const $camera = $('#camera');
+			
+			
+		
 			
 			$("#addPhoto").hide();
 			$("#addPhotoBtn").click(function(){
-				alert("사진은 앨범과 카메라 중 하나만 선택 가능합니다.");
 				$("#addPhoto").show();
 			});
+	
+
+			
+			 $("#camera").click(function(){
+			       if ($box.find('img').length + editPhotoSize >= 4) {
+			          alert('더 이상 이미지를 추가할 수 없습니다.');
+			          return false;
+			       }
+			       if ($previewImgArray[0] === ''){
+			         if ($uploadImg) {
+			            $uploadImg.remove();
+			            $uploadImg = null;
+			         }
+			      }
+			            selectImagePath = [];
+			   M.media.camera({
+			       path: "/media",
+			       mediaType: "PHOTO",
+			       saveAlbum: true,
+			       callback: function(status, result, option) {
+			           if (status == 'SUCCESS') {
+			              //alert("뜨나?11")
+			               var photo_path = result.fullpath;
+			               $previewImgArray[count] = result.path;
+			               
+			                $.convertBase64ByPath2($previewImgArray)
+			                .then(({ status, result }) => {
+			         if (status === 'SUCCESS') {
+			            //alert("뜨나?22")
+			           $previewImg = $(document.createElement('img'))
+			           $previewImg.attr('width', '250px')
+			           $previewImg.attr('src', "data:image/png;base64," + result[count].data)
+			           $box.append($previewImg);
+			           count++;
+			         } else {
+			           return Promise.reject('BASE64 변환 실패')
+			         }
+			       })
+			       .catch((err) => {
+			         if (typeof err === 'string') alert(err)
+			         console.error(err)
+			       })
+			               
+			            // return $.uploadImageByPath2(selectImagePath); 이거 쓰면 업로드됩니당
+			               
+			           }
+			       }
+			     
+			       });
+			  }); 
+
 			
 			$picker2.on('click', () => {
-				$("#camera").hide();
 				if ($box.find('img').length + editPhotoSize >= 4) {
 					alert('더 이상 이미지를 추가할 수 없습니다.');
 					return false;
@@ -215,10 +251,13 @@
 				$.imagePicker2()
 				.then(({ status, result }) => {
 					if (status === 'SUCCESS') {
-						for (let i = 0; i < result.length; i++) {
-							$previewImgArray[i] = result[i].path;
-							
-						}
+						 let resultCount = 0;
+                         let beforeCount = count;
+                      for (let i = count; i < result.length + count; i++) {
+                         $previewImgArray[i] = result[resultCount].path;
+                        resultCount++;
+                      }
+
 						return $.convertBase64ByPath2($previewImgArray)
 					} else {
 						return Promise.reject('이미지 가져오기 실패')
@@ -226,20 +265,19 @@
 				})
 				.then(({ status, result }) => {
 					if (status === 'SUCCESS') {
-						for (let i = 0; i < result.length; i++) {
-							if ($box.find('img').length + editPhotoSize >= 4) {
-								
-								$previewImgArray[i] = null;
-								continue;
-								}
+						 for (let i = count; i < result.length + count; i++) {
+			                  if ($box.find('img').length + editPhotoSize >= 4) {
+			                     $previewImgArray[i] = null;
+			                     continue;
+			                     }
+
 							let imageSrc = "data:image/png;base64," + result[i].data;
 							let $previewImg = $(document.createElement('img'));
-							$previewImg.attr('height', '200px');
-							$previewImg.attr('width', '200px');
+							$previewImg.attr('width', '250px');
 							$previewImg.attr('src', imageSrc);
 							$box.append($previewImg);
-							count++;
 						}
+						 count = $previewImgArray.length;
 					} else {
 						return Promise.reject('이미지 가져오기 실패');
 					}

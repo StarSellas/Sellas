@@ -1,0 +1,173 @@
+@charset "UTF-8";
+.container {
+  max-width: 1170px;
+  margin: auto;
+  max-height: 2640px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.inbox_people {
+  background: #f8f8f8 none repeat scroll 0 0;
+  float: left;
+  overflow: hidden;
+  width: 100%;
+}
+
+.inbox_msg {
+  clear: both;
+  overflow: hidden;
+}
+
+.headind_srch {
+  display: flex;
+  align-items: center; /* 세로 정렬 추가 */
+  justify-content: space-between;
+  padding: 10px 29px 10px 20px;
+  overflow: hidden;
+}
+
+.recent_heading {
+  display: flex;
+  align-items: center; /* 세로 정렬 추가 */
+}
+
+.recent_heading a {
+  margin-right: 10px; /* a 태그와 h4 태그 사이의 간격 조절 */
+}
+
+.recent_heading h4 {
+  color: #05728f;
+  font-size: 21px;
+  margin: 0;
+}
+
+.srch_bar {
+  display: flex;
+  align-items: center; /* 세로 정렬 추가 */
+}
+
+.srch_bar input {
+  border: 1px solid #cdcdcd;
+  border-width: 0 0 1px 0;
+  width: 80%;
+  padding: 2px 0 4px 6px;
+  background: none;
+}
+
+.srch_bar .input-group-addon button {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+  border: medium none;
+  padding: 0;
+  color: #707070;
+  font-size: 18px;
+}
+
+.srch_bar .input-group-addon {
+  margin: 0 0 0 -27px;
+}
+
+.incoming_msg_img {
+  display: inline-block;
+  width: 6%;
+}
+
+.received_msg {
+  display: inline-block;
+  padding: 0 0 0 10px;
+  vertical-align: top;
+  width: 92%;
+ }
+ .received_withd_msg p {
+  background: #ebebeb none repeat scroll 0 0;
+  border-radius: 3px;
+  color: #646464;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 10px 5px 12px;
+  width: 100%;
+}
+.time_date {
+  color: #747474;
+  display: block;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.received_withd_msg { width: 57%;}
+.mesgs {
+  float: left;
+  padding: 30px 15px 0 25px;
+  width: 100%;
+}
+
+ .sent_msg p {
+  background: #05728f none repeat scroll 0 0;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 0; color:#fff;
+  padding: 5px 10px 5px 12px;
+  width:100%;
+}
+.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+.sent_msg {
+  float: right;
+  width: 46%;
+}
+.input_msg_write {
+  display: flex;
+  align-items: center;
+}
+
+.xi-plus {
+  font-size: 200%;
+  margin-right: 10px; /* 아이콘과 인풋 간격 조절 */
+  margin-left: 10px;
+  display:flex !important;
+  
+}
+
+.write_msg {
+  flex: 1; /* 인풋 창이 남은 공간을 모두 차지하도록 함 */
+  border: medium none;
+  border-radius: 10px;
+  color: #4c4c4c;
+  font-size: 15px;
+  min-height: 48px;
+  background: #e0e0e0;
+}
+.type_msg {
+	background:#d0d0d0; 
+	position: relative;
+}
+.messaging { padding: 0 0 50px 0;}
+.msg_history {
+  height: 516px;
+  overflow-y: auto;
+}
+.TradeBtnBox{
+   display: initial;
+}
+.hide{
+    display: none;
+ }
+.tBtnBox{
+   display:flex !important;
+}
+.toggleBtnBox{
+   display: inline-block;
+}
+#tradeok, #tradeRequest, #tradeAccept, #tradeCancel{
+   width: 90px;
+   height: 35px;
+   background-color: white;
+   border: 1px solid #88abff ;
+   border-radius: 5px;
+   margin: 5px 5px;
+   float: right;
+}
+
+.btnClicked{
+   transition: transform 0.5s ease;
+}

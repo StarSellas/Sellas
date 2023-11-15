@@ -126,10 +126,12 @@ public class MyPageService {
 		return formatDates(aucSellList);
 	}
 
+
 	public List<Map<String, Object>> getAucBuy(String uuid) {
 		List<Map<String, Object>>  aucBuyList= myPageDAO.getAucBuy(uuid);
 		return formatDates(aucBuyList);
 	}
+
 
 	public int addWish(Map<String, Object> map) {
 		return myPageDAO.addWish(map);
