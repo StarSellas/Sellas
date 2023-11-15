@@ -110,51 +110,73 @@ $(function() {
 		</div>
 
 		<input type="hidden" id="category" name="category" value="">
-		<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</a>
-				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<c:forEach var="itemCategory" items="${itemCategory }">
-						<li><div class="dropdown-item" id="category${itemCategory.key }" onclick="setCategory(${itemCategory.key })">${itemCategory.value }</div></li>
-						<li><hr class="dropdown-divider" /></li>
-					</c:forEach>
-				</ul>
-			</li>
-		</ul>
-
-		<button id="addPhotoBtn" type="button">사진 추가하기</button>
-		<div id="addPhoto">
-			<button id="picker2" type="button">앨범에서 추가</button>
-			<button id="camera" type="button">카메라에서 추가</button>
-			<div id="box"></div>
-			<div id="progress"></div>
-			<div id="upload-box"></div>
+		<div id="categoryDiv">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<c:forEach var="itemCategory" items="${itemCategory }">
+							<li><div class="dropdown-item" id="category${itemCategory.key }" onclick="setCategory(${itemCategory.key })">${itemCategory.value }</div></li>
+							<li><hr class="dropdown-divider" /></li>
+						</c:forEach>
+					</ul>
+				</li>
+			</ul>
 		</div>
 
-		<button type="button" onclick="showPage('page2')">거래 희망 장소 선택하기</button>
+		<div class="accordion form-floating" id="accordion">
+			<div class="accordion-item">
+				<h2 class="accordion-header">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
+						사진 추가하기
+					</button>
+				</h2>
+				<div id="collapsePhoto" class="accordion-collapse collapse">
+					<div class="accordion-body">
+						<button id="picker2"><img src="../img/image.png" width="38"></button>
+						<button id="camera"><img src="../img/camera.png" width="38"></button>
+					</div>
+					<div id="box"></div>
+					<div id="progress"></div>
+					<div id="upload-box"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-floating">
+			<button type="button" onclick="showPage('page2')">거래 희망 장소 선택하기</button>
+		</div>
 
 		<input type="hidden" id="locationLat" name="locationLat">
 		<input type="hidden" id="locationLng" name="locationLng">
 
-		<div>거래방식
-			<button type="button" id="type0" onclick="selectTradeType('0')" disabled="disabled">일반</button>
+		<div class="form-floating">
+			<button type="button" id="type0" onclick="selectTradeType('0')" class="selectedType">일반</button>
 			<button type="button" id="type1" onclick="selectTradeType('1')">경매</button>
 			<input type="hidden" id="tradeType" name="tradeType" value="0">
 		</div>
 
-		<div id="normalTradeDiv">일반거래
-			<div>
-				<input type="number" id="normalPrice" name="normalPrice" step="100">
+		<div id="normalTradeDiv">
+			<div class="form-floating">
+				<input class="form-control" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
+				<label for="normalPrice">가격</label>
 			</div>
 		</div>
 
-		<div id="auctionTradeDiv" style="display:none">경매거래
-			<div>
-				<input type="number" id="auctionStartPrice" name="auctionStartPrice" step="100">
-				<input type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" step="100">
+		<div id="auctionTradeDiv" style="display:none">
+			<div class="form-floating">
+				<input class="form-control" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
+				<label for="auctionStartPrice">경매시작가격</label>
+			</div>
+			<div class="form-floating">
+				<input class="form-control" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
+				<label for="auctionMinBidUnit">최소입찰단위</label>
 			</div>
 		</div>
-		<button type="button" id="addTradeItemBtn">확인</button>
+
+		<div class="form-floating">
+			<button type="button" id="addTradeItemBtn">확인</button>
+		</div>
 
 	</div>
 
@@ -163,16 +185,36 @@ $(function() {
 		<div id="map" style="width: 100%; height: 350px"></div>
 		<div id="userLocationDiv"></div>
 		<div>
-			${locationList }
-			<c:forEach var="locationList" items="${locationList }">
-				<div>
-					<button type="button" onclick="selectLocation('${locationList.lname}')">${locationList.lname }</button>
-					<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
-					<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
+			<!-- ${locationList } -->
+			<div class="accordion form-floating" id="accordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLocaiton" aria-expanded="false" aria-controls="collapseLocaiton">
+							내 장소 선택하기
+						</button>
+					</h2>
+					<div id="collapseLocaiton" class="accordion-collapse collapse">
+						<div class="accordion-body">
+							<c:forEach var="locationList" items="${locationList }">
+								<div class="form-floating">
+									<div class="locationButtonDiv">
+										<div class="locationNameDiv"><div>${locationList.lname }</div></div>
+										<button class="locationButton" type="button" onclick="selectLocation('${locationList.lname}')">선택</button>
+										<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
+										<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
 				</div>
-			</c:forEach>
-			<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
-			<button type="button" onclick="showPage('page1')">선택 완료</button>
+			</div>
+			<div class="form-floating">
+				<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
+			</div>
+			<div class="form-floating">
+				<button type="button" onclick="showPage('page1')">선택 완료</button>
+			</div>
 		</div>
 
 	</div>
@@ -312,7 +354,7 @@ $.imagePicker2 = function () {
          mode: "MULTI",
          media: "PHOTO",
          maxCount : 4,
-         path: "/media",
+         //path: "/media",
          column: 3,
          callback: (status, result) => {
             resolve({ status, result })             
