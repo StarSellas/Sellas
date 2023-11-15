@@ -81,8 +81,6 @@ function picChange() {
 
     $("#camera").click(function(){
     	
-    	$("#picker2").hide();
-alert("!");
     	
    	 if ($previewImg !== null) {
 		        $previewImg.remove();
@@ -122,7 +120,6 @@ alert("!");
     
 
    			 $picker2.on('click', () => {
-   				 $("#camera").hide();
    				 if ($box.find('img').length >= 5) {s
    			        alert('더 이상 이미지를 추가할 수 없습니다.');
    			        return false;
@@ -133,25 +130,20 @@ alert("!");
     	   				 $previewImg.remove();
     	   				 $previewImg = null;
     	 			 }
-    		  selectImagePath = '';
+    		  selectImagePath = [];
     	 		 $.imagePicker2()
     	   		 .then(({ status, result }) => {
     	     	 	if (status === 'SUCCESS') {
-    	    	 		 for (let i = 0; i < result.length; i++) {
-    	    	 			 $previewImgArray[i] = result[i].path;
-    	    	 		 }
-    	       		 return $.convertBase64ByPath2($previewImgArray)
+    	    	 			 selectImagePath[0] = result.path;
+    	       		 return $.convertBase64ByPath2(selectImagePath)
     	       		 } else {
     	            return Promise.reject('이미지 가져오기 실패')
     	       		 }
     	      })
     	      .then(({ status, result }) => {
     	        if (status === 'SUCCESS') {
-    	        for (let i = 0; i < result.length; i++) {
-    	        	
-    	          let imageSrc = "data:image/png;base64," + result[i].data;
+    	          let imageSrc = "data:image/png;base64," + result[0].data;
     	          $profile.attr('src', imageSrc);
-    	        }
     	      } else {
     	        return Promise.reject('이미지 가져오기 실패');
     	      }
@@ -166,10 +158,8 @@ alert("!");
     	$.imagePicker2 = function () {
 				      return new Promise((resolve) => {
 				        M.media.picker({
-				          mode: "MULTI",
+				          mode: "SINGLE",
 				          media: "PHOTO",
-				          maxCount : 4,
-				          // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
 				          column: 3,
 				          callback: (status, result) => {
 				            resolve({ status, result })
@@ -241,15 +231,12 @@ alert("!");
 			  $(function(){
 				  $("#addPhoto").show();
 				  $("#addPhotoBtn").click(function(){
-					  alert("사진은 앨범과 카메라 중 하나만 선택 가능합니다.");
 					  $("#addPhoto").show();
 				  });
 				  
 				  
 				  $(".bwriteButton").click(function(){
-					alert("요기");
 					let muuid = $(this).parent().siblings(".muuid").val();
-					alert(muuid);
 					
 					$.ajax({
 						url : "./photoModifySubmit",
@@ -257,15 +244,13 @@ alert("!");
 						data : {uuid : muuid},
 						dataType : "json",
 						success : function(data){
-						alert("!여기");
 							if(data.result == 1){
 								
 								let uuid = data.uuid;
 								
-								alert("이건? : "+ uuid);
 								
-								if($previewImgArray[0].length > 0){
-									if ($previewImgArray[0] === ''){
+								if(selectImagePath.length > 0){
+									if (selectImagePath[0] === ''){
 											 if ($uploadImg) {
 											        $uploadImg.remove();
 											        $uploadImg = null;
@@ -273,7 +258,7 @@ alert("!");
 									 }
 								      
 								      $progress.text('')
-								      $.uploadImageByPath2($previewImgArray, uuid, (total, current) => {
+								      $.uploadImageByPath2(selectImagePath, uuid, (total, current) => {
 								        console.log(`total: ${total} , current: ${current}`)
 								        $progress.text(`${current}/${total}`)
 								      })
@@ -282,7 +267,6 @@ alert("!");
 								        }) => {
 								          // status code
 								          if (status === '200') {
-								        	  alert("떠라");
 								            $progress.text('업로드 완료')
 								            const bodyJson = JSON.parse(body)
 								            $uploadImg = $(document.createElement('img'))

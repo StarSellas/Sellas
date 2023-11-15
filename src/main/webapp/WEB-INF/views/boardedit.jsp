@@ -48,6 +48,7 @@
 								<textarea class="bcontent" name="bcontent">${bdetail.bcontent }</textarea>
 								<input type="hidden" class="bno" name="bno" value="${bdetail.bno}">
 								<input type="hidden" class="cate" name="cate" value="${param.cate}">
+								
 							</div>
 
 							<div class="bimageBox">
@@ -57,6 +58,7 @@
 											<div class="boardImgBox editImgBox">
 												<img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
 												<button class="imgEditbtn" type="button" data-image-name="${imageList.bimage}">수정</button>
+												<button type="button" class="BoardImageDeleteBtn" data-image-name="${imageList.bimage}">삭제</button>
 											</div>
 										</c:forEach>
 									</c:if>
@@ -66,14 +68,20 @@
 	                    			</div>
 	                    			
 	                    			<div class="addPhotoBtnBox">
-										<button id="addPhotoButton" type="button">사진 추가하기</button>
+										<button id="addPhotoBtn" type="button">사진 추가하기</button>
 									</div>
 								</div>
-							
+							<div id="addPhoto">
+							<button id="picker2" type="button">앨범에서 추가</button>
+							<button id="camera" type="button">카메라에서 추가</button>
+							<div id="box"></div>
+							<div id="progress"></div>
+							<div id="upload-box"></div>
+						</div>
+							<br>
 							<div class="buttonBox">
 								<button type="button" class="editbtn">수정하기</button>
 							</div>
-					
 					</div>
                    
                 </div>
@@ -85,28 +93,147 @@
         
 	 $(function () {
 		 
+		 let bimagecount = '${bdetail.bimagecount}';
+		    var maxPhotos = 3;
+		    var nextPhotoId = 1 +bimagecount;
+		    let $previewImgArray = [];	//미리보기 이미지가 담기는 배열입니다.
+		    let selectImagePath = [];	//수정 및 추가된 이미지가 담기는 배열입니다.
+		    let count = 0;				//selectImagePath에 담길 index 값입니다.
+		    let $previewImg = null;
+			let OriginalImgArray = []; // 삭제될 이미지가 담기는 배열입니다.
+		    let deleteCount = 0;	// OriginalImgArray에 담길 index값입니다.
+		    const $picker2 = $('#picker2');
+			const $box = $('#box');
+			const $camera = $('#camera');
 		 
+		 
+		 $("#addPhoto").hide();
+		  $("#addPhotoBtn").click(function(){
+			  $("#addPhoto").show();
+		  });
+		 
+		  $("#camera").click(function(){
+		       if ($box.find('img').length + bimagecount >= 4) {
+		          alert('더 이상 이미지를 추가할 수 없습니다.');
+		          return false;
+		       }
+
+		   M.media.camera({
+		       path: "/media",
+		       mediaType: "PHOTO",
+		       saveAlbum: true,
+		       callback: function(status, result, option) {
+		           if (status == 'SUCCESS') {
+		              //alert("뜨나?11")
+		               var photo_path = result.fullpath;
+		               $previewImgArray[0] = result.path;
+		               selectImagePath[count] = result.path;
+		                $.convertBase64ByPath2($previewImgArray)
+		                .then(({ status, result }) => {
+		         if (status === 'SUCCESS') {
+		            //alert("뜨나?22")
+		           $previewImg = $(document.createElement('img'))
+		           $previewImg.attr('width', '250px')
+		           $previewImg.attr('src', "data:image/png;base64," + result[0].data)
+		           $box.append($previewImg);
+		           count++;
+		         } else {
+		           return Promise.reject('BASE64 변환 실패')
+		         }
+		       })
+		       .catch((err) => {
+		         if (typeof err === 'string') alert(err)
+		         console.error(err)
+		       })
+		           }
+		       }
+		     
+		       });
+		  }); 
+		  
+		  
+		  $picker2.on('click', () => {
+				if ($box.find('img').length >= 4) {
+					alert('더 이상 이미지를 추가할 수 없습니다.');
+					return false;
+				}
+				 
+				if ($previewImg !== null) {
+					$previewImg.remove();
+					$previewImg = null;
+				}
+				$.imagePicker2()
+				.then(({ status, result }) => {
+					if (status === 'SUCCESS') {
+						 let resultCount = 0;
+                       let beforeCount = count;
+                    for (let i = 0; i < result.length; i++) {
+                       $previewImgArray[i] = result[i].path;
+                       selectImagePath[count] = result[i].path;
+                       if(count+bimagecount >= 4){
+                    	   selectImagePath[count] = null;
+                      	 continue;
+                       }
+                      count++;
+                    }
+
+						return $.convertBase64ByPath2($previewImgArray)
+					} else {
+						return Promise.reject('이미지 가져오기 실패')
+					}
+				})
+				.then(({ status, result }) => {
+					if (status === 'SUCCESS') {
+						 for (let i = 0; i < result.length; i++) {
+			                  if ($box.find('img').length + bimagecount >= 4) {
+			                     $previewImgArray[i] = null;
+			                     continue;
+			                     }
+
+							let imageSrc = "data:image/png;base64," + result[i].data;
+							let $previewImg = $(document.createElement('img'));
+							$previewImg.attr('width', '250px');
+							$previewImg.attr('src', imageSrc);
+							$box.append($previewImg);
+						}
+						 count = $previewImgArray.length;
+					} else {
+						return Promise.reject('이미지 가져오기 실패');
+					}
+				})
+				.catch((err) => {
+					if (typeof err === 'string') alert(err);
+						console.error(err);
+				});
+			})
+		  
+		  
+		  
+		  $(".BoardImageDeleteBtn").click(function(){
+			  var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
+	            var container = $(this).closest(".boardImgBox");
+			        OriginalImgArray[deleteCount] = imageName;
+			        deleteCount++;
+			        bimagecount--;
+			        container.remove();
+			});
+		  
+		  
+		  
 		 
 	        $(".imgEditbtn").click(function () {
 	            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
 	            var container = $(this).closest(".boardImgBox");
 	            container.find("input[type=hidden]").val(imageName); // hidden input의 값을 설정
 	        });
-	    });
 	
 	
 	
        
         
-	 $(function () {
-		    var editPhotoSize = 0;
-		    var maxPhotos = 3;
-		    var nextPhotoId = 1 + editPhotoSize;
-		    let $previewImgArray = [];
-		    let count = 0;
-		    let selectImagePath = '';
-		    let $previewImg = null;
-			let OriginalImgArray = {};
+			
+			
+			
 		    $(".imgEditbtn").click(function () {
 		        // 선택한 이미지 이름 가져오기
 		        var imageName = $(this).data("image-name");
@@ -123,33 +250,33 @@
 		        var imageName = $(this).data("image-name");
 		        $(this).click(function () {
 		            // 이미 미리보기가 있으면 제거
-		            if ($previewImg !== null) {
-		                $previewImg.remove();
-		                $previewImg = null;
-		            }
-		            selectImagePath = '';
-		            OriginalImgArray[count] = imageName;
+		            
+		            OriginalImgArray[deleteCount] = imageName;
 		            // 이미지 피커 열기
 		            $.imagePicker()
 		                .then(({ status, result }) => {
 		                    if (status === 'SUCCESS') {
 		                        // 선택한 이미지 경로 저장
-		                        $previewImgArray[count] = result.path;
+		                        selectImagePath[count] = result.path;
+		                        $previewImgArray[0] = result.path;
 		                        return $.convertBase64ByPath2($previewImgArray);
 		                    } else {
 		                    	OriginalImgArray[count] = null;
+		                    	selectImagePath[count] = null;
 		                        return Promise.reject('이미지 가져오기 실패')
 		                    }
 		                })
 		                .then(({ status, result }) => {
 		                    if (status === 'SUCCESS') {
 		                        // 이미지를 Base64로 변환하여 프리뷰 이미지 만들기
-		                        let imageSrc = "data:image/png;base64," + result[count].data;
+		                        let imageSrc = "data:image/png;base64," + result[0].data;
 		                        let $previewImg = $(document.createElement('img'));
-		                        $previewImg.attr('height', '200px');
+		                        $previewImg.attr('width', '250px');
 		                        container.find(".boardImg").attr('src', imageSrc);
 		                        // .box 엘리먼트에 프리뷰 이미지 추가
 		                        //boxElement.append($previewImg);
+		                        bimagecount--;
+		                        deleteCount++;
 		                        count++;
 		                    } else {
 		                        return Promise.reject('이미지 가져오기 실패');
@@ -162,7 +289,24 @@
 		        });
 		    });
         
-        
+		    $.imagePicker2 = function () {
+			      return new Promise((resolve) => {
+			        M.media.picker({
+			          mode: "MULTI",
+			          media: "PHOTO",
+			          maxCount : 4,
+			          path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+			          column: 3,
+			          callback: (status, result) => {
+			            resolve({ status, result })
+			            
+			          
+			          }
+			        });
+			      })
+			    }
+		    
+		    
         $.imagePicker = function () {
 		      return new Promise((resolve) => {
 		        M.media.picker({
@@ -215,7 +359,7 @@
 	    	$.uploadImageByPath2 = function ($previewImgArray, bno,cate, progress) {
 		    	  return new Promise((resolve) => {
 		    	    const _options = {
-		    	      url: 'http://172.30.1.4:8080/fileUpload',
+		    	      url: 'http://172.30.1.52:8080/fileUpload',
 		    	      header: {},
 		    	      params: { bno: bno, cate: cate },
 		    	      body: $previewImgArray.map((filePath) => ({
@@ -266,12 +410,12 @@
 					$.ajax({
 						url : "./boardEdit",
 						type : "post",
-						data : {bno : bno, cate : cate, btitle : btitle, bcontent : bcontent, muuid : muuid, OriginalImgArray : OriginalImgArray},
+						data : {bno : bno, cate : cate, btitle : btitle, bcontent : bcontent, muuid : muuid, OriImgMap : OriImgMap},
 						dataType : "json",
 						success : function(data){
-							if(data.ImgdeleteSuccess==1){
-								if($previewImgArray.length > 0){
-									$.uploadImageByPath2($previewImgArray,bno, cate,(total, current) => {
+							if(data.ImgdeleteSuccess==1 || selectImagePath.length > 0){
+								if(selectImagePath.length > 0){
+									$.uploadImageByPath2(selectImagePath,bno, cate,(total, current) => {
 										console.log(`total: ${total} , current: ${current}`)
 									})
 									.then(({
@@ -293,9 +437,29 @@
 												
 								}
 							}
-							setTimeout(function() {
-		                         form.submit();
-		                     }, 3000);
+							alert("작성이 완료되었습니다.");
+							var form = document.createElement("form");
+							form.method = "GET";
+							form.action = "./boardDetail"; // 컨트롤러 경로 설정
+							var inputForbno = document.createElement("input");
+							inputForbno.type = "hidden"; // 숨겨진 필드
+							inputForbno.name = "bno"; // 파라미터 이름
+							inputForbno.value = bno; // 파라미터 값
+							var inputForcate = document.createElement("input");
+							inputForcate.type = "hidden"; // 숨겨진 필드
+							inputForcate.name = "cate"; // 파라미터 이름
+							inputForcate.value = cate; // 파라미터 값
+
+							// input을 form에 추가
+							form.appendChild(inputForbno);
+							form.appendChild(inputForcate);
+							
+							document.body.appendChild(form);
+
+							// 폼 전송
+							form.submit();
+							
+							
 						},
 						error : function(error){
 							
@@ -303,27 +467,7 @@
 					});
 					
 					
-					alert("작성이 완료되었습니다.");
-					var form = document.createElement("form");
-					form.method = "GET";
-					form.action = "./boardDetail"; // 컨트롤러 경로 설정
-					var inputForbno = document.createElement("input");
-					inputForbno.type = "hidden"; // 숨겨진 필드
-					inputForbno.name = "bno"; // 파라미터 이름
-					inputForbno.value = bno; // 파라미터 값
-					var inputForcate = document.createElement("input");
-					inputForcate.type = "hidden"; // 숨겨진 필드
-					inputForcate.name = "cate"; // 파라미터 이름
-					inputForcate.value = cate; // 파라미터 값
-
-					// input을 form에 추가
-					form.appendChild(inputForbno);
-					form.appendChild(inputForcate);
 					
-					document.body.appendChild(form);
-
-					// 폼 전송
-					form.submit();
 				}
 			});
 	 });

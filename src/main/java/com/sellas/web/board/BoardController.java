@@ -177,7 +177,6 @@ public class BoardController {
 	public String comeOnFile2(@RequestParam(value = "file") List<MultipartFile> boardimgList, 
 								@RequestParam(value = "bno")int bno, 
 								@RequestParam(value = "cate")int cate) {
-
 		System.out.println("boardimgList : " + boardimgList);
 		System.out.println("bno : " + bno);
 		System.out.println("cate : " + cate);
@@ -306,17 +305,17 @@ public class BoardController {
 		int normalEditResult = boardService.boardEdit(map);
 		 
 		
-		if(map.get("OriginalImgArray[0]") != null) {
+		if(map.get("OriImgMap[0]") != null) {
 		Map<String, Object> deleteImage = new HashMap<String, Object>();
 		deleteImage.put("bno", map.get("bno")); 
-		if(map.get("OriginalImgArray[0]") != null) {
-			deleteImage.put("Original1", map.get("OriginalImgArray[0]"));
-		}if(map.get("OriginalImgArray[1]") != null) {
-			deleteImage.put("Original2", map.get("OriginalImgArray[1]"));
-		}if(map.get("OriginalImgArray[2]") != null) {
-			deleteImage.put("Original3", map.get("OriginalImgArray[2]"));
-		}if(map.get("OriginalImgArray[3]") != null) {
-			deleteImage.put("Original4", map.get("OriginalImgArray[3]"));
+		if(map.get("OriImgMap[0]") != null) {
+			deleteImage.put("Original1", map.get("OriImgMap[0]"));
+		}if(map.get("OriImgMap[1]") != null) {
+			deleteImage.put("Original2", map.get("OriImgMap[1]"));
+		}if(map.get("OriImgMap[2]") != null) {
+			deleteImage.put("Original3", map.get("OriImgMap[2]"));
+		}if(map.get("OriImgMap[3]") != null) {
+			deleteImage.put("Original4", map.get("OriImgMap[3]"));
 		}
 		 
 		System.out.println("deleteImage : " + deleteImage);

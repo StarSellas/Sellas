@@ -160,11 +160,12 @@
 		    var editPhotoSize = ${normalDetailCount};
 		    var maxPhotos = 4;
 		    var nextPhotoId = 1 + editPhotoSize;
-		    let $previewImgArray = [];
+		    let $previewImgArray = []; //미리보기 이미지가 담기는 배열
+		    let addPhotoArray = []; //추가 및 변경되는 이미지가 담기는 배열
 		    let count = 0;
 		    let selectImagePath = '';
 		    let $previewImg = null;
-			let OriginalImgArray = {};
+			let OriginalImgArray = []; //삭제할 값이 담기는 배열
 			let addCount = 0;
 			let deleteCount = 0;
 			const $picker2 = $('#picker2');
@@ -192,7 +193,6 @@
 			            $uploadImg = null;
 			         }
 			      }
-			            selectImagePath = [];
 			   M.media.camera({
 			       path: "/media",
 			       mediaType: "PHOTO",
@@ -201,15 +201,15 @@
 			           if (status == 'SUCCESS') {
 			              //alert("뜨나?11")
 			               var photo_path = result.fullpath;
-			               $previewImgArray[count] = result.path;
-			               
+			               $previewImgArray[0] = result.path;
+			               addPhotoArray[count] = result.path;
 			                $.convertBase64ByPath2($previewImgArray)
 			                .then(({ status, result }) => {
 			         if (status === 'SUCCESS') {
 			            //alert("뜨나?22")
 			           $previewImg = $(document.createElement('img'))
 			           $previewImg.attr('width', '250px')
-			           $previewImg.attr('src', "data:image/png;base64," + result[count].data)
+			           $previewImg.attr('src', "data:image/png;base64," + result[0].data)
 			           $box.append($previewImg);
 			           count++;
 			         } else {
@@ -246,9 +246,14 @@
 					if (status === 'SUCCESS') {
 						 let resultCount = 0;
                          let beforeCount = count;
-                      for (let i = count; i < result.length + count; i++) {
-                         $previewImgArray[i] = result[resultCount].path;
-                        resultCount++;
+                      for (let i = 0; i < result.length; i++) {
+                         $previewImgArray[i] = result[i].path;
+                         addPhotoArray[count] = result[i].path;
+                         if(count+editPhotoSize >= 4){
+                        	 addPhotoArray[count] = null;
+                        	 continue;
+                         }
+                        count++;
                       }
 
 						return $.convertBase64ByPath2($previewImgArray)
@@ -258,7 +263,7 @@
 				})
 				.then(({ status, result }) => {
 					if (status === 'SUCCESS') {
-						 for (let i = count; i < result.length + count; i++) {
+						 for (let i = 0; i < result.length; i++) {
 			                  if ($box.find('img').length + editPhotoSize >= 4) {
 			                     $previewImgArray[i] = null;
 			                     continue;
@@ -322,6 +327,7 @@
 		                    if (status === 'SUCCESS') {
 		 
 		                        // 선택한 이미지 경로 저장
+		                        addPhotoArray[count] = result.path;
 		                        $previewImgArray[count] = result.path;
 		                        return $.convertBase64ByPath2($previewImgArray);
 		                    } else {
@@ -334,7 +340,8 @@
 		                        // 이미지를 Base64로 변환하여 프리뷰 이미지 만들기
 		                        let imageSrc = "data:image/png;base64," + result[count].data;
 		                        let $previewImg = $(document.createElement('img'));
-		                        $previewImg.attr('height', '200px');
+		                        $previewImg.attr('width', '250px');
+		                        
 		                        container.find(".normalTradeImg").attr('src', imageSrc);
 		                        // .box 엘리먼트에 프리뷰 이미지 추가
 		                        //boxElement.append($previewImg);
@@ -360,7 +367,7 @@
 		        M.media.picker({
 		          mode: "SINGLE",
 		          media: "PHOTO",
-		          // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+		          path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
 		          column: 3,
 		          callback: (status, result) => {
 		            resolve({ status, result })
@@ -376,7 +383,7 @@
         			mode: "MULTI",
         			media: "PHOTO",
         			maxCount : 4,
-        			// path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+        			path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
         			column: 3,
         			callback: (status, result) => {
         				resolve({ status, result })	          
@@ -508,12 +515,12 @@
 						url : "./normalEdit",
 						type : "post",
 						data : {ttitle : ttitle, tcontent: tcontent, ino : ino, muuid : muuid, tnormalprice: tnormalprice,
-							 tno : tno, OriginalImgArray : OriginalImgArray},
+							 tno : tno, OriImgMap : OriImgMap},
 						dataType : "json",
 						success : function(data){
-							if(data.ImgdeleteSuccess==1 || $previewImgArray.length > 0){
-								if($previewImgArray.length > 0){
-									$.uploadImageByPath2($previewImgArray,tno, (total, current) => {
+							if(data.ImgdeleteSuccess==1 ||addPhotoArray.length > 0){
+								if(addPhotoArray.length > 0){
+									$.uploadImageByPath2(addPhotoArray,tno, (total, current) => {
 										console.log(`total: ${total} , current: ${current}`)
 									})
 									.then(({

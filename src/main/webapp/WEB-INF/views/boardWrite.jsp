@@ -140,13 +140,15 @@
         
         
 	<script type="text/javascript">
+    $(function(){
 	
 	//모피어스를 이용한 카메라 사진 및 앨범 사진 넣기 by 대원
 	let cameraImagePath ='';
-	let selectImagePath = [];
+	let selectImagePath = [];	//저장할 사진이 담길 배열
     let $previewImg = null;
     let $uploadImg = null;
-    let $previewImgArray = [];
+    let $previewImgArray = [];	//미리보기 사진이 담길 배열
+    let count = 0;
 	
     
     const $box = $('#box');
@@ -157,27 +159,23 @@
     const $camera = $('#camera');
     const $picker2 = $('#picker2');
     
-    
     $("#camera").click(function(){
+    	if(selectImagePath.length >= 4){
+    		alert("더 이상 사진을 추가할 수 없습니다.");
+    		return false;
+    	}
     	
-    	$("#picker2").hide();
-    	
-   	 if ($previewImg !== null) {
-		        $previewImg.remove();
-		        $previewImg = null;
-		      }
-		      selectImagePath = [];
+		      
 	M.media.camera({
        path: "/media",
        mediaType: "PHOTO",
        saveAlbum: true,
        callback: function(status, result, option) {
            if (status == 'SUCCESS') {
-        	   //alert("뜨나?11")
                var photo_path = result.fullpath;
-               selectImagePath[0] = result.path;
-               
-                $.convertBase64ByPath2(selectImagePath)
+               selectImagePath[count] = result.path;
+               $previewImgArray[0] = result.path;
+                $.convertBase64ByPath2($previewImgArray)
                 .then(({ status, result }) => {
          if (status === 'SUCCESS') {
         	 //alert("뜨나?22")
@@ -186,6 +184,7 @@
            $previewImg.attr('src', "data:image/png;base64," + result[0].data)
            
            $box.append($previewImg);
+        	 count++;
          } else {
            return Promise.reject('BASE64 변환 실패')
          }
@@ -204,25 +203,25 @@
   }); 
     
     
-    
    			 $picker2.on('click', () => {
-   				 $("#camera").hide();
-   				 if ($box.find('img').length >= 5) {s
-   			        alert('더 이상 이미지를 추가할 수 없습니다.');
-   			        return false;
-   			    }
-   				 
-   				 
-    	  		if ($previewImg !== null) {
-    	   				 $previewImg.remove();
-    	   				 $previewImg = null;
-    	 			 }
-    		  selectImagePath = '';
+   				if(selectImagePath.length >= 4){
+   		    		alert("더 이상 사진을 추가할 수 없습니다.");
+   		    		return false;
+   		    	}
+    	  		
     	 		 $.imagePicker2()
     	   		 .then(({ status, result }) => {
     	     	 	if (status === 'SUCCESS') {
     	    	 		 for (let i = 0; i < result.length; i++) {
     	    	 			 $previewImgArray[i] = result[i].path;
+    	    	 			selectImagePath[count] = result[i].path;
+    	    	 			if(count > 3){
+    	    	 				selectImagePath[count] = null;
+    	    	 				continue;
+    	    	 			}
+    	    	 			
+    	    	 			
+    	    	 			count++;
     	    	 		 }
     	       		 return $.convertBase64ByPath2($previewImgArray)
     	       		 } else {
@@ -232,7 +231,11 @@
     	      .then(({ status, result }) => {
     	        if (status === 'SUCCESS') {
     	        for (let i = 0; i < result.length; i++) {
-    	        	
+    	        	if ($box.find('img').length >= 4) {
+    	                
+    	                continue;
+    	             }
+
     	          let imageSrc = "data:image/png;base64," + result[i].data;
     	          let $previewImg = $(document.createElement('img'));
     	          $previewImg.attr('height', '200px');
@@ -256,7 +259,7 @@
 				          mode: "MULTI",
 				          media: "PHOTO",
 				          maxCount : 4,
-				          // path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+				          path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
 				          column: 3,
 				          callback: (status, result) => {
 				            resolve({ status, result })
@@ -304,7 +307,7 @@
 		    	$.uploadImageByPath2 = function ($previewImgArray, bno, cate, progress) {
 			    	  return new Promise((resolve) => {
 			    	    const _options = {
-			    	      url: 'http://172.30.1.4:8080/fileUpload',
+			    	      url: 'http://172.30.1.52:8080/fileUpload',
 			    	      header: {},
 			    	      params: { bno: bno, cate: cate },
 			    	      body: $previewImgArray.map((filePath) => ({
@@ -325,10 +328,8 @@
 			    	  });
 			    	};
    			 
-			  $(function(){
 				  $("#addPhoto").hide();
 				  $("#addPhotoBtn").click(function(){
-					  alert("사진은 앨범과 카메라 중 하나만 선택 가능합니다.");
 					  $("#addPhoto").show();
 				  });
 				  
@@ -367,8 +368,8 @@
 								
 								alert("이건? : "+ bno);
 								
-								if($previewImgArray[0].length > 0){
-									if ($previewImgArray[0] === ''){
+								if(selectImagePath.length > 0){
+									if (selectImagePath[0] === ''){
 											 if ($uploadImg) {
 											        $uploadImg.remove();
 											        $uploadImg = null;
@@ -376,7 +377,7 @@
 									 }
 								      
 								      $progress.text('')
-								      $.uploadImageByPath2($previewImgArray, bno, cate, (total, current) => {
+								      $.uploadImageByPath2(selectImagePath, bno, cate, (total, current) => {
 								        console.log(`total: ${total} , current: ${current}`)
 								        $progress.text(`${current}/${total}`)
 								      })
