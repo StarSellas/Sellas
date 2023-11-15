@@ -16,7 +16,8 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 		<!-- Core theme CSS (includes Bootstrap)-->
 		<link href="css/styles.css" rel="stylesheet" />
-        
+		<link href="css/addTradeLocation.css" rel="stylesheet" />
+
 		<!-- ******************* 추가 *********************** -->
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -24,46 +25,52 @@
 		<script src="./js/wnInterface.js"></script> 
 		<script src="./js/mcore.min.js"></script> 
 		<script src="./js/mcore.extends.js"></script> 
-		
+
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 	</head>
 	<body>
 	<%@ include file="menubar.jsp" %>
-		<!-- Section-->
-		<section class="py-5">
-			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
-				<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-				</div>
+
+
+		<div class="page" id="page1">
+			<div class="form-floating">
+				<div id="map" style="width: 100%; height: 350px"></div>
 			</div>
-		</section>
-        
-        
-        <form action="./addTradeLocation" method="post">
-        
-		<div>
-		
-			<div id="map" style="width: 100%; height: 350px"></div>
-			
-			<div>
+
+			<div class="form-floating">
 				<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
 			</div>
-		
-			<input type="hidden" id="locationLat" name="locationLat">
-			<input type="hidden" id="locationLng" name="locationLng">
-			
-			<div>
-				<input id="locationName" name="locationName" required="required">
+
+			<input type="hidden" id="locationLat">
+			<input type="hidden" id="locationLng">
+
+			<div class="form-floating">
+				<input class="form-control" id="locationName" placeholder="장소 이름" maxlength="10" required="required">
+				<label for="locationName">장소 이름</label>
 			</div>
-			
-			<button type="submit">확인</button>
-			
+
+			<div class="form-floating">
+				<button class="endTypeButton" type="button" onclick="addTradeLocation()">확인</button>
+			</div>
 		</div>
-		
-		</form>
-        
-		<!-- Bootstrap core JS-->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+		<div class="page" id="page2" style="display:none">
+			정상적으로 등록되었습니다.
+			<div class="form-floating">
+				<button class="endTypeButton" type="button" onclick="javascript:history.back()">확인</button>
+			</div>
+		</div>
+
+		<div class="page" id="page3" style="display:none">
+			등록에 실패했습니다.
+			<div class="form-floating">
+				<button class="endTypeButton" type="button" onclick="showPage('page1')">확인</button>
+			</div>
+		</div>
+
+
 		<!-- Core theme JS-->
 		<script src="js/addTradeLocation.js"></script>
+
 	</body>
 </html>
