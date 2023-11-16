@@ -20,9 +20,13 @@
 <script src="../js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
+<%@ include file="alarmmenubar.jsp" %>
 <!-- 일단 alarm 클래스 클릭하면 가상폼써서 requestChat으로 넘어가고, 가져갈 것은 ouuid, oseller, obuyer, tno. 그 다음이 realtimealarm에 실시간 알람 뿌리기  -->
 <div class="alarmdomain">
+<div class="alarmheader">
 <div><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+</div>
+<div class="alarmbody">
 	<div class="realtimealarm"></div>
 	<div>
     	<c:if test="${not empty alarmlist}">
@@ -42,6 +46,7 @@
 			<div class="roomId">${chatroomlist.ouuid }</div>
 		</div>
 	</c:forEach>
+</div>
 </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>

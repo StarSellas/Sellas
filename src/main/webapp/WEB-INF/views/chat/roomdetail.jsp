@@ -423,13 +423,13 @@ $(function(){
             <div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
               <div><h4>${tnoname }</h4></div>
             </div>
-            <div class="srch_bar">
+            <!-- <div class="srch_bar">
               <div class="stylish-input-group">
                 <input type="text" class="search-bar"  placeholder="Search" style="display:none;">
                 <span class="input-group-addon">
                 <i class="fa fa-search" id="findword" aria-hidden="true"></i>
                 </span> </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="inbox_msg">

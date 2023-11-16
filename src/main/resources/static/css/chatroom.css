@@ -11,6 +11,7 @@ img {
   float: left;
   overflow: hidden;
   width: 100%;
+  padding-top: 10px;
 }
 
 .inbox_msg {
@@ -118,9 +119,8 @@ img {
   width: 46%;
 }
 .type_msg{
-	height: 5%;
+	height: 48px;
 	width: 100%;
-	display: flex;
 }
 .input_msg_write {
   display: flex;
@@ -128,7 +128,8 @@ img {
 }
 
 .xi-plus {
-  font-size: 200%;
+	margin-top: 1px;
+  font-size: 175%;
   margin-right: 10px; /* 아이콘과 인풋 간격 조절 */
   margin-left: 10px;
   display:flex !important;
@@ -136,7 +137,9 @@ img {
 }
 
 .write_msg {
-  width: 80%;
+	margin-top: 1px;
+	margin-right: 5px;
+  width: calc(100% - 38px); /* xi-plus의 크기와 margin을 고려하여 계산 */
   border: medium none;
   border-radius: 10px;
   color: #4c4c4c;
