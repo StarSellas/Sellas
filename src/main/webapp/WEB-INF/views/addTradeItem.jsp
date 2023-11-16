@@ -430,44 +430,8 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    $("#addPhotoBtn").click(function(){
       $("#addPhoto").show();
    });
-              
- //가격으로 장난치지 않게 10원이랑 1원단위 자르기
-	$("#normalPrice").on("change", function() {
-	    var priceValue = $(this).val();
+             
 
-
-	        let priceCut = priceValue % 100;
-	        if (priceCut !== 0) {
-	        	priceValue -= priceCut;
-	            $(this).val(priceValue);
-	        }
-	    
-	});
-	$("#auctionStartPrice").on("change", function() {
-	    var priceValue = $(this).val();
-
-
-	        let priceCut = priceValue % 100;
-	        if (priceCut !== 0) {
-	        	priceValue -= priceCut;
-	            $(this).val(priceValue);
-	        }
-	    
-	});
-	$("#auctionMinBidUnit").on("change", function() {
-	    var priceValue = $(this).val();
-
-
-	        let priceCut = priceValue % 100;
-	        if (priceCut !== 0) {
-	        	priceValue -= priceCut;
-	            $(this).val(priceValue);
-	        }
-	    
-	});
- 
- 
- 
    $("#addTradeItemBtn").click(function(){
          let category = $("input[name='category']").val();
          let title = $("input[name='title']").val();

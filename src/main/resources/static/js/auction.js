@@ -202,7 +202,7 @@ function addAuctionItem(item){
 	let auctionInfoSubDiv = document.createElement("div");
 	auctionInfoSubDiv.append(itemTitle);
 	auctionInfoSubDiv.append(startDate);
-	auctionInfoSubDiv.append(startTime);
+	//auctionInfoSubDiv.append(startTime);
 	auctionInfoSubDiv.append(readNumber);
 	
 	auctionInfoSubDiv.classList.add("auctionInfoSubDiv");
