@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+button {
+	width: 380px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
+}
+
+.endTypeButton {
+	color: white;
+	background-color: #88abff;
+}
+
+.page {
+	margin: 100px 0px;
+}
+
+.form-floating {
+	margin: 0 auto;
+	margin-bottom: 20px;
+	width: 380px !important;
+	display: flex;
+}
+
+.divider {
+	width: 100%;
+	border-bottom: 1px solid #88abff;
+}
+
+#title {
+	width: 250px;
+	font-size: 22px;
+	font-weight: bolder;
+}
+
+#category {
+	width: 125px;
+}
+
+#read {
+	width: 125px;
+	text-align: right;
+}
+
+#nickname {
+	width: 275px;
+}
+
+#date {
+	width: 100px;
+	text-align: right;
+}
+
+#content {
+	width: 375px;
+	height: auto;
+	background-color: rgba(33, 133, 255, 0.1);
+}
+
+#startPrice {
+	width: 125px;
+}
+
+#currentPrice {
+	width: 125px;
+}
+
+#minimumPrice {
+	width: 125px;
+}

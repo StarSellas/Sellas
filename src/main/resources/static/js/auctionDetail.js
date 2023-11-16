@@ -1,4 +1,24 @@
 
+/* 지도 */
+// static map
+let lat = document.getElementById("lat").value;
+let lng = document.getElementById("lng").value;
+
+var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+
+var marker = {
+	position: markerPosition
+};
+
+var staticMapContainer  = document.getElementById('map'), 
+	staticMapOption = { 
+		center: new kakao.maps.LatLng(lat, lng),
+		level: 3,
+		marker: marker
+    };    
+
+var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+
 /* 입찰 금액 유효성 검사 */
 // 입찰 금액 input focusout 이벤트 발생 시 입력값 유효성 검사
 document.getElementById("bidPrice").addEventListener("focusout", validateBidding);
