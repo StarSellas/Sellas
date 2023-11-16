@@ -233,7 +233,7 @@ public class ChatRoomController {
 		
 		model.addAttribute("chatroomlist", chatroomlist);
 		
-		return "/chat/alarm"; //알람리스트 페이지입니다.
+		return "/chat/alarm"; //채팅방 리스트 페이지입니다.
 		
 		} else {
 			return "/login";

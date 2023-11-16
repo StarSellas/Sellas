@@ -26,7 +26,7 @@
 		<!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 9999">
            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="./"><img src="../img/sellastext.png" class="header" alt="SellAS"></a>
+                <a class="navbar-brand" href="../">채팅</a>
 				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="../menu"><img src="../img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>
@@ -38,7 +38,7 @@
 				<li onclick="location.href='../'"><img src="../img/home.png"
 					class="footericon" alt="home">
 				<div id="menu">홈</div></li>
-				<li onclick="location.href='./chat/alarm'"><img src="../img/chat.png" class="footericon" id="chat" alt="chat">
+				<li onclick="location.href='./alarm'"><img src="../img/chat.png" class="footericon" id="chat" alt="chat">
                         <!-- 알림이 오면 채팅 아이콘이 숨겨지고, 알림 아이콘이 보이게 함 -->
                         <img src="../img/chaton.png" class="footericon" id="chaton" alt="chat" style="display: none;">
                         <div id="menu">채팅</div></li>
@@ -51,7 +51,6 @@
 
 	<!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../js/jquery-3.7.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 		<script>
