@@ -18,37 +18,33 @@
     
     
 
-
 function nickChange() {
-      
-         let newNickname = $("#newNickname").val();
-         const nicknameRegex = /^[a-zA-Z0-9가-힣]+$/;
-         const nicknamelength = /^.{1,10}$/;
+    let newNickname = $("#newNickname").val();
+    const nicknameRegex = /^[a-zA-Z0-9가-힣]+$/;
+    const nicknamelength = /^.{2,10}$/;
+    const msgBox = $("#page2 .msg_box");
 
     if (!nicknameRegex.test(newNickname)) {
-        alert("닉네임은 한글, 영문자, 숫자만 사용할 수 있습니다");
+        msgBox.text("닉네임은 한글, 영문자, 숫자만 사용할 수 있습니다").css("color", "red");
         return false;
     }
 
     if (!nicknamelength.test(newNickname)) {
-        alert("닉네임은 2글자 이상이어야 합니다.");
+        msgBox.text("닉네임은 2글자 이상이어야 합니다.").css("color", "red");
         return false;
     }
-         
-      if(confirm("["+newNickname+"]님으로 닉네임을 변경하시겠습니까?")){
-         
-         alert(newNickname);
-         $.ajax({
-            url: "./isNicknameExists",
-            type: "post",
-            data: { newNickname: newNickname },
-            dataType : "json",
-            success: function(result) {
-               if(result == 1) {
-                  alert("중복된 닉네임 입니다.");
-                  return false;
-               } else {
-                  
+
+    $.ajax({
+        url: "./isNicknameExists",
+        type: "post",
+        data: { newNickname: newNickname },
+        dataType: "json",
+        success: function(result) {
+            if (result == 1) {
+                msgBox.text("중복된 닉네임입니다.").css("color", "red");
+                return false;
+            } else {
+                if (confirm("[" + newNickname + "]님으로 닉네임을 변경하시겠습니까?")) {
                     $.ajax({
                         url: "./nicknameModify",
                         type: "post",
@@ -57,24 +53,27 @@ function nickChange() {
                         success: function(result) {
                             if (result == 1) {
                                 alert("변경이 완료되었습니다.");
-                          window.location.href = '/profile';
+                                showPage('page1');
                             } else {
                                 alert("변경에 실패했습니다.");
                             }
                         },
                         error: function(error) {
-                            alert("단단히 실패");
+                            alert("현재 이용 불가한 서비스입니다.");
                         }
                     });
                 }
-            },
-         });
-      }   
-
+            }
+        }
+    });
 }
 
+    $("#newNickname").click(function() {
+        // msg_box의 텍스트를 지움
+        $(".msg_box").text("");
+    });
+
      $(".picChange").click(function(){
-alert("!");
      $(".toggleBtnBox").toggleClass("btnClicked");   // 버튼위로이동
      $(".otherBtnBox").toggleClass("hide");
      $(".bwriteBtnBox").toggleClass("hide");
@@ -289,17 +288,26 @@ alert("!");
                            
                         }
                         
-                        alert("작성이 완료되었습니다.");
-                        window.location.href = '/profile';
+                        alert("프로필 사진이 변경되었습니다.");
+                        showPage('page1');
                            
                      }
                   },
                   error : function(error){
-                     alert("흑흑");
+                     alert("잠시후 다시 시도해주세요.");
                   }
                   
                });
                
               });
  
+
+function showPage(pageId) {
+
+	let pages = document.querySelectorAll(".page");
+	for (let i = 0; i < pages.length; i++) {
+		pages[i].style.display = "none";
+	}
+	document.getElementById(pageId).style.display = "block";
+}
 

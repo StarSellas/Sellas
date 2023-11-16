@@ -23,6 +23,8 @@
 
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+<link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet" href="./css/mypage.css">
 
@@ -68,25 +70,26 @@
         </div>
         </div>
  
-		        <h6>나의 거래</h6>
+		        <h6 class="title">나의 거래</h6>
 		<div class="movedetail">
 <div class="listdiv" onclick="location.href='./getwish'">
-❤️ 위시리스트
+<i class="fa-regular fa-heart" style="color: #88abff;"></i>&nbsp;위시리스트
 </div>
 <div class="listdiv" onclick="location.href='./getsell'">
-📃 판매내역
+<i class="fa-regular fa-clipboard"  style="color: #88abff;"></i>&nbsp;&nbsp;판매내역
 </div>
 <div class="listdiv" onclick="location.href='./getbuy'">
-🧺 구매내역
+<img src="../img/bag.png" class="bag" width="20px;">
+구매내역
 </div>
 <div class="listdiv" onclick="location.href='./getauction'">
-⌛ 경매내역
+<i class="fa-solid fa-hourglass" style="color: #88abff;"></i>&nbsp;&nbsp;경매내역
 </div>
 </div>
-		        <h6>나의 활동</h6>
+		        <h6 class="title">나의 활동</h6>
 		<div class="movedetail">
 <div class="listdiv" onclick="location.href='./myActivities'">
-📝 활동내역
+<img src="../img/acti.png" class="bag" width="20px;">&nbsp;활동내역
 </div>
 </div>
 

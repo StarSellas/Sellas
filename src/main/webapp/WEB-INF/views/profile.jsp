@@ -25,8 +25,21 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <link rel="stylesheet" href="../css/profile.css">
-
+<link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+$(function() {
+$('.user-level').on('click', function() {
+    Swal.fire({
+        title: "Sellas 랭크",
+        html: "아기고래 -> 고래: 경험치 30 필요 </br>고래 -> 슈퍼고래 : 경험치 70 필요",
+    });
+});
+});
+</script>
 </head>
 <body>
 	<!-- Navigation-->
@@ -62,7 +75,11 @@
 			<div class="experience-section"
 				style="position: relative; margin-top: 100px;">
 				<span class="rabel">경험치</span>
-				<div class="progress" role="progressbar"
+		<i class="fa-regular fa-circle-question" style="color: #88adff;"
+   data-bs-toggle="tooltip" data-bs-placement="right"
+   data-bs-custom-class="custom-tooltip"
+   title="상대방의 거래 후기로 얻을 수 있어요."></i>
+   	<div class="progress" role="progressbar"
 					aria-label="Example with label"
 					aria-valuenow="${(exp) * 100}" aria-valuemin="0"
 					aria-valuemax="100">
@@ -99,7 +116,11 @@
     document.getElementById('profileButton').addEventListener('click', function() {
         window.location.href = 'profileEdit/${sessionScope.muuid}';
     });
-</script>
+    
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    
+    </script>
 
 </body>
 </html>

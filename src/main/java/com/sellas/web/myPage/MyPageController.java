@@ -113,6 +113,7 @@ public class MyPageController {
 			Map<String, Object> member = myPageService.memberInfo(uuid);
 			model.addAttribute("nickname", member.get("mnickname"));
 			model.addAttribute("mphoto", member.get("mphoto"));
+			model.addAttribute("mname", member.get("mname"));
 	      
 	      return "profileEdit";
 	   }

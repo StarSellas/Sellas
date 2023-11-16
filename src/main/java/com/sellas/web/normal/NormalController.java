@@ -33,7 +33,7 @@ public class NormalController {
 	   public String menu() {
 	      return "menu";
 	   }
-	   
+	 
 	   // main.jsp로 보내주는 메소드입니다.
 	   @GetMapping("/")
 	   public String index(@RequestParam(value = "searchCate", required = false , defaultValue = "title") String searchCate,
