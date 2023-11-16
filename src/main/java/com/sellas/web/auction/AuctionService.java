@@ -81,7 +81,9 @@ public class AuctionService {
 		int minBidPrice = bidPrice != 0 ? bidPrice + minBidUnit : startPrice;
 		
 		auctionItemDetail.put("minBidPrice", minBidPrice);
-		
+
+
+		auctionItemDetail.put("startDate", auctionItemDetail.get("tdate").toString().subSequence(0, 10));
 		
 		return auctionItemDetail;
 	}

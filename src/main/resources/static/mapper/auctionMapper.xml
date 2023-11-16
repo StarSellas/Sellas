@@ -62,7 +62,7 @@
 </select>
 
 <select id="auctionItemDetail" parameterType="Object" resultType="Map">
-	SELECT trade.tno, trade.ttitle, trade.tcontent, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.muuid, member.mnickname, itemcategory.ino, itemcategory.iname,
+	SELECT trade.tno, trade.ttitle, trade.tcontent, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, trade.tlocationlat, trade.tlocationlng, member.muuid, member.mnickname, itemcategory.ino, itemcategory.iname,
 	COALESCE(auctionhistory.abidder, null) AS abidder,
 	COALESCE(auctionhistory.abidprice, 0) AS abidprice
 	FROM trade
