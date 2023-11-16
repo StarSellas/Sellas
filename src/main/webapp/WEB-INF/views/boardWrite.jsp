@@ -58,7 +58,7 @@
    <%@ include file="menubar.jsp" %>
    
         <!-- Section-->
-        <section class="py-5">
+        <section class="py-5 WholeContainer">
         
             <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
@@ -104,26 +104,41 @@
                <!-------------------- 글쓰기창 -------------------->
                <div class="bwriteContainer">
                
-                     <div class="btitleBox">
-                        <input type="text" class="btitle" id="btitle" name="btitle" placeholder="제목을 입력해주세요">
+                     <div class="form-floating btitleBox">
+                        <input type="text" class="form-control" id="btitle" name="btitle" placeholder="제목">
+                     	<label for="title">제목</label>
                      </div>
                      
-                     <div class="bcontentBox">
-                        <textarea id="bcontent" class="bcontent" name="bcontent" placeholder="내용을 입력해주세요"></textarea>
+                     <div class="form-floating bcontentBox">
+                        <textarea id="bcontent" class="form-control" name="bcontent" placeholder="내용"></textarea>
+                     	<label for="tcontent">내용</label>
                      </div>
                <!-------------------- 이미지업로드  -------------------->
 
-                  <div>
-                     <button id="addPhotoBtn">사진 추가하기</button>
-                  </div>
-                  <div id="addPhoto">
-                     <button id="picker2" type="button">앨범에서 추가</button>
-                     <button id="camera" type="button">카메라에서 추가</button>
-                     <div id="box"></div>
-                     <div id="progress"></div>
-                     <div id="upload-box"></div>
-                  </div>
-
+                  <div class="accordion form-floating" id="accordion">
+							<div class="accordion-item">
+								<h2 class="accordion-header">
+									<button class="accordion-button collapsed" id="addPhotoBtn" type="button"
+										data-bs-toggle="collapse" data-bs-target="#collapsePhoto"
+										aria-expanded="false" aria-controls="collapsePhoto">
+										사진 추가하기</button>
+								</h2>
+								<div id="collapsePhoto" class="accordion-collapse collapse">
+									<div class="accordion-body">
+										<button id="picker2" type="button">
+											<img src="../img/image.png" width="38">
+										</button>
+										<button id="camera" type="button">
+											<img src="../img/camera.png" width="38">
+										</button>
+									</div>
+									<div id="box"></div>
+									<div id="progress"></div>
+									<div id="upload-box"></div>
+								</div>
+							</div>
+						</div>
+						
 
                      <input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
                      <input type="hidden" class="cateWrite" name="cate" value="${param.cate}">
@@ -137,9 +152,8 @@
             </div>
             
         </section>
-        
-        
-   <script type="text/javascript">
+
+	<script type="text/javascript">
     $(function(){
    
    //모피어스를 이용한 카메라 사진 및 앨범 사진 넣기 by 대원
@@ -328,18 +342,13 @@
                   });
                 };
              
-              $("#addPhoto").hide();
-              $("#addPhotoBtn").click(function(){
-                 $("#addPhoto").show();
-              });
-              
               
               $(".bwriteButton").click(function(){
                  
-               let muuid = $(this).parent().siblings(".muuid").val();
-               let cate = $(this).parent().siblings(".cateWrite").val();
-                 let btitle = $(this).parent().siblings(".btitleBox").children(".btitle").val();
-                 let bcontent = $(this).parent().siblings(".bcontentBox").children(".bcontent").val();
+            	  let muuid = $(this).parent().siblings(".muuid").val();
+                  let cate = $(this).parent().siblings(".cateWrite").val();
+                  let btitle = $(this).parent().siblings(".btitleBox").children("#btitle").val();
+                  let bcontent = $(this).parent().siblings(".bcontentBox").children("#bcontent").val();
                  
                  alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
                

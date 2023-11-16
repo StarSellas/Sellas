@@ -1,49 +1,107 @@
+.WholeContainer{
+	height: 700px;
+}
 .tradecontainter{
 	margin: auto;
 	padding: auto;
 	width: 90%;
 	height: 90%;
 }
+.ncategoryBox{
+	display: inline-block;
+	height: 10%;
+}
+#navbarDropdown{
+	float: right;
+}
+
 .normalEditFrm{
 	margin: auto;
 	padding: 0;
 	width: inherit;
 	height: inherit;	
 }
-.titleBox, .bcontentBox, .priceBox{
-	width: 100%;
-	margin: 20px 5px;
-	padding: 0;
+.titleBox, .priceBox{
+	display: inline-flex;
 }
-#ttitle{
+
+.priceBox{
+	margin-top: 10px;
+}
+#ttitle, #tnormalprice{
 	width: inherit;
-	height: 35px;
 }
 #tcontent{
 	width: inherit;
-	height: 250px;
+	height: 300px;
+}
+.image-container{
+	margin-top: 10px;
+}
+.normalTradeImgBox{
+	display: flex;
+	justify-content: center;
+}
+.normalTradeImg{
+	width: 250px;
+}
+.photoBtnBox{
+	display: flex;
+	justify-content: space-between;
+}
+.normalTradeChangeBtn{
+	width: 130px;
+	height: 40px;
+	margin: 15px 5px 15px 15px;
+}
+.normalTradeImageDeleteBtn{
+	width: 130px;
+	height: 40px;
+	margin: 15px 15px 15px 5px;
 }
 
-/****************** button_toggle *******************/
-
-.hide{
-    display: none;
- }
-.tBtnBox{
-   display:flex !important;
-}
-.addPhotoBtnBox{
-   display: inline-block;
-}
-#picker2, #camera, #addPhotoBtn, #addPhotoButton{
-   display: inline-block;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
+button {
+	width: 350px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
 }
 
-.btnClicked{
-   transition: transform 0.5s ease;
+.form-floating {
+	margin: 0px auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100%;
+	text-align: center;
+}
+.accordion-item, .accordion-header{
+	width: 100%;
+}
+
+#accordion {
+	width: 100%;
+}
+
+#picker2, #camera {
+	width: 50px;
+}
+
+.nEditBtnBox{
+	width: 100%;
+	position: relative;
+    padding-bottom: 85px;
+    margin-top: 20px;
+    display: inline-block;
+}
+#normalEditBtn, #normalEditCBtn{
+	padding: 0;
+	width: 100%;
+}
+#normalEditBtn{
+	margin-bottom: 10px;	
+}
+#box img{
+	margin-bottom: 20px;
 }

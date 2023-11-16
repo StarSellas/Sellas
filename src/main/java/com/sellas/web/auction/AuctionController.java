@@ -42,6 +42,8 @@ public class AuctionController {
 		
 		List<Map<String, Object>> auctionItemList = auctionService.auctionItemList(map);
 		System.out.println(auctionItemList);
+
+
 		return auctionItemList;
 	}
 	

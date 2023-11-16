@@ -56,5 +56,4 @@ public interface AuctionDAO {
 
 	List<Map<String, Object>> auctionImageList(int tno);
 
-
 }

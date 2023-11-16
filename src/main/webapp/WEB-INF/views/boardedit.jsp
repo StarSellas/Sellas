@@ -30,70 +30,91 @@
    <%@ include file="menubar.jsp" %>
    
         <!-- Section-->
-        <section class="py-5">
+        <section class="py-5 WholeContainer" >
         
-           <div class="cateName mt-4"><a href="/board?cate=${bdetail.sno }">${bdetail.sname } (${bdetail.bno })</a></div>
-            <div class="container mt-5" style="z-index: 10" id="productContainer">
+           <div class="cateName mt-4 pt-3"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a></div>
+            <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     
                     <!-------------------- 글수정창 -------------------->
                     
                    <div class="beditContainer justify-content-center">
                   
-                     <div class="titleBox">
-                        <input type="text" class="btitle" id="btitle" name="btitle" value="${bdetail.btitle }">
+                     <div class="form-floating btitleBox">
+                        <input type="text" class="form-control" id="btitle" name="btitle" value="${bdetail.btitle }" placeholder="제목">
+                        <label for="btitle">제목</label>
                      </div>
                      
-                     <div class="contentBox">
-                        <textarea class="bcontent" name="bcontent">${bdetail.bcontent }</textarea>
+                     <div class="form-floating contentBox">
+                        <textarea class="form-control bcontent" id="bcontent" name="bcontent">${bdetail.bcontent }</textarea>
+                        <label for="bcontent">내용</label>
                         <input type="hidden" class="bno" name="bno" value="${bdetail.bno}">
                         <input type="hidden" class="cate" name="cate" value="${param.cate}">
-                        
+                        <input type="hidden" class="muuid" name="muuid" value="${sessionScope.muuid}">
                      </div>
 
-                     <div class="bimageBox">
-                           <!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
-                           <c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
-                              <c:forEach items="${imageList}" var="imageList">
-                                 <div class="boardImgBox editImgBox">
-                                    <img class="boardImg" src="/boardImgUpload/${imageList.bimage}">
-                                    <button class="imgEditbtn" type="button" data-image-name="${imageList.bimage}">수정</button>
-                                    <button type="button" class="BoardImageDeleteBtn" data-image-name="${imageList.bimage}">삭제</button>
-                                 </div>
-                              </c:forEach>
-                           </c:if>
-                           
-                           <div id="photoInputs">
-                                   <div id="imagePreviews"></div>
-                                </div>
-                                
-                                <div class="addPhotoBtnBox">
-                              <button id="addPhotoBtn" type="button">사진 추가하기</button>
-                           </div>
+               <div class="bimageBox">
+                  <!--<span>이미지 갯수 : ${bdetail.bimagecount}</span>-->
+                  <c:if test="${imageList ne null && bdetail.bimagecount ne 0}">
+                     <c:forEach items="${imageList}" var="imageList">
+                        <div class="boardImgBox editImgBox">
+                           <div class="boardOriginImgBox"><img class="boardImg" src="/boardImgUpload/${imageList.bimage}"></div>
+                           <div class="photoBtnBox">
+                           	<button class="imgEditbtn" id="imgEditbtn" type="button"
+                              data-image-name="${imageList.bimage}">사진 변경하기</button>
+                           	<button type="button" class="BoardImageDeleteBtn" id="BoardImageDeleteBtn"
+                              data-image-name="${imageList.bimage}">사진 삭제하기</button>
+                        	</div>
                         </div>
-                     <div id="addPhoto">
-                     <button id="picker2" type="button">앨범에서 추가</button>
-                     <button id="camera" type="button">카메라에서 추가</button>
-                     <div id="box"></div>
-                     <div id="progress"></div>
-                     <div id="upload-box"></div>
+                     </c:forEach>
+                  </c:if>
+
+                  <div id="photoInputs">
+                     <div id="imagePreviews"></div>
                   </div>
-                     <br>
-                     <div class="buttonBox">
-                        <button type="button" class="editbtn">수정하기</button>
+                  
+                  <div class="accordion form-floating" id="accordion">
+                     <div class="accordion-item">
+                        <h2 class="accordion-header">
+                           <button class="accordion-button collapsed" id="addPhotoBtn"
+                              type="button" data-bs-toggle="collapse"
+                              data-bs-target="#collapsePhoto" aria-expanded="false"
+                              aria-controls="collapsePhoto">사진 추가하기</button>
+                        </h2>
+                        <div id="collapsePhoto" class="accordion-collapse collapse">
+                           <div class="accordion-body">
+                              <button id="picker2" type="button">
+                                 <img src="../img/image.png" width="38">
+                              </button>
+                              <button id="camera" type="button">
+                                 <img src="../img/camera.png" width="38">
+                              </button>
+                           </div>
+                           <div id="box"></div>
+                           <div id="progress"></div>
+                           <div id="upload-box"></div>
+                        </div>
                      </div>
+                  </div>
+                  
+               		<div class="buttonBox">
+                        <button type="button" class="editbtn" id="editbtn">수정하기</button>
+                        <button type="button" class="editCancelbtn" id="editCancelbtn" onclick="javascript:history.back()">취소</button>
+                     </div>
+               </div>
                </div>
                    
                 </div>
             </div>
             
         </section>
-        
+
    <script type="text/javascript">
         
     $(function () {
        
-       let bimagecount = '${bdetail.bimagecount}';
+       let bimagecount = ${bdetail.bimagecount};
+       
           var maxPhotos = 3;
           var nextPhotoId = 1 +bimagecount;
           let $previewImgArray = [];   //미리보기 이미지가 담기는 배열입니다.
@@ -106,18 +127,12 @@
          const $box = $('#box');
          const $camera = $('#camera');
        
-       
-       $("#addPhoto").hide();
-        $("#addPhotoBtn").click(function(){
-           $("#addPhoto").show();
-        });
-       
         $("#camera").click(function(){
-             if ($box.find('img').length + bimagecount >= 4) {
+             if ($box.find('img').length + bimagecount>= 4) {
                 alert('더 이상 이미지를 추가할 수 없습니다.');
                 return false;
              }
-
+		
          M.media.camera({
              path: "/media",
              mediaType: "PHOTO",
@@ -151,9 +166,11 @@
              });
         }); 
         
-        
+        //앨범 추가하기 눌렀을 때
         $picker2.on('click', () => {
-            if ($box.find('img').length >= 4) {
+        	
+        }
+            if ($box.find('img').length + bimagecount >= 4) {
                alert('더 이상 이미지를 추가할 수 없습니다.');
                return false;
             }
@@ -177,10 +194,23 @@
                       count++;
                     }
 
-                  return $.convertBase64ByPath2($previewImgArray)
-               } else {
-                  return Promise.reject('이미지 가져오기 실패')
+   if ($previewImg !== null) {
+      $previewImg.remove();
+      $previewImg = null;
+   }
+   $.imagePicker2()
+      .then(({ status, result }) => {
+         if (status === 'SUCCESS') {
+            let resultCount = 0;
+            let beforeCount = count;
+            for (let i = 0; i < result.length; i++) {
+               $previewImgArray[i] = result[i].path;
+               selectImagePath[count] = result[i].path;
+               if (count + bimagecount >= 4) {
+                  selectImagePath[count] = null;
+                  continue;
                }
+<<<<<<< HEAD
             })
             .then(({ status, result }) => {
                if (status === 'SUCCESS') {
@@ -189,7 +219,6 @@
                               $previewImgArray[i] = null;
                               continue;
                               }
-
                      let imageSrc = "data:image/png;base64," + result[i].data;
                      let $previewImg = $(document.createElement('img'));
                      $previewImg.attr('width', '250px');
@@ -200,15 +229,25 @@
                } else {
                   return Promise.reject('이미지 가져오기 실패');
                }
-            })
-            .catch((err) => {
-               if (typeof err === 'string') alert(err);
-                  console.error(err);
-            });
-         })
+               let imageSrc = "data:image/png;base64," + result[i].data;
+               let $previewImg = $(document.createElement('img'));
+               $previewImg.attr('width', '250px');
+               $previewImg.attr('src', imageSrc);
+               $box.append($previewImg);
+            }
+            count = $previewImgArray.length;
+         } else {
+            return Promise.reject('이미지 가져오기 실패');
+         }
+      })
+      .catch((err) => {
+         if (typeof err === 'string') alert(err);
+         console.error(err);
+      });
+});
         
         
-        
+        //삭제 버튼을 눌렀을 때
         $(".BoardImageDeleteBtn").click(function(){
            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
                var container = $(this).closest(".boardImgBox");
@@ -218,8 +257,6 @@
                  container.remove();
          });
         
-        
-        
        
            $(".imgEditbtn").click(function () {
                var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
@@ -227,12 +264,6 @@
                container.find("input[type=hidden]").val(imageName); // hidden input의 값을 설정
            });
    
-   
-   
-       
-        
-         
-         
          
           $(".imgEditbtn").click(function () {
               // 선택한 이미지 이름 가져오기
@@ -258,24 +289,22 @@
                           if (status === 'SUCCESS') {
                               // 선택한 이미지 경로 저장
                               selectImagePath[count] = result.path;
-                              $previewImgArray[0] = result.path;
+                              $previewImgArray[count] = result.path;
                               return $.convertBase64ByPath2($previewImgArray);
                           } else {
                              OriginalImgArray[count] = null;
-                             selectImagePath[count] = null;
                               return Promise.reject('이미지 가져오기 실패')
                           }
                       })
                       .then(({ status, result }) => {
                           if (status === 'SUCCESS') {
                               // 이미지를 Base64로 변환하여 프리뷰 이미지 만들기
-                              let imageSrc = "data:image/png;base64," + result[0].data;
+                              let imageSrc = "data:image/png;base64," + result[count].data;
                               let $previewImg = $(document.createElement('img'));
                               $previewImg.attr('width', '250px');
                               container.find(".boardImg").attr('src', imageSrc);
                               // .box 엘리먼트에 프리뷰 이미지 추가
                               //boxElement.append($previewImg);
-                              bimagecount--;
                               deleteCount++;
                               count++;
                           } else {
@@ -351,15 +380,13 @@
                   resolve({ status: 'SUCCESS', result: results });
                 }
               };
-
               readNextFile(0);
             });
           };
-          
           $.uploadImageByPath2 = function ($previewImgArray, bno,cate, progress) {
                return new Promise((resolve) => {
                  const _options = {
-                   url: 'http://172.30.1.4:8080/fileUpload',
+                   url: 'http://172.30.52:8080/fileUpload',
                    header: {},
                    params: { bno: bno, cate: cate },
                    body: $previewImgArray.map((filePath) => ({
@@ -383,11 +410,12 @@
          
          
          $(".editbtn").click(function(){
-            let muuid = $(this).parent().siblings(".contentBox").children(".cno").val();
-            let cate = $(this).parent().siblings(".contentBox").children(".cate").val();
-             let btitle = $(this).parent().siblings(".titleBox").children(".btitle").val();
-             let bcontent = $(this).parent().siblings(".contentBox").children(".bcontent").val();
-             let bno = $(this).parent().siblings(".contentBox").children(".bno").val();   
+            
+            let muuid = $(".muuid").val();
+            let cate = $(".cate").val();
+            let btitle = $("#btitle").val();
+            let bcontent = $("#bcontent").val();
+            let bno = $(".bno").val();   
              
             
             //카테고리 설정 안 했을 때

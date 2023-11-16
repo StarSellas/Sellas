@@ -206,6 +206,125 @@ function addAuctionItem(item){
 	let itemDeadLine = new Date(tdate.getTime() + 2 * 24 * 60 * 60 * 1000);
 	let currentDateTime = new Date();
 	
+	let auctionInfoSubDiv = document.createElement("div");
+	auctionInfoSubDiv.append(itemTitle);
+	auctionInfoSubDiv.append(startDate);
+	//auctionInfoSubDiv.append(startTime);
+	auctionInfoSubDiv.append(readNumber);
+	
+	let hDivider = document.createElement("div");
+	hDivider.textContent = "h";
+	hDivider.classList.add("timeDivider");
+	let mDivider = document.createElement("div");
+	mDivider.textContent = "m";
+	mDivider.classList.add("timeDivider");
+	
+	let remainingHour = document.createElement("div");
+	remainingHour.innerText += Math.floor((itemDeadLine - currentDateTime) / (60 * 60 * 1000));
+	remainingHour.classList.add("hour");
+	let remainingMinute = document.createElement("div");
+	remainingMinute.innerText += Math.floor(((itemDeadLine - currentDateTime) % (60 * 60 * 1000)) / (60 * 1000));
+	remainingMinute.classList.add("minute");
+	let remainingSecond = document.createElement("div");
+	remainingSecond.innerText += Math.floor(((itemDeadLine - currentDateTime) % (60 * 1000)) / 1000);
+	remainingSecond.classList.add("second");
+
+	remainingTime.append(remainingHour);
+	remainingTime.append(hDivider);
+	remainingTime.append(remainingMinute);
+	remainingTime.append(mDivider);
+	remainingTime.append(remainingSecond);
+	remainingTime.classList.add("remainingTime");
+
+	// 현재입찰가
+	let currentBidPrice = document.createElement("div");
+	currentBidPrice.classList.add("currentBidPrice");
+
+	let currentBidPriceLabel = document.createElement("span");
+	currentBidPriceLabel.textContent = "현재입찰가";
+
+	let currentBidPriceValue = document.createElement("div");
+	currentBidPriceValue.textContent = item.abidprice;
+	currentBidPriceValue.classList.add("currentBidPriceValue");
+
+	currentBidPrice.append(currentBidPriceLabel);
+	currentBidPrice.append(currentBidPriceValue);
+
+	// 최소입찰가
+	let minimumBidPrice = document.createElement("div");
+	minimumBidPrice.classList.add("minimumBidPrice");
+
+	let minimumBidPriceLabel = document.createElement("span");
+	minimumBidPriceLabel.textContent = "최소입찰가";
+
+	let minimumBidPriceValue = document.createElement("div");
+	minimumBidPriceValue.textContent = item.minbidprice;
+	minimumBidPriceValue.classList.add("minimumBidPriceValue");
+
+	minimumBidPrice.append(minimumBidPriceLabel);
+	minimumBidPrice.append(minimumBidPriceValue);
+
+	// 썸네일 + 카테고리 ++ 남은시간
+	let ItemInfo = document.createElement("div");
+	ItemInfo.classList.add("ItemInfo");
+	ItemInfo.append(itemImage);
+	ItemInfo.append(itemCategory);
+	ItemInfo.append(remainingTime);
+
+	// 제목 + 조회수
+	let OverviewInfo = document.createElement("div");
+	OverviewInfo.classList.add("OverviewInfo");
+	OverviewInfo.append(itemTitle);
+	OverviewInfo.append(readNumber);
+
+	// 판매자 + 등록일
+	let RegistrationInfo = document.createElement("div");
+	RegistrationInfo.classList.add("RegistrationInfo");
+	RegistrationInfo.append(sellerNickname);
+	RegistrationInfo.append(startDate);
+
+	// 현재입찰가 + 최소입찰가
+	let PriceInfo = document.createElement("div");
+	PriceInfo.classList.add("PriceInfo");
+	PriceInfo.append(currentBidPrice);
+	PriceInfo.append(minimumBidPrice);
+	
+	// OverviewInfo + RegistrationInfo + PriceInfo
+	let CompositeItemInfo = document.createElement("div");
+	CompositeItemInfo.classList.add("CompositeItemInfo");
+	CompositeItemInfo.append(OverviewInfo);
+	CompositeItemInfo.append(RegistrationInfo);
+	CompositeItemInfo.append(PriceInfo);
+
+
+	auctionItemDiv.append(ItemInfo);
+	auctionItemDiv.append(CompositeItemInfo);
+
+
+
+	// 조회수
+	let readNumber = document.createElement("div");
+	readNumber.textContent = item.tread;
+	readNumber.classList.add("readNumber");
+
+	// 판매자
+	let sellerNickname = document.createElement("div");
+	sellerNickname.textContent = item.mnickname;
+	sellerNickname.classList.add("sellerNickname");
+
+	// 등록일
+	let startDateTime = item.tdate.split("T");
+	let startDate = document.createElement("div");
+	startDate.textContent = startDateTime[0];
+	startDate.classList.add("startDate");
+	//let startTime = document.createElement("div");
+	//startTime.textContent = startDateTime[1];
+	
+	// ++ 남은시간
+	let tdate = new Date(item.tdate);
+	let itemDeadLine = new Date(tdate.getTime() + 2 * 24 * 60 * 60 * 1000);
+	let currentDateTime = new Date();
+	
 	let remainingTime = document.createElement("div");
 	
 	let hDivider = document.createElement("div");

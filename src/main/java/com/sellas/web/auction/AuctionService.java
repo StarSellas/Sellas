@@ -149,8 +149,9 @@ public class AuctionService {
 		}
 	}
 
+
 	public List<Map<String, Object>> auctionImageList(int tno) {
-		// TODO Auto-generated method stub
+	
 		return auctionDAO.auctionImageList(tno);
 	}
 
