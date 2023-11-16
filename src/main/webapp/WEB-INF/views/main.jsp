@@ -27,6 +27,9 @@
    href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
    
 <script src="./js/jquery-3.7.0.min.js"></script>
+<script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script> 
 <style type="text/css">
 .loading {
 	background-color: white;
@@ -304,7 +307,6 @@ $(function() {
    <!-- Section-->
 
    <section class="py-3">
-
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
          
          <div class="searchBox justify-content-center">
@@ -344,7 +346,7 @@ $(function() {
 	            <c:forEach items="${normalBoardList }" var="i" varStatus="loop">
 	            
 	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}" data-scount="${i.scount}">
-	                  <div class="card h-100">
+	                  <div class="card h-100" onclick="location.href='./normalDetail?tno=${i.tno }'">
 	                     <!-- Product image-->
 	                     <c:choose>
 	                        <c:when test="${i.thumbnail ne null }">
@@ -359,14 +361,14 @@ $(function() {
 	                     <div class="card-body p-4">
 	                        <div class="text-center">
 	                           <!-- Product name-->
-	                           <h6 class="fw-bolder normalTtitle">${i.ttitle }</h5>
+	                           <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
 	                           <!-- Product price-->
-	                           작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
+	                          <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"> ${i.tnormalprice } WP</div>
+	                            <div style="font-size: small;">${i.ttdate }</div>
 	                        </div>
-	                        <input type="hidden" class="rowNum" data-tno="${i.tno }">${i.tno }
-	                     </div>
+	                        <input type="hidden" class="rowNum" data-tno="${i.tno }">
+	                     <div class="card-footer border-top-0 bg-transparent">
 	                     <!-- Product actions-->
-	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 	                        <div class="tradeState">
 	                           <c:if test="${i.tnormalstate ==0 }">
 	                               <span class="state_selling">판매중</span>
@@ -379,9 +381,8 @@ $(function() {
 	                           </c:if>
 	                        </div>
 	                        <div class="text-center">
-	                           <a class="btn btn-outline-dark mt-auto"
-	                              href="./normalDetail?tno=${i.tno }">상품 보러가기</a>
 	                        </div>
+	                     </div>
 	                     </div>
 	                  </div>
 	               </div>
@@ -413,7 +414,7 @@ $(function() {
 	                           <!-- Product name-->
 	                           <h5 class="fw-bolder normalTtitle">${s.ttitle }</h5>
 	                           <!-- Product price-->
-	                           작성자 : ${s.mnickname }<br> ${s.tnormalprice } 웨일페이<br>
+	                           ${s.mnickname }<br> ${s.tnormalprice } WP<br>
 	                        </div>
 	                        <input type="hidden" class="rowNum" data-tno="${s.tno }">${s.tno }
 	                     </div>

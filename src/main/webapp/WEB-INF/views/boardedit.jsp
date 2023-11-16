@@ -93,7 +93,7 @@
         
     $(function () {
        
-       let bimagecount = '${bdetail.bimagecount}';
+       var bimagecount = ${bdetail.bimagecount};
           var maxPhotos = 3;
           var nextPhotoId = 1 +bimagecount;
           let $previewImgArray = [];   //미리보기 이미지가 담기는 배열입니다.
@@ -105,19 +105,20 @@
           const $picker2 = $('#picker2');
          const $box = $('#box');
          const $camera = $('#camera');
-       
+       let bno = $(".bno").val();
+       let cate = $(".cate").val();
        
        $("#addPhoto").hide();
         $("#addPhotoBtn").click(function(){
            $("#addPhoto").show();
         });
-       
+       //카메라 추가하기 눌렀을 때
         $("#camera").click(function(){
-             if ($box.find('img').length + bimagecount >= 4) {
+             if ($box.find('img').length + bimagecount>= 4) {
                 alert('더 이상 이미지를 추가할 수 없습니다.');
                 return false;
              }
-
+		
          M.media.camera({
              path: "/media",
              mediaType: "PHOTO",
@@ -151,64 +152,62 @@
              });
         }); 
         
-        
+        //앨범 추가하기 눌렀을 때
         $picker2.on('click', () => {
-            if ($box.find('img').length >= 4) {
-               alert('더 이상 이미지를 추가할 수 없습니다.');
-               return false;
-            }
-             
-            if ($previewImg !== null) {
-               $previewImg.remove();
-               $previewImg = null;
-            }
-            $.imagePicker2()
-            .then(({ status, result }) => {
-               if (status === 'SUCCESS') {
-                   let resultCount = 0;
-                       let beforeCount = count;
-                    for (let i = 0; i < result.length; i++) {
-                       $previewImgArray[i] = result[i].path;
-                       selectImagePath[count] = result[i].path;
-                       if(count+bimagecount >= 4){
-                          selectImagePath[count] = null;
-                          continue;
-                       }
-                      count++;
-                    }
+   if ($box.find('img').length + bimagecount >= 4) {
+      alert('더 이상 이미지를 추가할 수 없습니다.');
+      return false;
+   }
 
-                  return $.convertBase64ByPath2($previewImgArray)
-               } else {
-                  return Promise.reject('이미지 가져오기 실패')
+   if ($previewImg !== null) {
+      $previewImg.remove();
+      $previewImg = null;
+   }
+   $.imagePicker2()
+      .then(({ status, result }) => {
+         if (status === 'SUCCESS') {
+            let resultCount = 0;
+            let beforeCount = count;
+            for (let i = 0; i < result.length; i++) {
+               $previewImgArray[i] = result[i].path;
+               selectImagePath[count] = result[i].path;
+               if (count + bimagecount >= 4) {
+                  selectImagePath[count] = null;
+                  continue;
                }
-            })
-            .then(({ status, result }) => {
-               if (status === 'SUCCESS') {
-                   for (let i = 0; i < result.length; i++) {
-                           if ($box.find('img').length + bimagecount >= 4) {
-                              $previewImgArray[i] = null;
-                              continue;
-                              }
-
-                     let imageSrc = "data:image/png;base64," + result[i].data;
-                     let $previewImg = $(document.createElement('img'));
-                     $previewImg.attr('width', '250px');
-                     $previewImg.attr('src', imageSrc);
-                     $box.append($previewImg);
-                  }
-                   count = $previewImgArray.length;
-               } else {
-                  return Promise.reject('이미지 가져오기 실패');
+               count++;
+            }
+            return $.convertBase64ByPath2($previewImgArray);
+         } else {
+            return Promise.reject('이미지 가져오기 실패');
+         }
+      })
+      .then(({ status, result }) => {
+         if (status === 'SUCCESS') {
+            alert(result.length);
+            for (let i = 0; i < result.length; i++) {
+               if ($box.find('img').length + bimagecount >= 4) {
+            	   $previewImgArray[i] = null;
+                  continue;
                }
-            })
-            .catch((err) => {
-               if (typeof err === 'string') alert(err);
-                  console.error(err);
-            });
-         })
+               let imageSrc = "data:image/png;base64," + result[i].data;
+               let $previewImg = $(document.createElement('img'));
+               $previewImg.attr('width', '250px');
+               $previewImg.attr('src', imageSrc);
+               $box.append($previewImg);
+            }
+            count = $previewImgArray.length;
+         } else {
+            return Promise.reject('이미지 가져오기 실패');
+         }
+      })
+      .catch((err) => {
+         if (typeof err === 'string') alert(err);
+         console.error(err);
+      });
+});
         
-        
-        
+        //삭제 버튼을 눌렀을 때
         $(".BoardImageDeleteBtn").click(function(){
            var imageName = $(this).data("image-name"); // 선택한 이미지 이름 가져오기
                var container = $(this).closest(".boardImgBox");
@@ -217,8 +216,6 @@
                  bimagecount--;
                  container.remove();
          });
-        
-        
         
        
            $(".imgEditbtn").click(function () {
@@ -258,11 +255,10 @@
                           if (status === 'SUCCESS') {
                               // 선택한 이미지 경로 저장
                               selectImagePath[count] = result.path;
-                              $previewImgArray[0] = result.path;
+                              $previewImgArray[count] = result.path;
                               return $.convertBase64ByPath2($previewImgArray);
                           } else {
                              OriginalImgArray[count] = null;
-                             selectImagePath[count] = null;
                               return Promise.reject('이미지 가져오기 실패')
                           }
                       })
@@ -359,7 +355,7 @@
           $.uploadImageByPath2 = function ($previewImgArray, bno,cate, progress) {
                return new Promise((resolve) => {
                  const _options = {
-                   url: 'http://172.30.1.4:8080/fileUpload',
+                   url: 'http://172.30.52:8080/fileUpload',
                    header: {},
                    params: { bno: bno, cate: cate },
                    body: $previewImgArray.map((filePath) => ({
