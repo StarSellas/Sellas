@@ -28,22 +28,102 @@ button {
 	margin: 100px 0px;
 }
 
+.itemTitle {
+	width: 220px;
+	height: 48px;
+	font-size: 22px;
+	font-weight: bolder;
+}
+
+.itemCategory {
+	text-align: center;
+}
+
+.readNumber {
+	text-align: right;
+	padding-top: 25px;
+	width: 40px;
+}
+
+.sellerNickname {
+	width: 160px;
+}
+
+.startDate {
+	width: 100px;
+	text-align: right;
+}
+
+.currentBidPrice {
+	width: 120px;
+}
+
+.currentBidPriceValue {
+	text-align: right;
+	font-weight: bolder;
+	color: #88abff;
+}
+
+.minimumBidPrice {
+	width: 120px;
+	margin-left: 20px;
+}
+
+.minimumBidPriceValue {
+	text-align: right;
+	font-weight: bolder;
+	color: #38abff;
+}
+
+.hour {
+	width: 28px;
+	text-align: right;
+}
+
+.minute {
+	width: 28px;
+	text-align: right;
+}
+
+.second {
+	width: 28px;
+	text-align: right;
+}
+
+.timeDivider{
+	width:16px;
+	text-align: left;
+}
+
+.remainingTime {
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ItemInfo {
+	margin: 0px 10px;
+}
+
+.OverviewInfo {
+	display: flex;
+	width: 260px;
+	border-bottom: 1px solid #88abff;
+}
+
+.RegistrationInfo {
+	display: flex;
+	width: 260px;
+	margin-bottom: 10px;
+}
+
+.PriceInfo {
+	display: flex;
+	width: 260px;
+}
+
 .auctionItemDiv {
 	margin: 35px 0px;
 	display: flex;
-}
-
-.auctionItemSubDiv {
-	width: 100%;
-}
-
-.auctionInfoDiv {
-	display: flex;
-}
-
-.itemInfoDiv {
-	margin: 10px 20px;
-	width: 200px;
 }
 
 .categoryFilter {
