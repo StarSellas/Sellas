@@ -1,15 +1,79 @@
 @charset "UTF-8";
 
+button {
+	width: 350px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
+}
+
+.endTypeButton {
+	color: white;
+	background-color: #88abff;
+}
+
 .page {
 	margin: 100px 0px;
+}
+
+.form-floating {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 350px !important;
+	text-align: center;
 }
 
 #content {
 	height: 300px;
 }
 
-.categoryOption {
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
+#categoryDiv {
+	width: 330px;
+	margin: 10px 7px;
+}
+
+#accordion {
+	width: 350px;
+}
+
+#picker2, #camera {
+	width: 50px;
+}
+
+#type0, #type1 {
+	width: 100px;
+	border: none;
+}
+
+.selectedType {
+	border: 1px solid #88abff !important;
+}
+
+.locationNameDiv {
+	width: 250px;
+	padding: 13px;
+}
+
+.locationButton {
+	width: 50px;
+	height: 35px;
+	margin: 7px;
+	border: none;
+}
+
+.locationButtonDiv {
+	display: flex;
+	text-align: center;
+	border-bottom: 1px solid #88abff;
+}
+
+.addLocationDiv {
+	margin: 20px 0px;
+	text-align: center;
+}
+
+.text {
+	text-decoration: none;
 }
