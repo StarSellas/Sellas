@@ -64,14 +64,21 @@
   <!-- Additional required wrapper -->
   <div class="swiper-wrapper">
     <!-- Slides -->
-     <c:if test="${normalDetailImage ne null}">
+    <c:choose>
+     <c:when test="${normalDetailImage ne null}">
          <c:forEach items="${normalDetailImage}" var="i">
             <div class="swiper-slide">
                <img alt="" src="./tradeImgUpload/${i.timage}" style="width:100%; height: 100%">
             </div>
          </c:forEach>
-      </c:if>
-    ...
+      </c:when>
+      <c:otherwise>
+      <div class="swiper-slide">
+               <img alt="" src="./tradeImgUpload/defaultimg.jpg" style="width:100%; height: 100%">
+               
+           </div>
+      </c:otherwise>
+   </c:choose>
   </div>
   <!-- If we need pagination -->
   <div class="swiper-pagination"></div>
