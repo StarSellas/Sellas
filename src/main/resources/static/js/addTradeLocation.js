@@ -87,3 +87,39 @@ window.onload = function() {
 	
 	hideLocationDiv();
 };
+
+/* 장소 등록 */
+
+function addTradeLocation() {
+	
+	let lat = document.getElementById("locationLat").value;
+	let lng = document.getElementById("locationLng").value;
+	let name = document.getElementById("locationName").value;
+	
+	$.ajax({
+		url : "/addTradeLocation",
+		method : "post",
+		data : {locationLat : lat, locationLng : lng, locationName : name},
+		success : function(result) {
+			if(result == 1){
+				showPage("page2");
+			} else {
+				showPage("page3");
+			}
+		},
+		error : function(error) {
+			alert("ERROR : " + JSON.stringify(error));
+		}
+	});
+}
+
+/* 장소 등록 페이징 */
+
+function showPage(pageId) {
+
+	let pages = document.querySelectorAll(".page");
+	for (let i = 0; i < pages.length; i++) {
+		pages[i].style.display = "none";
+	}
+	document.getElementById(pageId).style.display = "block";
+}

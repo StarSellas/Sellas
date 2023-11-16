@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sellas.web.util.Util;
 
@@ -28,14 +29,15 @@ public class LocationController {
 		return "addTradeLocation";
 	}
 	
+	@ResponseBody
 	@PostMapping("/addTradeLocation")
-	public String addTradeLocation(@RequestParam Map<String, Object> map) {
+	public int addTradeLocation(@RequestParam Map<String, Object> map) {
 		
 		System.out.println(map);
 		
 		int result = locationService.addTradeLocation(map);
 		System.out.println(result);
 		
-		return "addTradeLocation";
+		return result;
 	}
 }
