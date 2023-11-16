@@ -9,30 +9,48 @@
 *{
 	font-family: 'NanumSquareNeo-Variable';
 }
-.boardMenu {
-	list-style: none; 
-  	display: flex;
-  	padding: 0;
+.menuBox{
+	width: 100%;
 }
-.itemcategory{
+.auctionBox, .boardMenuBox{
+	margin: 20px 0;
+}
+.itemcategoryBox{
+	margin-bottom: 20px 0;
+}
+
+.auction, .itemcategory, .boardMenu{
 	list-style: none;
-	padding: 0;
 }
-.boardMenu li{
-	margin: 10px;
+.auction li, .itemcategory li, .boardMenu li{
+	margin: 15px;
 }
-
-.itemcategory li{
-	margin: 20px;
+.auction li a, .itemcategory li a, .boardMenu li a{
+	text-decoration: none;
 }
 
-.boardMenu li a{
-	text-decoration: none;	
+.menuBox a{
+	text-decoration: none;
+	color: inherit;
+}
+.boardMtitle, .tradeMtitle {
+	font-weight: bold;
+	font-size: 18px;
+	padding-left: 20px;
+}
+.itemcategory, .boardMenu{
+	margin-bottom: 20px;
 }
 
-.itemcategory li a{
-	text-decoration: none;	
+.auction{
+	padding-left: 0;
 }
-
-
+.auction li{
+	margin-left: 0px;
+}
+.auction a{
+	font-weight: bold;
+	font-size: 18px;
+	padding-left: 20px;
+}
 

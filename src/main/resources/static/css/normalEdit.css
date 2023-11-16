@@ -24,6 +24,7 @@
 .titleBox, .priceBox{
 	display: inline-flex;
 }
+
 .priceBox{
 	margin-top: 10px;
 }
@@ -33,6 +34,30 @@
 #tcontent{
 	width: inherit;
 	height: 300px;
+}
+.image-container{
+	margin-top: 10px;
+}
+.normalTradeImgBox{
+	display: flex;
+	justify-content: center;
+}
+.normalTradeImg{
+	width: 250px;
+}
+.photoBtnBox{
+	display: flex;
+	justify-content: space-between;
+}
+.normalTradeChangeBtn{
+	width: 130px;
+	height: 40px;
+	margin: 15px 5px 15px 15px;
+}
+.normalTradeImageDeleteBtn{
+	width: 130px;
+	height: 40px;
+	margin: 15px 15px 15px 5px;
 }
 
 button {
@@ -76,4 +101,7 @@ button {
 }
 #normalEditBtn{
 	margin-bottom: 10px;	
+}
+#box img{
+	margin-bottom: 20px;
 }

@@ -109,7 +109,7 @@
                      	<label for="title">제목</label>
                      </div>
                      
-                     <div class="form-floating">
+                     <div class="form-floating bcontentBox">
                         <textarea id="bcontent" class="form-control" name="bcontent" placeholder="내용"></textarea>
                      	<label for="tcontent">내용</label>
                      </div>
@@ -152,28 +152,6 @@
             </div>
             
         </section>
-
-	<script type="text/javascript">
-			 
-               $(function(){
-            	   
-                  $("#addPhotoBtn").click(function(){
-                	  
-                     $(this).parent(".addPhotoBtnBox").toggleClass("btnClicked");   // 버튼위로이동
-                     $(".otherBtnBox").toggleClass("hide");
-                     
-                     if($(".addPhotoBtnBox").hasClass("btnClicked")){
-                        $(".otherBtnBox").addClass("tBtnBox");
-                        
-                     } else {
-                        $(".otherBtnBox").removeClass("tBtnBox");
-                     }
-                     
-                  })
-               });
-               
-    </script>
-
 
 	<script type="text/javascript">
     $(function(){
@@ -367,10 +345,10 @@
               
               $(".bwriteButton").click(function(){
                  
-               let muuid = $(this).parent().siblings(".muuid").val();
-               let cate = $(this).parent().siblings(".cateWrite").val();
-                 let btitle = $(this).parent().siblings(".btitleBox").children(".btitle").val();
-                 let bcontent = $(this).parent().siblings(".bcontentBox").children(".bcontent").val();
+            	  let muuid = $(this).parent().siblings(".muuid").val();
+                  let cate = $(this).parent().siblings(".cateWrite").val();
+                  let btitle = $(this).parent().siblings(".btitleBox").children("#btitle").val();
+                  let bcontent = $(this).parent().siblings(".bcontentBox").children("#bcontent").val();
                  
                  alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
                

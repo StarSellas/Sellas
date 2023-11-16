@@ -9,8 +9,6 @@
    
 }
 
-
-
 .swiper-button-next{
 background-size: 30% auto;
 }
@@ -140,6 +138,7 @@ float: left;
 .toggleBtnBox{
 	display: inline-block;
 }
+
 #normalHikeUpBtn, #normalEditBtn, #normalDeleteBtn{
 	width: 90px;
    height: 35px;

@@ -27,6 +27,7 @@
 	            
 	     // 글제목 길면 자르기
 	    	function cutTitle(){
+	    	 
 	        	$(".btitle").each(function() {
 	        	    let title = $(this).children(".title").text();
 	        	    //console.log(title);
@@ -38,6 +39,7 @@
 	            		$(this).children(".title").text(titlecut);
 	            	}
 	        	});
+	        	
 	    	}	
         
             $(function(){
@@ -136,20 +138,25 @@
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
                         	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
-	                        	        	    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>"
-	                        	        	    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
-	                        	        	    + "<span class='title'>" + this.list[i].btitle + "</span>"
-	                        	        	    + " <i class='xi-speech-o count' id='counticon'></i>"
-	                        	        	    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
-	                        	        	    + "<div class='UserBox'>"
-	                        	        	    + "<div class='userImgBox'>"
-	                        	        	    + (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>" : "<img src='../img/흰배경셀라스.jpg' alt='basic-user-img' class='userImg'>")
-	                        	        	    + "</div>"
-	                        	        	    + "<span class='mnickname'>" + this.list[i].mnickname + "</span>"
-	                        	        	    + "</div>"
-	                        	        	    + "</td>"
-	                        	        	    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
-	                        	        	    + "</tr>";
+		                        	        	    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>"
+		                        	        	    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
+		                        	        	    + "<span class='title'>" + this.list[i].btitle + "</span>"
+		                        	        	    + " <i class='xi-speech-o count' id='counticon'></i>"
+		                        	        	    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
+		                        	        	    + "<div class='UserBox'>"
+		                        	        	    + "<div class='userImgBox'>"
+		                        	        	    + (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>" : "<img src='../img/흰배경셀라스.jpg' alt='basic-user-img' class='userImg'>")
+		                        	        	    + "</div>"
+		                        	        	    + "<span class='mnickname'>" + this.list[i].mnickname + "</span>"
+		                        	        	    + "</div>"
+		                        	        	    + "</td>"
+		                        	        	    + "<td class='bphoto'>"
+		                        	        	    + (this.list[i].bimagecount > 0 ? "<div class='bphotoBox'><img src='./img/board_photo.png' class='bphoto' alt='img'></div>" : "")
+		                        	        	    + "</td>"
+		                        	        	    + "<td class='bdateBox'>"
+		                        	        	    + "<div class='bdate'>" + this.list[i].bdate + "</div>"
+		                        	        	    + "</td>"
+		                        	        	    + "</tr>";
 	
 	                    	                    lastRow.after(newRow); // lastRow 뒤에 추가
 	                        	        	  
@@ -327,7 +334,6 @@
 					
 					<!-------------- 메인게시판(전체글_최신순) -------------->
                		<c:if test="${empty param}">
-               		떠라 : ${sessionScope.muuid}
                			<c:forEach items="${mainList}" var="mainList">
 		                     <tr class="boardRow" data-count="${mainList.count}">
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
@@ -347,7 +353,12 @@
 		                        		<span class="mnickname">${mainList.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                       	<td class="bdate">${mainList.bdate}</td>
+		                        <td class="bphoto">
+		                          <c:if test="${mainList.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
+		                        </td>
+		                       	<td class="bdateBox">
+		                       		<div class="bdate">${mainList.bdate}</div>
+		                       	</td>
 		                     </tr>
 		                     
                   		</c:forEach>
@@ -376,7 +387,9 @@
 		                        		<span class="mnickname">${list.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                        <td class="bdate">${list.bdate}</td>
+		                        <td class="bdateBox">
+		                        	<div class="bdate">${list.bdate}</div>
+		                        </td>
 		                     </tr>
                   		</c:forEach>
                   		
@@ -406,7 +419,12 @@
 		                        		<span class="mnickname">${searchList.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                        <td class="bdate">${searchList.bdate}</td>
+		                        <td class="bphoto">
+		                          <c:if test="${mainList.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
+		                        </td>
+		                        <td class="bdateBox">
+		                        	<div class="bdate">${searchList.bdate}</div>
+		                        </td>
 		                     </tr>
 	             		</c:forEach>
 	             		
