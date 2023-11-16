@@ -30,7 +30,7 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 
 
 <select id="memberInfo" parameterType="String" resultType="Map">
-	SELECT mnickname, mpoint, mbalance, mphoto
+	SELECT mnickname, mpoint, mbalance, mphoto, mname
 	FROM member
 	WHERE muuid=#{uuid}
 </select>
@@ -97,7 +97,7 @@ WHERE t.muuid=#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL) AND tnorm
 
 
 <select id="getBuy" parameterType="String" resultType="Map">
-SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, r.rno,
+SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tread, t.tnormalprice, ti.timage, t.tnormalstate, r.rno,
        CASE WHEN r.mwriter =#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
        CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM payment p

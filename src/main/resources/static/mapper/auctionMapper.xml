@@ -172,4 +172,8 @@
 	insert into payment (tno, pseller, pbuyer, pamount) values (#{tno}, #{oseller}, #{obuyer}, #{abidprice})
 </insert>
 
+<select id="auctionImageList" resultType="Map">
+SELECT *
+FROM tradeimage
+</select>
 </mapper>

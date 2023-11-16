@@ -85,11 +85,19 @@
 			</c:if>
 			</div>
 				</div> <!--price 끝  -->
-			<div class="setup">
-			<c:if test="${row.tauctionstate eq 0}">낙찰</c:if>
-			<c:if test="${row.tauctionstate eq 2}">유찰</c:if>
-			<c:if test="${row.tauctionstate eq 3}">진행중</c:if>
-				</div>
+		<div class="setup">
+    <c:choose>
+        <c:when test="${row.tauctionstate eq 0}">
+            <span style="color: green;">낙찰</span>
+        </c:when>
+        <c:when test="${row.tauctionstate eq 2}">
+            <span style="color: gray;">유찰</span>
+        </c:when>
+        <c:when test="${row.tauctionstate eq 3}">
+            <span style="color: #88abff;">진행중</span>
+        </c:when>
+    </c:choose>
+</div>
 			</div>
 			</div><!--경매정보info  -->
 			</c:forEach>

@@ -49,7 +49,6 @@
       <div class="container px-4 px-lg-5 mt-5 tradecontainter"
          style="z-index: 10" id="productContainer">
 
-
             <div id="detail">
                <input type="hidden" value="${detail.mnickname}" class="sellerMnickname">
                <input type="hidden" value="${sessionScope.mnickname }" class="mnickname">
@@ -79,6 +78,7 @@
            </div>
       </c:otherwise>
    </c:choose>
+
   </div>
   <!-- If we need pagination -->
   <div class="swiper-pagination"></div>

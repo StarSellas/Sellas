@@ -148,4 +148,8 @@ public class AuctionService {
 			}
 		}
 	}
+
+	public List<Map<String, Object>> auctionImageList() {
+		return auctionDAO.auctionImageList();
+	}
 }

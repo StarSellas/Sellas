@@ -25,6 +25,16 @@
 	overflow: hidden;
 }
 
+
+.user-img1 {
+	margin: 0 auto;
+	width: 150px;
+	height: 150px;
+	border-radius: 70%;
+	border: solid #e3e3e3 1px;
+	overflow: hidden;
+}
+
 .user-img-img {
 	width: 100%;
 	height: 100%;
@@ -41,7 +51,7 @@
 	align-items: center;
 }
 
-#nickChangeBtn {
+.nickChangeBtn {
 	 display: flex;
 	width: 100px;
 	height: 40px;
@@ -104,6 +114,7 @@ h6{
 
 
 .picChange{
+	margin-top:10px;
 	background-color: white;
 	color: #2478ff;
 	border: none;
@@ -115,14 +126,9 @@ display: inline-block;
 }
 
 
-#picker2, #camera{
-   width: 120px;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-   font-size: 13px;
+#picker2, #camera {
+	background-color: white;
+	border: none;
 }
 
 .btnClicked{
@@ -131,9 +137,10 @@ display: inline-block;
 
 
 .otherBtnBox {
+	margin-top: 20px;
+	margin-bottom: 20px;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 #bwriteButton{
@@ -148,3 +155,25 @@ display: inline-block;
 .bwriteButton{
   text-align: center;
 }
+
+table{
+	margin: 20px;
+}
+
+td {
+	height: 50px;
+	border-bottom: 1px solid rgba(0, 0, 0, .2);
+	border-top: 1px solid rgba(0, 0, 0, .2);
+}
+
+#index {
+	width: 300px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#content {
+	width: 800px;
+}
+
+

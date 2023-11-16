@@ -49,7 +49,7 @@
 	<header> </header>
 	<!-- Section-->
 	<section class="py-5">
-
+<div class="page" id="page1">
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="d-flex inside-bar align-items-center">
 				<div class="back col-auto" onclick="location.href='/profile'">
@@ -64,24 +64,68 @@
 					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
 				</div>
 						<div class="toggleBtnBox">
-						<button class="picChange" type="button">사진 변경</button>
+						<button class="picChange" onclick="showPage('page3')">프로필 사진 변경</button>
 						</div>
+				</div>
+
+					<table class="membertable">
+		<tr>
+			<td id="index">이름</td>
+			<td id="content">${mname}</td>
+		</tr>
+		<tr>
+			<td id="index">닉네임</td>
+			<td id="content" onclick="showPage('page2')">${nickname}
+			</td>
+		</tr>
+		</table>
+		</div><!-- 페이지1 -->
+		</div>
+		
+		<!-- 닉네임변경창 -->
+		<div class="page" id="page2" style="display:none">
+			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
+			<div class="d-flex inside-bar align-items-center">
+				<div class="back col-auto" onclick="showPage('page1')">
+					<i class="xi-angle-left xi-x"></i>
+				</div>
+				<div class="location col">닉네임 변경</div>
+			</div>
+		<div class="form-floating" id="nicknameDIV">
+		<input class="form-control" id="newNickname" value="${nickname}">
+		<span class="msg_box"></span>
+		</div>
+		<button class="nickChangeBtn" type="button"  onclick="nickChange()">완료</button>
+		</div>
+		</div>
+	<!-- 닉네임변경창 -->
+	
+	
+			<!-- 프로필사진 변경창 -->
+		<div class="page" id="page3" style="display:none">
+			<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
+			<div class="d-flex inside-bar align-items-center">
+				<div class="back col-auto" onclick="showPage('page1')">
+					<i class="xi-angle-left xi-x"></i>
+				</div>
+				<div class="location col">프로필 사진 변경</div>
+			</div>
+				<div class="edit-div">
+				<div class="user-img1">
+					<img src="../userImgUpload/${mphoto}" alt="user-img" class="user-img-img">
+				</div>
 						<div class="otherBtnBox hide">
-							<button id="picker2" type="button">앨범에서 추가</button>
-							<button id="camera" type="button">카메라에서 추가</button>
+						<button id="picker2" type="button">앨범에서 선택</button>
+						<button id="camera" type="button">카메라 찍기</button>
 						</div>
 							<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 							<div class="bwriteBtnBox hide">
-								<button type="button" id="bwriteButton">변경 완료</button>
+								<button type="button" id="bwriteButton">변경하기</button>
 							</div>
-				</div>
-				
-				
-			<div class="form-floating" id="nicknameDIV">
-				<input class="form-control" id="newNickname" value="${nickname}">
-			</div>
-				<button id="nickChangeBtn" onclick="nickChange()">닉네임 변경</button>
+							</div>
+							</div>
 		</div>
+	<!-- 프로필사진 변경창 -->
 
 	</section>
 	<!-- Footer-->
