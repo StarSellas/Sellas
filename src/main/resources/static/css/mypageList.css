@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .nav {
-	float: left;
+	
 	display: flex; /* 추가 */
 	margin : 20px 10px 10px;
 
@@ -57,6 +57,7 @@
 
 #timage{
 	height: 150px;
+	width: 145px;
 }
 
 .setup{
@@ -78,10 +79,13 @@
 
 .card-title{
 	font-weight: bold;
+	font-size: 15px;
+	margin-left: 40px;
 }
 
 .card-text{
 	margin-bottom: 5px;
+	margin-left: 40px;
 }
 
 .row2{
@@ -90,6 +94,44 @@
 	}
 	
 .tdate{
-	color: gray;
+	color: gray !important;
+	font-weight: bold ;
 
 	}
+	
+	
+.tprice{
+		font-weight: bold ;
+}	
+	
+/* 여기는 테스트공간입니다. */
+
+.index li {
+    width: 100px;
+    	margin: auto;
+    display: inline-block;
+    height: 20px;
+    line-height: 4px;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+}
+.on {
+    height: 20px;
+    	margin: auto;
+    border-bottom: 2px solid;
+    font-weight: bold;
+}
+
+.index{
+	margin: auto;
+	margin-top: 30px;
+}
+
+.uldix {
+	padding: 0;
+		margin: auto;
+	text-align: center;
+	margin-bottom: 20px;
+}
+

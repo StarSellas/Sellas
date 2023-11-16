@@ -11,7 +11,6 @@ $("#addWishList").click(function() {
         success: function(data) {
             if (data.addWish == 1) {
                 if(confirm("위시리스트로 이동하시겠습니까?")){
-                    alert("!");
                     window.location.href = '/getwish';
                 } else {
                     window.location.reload(); // 취소 버튼을 눌렀을 때만 새로고침
@@ -19,7 +18,7 @@ $("#addWishList").click(function() {
             }
         },
         error: function(error) {
-            alert("단단히 오류가 났습니다.");
+            alert("현재 서비스가 불가합니다.");
         }
     });
 });
@@ -39,7 +38,7 @@ $("#addWishList").click(function() {
 					}
 				},
 				error: function(error) {
-					alert("단단히 오류가났습니다.");
+					alert("현재 서비스가 불가합니다.");
 				}
 			});
 		

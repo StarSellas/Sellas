@@ -45,8 +45,8 @@
 				</div>
 			</div>
 			
+    <img src="../img/movesellas.gif" alt="logo" class="logo">
 	<div class="review-box">
-    <img src="../img/흰배경셀라스.jpg" alt="logo" class="logo">
     <c:choose>
 <c:when test="${reviewDetail.mwriter != null && reviewDetail.mtarget != null}">
     <c:if test="${reviewDetail.mtarget eq sessionScope.muuid}">
