@@ -60,6 +60,9 @@
         <script src="../js/jquery-3.7.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+		<script src="./js/wnInterface.js"></script> 
+      <script src="./js/mcore.min.js"></script> 
+      <script src="./js/mcore.extends.js"></script> 
 		<script>
 		 $(document).ready(function () {
 	            // 초기 높이 저장
@@ -110,6 +113,7 @@
                         // 알림이 오면 채팅 아이콘을 숨기고 알림 아이콘을 보이게 함
                         $("#chat").hide();
                         $("#chaton").show();
+                        M.pop.instance("메세지가 도착했습니다.");
                     } else {
                         return false;
                     }

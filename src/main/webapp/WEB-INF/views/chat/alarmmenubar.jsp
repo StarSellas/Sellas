@@ -26,7 +26,7 @@
 		<!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-white" id="headerline" style="z-index: 9999">
            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="../">채팅</a>
+                <a class="navbar-brand" href="../" style="font-weight: bold;">채팅</a>
 				<button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><a href="../menu"><img src="../img/menu1.png" id="menuIcon" alt="menuIcon"></a></button>
            </div>
         </nav>

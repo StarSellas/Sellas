@@ -8,49 +8,16 @@
 <meta charset="UTF-8">
 <title>alarm</title>
 <script src="../js/jquery-3.7.0.min.js"></script>
+    <script src="../js/wnInterface.js"></script> 
+    <script src="../js/mcore.min.js"></script> 
+    <script src="../js/mcore.extends.js"></script> 
 <link rel="stylesheet" type="text/css" href="../css/alarmlist.css">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<style>
-.alarmroomhidden {
-	display: none; 
-}
-.roomId{
-	display: none;
-}
-</style>
-<script src="../js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 <%@ include file="alarmmenubar.jsp" %>
-<!-- 일단 alarm 클래스 클릭하면 가상폼써서 requestChat으로 넘어가고, 가져갈 것은 ouuid, oseller, obuyer, tno. 그 다음이 realtimealarm에 실시간 알람 뿌리기  -->
-<%-- <div class="alarmdomain">
-<div class="alarmheader">
-<div><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
-</div>
-<div class="alarmbody">
-	<div class="realtimealarm"></div>
-	<div>
-    	<c:if test="${not empty alarmlist}">
-        	<c:forEach items="${alarmlist}" var="alarm">
-        		<div>
-            		<div class="alarmcontent">${alarm.dcontent}</div><!-- 얘를 클릭하면 채팅룸(roomalarm)으로 가고 밑에 ouuid를 가진 웹소켓 서버와 연결됩니다. -->
-            		<div class="alarmroomhidden">${alarm.ouuid }</div><!-- 얘는 안보여줍니다. -->
-       	 		</div>
-        	</c:forEach>
-    	</c:if>
-	</div>
-</div>
-<div class="chatroomlist">
-	<c:forEach items="${chatroomlist }" var="chatroomlist">
-		<div>
-			<div class="productname">${chatroomlist.ttitle }</div>
-			<div class="roomId">${chatroomlist.ouuid }</div>
-		</div>
-	</c:forEach>
-</div>
-</div> --%>
 <div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
@@ -61,212 +28,90 @@
           <c:forEach items="${chatroomlist }" var="chatroomlist">
             <div class="chat_list">
               <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                <div class="chat_img"><c:choose>
+	                        <c:when test="${chatroomlist.thumbnail ne null }">
+	                           <img class="card-img-top" src="../tradeImgUpload/${chatroomlist.thumbnail }" alt="sellas" />
+	                        </c:when>
+	                        <c:otherwise>
+	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg"
+	                              alt="sellas" />
+	                        </c:otherwise>
+	                     </c:choose></div>
                 <div class="chat_ib">
-                  <h5>${chatroomlist.ttitle } <span class="chat_date"></span></h5>
-                  <p></p>
+                  <h5>${chatroomlist.ttitle } <span class="chat_date">${chatroomlist.ddate }</span></h5>
+                  <p>${chatroomlist.dcontent }</p>
+                  <p class="ouuid" style="display:none;">${chatroomlist.ouuid }</p>
+                  <p class="oseller" style="display:none;">${chatroomlist.oseller }</p>
+                  <p class="obuyer" style="display:none;">${chatroomlist.obuyer }</p>
+                  <p class="tno" style="display:none;">${chatroomlist.tno }</p>
                 </div>
               </div>
             </div>
             </c:forEach>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date"></span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
             </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script type="text/javascript">
     $(function(){
-    	
-    	$(".roomId").hide();
-    	
-    	$.ajax({ //acheck를 1에서 0으로 수정하는 ajax입니다.
-    		url: '/chat/alarmcheck',
-    		type: 'post',
-    		success : function(data){
-    			//console.log("성공");
-    		},
-    		error : function(error){
-    			console.log("error: ", error);
-    		}
-    	});
-    });
+
+    	// 클릭 이벤트 처리
+        $('.chat_list').on('click', function() {
+            var clickedItem = $(this);
+            var clickedBuyer = clickedItem.find('.obuyer').text();
+            var clickedSeller = clickedItem.find('.oseller').text();
+            var clickedTno = clickedItem.find('.tno').text();
+
+            if (clickedBuyer === "${sessionScope.muuid}") {
+                // Buyer와 세션의 muuid가 일치하는 경우
+                var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
+                sendPostRequest("/chat/requestChat", { roomId: roomId, oseller:clickedBuyer, obuyer:clickedSeller, tno:clickedTno });
+            } else if (clickedSeller === "${sessionScope.muuid}") {
+                // Seller와 세션의 muuid가 일치하는 경우
+                var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
+                sendPostRequest("/chat/alarmChat", { roomId: roomId });
+            } else {
+                // 기타 상황에 대한 처리
+                console.log("Not matched with obuyer or oseller");
+            }
+        });
+
+        // POST 요청 보내는 함수
+        function sendPostRequest(url, data) {
+            var form = $('<form method="post" action="' + url + '"></form>');
+            for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                    form.append('<input type="hidden" name="' + key + '" value="' + data[key] + '">');
+                }
+            }
+            $('body').append(form);
+            form.submit();
+        }
+    }); //function
     
-    $(function(){ //roomalarm.jsp로 보내는 가상폼입니다.
-    	$(".alarmcontent").click(function(){
-    		let name = $(this).text();
-    		let keyword = "낙찰";
-
-    		let startIndex = name.indexOf(keyword);
-
-    		if (startIndex !== -1) {
-    			var roomId = $(this).nextAll(".alarmroomhidden").text();
-    			
-    			let form = document.createElement("form"); 
-                form.setAttribute("action", "/chat/auctionchat");
-                form.setAttribute("method", "post");
-                
-                let ouuidInput = document.createElement("input");
-                ouuidInput.setAttribute("type", "hidden");
-                ouuidInput.setAttribute("name", "roomId");
-                ouuidInput.setAttribute("value", roomId); 
-                form.appendChild(ouuidInput);
-                
-                document.body.appendChild(form); 
-               	form.submit();
-    		} else {
-    			var roomId = $(this).nextAll(".alarmroomhidden").text();
-
-                // roomId를 사용하여 필요한 작업 수행
-                //console.log("Clicked on roomId: " + roomId);
-        		let form = document.createElement("form"); 
-                form.setAttribute("action", "/chat/alarmChat");
-                form.setAttribute("method", "post");
-                
-                let ouuidInput = document.createElement("input");
-                ouuidInput.setAttribute("type", "hidden");
-                ouuidInput.setAttribute("name", "roomId");
-                ouuidInput.setAttribute("value", roomId); 
-                form.appendChild(ouuidInput);
-                
-                document.body.appendChild(form); 
-               	form.submit(); 
-    		}
-    	});
-    });
+    $(function(){
         var sock = new SockJS("/ws/chat"); //실시간으로 알람을 받기위한 웹소켓 연결 코드입니다.
         var ws = Stomp.over(sock);
-        let muuid = "${sessionScope.muuid}"
+        let muuid = "${sessionScope.muuid}";
         
             ws.connect({}, function(frame) { //웹소켓 연결 코드입니다.
                 ws.subscribe("/sub0/ws/chat/user/" + muuid, function(message) {
                     var recv = JSON.parse(message.body);
                     if (recv.type == 'ALARM') { //알람만 받기위해서 온 메시지들을 거르는 코드입니다.
-                        recvMessage(recv);
+                    	M.pop.instance("메세지가 도착했습니다.");
                     } else {
                         return false;
                     }
-                    ws.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message, Recipient: muuid}));
                     startPing(); //웹소켓 연결이 끊기지 않게 30초에 한번씩 자동으로 메시지를 보내는 메소드입니다.
                 });
             }); 
-        
-        function recvMessage(recv) { //실시간으로 알람을 받아 화면에 보여주는 코드입니다.
-            var realtimealarm = document.querySelector(".realtimealarm");
-            var alarmcontent = document.createElement("div");
-            alarmcontent.className = "alarmcontent0";
-            alarmcontent.textContent = recv.message;
-            
-            let alarmhidden = document.createElement("div");
-            alarmhidden.className = "alarmhidden";
-            alarmhidden.textContent = recv.roomId;
-            alarmhidden.style.display = "none";
-            
-            realtimealarm.appendChild(alarmcontent); 
-            realtimealarm.appendChild(alarmhidden);
-        } 
-        
-       $(function(){
-        	$(".alarmcontent0").click(function(){ //위에서 연결한 웹소켓으로 온 실시간 알람을 클릭하면 판매자 채팅룸(roomalarm.jsp)으로 이동하는 코드입니다.
-        		var roomId = $(this).nextAll(".alarmhidden").val();
-        		var form = document.createElement("form"); 
-                form.setAttribute("action", "/chat/alarmChat");
-                form.setAttribute("method", "post");
-                
-                let ouuidInput = document.createElement("input");
-                ouuidInput.setAttribute("type", "hidden");
-                ouuidInput.setAttribute("name", "roomId");
-                ouuidInput.setAttribute("value", roomId); 
-                form.appendChild(ouuidInput);
-                
-                document.body.appendChild(form); 
-               	form.submit();
-        	});
-        }); 
         
         function startPing(){
         	let message = "INTERVAL";
         	ws.send("/pub/ws/chat/alarmmessage", {}, JSON.stringify({type: 'INTERVAL', roomId: roomId, sender: sender, message: message, Recipient: muuid}));
         	setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
         };
-        
-        $(function(){
-        	$(".productname").click(function(){
-        		
-    			var roomId = $(this).nextAll(".roomId").text();
-    			
-    			let form = document.createElement("form"); 
-                form.setAttribute("action", "/chat/alarmChat");
-                form.setAttribute("method", "post");
-                
-                let ouuidInput = document.createElement("input");
-                ouuidInput.setAttribute("type", "hidden");
-                ouuidInput.setAttribute("name", "roomId");
-                ouuidInput.setAttribute("value", roomId); 
-                form.appendChild(ouuidInput);
-                
-                document.body.appendChild(form); 
-               	form.submit();
-        	});
-        });
+    });
     </script>
 </body>
 </html>

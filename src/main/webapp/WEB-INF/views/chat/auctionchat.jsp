@@ -19,19 +19,11 @@
 	
 $(function(){
 		
-		$("#findword").click(function(){
-			$(".search-bar").show();
-		});
-		
 		document.getElementById('messages').addEventListener('keydown', function (e) {
-			if (e.key === 'Enter') {
-	        	sendMessage();
-	    	}
-		});
-		
-		document.querySelector('.search-bar').addEventListener('keydown', function (e) {
-			if (e.key === 'Enter') {
-	    	}
+		    if (e.key === 'Enter') {
+		        e.preventDefault(); // 이 부분을 추가
+		        sendMessage();
+		    }
 		});
 	});
 	
@@ -130,10 +122,19 @@ $(function(){
 	        let incoming_msg_img = document.createElement("div");
 	        incoming_msg_img.className = "incoming_msg_img";
 
-	        var imgElement = document.createElement("img");
-	        imgElement.src = "../img/흰배경셀라스.jpg";
-	        imgElement.alt = "sunil";
-
+	        if('${mphoto}' !== null){
+	        	var imgElement = document.createElement("img");
+	        	var photoPath = '../userImgUpload/${mphoto}';
+	        	imgElement.src = photoPath;
+	        	imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+	        	
+	        } else {
+	        	var imgElement = document.createElement("img");
+	        	var photoPath = '../tradeImgUpload/defaultimg.jpg';
+	 	        imgElement.src = photoPath;
+	 	        imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+	        }
+	        
 	        incoming_msg_img.appendChild(imgElement);
 	        incoming_msg.appendChild(incoming_msg_img);
 
@@ -145,6 +146,9 @@ $(function(){
 
 	        var messageElement = document.createElement("p");
 	        messageElement.textContent = recv.message;
+	        
+	        let ddate = document.createElement("span");
+	        ddate.
 
 	        received_withd_msg.appendChild(messageElement);
 	        received_msg.appendChild(received_withd_msg);
@@ -395,7 +399,7 @@ $(function(){
 	});
 		
 	$(function(){
-        $(".xi-plus").click(function(){
+        $("#toggleBtn").click(function(){
            
            $(".otherBtnBox").toggle(800);   // 속도조절
            $(".toggleBtnBox").toggleClass("btnClicked");   // 버튼위로이동
@@ -407,37 +411,41 @@ $(function(){
            } else {
               $(".otherBtnBox").removeClass("tBtnBox");
            }
-        });
+        })
      });
-	
 </script>
 </head>
 <body>
-	<div class="container">
-<div class="messaging">
-      <div class="inbox_msg">
-        <div class="inbox_people">
+	<div class="inbox_people">
           <div class="headind_srch">
             <div class="recent_heading">
-            <div><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+            <div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
               <div><h4>${tnoname }</h4></div>
             </div>
-            <div class="srch_bar">
+            <!-- <div class="srch_bar">
               <div class="stylish-input-group">
                 <input type="text" class="search-bar"  placeholder="Search" style="display:none;">
                 <span class="input-group-addon">
-                <i class="fa fa-search" id="findword"aria-hidden="true"></i>
+                <i class="fa fa-search" id="findword" aria-hidden="true"></i>
                 </span> </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div class="mesgs">
+        <div class="inbox_msg">
           <div class="msg_history">
           <c:if test="${lastroomcheck eq 1 }">
           <c:forEach items="${lastchatlist }" var="lastchat">
           <c:if test="${lastchat.chatnick ne sessionScope.mnickname }">
             <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="../img/흰배경셀라스.jpg" alt="sunil"> </div>
+              <div class="incoming_msg_img"><c:choose>
+	                        <c:when test="${lastchat.mphoto ne null }">
+	                           <img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
+	                        </c:when>
+	                        <c:otherwise>
+	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg"
+	                              alt="sellas" />
+	                        </c:otherwise>
+	                     </c:choose></div>
               <div class="received_msg">
                 <div class="received_withd_msg">
                   <p>${lastchat.dcontent }</p>
@@ -457,8 +465,20 @@ $(function(){
           </div>
           <div class="type_msg">
             <div class="input_msg_write">
-            	<div class="toggleBtnBox"><i class="xi-plus"></i></div>
+            	<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
               	<div class="otherBtnBox hide">
+              		<c:if test="${tnormalstate ==0 }">
+              			<div class="trade-buttons">
+                			<button id="tradeok">금액제시</button>
+                      		<button id="tradeRequest">제시하기</button>
+                      	</div>
+                	</c:if>
+                	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
+                		<div class="tradeAcceptOrCancel2">
+                			<button id="tradeAccept">수령완료</button>
+                      		<button id="tradeCancel">거래취소</button>
+                      	</div>
+                	</c:if>
                 	<div class="tradeAcceptOrCancel">
 						<button id="tradeAccept">수령완료</button>
                       	<button id="tradeCancel">거래취소</button>
@@ -467,9 +487,6 @@ $(function(){
               	<input type="text" class="write_msg" id="messages" />
             </div>
           </div>
-        </div>
-      </div>
-      </div>
       </div>
 </body>
 </html>

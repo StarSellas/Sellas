@@ -92,7 +92,7 @@ public class ScheduleService {
 				chatmap.put("auctionselleralarm", auctionselleralarm);
 				chatmap.put("auctionbuyeralarm", auctionbuyeralarm);
 				
-				int insertdialogueseller = auctionDAO.insertDialogueSeller(chatmap);
+				int insertdialogueseller = auctionDAO.insertDialogueSeller(chatmap); //where dcontent like concat('%', '낙찰', '%')
 				int insertdialoguebuyer = auctionDAO.insertDialogueBuyer(chatmap);
 				
 				int abidprice = auctionDAO.getAbidPrice(ano);

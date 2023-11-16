@@ -1,5 +1,6 @@
 package com.sellas.web.chat;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -67,9 +68,9 @@ public class ChatRoomService {
 		return chatRoomDAO.alarmList(muuid);
 	}
 
-	public int setCheckZero(String muuid) {
+	public int setCheckZero(String ouuid) {
 		// TODO Auto-generated method stub
-		return chatRoomDAO.setCheckZero(muuid);
+		return chatRoomDAO.setCheckZero(ouuid);
 	}
 
 	public int selectTnormalstate(Map<String, Object> map) {
@@ -100,6 +101,31 @@ public class ChatRoomService {
 	public String getTtitleByTno(Integer tno) {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.getTitleByTno(tno);
+	}
+
+	public String getDcontentByTno(String ouuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getDcontentByTno(ouuid);
+	}
+
+	public String getThumbnailByTno(Integer tno) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getThumbnailByTno(tno);
+	}
+
+	public Timestamp getDdateByOuuid(String ouuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getDdateByOuuid(ouuid);
+	}
+
+	public int auctionCheck(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.auctionCheck(map);
+	}
+
+	public String getMphoto(String muuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getMphoto(muuid);
 	}
 	
 }

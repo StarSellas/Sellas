@@ -358,7 +358,7 @@ $(function() {
 	                     <div class="card-body p-4">
 	                        <div class="text-center">
 	                           <!-- Product name-->
-	                           <h6 class="fw-bolder normalTtitle">${i.ttitle }</h5>
+	                           <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
 	                           <!-- Product price-->
 	                           작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
 	                        </div>
