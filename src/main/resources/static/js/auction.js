@@ -167,7 +167,7 @@ function addAuctionItem(item){
 
 	// 썸네일
 	let itemImage = document.createElement("img");
-    itemImage.src = "img/icon.png";
+    itemImage.src = "/tradeImgUpload/"+item.timage;
 	itemImage.alt = "Auction Item";
 	itemImage.style.width = "125px";
 	//itemImage.style.marginTop = "15px";

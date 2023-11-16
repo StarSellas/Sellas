@@ -27,7 +27,19 @@
 </sql>
 
 <select id="getAuctionItemList" parameterType="Map" resultType="Map">
-	<include refid="auctionListBaseSQL"/>
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname,
+	COALESCE(auctionhistory.abidprice, 0) AS abidprice,tradeimage.timage,tradeimage.tthumbnail,
+	COALESCE(auctionhistory.abidprice + trade.tauctionminbidunit, trade.tauctionstartprice) AS minbidprice
+	FROM trade
+		INNER JOIN member
+		ON member.muuid = trade.muuid
+		INNER JOIN itemcategory
+		ON itemcategory.ino = trade.ino
+		LEFT JOIN auctionhistory
+		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
+		LEFT JOIN tradeimage
+		ON tradeimage.tno = trade.tno
+	WHERE trade.ttype = 1 AND trade.tauctionstate = 2
 	<if test="keyword != null and keyword != ''">
         <include refid="searchKeywordSQL"/>
     </if>
@@ -172,4 +184,9 @@
 	insert into payment (tno, pseller, pbuyer, pamount) values (#{tno}, #{oseller}, #{obuyer}, #{abidprice})
 </insert>
 
+<select id="auctionImageList" resultType="Map">
+SELECT *
+FROM tradeimage
+WHERE tno = #{tno}
+</select>
 </mapper>

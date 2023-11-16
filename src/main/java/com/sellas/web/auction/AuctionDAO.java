@@ -54,4 +54,7 @@ public interface AuctionDAO {
 
 	int insertPayment(Map<String, Object> chatmap);
 
+	List<Map<String, Object>> auctionImageList(int tno);
+
+
 }
