@@ -77,7 +77,7 @@ ORDER BY
 	</select>
 	
 	<select id="chatRoomList" parameterType="Map" resultType="Map">
-		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid}
+		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid} or obuyer = #{muuid}
 	</select>
 	
 	<select id="getTitleByTno" parameterType="Integer" resultType="String">

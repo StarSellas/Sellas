@@ -31,13 +31,12 @@ $(function(){
 	let emessage = '${emessage}'; //입장 메시지
 	//console.log("emessage : " + emessage);
 	let oseller = '${oseller}'; //판매자 UUID
-	let sender = '${obuyer}' //구매자 유유아이디
+	let obuyer = '${obuyer}' //구매자 유유아이디
+	let sender = '${sessionScope.muuid}'
 	let roomId = '${roomId}'; //방 유유아이디
 	let mnickname = '${mnickname}'; //구매자 닉
 	let tno = '${tno}'; //거래물품 번호
-	let tnormalstate = '${tnormalstate}'; 
 	let ws = Stomp.over(sock);
-	let trade = 0; //거래상태
 
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
@@ -73,34 +72,14 @@ $(function(){
 		/* console.log(message)
 		console.log(sender)
 		console.log(roomId) 셋 다 들어오는거 확인했습니다. */
-		if (trade == 0) {
-			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-				type : 'TALK',
-				roomId : roomId,
-				sender : sender,
-				mnickname : mnickname,
-				message : message
-			}));
-			messageInput.value = '';
-		} else if (trade == 1) {
-			if (!isNaN(message)) {
-				// ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
-				ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-					type : 'PAYMENT',
-					roomId : roomId,
-					sender : sender,
-					mnickname : mnickname,
-					message : message
-				// 숫자로 변환한 값을 전송합니다.
-				}));
-				trade = 0;
-				messageInput.value = '';
-			} else {
-				// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
-				alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
-			}
-
-		}
+		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+			type : 'TALK',
+			roomId : roomId,
+			sender : sender,
+			mnickname : mnickname,
+			message : message
+		}));
+		messageInput.value = '';
 	}
 
 	function scrollChatToBottom() {
@@ -155,22 +134,7 @@ $(function(){
 	        incoming_msg.appendChild(received_msg);
 
 	        messagesList[0].appendChild(incoming_msg);
-
-	        if (recv.type == 'TRADEOK') {
-	            $(".tradeAcceptOrCancel").show();
-	        }
-	        if (recv.type == 'TRADECANCEL') {
-	            alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
-	        }
-	        if (recv.type == 'TRADENO') {
-	            alert("거래가 거절되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
-	        }
-	        if (recv.type == 'TRADECOMPLETE') {
-	            alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
-	        }
+	        
 	    } else {
 	        var messagesList = document.getElementsByClassName("msg_history");
 
@@ -187,24 +151,9 @@ $(function(){
 	        outgoing_msg.appendChild(sent_msg);
 	        messagesList[0].appendChild(outgoing_msg);
 
-	        if (recv.type == 'TRADEOK') {
-	            $(".tradeAcceptOrCancel").show();
-	        }
-	        if (recv.type == 'TRADECANCEL') {
-	            alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
-	        }
-	        if (recv.type == 'TRADENO'){
-	            alert("거래가 거절되었습니다. 메인으로 돌아갑니다.");
-	            location.href='/';
-	        }
-	        if(recv.type =='TRADECOMPLETE'){
-	            alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
-	            location.href='/';
-	        }
 		}
+	    
 		scrollChatToBottom();
-		
 	}
 
 	function startPing() {
@@ -219,17 +168,33 @@ $(function(){
 		setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
 	};
 	$(function() {
-		$(".tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
-			$.ajax({
-				url : '/compareamounts',
+		$(".tradeComplete").click(function() { // 구매자만 누를수있는 수령완료버튼을 눌렀을 때 실행할 함수입니다. 
+			$.ajax({ //판매자의 member 테이블 mbalance에 abidprice 값을 추가합니다.
+				// tno, obuyer(muuid), oseller 값을 보내서 쿼리로 auctionhistory 테이블의 
+				// astate가 0인걸 조건으로 abidprice를 찾아서 member 테이블의 mbalance 값에 추가합니다.
+				// 구매자가 수령완료 버튼을 누르면 psellerok, pbuyerok, pstate를 0으로 바꿉니다.
+				url : '/auctioncompare', //tradecontroller의 auctioncompare메소드에서 실행합니다.
 				type : 'post',
 				data : {
 					tno : tno,
-					obuyer : sender
+					obuyer : muuid, //구매자만 이 버튼을 누를 수 있어서 muuid로 했습니다.
+					oseller : oseller
 				},
 				dataType : "json",
 				success : function(data) { //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
-					if (data.comparecount == 1) {
+					if (data.complete == 1) {
+						
+						alert("거래가 완료되었습니다. 후기를 작성해주세요.");
+    					location.href='/';
+    					
+    					ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+							type : 'TRADECOMPLETE',
+							roomId : roomId,
+							sender : sender,
+							mnickname : mnickname,
+							message : "거래가 완료되었습니다. 후기를 작성해주시기 바랍니다.",
+						}));
+    					
 						trade = 1;
 						$(".tradeRequest").show();
 						$("#tradeok").hide();
@@ -251,8 +216,37 @@ $(function(){
 										return;
 									}
 						
-									$(".tradeCancel").click(function(){
-						    			$(".tradeCancel").hide();
+									$(".buyertradeCancel").click(function(){ //구매자 거래 취소 시 : trade테이블 deposit을 판매자에게 돌려주고, 구매자의 입찰금액90%를 반환해줌
+										//auctionhistory 테이블의 abidprice의 금액에서 abidcharge의 가격을 빼고, 구매자한테 돌려줍니다.
+										//그리고 판매자한테 trade 테이블의 tauctiondeposit을 돌려주고 tauctionstate를 1로 바꿉니다.
+										// 그리고 payment 테이블의 psellerok, pbuyerok, pstate를 2로 바꿉니다.
+			
+										$.ajax({
+											url: 'buyertradecancel',
+											type: 'post',
+											data: {
+												tno: tno,
+												oseller: oseller,
+												obuyer: muuid
+											},
+											dataType: 'json',
+											success: function(data) {
+												if(data.buyercancel == 1){
+													
+												}
+											}, error: function(error){
+												
+											}
+										});
+										ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+			    							type : 'TRADECANCEL',
+			    							roomId : roomId,
+			    							sender : sender,
+			    							mnickname : mnickname,
+			    							message : mnicname"님이 거래를 취소하셨습니다."
+			    						}));
+										
+										location.href='/';
 						        		var reasonInput = document.createElement("input");
 						        	    reasonInput.type = "text";
 						        	    reasonInput.name = "cancellationReason";
@@ -285,7 +279,7 @@ $(function(){
 						    							roomId : roomId,
 						    							sender : sender,
 						    							mnickname : mnickname,
-						    							message : "거래가 취소되었습니다."
+						    							message : mnicname"님이 거래를 취소하셨습니다."
 						    						}));
 						        	        		
 						        	        		alert("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
@@ -393,22 +387,6 @@ $(function(){
 			});
 		});	
 	});
-		
-	$(function(){
-        $("#toggleBtn").click(function(){
-           
-           $(".otherBtnBox").toggle(800);   // 속도조절
-           $(".toggleBtnBox").toggleClass("btnClicked");   // 버튼위로이동
-           $(".otherBtnBox").toggleClass("hide");
-           
-           if($(".toggleBtnBox").hasClass("btnClicked")){
-              $(".otherBtnBox").addClass("tBtnBox");
-              
-           } else {
-              $(".otherBtnBox").removeClass("tBtnBox");
-           }
-        })
-     });
 </script>
 </head>
 <body>
@@ -453,12 +431,25 @@ $(function(){
             </c:forEach>
 		</c:if>
 	</div>
+	<!-- 수령완료 :판매자 member테이블의 거래잔액에
+		1. auctionhistory의 같은 tno 중에 state가 0인 튜플의 abidprice
+		2. trade 테이블의 deposit 금액을 증가시켜주면 됨
+
+		판매자 거래 취소 시 : trade테이블 deposit 돌려주지 않음 (실제로 할건 구매자 입찰금액 100% 반환말고 없음)
+		구매자 거래 취소 시 : trade테이블 deposit을 판매자에게 돌려주고, 구매자의 입찰금액90%를 반환해줌 -->
     <div class="type_msg">
           	<div class="input_msg_write">
-            	<div class="tradeAcceptOrCancel">
-					<button class="btn btn-outline-secondary" id="tradeAccept" type="button">수령완료</button>
-  					<button class="btn btn-outline-secondary" id="tradeCancel" type="button">거래취소</button>
+          	<c:if test="${sessionScope.muuid eq obuyer }">
+            	<div class="buyertradeCompleteOrCancel">
+					<button class="btn btn-outline-secondary" id="tradeComplete" type="button">수령완료</button>
+  					<button class="btn btn-outline-secondary" id="buyertradeCancel" type="button">거래취소</button>
 				</div>
+			</c:if>
+			<c:if test="${sessionScope.muuid eq oseller }">
+				<div class="sellertradecancel">
+					<button class="btn btn-outline-secondary" id="sellertradeCancel" type="button">거래취소</button>
+				</div>
+			</c:if>
 			<input type="text" class="form-control write_msg" aria-label="이거어디에쳐나오는거냐?" id="messages">
 		</div>
 	</div>

@@ -600,14 +600,14 @@ public class NormalController {
 	public String tradeOk(@RequestParam Map<String, Object> map) {
 		// 거래를 수락하는 메소드입니다.
 		JSONObject json = new JSONObject();
-		System.out.println("tradeAccepted를 눌렀을 때 받아오는 값입니다 : " + map);
+		//System.out.println("tradeAccepted를 눌렀을 때 받아오는 값입니다 : " + map);
 		map.put("state", 1);
 		String obuyer = normalService.obuyerUuid(map);
-		System.out.println("obuyer 값을 받아오나요? : " + obuyer);
+		//System.out.println("obuyer 값을 받아오나요? : " + obuyer);
 		map.put("pbuyer", obuyer);
 		int tnormalstate = normalService.selectTnormalstate(map);
 		if (tnormalstate == 0) {
-			System.out.println("tnormalstate==0이 들어오나요?");
+			//System.out.println("tnormalstate==0이 들어오나요?");
 			// 구매자의 돈을 귀속합니다.
 			int takeMamount = normalService.takeMamount(map);
 			//<update id="takeMamount" parameterType="Map">
@@ -617,7 +617,7 @@ public class NormalController {
 			//</update>
 		
 			if (takeMamount == 1) {
-				System.out.println("takeMamount==1이 들어오나요?");
+				//System.out.println("takeMamount==1이 들어오나요?");
 				// payment에 값을 집어넣습니다.
 				int insertPaymentForNormal = normalService.insertPaymentForNormal(map);
  
@@ -630,7 +630,7 @@ public class NormalController {
 				// #{tnormalprice}, 2 )
 				// </insert>
 				if (insertPaymentForNormal == 1) {
-					System.out.println("insertPaymentForNormal==1이 들어오나요?");
+					//System.out.println("insertPaymentForNormal==1이 들어오나요?");
 					// tnormalstate의 값을 변경해줍니다.(판매중 -> 거래중)
 					int changeStateForTrade = normalService.changeStateForNormal(map);
 					if (changeStateForTrade == 1) {
@@ -646,8 +646,8 @@ public class NormalController {
 			return json.toString();
 		}
 		
-		System.out.println("맵의 값입니다 : " + map);
-		System.out.println("아이구 어서옵쇼");
+		//System.out.println("맵의 값입니다 : " + map);
+		//System.out.println("아이구 어서옵쇼");
 
 		// 일단 임시로 값을 넣겠습니다.
 

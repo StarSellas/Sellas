@@ -177,7 +177,7 @@ $(function() {
            	    		
            	    		newRow = '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' + this.list[i].count + '" data-scount="' + this.list[i].scount + '">'
 	           	    	    + '<div class="card h-100">'
-	           	    	    + '<img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/' + this.list[i].thumbnail : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />'
+	           	    	    + '<img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/defaultimg.jpg' : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />'
 	           	    	    + '<div class="card-body p-4">'
 	           	    	    + '<div class="text-center">'
 	           	    	    + '<h5 class="fw-bolder normalTtitle">' + this.list[i].ttitle + '</h5>'
@@ -347,7 +347,7 @@ $(function() {
 	                     <!-- Product image-->
 	                     <c:choose>
 	                        <c:when test="${i.thumbnail ne null }">
-	                           <img class="card-img-top" src="./tradeImgUpload/${i.thumbnail }" alt="thumbnail" />
+	                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg" alt="thumbnail" />
 	                        </c:when>
 	                        <c:otherwise>
 	                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"

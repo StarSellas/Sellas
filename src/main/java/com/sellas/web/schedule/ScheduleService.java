@@ -68,13 +68,13 @@ public class ScheduleService {
 				chatmap.put("oseller", oseller);
 				chatmap.put("obuyer", obuyer);
 				
-				int createauctionchatroom = auctionDAO.createAuctionChatRoom(chatmap);
+				int createauctionchatroom = auctionDAO.createAuctionChatRoom(chatmap); //채팅방을 서버에 등록합니다.
 				
-				if(createauctionchatroom != 1) {
+				if(createauctionchatroom != 1) { //채팅방이 서버에 등록되지 않으면
 					
-					chatmap.remove("ouuid");
+					chatmap.remove("ouuid"); //ouuid가 중독되어서 생긴 문제이니 ouuid를 삭제합니다.
 					
-					while(createauctionchatroom != 1) {
+					while(createauctionchatroom != 1) { //그리고 while문을 이용해서 다시 생성하고 맵에 넣고, 다시 집어넣어서 중복을 겁사합니다.
 						
 						ouuid = String.valueOf(UUID.randomUUID());
 						
@@ -82,15 +82,16 @@ public class ScheduleService {
 						
 						createauctionchatroom = auctionDAO.createAuctionChatRoom(chatmap);
 						
-					}
-				}
+					} //서버에 정상적으로 채팅방이 등록되면 빠져나옵니다.
+				} 
+				
 				HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
 				String tnoname = chatRoomService.tnoName(tno);
 				String auctionselleralarm = session.getAttribute("mnickname") + "님이 낙찰받으셨습니다.";
 				String auctionbuyeralarm = tnoname + "을 낙찰받으셨습니다.";
 				
-				chatmap.put("auctionselleralarm", auctionselleralarm);
-				chatmap.put("auctionbuyeralarm", auctionbuyeralarm);
+				chatmap.put("auctionselleralarm", auctionselleralarm); // 판매자가 받을 알람 메시지입니다.
+				chatmap.put("auctionbuyeralarm", auctionbuyeralarm); // 구매자가 받을 알람 메시지입니다.
 				
 				int insertdialogueseller = auctionDAO.insertDialogueSeller(chatmap); //where dcontent like concat('%', '낙찰', '%')
 				int insertdialoguebuyer = auctionDAO.insertDialogueBuyer(chatmap);

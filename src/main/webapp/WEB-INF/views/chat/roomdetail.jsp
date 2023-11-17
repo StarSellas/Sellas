@@ -159,15 +159,15 @@ $(function(){
 	        }
 	        if (recv.type == 'TRADECANCEL') {
 	            alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
+	            location.href = '../';
 	        }
 	        if (recv.type == 'TRADENO') {
 	            alert("거래가 거절되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
+	            location.href = '../';
 	        }
 	        if (recv.type == 'TRADECOMPLETE') {
 	            alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
+	            location.href = '../';
 	        }
 	    } else {
 	        var messagesList = document.getElementsByClassName("msg_history");
@@ -190,15 +190,15 @@ $(function(){
 	        }
 	        if (recv.type == 'TRADECANCEL') {
 	            alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
-	            location.href = '/';
+	            location.href = '../';
 	        }
 	        if (recv.type == 'TRADENO'){
 	            alert("거래가 거절되었습니다. 메인으로 돌아갑니다.");
-	            location.href='/';
+	            location.href='../';
 	        }
 	        if(recv.type =='TRADECOMPLETE'){
 	            alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
-	            location.href='/';
+	            location.href='../';
 	        }
 		}
 		scrollChatToBottom();
@@ -292,7 +292,7 @@ $(function(){
 						    						}));
 						        	        		
 						        	        		alert("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
-						        	        		location.href='/';
+						        	        		location.href='../';
 						        	        	}
 						        	            // 서버로부터의 응답을 처리
 						        	            console.log("서버 응답:", data);

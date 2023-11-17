@@ -77,4 +77,34 @@ public class TradeController {
 		
 		return tradeService.checkBalance(price);
 	}
+	
+	@ResponseBody
+	@PostMapping("/auctioncompare")
+	public String auctionCompare(@RequestParam Map<String, Object> map) {
+		
+		int abidprice = tradeService.getAbidprice(map); //tno가 같고, astate가 0인 것의 abidprice를 가져옵니다.
+		
+		map.put("abidprice", abidprice);
+		
+		int putabidprice = tradeService.putAbidprice(map);
+		
+		JSONObject json = new JSONObject();
+		
+		json.put("complete", putabidprice);
+		
+		return json.toString();
+		
+	}
+	
+	@ResponseBody
+	@PostMapping("/buyertradecancel")
+	public String buyerTradeCancel(@RequestParam Map<String, Object> map) {
+		
+		int depositreturn = tradeService.depositReturn(map);
+		
+		JSONObject json = new JSONObject();
+		
+		return json.toString();
+		
+	}
 }

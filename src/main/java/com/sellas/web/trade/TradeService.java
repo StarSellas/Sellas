@@ -81,4 +81,24 @@ public class TradeService {
 			return false;
 		}
 	}
+
+	public int tradeComplete(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return tradeDAO.tradeComplete(map);
+	}
+
+	public int getAbidprice(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return tradeDAO.getAbidprice(map);
+	}
+
+	public int putAbidprice(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return tradeDAO.putAbidprice(map);
+	}
+
+	public int depositReturn(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return tradeDAO.depositReturn(map);
+	}
 }

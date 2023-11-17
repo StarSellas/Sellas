@@ -55,10 +55,10 @@
         		$(".tradeResponse").show();
         	}if(recv.type=='TRADECANCEL'){
         		alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
-        		location.href='/';
+        		location.href='../';
         	}if(recv.type =='TRADECOMPLETE'){
         		alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
-        		location.href='/';
+        		location.href='../';
         	}
 
 		});
@@ -224,6 +224,7 @@
     $(".tradeAcceptOrCancel").hide();
     
 		$(".tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
+			console.log("거래수락")
 			$.ajax({
 				url : '/tradeOk',
 				type : 'post',
@@ -413,18 +414,18 @@
           <div class="type_msg">
           	<div class="input_msg_write">
             	<div class="tradeResponse">
-                	<button class="btn btn-outline-secondary" id="tradeok" type="button">거래수락</button>
-  					<button class="btn btn-outline-secondary" id="tradeno" type="button">거래취소</button>
+                	<button class="btn btn-outline-secondary" class="tradeok" id="tradeok" type="button">거래수락</button>
+  					<button class="btn btn-outline-secondary" class="tradeno" id="tradeno" type="button" style="display:none;">거래취소</button>
                	</div>
                 	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
                   	<div class="tradeAcceptOrCancel2">
-                    	<button class="btn btn-outline-secondary" id="tradeAccept" type="button">수령완료</button>
-  						<button class="btn btn-outline-secondary" id="tradeCancel" type="button">거래취소</button>
+                    	<button class="btn btn-outline-secondary" class="tradeAccept" id="tradeAccept" type="button">거래완료</button>
+  						<button class="btn btn-outline-secondary" class="tradeCancel" id="tradeCancel" type="button" style="display:none;">거래취소</button>
                   	</div>
                		</c:if>
                		<div class="tradeAcceptOrCancel">
-                    	<button class="btn btn-outline-secondary" id="tradeAccept" type="button">수령완료</button>
-  						<button class="btn btn-outline-secondary" id="tradeCancel" type="button">거래취소</button>
+                    	<button class="btn btn-outline-secondary" class="tradeAccept" id="tradeAccept" type="button">거래완료</button>
+  						<button class="btn btn-outline-secondary" class="tradeCancel" id="tradeCancel" type="button" style="display:none;">거래취소</button>
                		</div>
                		<input type="text" class="form-control write_msg" aria-label="이거어디에쳐나오는거냐?" id="messages">
             	</div>

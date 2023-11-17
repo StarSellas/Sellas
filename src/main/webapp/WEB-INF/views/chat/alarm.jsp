@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- 채팅방은 두고 알람만 지운다. muuid의 dcheck가 0으로 수정함과 동시에 채팅방을 만듭니다. -->
@@ -19,40 +19,43 @@
 <body>
 <%@ include file="alarmmenubar.jsp" %>
 <div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-              <h4>채팅</h4>
-            </div>
-          </div>
-          <div class="inbox_chat">
-          <c:forEach items="${chatroomlist }" var="chatroomlist">
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"><c:choose>
-	                        <c:when test="${chatroomlist.thumbnail ne null }">
-	                           <img class="card-img-top" src="../tradeImgUpload/${chatroomlist.thumbnail }" alt="sellas" />
+	<div class="headind_srch">
+		<div class="recent_heading">
+			<h4>채팅</h4>
+		</div>
+	</div>
+	<div class="inbox_chat">
+		<c:forEach items="${chatroomlist }" var="chatroomlist">
+			<div class="chat_list">
+            	<div class="chat_people">
+                	<div class="chat_img">
+                		<c:choose>
+	                		<c:when test="${chatroomlist.thumbnailcheck eq 1 }">
+	                          	<img class="card-img-top" src="../tradeImgUpload/${chatroomlist.thumbnail }" alt="sellas" />
 	                        </c:when>
 	                        <c:otherwise>
 	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg"
-	                              alt="sellas" />
+	                              alt="sellas"/>
 	                        </c:otherwise>
-	                     </c:choose></div>
-                <div class="chat_ib">
-                  <h5>${chatroomlist.ttitle } <span class="chat_date">${chatroomlist.ddate }</span></h5>
-                  <p>${chatroomlist.dcontent }</p>
-                  <p class="ouuid" style="display:none;">${chatroomlist.ouuid }</p>
-                  <p class="oseller" style="display:none;">${chatroomlist.oseller }</p>
-                  <p class="obuyer" style="display:none;">${chatroomlist.obuyer }</p>
-                  <p class="tno" style="display:none;">${chatroomlist.tno }</p>
-                </div>
-              </div>
+	            		</c:choose>
+	            	</div>
+                	<div class="chat_ib">
+                  		<h5>${chatroomlist.ttitle } <span class="chat_date">${chatroomlist.ddate }</span></h5>
+                  		<p>${chatroomlist.dcontent }</p>
+                  		<p class="ouuid" style="display:none;">${chatroomlist.ouuid }</p>
+                  		<p class="oseller" style="display:none;">${chatroomlist.oseller }</p>
+                  		<p class="obuyer" style="display:none;">${chatroomlist.obuyer }</p>
+                  		<p class="tno" style="display:none;">${chatroomlist.tno }</p>
+                  		<p class="lastroomcheck" style="display:none;">${chatroomlist.lastroomcheck }</p>
+                	</div>
+              	</div>
             </div>
-            </c:forEach>
-            </div>
-        </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script type="text/javascript">
+		</c:forEach>
+	</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript">
     $(function(){
 
     	// 클릭 이벤트 처리
@@ -61,32 +64,96 @@
             var clickedBuyer = clickedItem.find('.obuyer').text();
             var clickedSeller = clickedItem.find('.oseller').text();
             var clickedTno = clickedItem.find('.tno').text();
+            var clickedLastroomcheck = clickedItem.find('.lastroomcheck').text();
 
             if (clickedBuyer === "${sessionScope.muuid}") {
                 // Buyer와 세션의 muuid가 일치하는 경우
                 var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
-                sendPostRequest("/chat/requestChat", { roomId: roomId, oseller:clickedBuyer, obuyer:clickedSeller, tno:clickedTno });
+                
+                let form = document.createElement("form"); 
+    			form.setAttribute("action", "/chat/requestChat");
+    			form.setAttribute("method", "post");
+    			
+    			let tnoInput = document.createElement("input");
+    			tnoInput.setAttribute("type", "hidden");
+    			tnoInput.setAttribute("name", "tno");
+    			tnoInput.setAttribute("value", clickedTno); 
+    			form.appendChild(tnoInput);
+    			
+    			let obuyerInput = document.createElement("input");
+    			obuyerInput.setAttribute("type", "hidden");
+    			obuyerInput.setAttribute("name", "obuyer");
+    			obuyerInput.setAttribute("value", clickedBuyer); 
+    			form.appendChild(obuyerInput);
+    			
+    			let osellerInput = document.createElement("input");
+    			osellerInput.setAttribute("type", "hidden");
+    			osellerInput.setAttribute("name", "oseller");
+    			osellerInput.setAttribute("value", clickedSeller); 
+    			form.appendChild(osellerInput);
+    			
+    			let ouuidInput = document.createElement("input");
+    			ouuidInput.setAttribute("type", "hidden");
+    			ouuidInput.setAttribute("name", "roomId");
+    			ouuidInput.setAttribute("value", roomId);
+    			form.appendChild(ouuidInput);
+    			
+    			let lastroomcheckInput = document.createElement("input");
+    			lastroomcheckInput.setAttribute("type", "hidden");
+    			lastroomcheckInput.setAttribute("name", "lastroomcheck");
+    			lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
+    			form.appendChild(lastroomcheckInput);
+    			
+    			document.body.appendChild(form);
+    			form.submit();
+    			
             } else if (clickedSeller === "${sessionScope.muuid}") {
                 // Seller와 세션의 muuid가 일치하는 경우
                 var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
-                sendPostRequest("/chat/alarmChat", { roomId: roomId });
+                
+                let form = document.createElement("form"); 
+    			form.setAttribute("action", "/chat/alarmChat");
+    			form.setAttribute("method", "post");
+    			
+    			let tnoInput = document.createElement("input");
+    			tnoInput.setAttribute("type", "hidden");
+    			tnoInput.setAttribute("name", "tno");
+    			tnoInput.setAttribute("value", clickedTno); 
+    			form.appendChild(tnoInput);
+    			
+    			let obuyerInput = document.createElement("input");
+    			obuyerInput.setAttribute("type", "hidden");
+    			obuyerInput.setAttribute("name", "obuyer");
+    			obuyerInput.setAttribute("value", clickedBuyer); 
+    			form.appendChild(obuyerInput);
+    			
+    			let osellerInput = document.createElement("input");
+    			osellerInput.setAttribute("type", "hidden");
+    			osellerInput.setAttribute("name", "oseller");
+    			osellerInput.setAttribute("value", clickedSeller); 
+    			form.appendChild(osellerInput);
+    			
+    			let ouuidInput = document.createElement("input");
+    			ouuidInput.setAttribute("type", "hidden");
+    			ouuidInput.setAttribute("name", "roomId");
+    			ouuidInput.setAttribute("value", roomId);
+    			form.appendChild(ouuidInput);
+    			
+    			let lastroomcheckInput = document.createElement("input");
+    			lastroomcheckInput.setAttribute("type", "hidden");
+    			lastroomcheckInput.setAttribute("name", "lastroomcheck");
+    			lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
+    			form.appendChild(lastroomcheckInput);
+    			
+    			document.body.appendChild(form); //좌석 빼줌
+    			form.submit();
+                
             } else {
                 // 기타 상황에 대한 처리
-                console.log("Not matched with obuyer or oseller");
+                //console.log("Not matched with obuyer or oseller");
+                wiwdow.location.href="../";
             }
         });
-
-        // POST 요청 보내는 함수
-        function sendPostRequest(url, data) {
-            var form = $('<form method="post" action="' + url + '"></form>');
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    form.append('<input type="hidden" name="' + key + '" value="' + data[key] + '">');
-                }
-            }
-            $('body').append(form);
-            form.submit();
-        }
     }); //function
     
     $(function(){
@@ -112,6 +179,6 @@
         	setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
         };
     });
-    </script>
+</script>
 </body>
 </html>

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -315,7 +317,7 @@ public class ChatRoomController {
 		
 		model.addAttribute("alarmlist", alarmlist); //alarmlist(방의 uuid와 alarm 내용을 alarmlist)라는 이름으로 모델로 보냅니다.
 		
-		List<Map<String, Object>> chatroomlist = chatRoomService.chatRoomList(muuid); //ouuid와 tno, oseller, obuyer 가져옵니다.
+		List<Map<String, Object>> chatroomlist = chatRoomService.chatRoomList(muuid); //내 muuid를 통해서 내가 있는 ouuid와 tno, oseller, obuyer 가져옵니다.
 		
 		for (int n = 0; n < chatroomlist.size(); n++) {
 		    // chatroomlist에서 n번째 chatroom 맵을 가져옴
@@ -358,9 +360,42 @@ public class ChatRoomController {
 		    if (!chatroom.containsKey("thumbnail")) {
 		        Integer tno = (Integer) chatroom.get("tno");
 		        String thumbnail = chatRoomService.getThumbnailByTno(tno);
+		        
+		        String filePath = "../tradeImgUpload/" + chatroom.get("thumbnail");
+
+		        try {
+		            // Resource 객체를 생성하여 파일을 로드
+		            Resource resource = new UrlResource(filePath);
+
+		            // 파일이 존재하는지 확인
+		            if (resource.exists()) {
+		                int thumbnailcheck = 1;
+		                chatroom.put("thumbnailcheck", thumbnailcheck);
+		                chatroom.put("thumbnail", thumbnail);
+		            } else {
+		                // 파일이 존재하지 않으면 디폴트 이미지 사용
+		            	int thumbnailcheck = 0;
+		            	chatroom.put("thumbnailcheck", thumbnailcheck);
+		            }
+		        } catch (Exception e) {
+		            // 예외 처리
+		            e.printStackTrace();
+		        }
+
+		        chatroomlist.set(n, chatroom);
+		    }
+		}
+		
+		for (int n = 0; n < chatroomlist.size(); n++) {
+		    // chatroomlist에서 n번째 chatroom 맵을 가져옴
+		    Map<String, Object> chatroom = chatroomlist.get(n);
+
+		    // chatroom 맵에 ttitle 키가 없다면, tno를 사용하여 trade 테이블에서 ttitle 조회
+		    if (!chatroom.containsKey("lastroomcheck")) {
+		        Integer lastroomcheck = chatRoomService.searchChatRoom(chatroom);
 
 		        // 조회된 ttitle을 chatroom 맵에 추가
-		        chatroom.put("thumbnail", thumbnail);
+		        chatroom.put("lastroomcheck", lastroomcheck);
 		        chatroomlist.set(n, chatroom);
 		    }
 		}
