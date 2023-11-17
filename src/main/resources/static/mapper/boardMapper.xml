@@ -133,7 +133,7 @@
 	</insert>
 
 	<update id="boardEdit" parameterType="Map">
-		UPDATE board SET bdelete=1, btitle=#{btitle}, bcontent=#{bcontent}, bdate=CURRENT_TIMESTAMP
+		UPDATE board SET bdelete=1, btitle=#{btitle}, bcontent=#{bcontent}
 		WHERE bno=#{bno}
 	</update>
 	

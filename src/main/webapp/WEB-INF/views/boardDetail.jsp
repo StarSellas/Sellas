@@ -140,6 +140,7 @@
 				<div class="detailContainer justify-content-center">
 					
 					<div class="titleBox">
+					
 						<div class="btitle">
 							${bdetail.btitle }
 						</div>
@@ -161,7 +162,7 @@
 					</div>
 					
 					<div class="contentBox">
-						<div class="bcontent">${bdetail.bcontent }</div>
+						<div class="bcontent" style="white-space:pre;">${bdetail.bcontent }</div>
 					</div>
 					
 						<div class="bimageBox">

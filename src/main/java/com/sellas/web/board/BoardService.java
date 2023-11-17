@@ -33,6 +33,7 @@ public class BoardService {
 	}
 	
 	public int boardWrite(Map<String, Object> map) {
+		System.out.println(" 서비스맵(글쓰기): " + map);
 		return boardDAO.boardWrite(map);
 	}
 	
@@ -57,6 +58,7 @@ public class BoardService {
 	}
 	
 	public int boardEdit(Map<String, Object> map) {
+		System.out.println(" 서비스맵(수정): " + map);
 		return boardDAO.boardEdit(map);
 	}
 

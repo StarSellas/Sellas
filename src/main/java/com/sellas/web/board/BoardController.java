@@ -259,6 +259,7 @@ public class BoardController {
       // System.out.println("디테일페이지 : " + detailList);
       // {bno=5, bread=0, mnickname=셀라스, commentcount=2, bdate=14:27:46, sno=2,
       // sname=판매요청, btitle=판매요청글씀, bcontent=ㅁㅇㄴㄹ, mno=1}
+      
       model.addAttribute("bdetail", detailList);
       model.addAttribute("imageList", imageList);
       model.addAttribute("comments", commentList);
@@ -291,9 +292,9 @@ public class BoardController {
       public String boardEdit(
             @RequestParam Map<String, Object> map) {
          JSONObject json = new JSONObject();
-         //System.out.println("맵 값은 어떻게 오나요?" + map);
+         System.out.println("맵 값은 어떻게 오나요?" + map);
+         
          int normalEditResult = boardService.boardEdit(map);
-          
          
          if(map.get("OriImgMap[0]") != null) {
          Map<String, Object> deleteImage = new HashMap<String, Object>();
