@@ -289,7 +289,7 @@ $(function() {
                <c:when test="${memberInfo != null }">
                   <p class="lead fw-normal text-white-50 mb-0">안녕하세요
                      ${memberInfo.mnickname }님!!</p>
-                  <br> 현재 남은 잔액 : ${memberInfo.mbalance } 웨일페이
+                  <br> <fmt:formatNumber value="${memberInfo.mbalance }" pattern="#,### 웨일페이"/>
 
                </c:when>
                <c:otherwise>
@@ -455,7 +455,7 @@ $(function() {
             console.log(title.length);
             
             if(title.length > 10){
-               titlecut = title.substring(0, 8) + "...";
+               titlecut = title.substring(0, 9) + "...";
                console.log("titlecut : " + titlecut);
                $(this).text(titlecut);
             }

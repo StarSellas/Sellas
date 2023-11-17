@@ -331,9 +331,6 @@ $picker2.on('click', () => {
                
                continue;
             }
-            
-            
-            
             let imageSrc = "data:image/png;base64," + result[i].data;
             let $previewImg = $(document.createElement('img'));
             $previewImg.attr('height', '200px');

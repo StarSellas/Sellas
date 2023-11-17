@@ -570,24 +570,6 @@ public class NormalController {
 
 	// }
 
-	/*
-	 * @PostMapping("/requestChat") public String requestChat(@RequestParam
-	 * Map<String, Object> map, HttpSession session, Model model) {
-	 * 
-	 * // System.out.println("채팅으로 받아오는 값입니다 : " + map); //
-	 * System.out.println("세션에서 받아오는 muuid 값입니다 : " + //
-	 * session.getAttribute("muuid"));
-	 * 
-	 * String uuid = String.valueOf(UUID.randomUUID()); //
-	 * System.out.println("채팅방 uuid 의 값입니다 : " + uuid); if
-	 * (session.getAttribute("muuid") != null &&
-	 * !(session.getAttribute("muuid").equals(""))) {
-	 * 
-	 * map.put("roomId", uuid);
-	 * 
-	 * System.out.println("최종적으로 담기는 값 : " + map); }
-	 * model.addAttribute("roomdetail", map); return "/chat/roomdetail"; }
-	 */
 
 	// 받아와야 하는 값 : buyer, seller, 제시한 돈, tno
 	@ResponseBody
@@ -649,27 +631,13 @@ public class NormalController {
 		return json.toString();
 
 	}
-
-	// 물품 수령 완료 메소드(거래 완료)
-	// ajax?
-	// 받아와야 하는 값 : 세션의 muuid(muuid) , tno(tno),
-	//recieveChecked의 맵값은 : {tno=52, muuid=a3d69eb4-bc98-47c6-abc5-55ba93c9fb99}
-
 	@ResponseBody
 	@PostMapping("/recieveChecked")
 	public String recieveChecked(@RequestParam Map<String, Object> map) {
 		System.out.println("recieveChecked의 맵값은 : " + map);
 		JSONObject json = new JSONObject();
-		// 당신은 구매자인가요 판매자인가요? + pamount가져오기
 		Map<String, Object> buyerOrSeller = normalService.buyerOrSeller(map);
 		System.out.println("buyerOrSeller의 값을 알려줘 : " + buyerOrSeller);
-		// SELECT
-		// (SELECT COUNT(*) FROM payment WHERE pbuyer =
-		// 'a3d69eb4-bc98-47c6-abc5-55ba93c9fb99' AND tno = 48) AS buyer,
-		// (SELECT COUNT(*) FROM payment WHERE pbuyer <>
-		// 'a3d69eb4-bc98-47c6-abc5-55ba93c9fb99' AND tno = 48) AS seller;
-
-		// buyer든 seller 든 누가 눌렀든 값을 가져와서 payment에 입력
 		if (Integer.parseInt(String.valueOf(buyerOrSeller.get("buyer"))) == 1) {
 			map.put("ok", "pbuyerok");
 		} else {
@@ -678,9 +646,6 @@ public class NormalController {
 
 		map.put("pamount", buyerOrSeller.get("pamount"));
 		int recieveChecked = normalService.recieveChecked(map);
-		// UPDATE payment
-		// SET #{ok} = 0
-		// WHERE tno = #{tno} and pstate = 2
 		if (recieveChecked == 1) {
 			int selectPaymentResult = normalService.selectPaymentResult(map);
 			 
@@ -704,17 +669,12 @@ public class NormalController {
 		}
 
 		return json.toString();
-		//jsp에서 if(data.TradeAllSuccess == 1){
-	// 	alert("거래가 성공적으로 완료되었습니다"); or 알람 보내주기}
-		//if(data.tradesuccess == 1){
-		// alert("정상 처리 되었습니다. 상대방의 수락을 기다립니다."); or 알람 보내주기}
 		
 	}
 	
 
 	// 거래 취소 메소드(거래중 > 거래취소)
 	// 받아와야 하는 값 : tno, 세션의 muuid, 실패 사유, tnormalprice
-	//recieveCancelled의 맵 값은 : {reason=저 이거 사기 싫ㄹ어요;;, tnormalprice=500, muuid=a3d69eb4-bc98-47c6-abc5-55ba93c9fb99, tno=52}
 	@ResponseBody
 	@PostMapping("/recieveCancelled")
 	public String recieveCancelled(@RequestParam Map<String, Object> map) {
