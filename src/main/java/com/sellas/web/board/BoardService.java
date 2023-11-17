@@ -33,7 +33,6 @@ public class BoardService {
 	}
 	
 	public int boardWrite(Map<String, Object> map) {
-		System.out.println(" 서비스맵(글쓰기): " + map);
 		return boardDAO.boardWrite(map);
 	}
 	
@@ -58,7 +57,6 @@ public class BoardService {
 	}
 	
 	public int boardEdit(Map<String, Object> map) {
-		System.out.println(" 서비스맵(수정): " + map);
 		return boardDAO.boardEdit(map);
 	}
 
@@ -91,12 +89,12 @@ public class BoardService {
 						map.remove(oldKey); // 기존 key 삭제
 						map.put(newKey, value); // 새로운 key와 value 추가
 					}
-					System.out.println("다녀오는 map" + i + " 번째 : " + map);
+					//System.out.println("다녀오는 map" + i + " 번째 : " + map);
 					result = boardDAO.imgDelete(map);
 					delCount++;
 		
-					System.out.println("성공? :" + result);
-					System.out.println("쿼리문실행횟수 :" + delCount);
+					//System.out.println("성공? :" + result);
+					//System.out.println("쿼리문실행횟수 :" + delCount);
 				} // for문
 		
 				// 삭제할img갯수와 쿼리문실행횟수가 같다면 성공

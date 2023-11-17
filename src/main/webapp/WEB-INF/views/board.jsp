@@ -33,8 +33,8 @@
 	        	    //console.log(title);
 	        	    //console.log(title.length);
 	        	    
-	        	    if(title.length > 10){
-	            		titlecut = title.substring(0, 9) + " ...";
+	        	    if(title.length > 12){
+	            		titlecut = title.substring(0, 11) + " ...";
 	            		//console.log("titlecut : " + titlecut);
 	            		$(this).children(".title").text(titlecut);
 	            	}
@@ -137,26 +137,24 @@
                         	        	
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
-                        	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
-		                        	        	    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>"
-		                        	        	    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
-		                        	        	    + "<span class='title'>" + this.list[i].btitle + "</span>"
-		                        	        	    + " <i class='xi-speech-o count' id='counticon'></i>"
-		                        	        	    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
-		                        	        	    + "<div class='UserBox'>"
-		                        	        	    + "<div class='userImgBox'>"
-		                        	        	    + (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>" : "<img src='../img/흰배경셀라스.jpg' alt='basic-user-img' class='userImg'>")
-		                        	        	    + "</div>"
-		                        	        	    + "<span class='mnickname'>" + this.list[i].mnickname + "</span>"
-		                        	        	    + "</div>"
-		                        	        	    + "</td>"
-		                        	        	    + "<td class='bphoto'>"
-		                        	        	    + (this.list[i].bimagecount > 0 ? "<div class='bphotoBox'><img src='./img/board_photo.png' class='bphoto' alt='img'></div>" : "")
-		                        	        	    + "</td>"
-		                        	        	    + "<td class='bdateBox'>"
-		                        	        	    + "<div class='bdate'>" + this.list[i].bdate + "</div>"
-		                        	        	    + "</td>"
-		                        	        	    + "</tr>";
+                        	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>" +
+                        	                "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>" +
+                        	                "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">" +
+                        	                    "<span class='title'>" + this.list[i].btitle + "</span>" +
+                        	                    " <i class='xi-speech-o count' id='counticon'></i>" +
+                        	                    " <span class='commentcount'>" + this.list[i].commentcount + "</span>" +
+                        	                    (this.list[i].bimagecount > 0 ? "<span class='bphotoBox'><img src='./img/board_photo.png' class='bphoto' alt='img'></span>" : "") +
+                        	                    "<div class='UserBox'>" +
+                        	                        "<div class='userImgBox'>" +
+                        	                            (this.list[i].mphoto ? "<img src='./tradeImgUpload/defaultimg.jpg' alt='user-img' class='userImg'>" : "<img src='./tradeImgUpload/defaultimg.jpg' alt='basic-user-img' class='userImg'>") +
+                        	                        "</div>" +
+                        	                        "<span class='mnickname'>" + this.list[i].mnickname + "</span>" +
+                        	                    "</div>" +
+                        	                "</td>" +
+                        	                "<td class='bdateBox'>" +
+                        	                    "<div class='bdate'>" + this.list[i].bdate + "</div>" +
+                        	                "</td>" +
+                        	              "</tr>";
 	
 	                    	                    lastRow.after(newRow); // lastRow 뒤에 추가
 	                        	        	  
@@ -215,7 +213,7 @@
 								if($(".searchA").hasClass("active")){
 									let selectedOption = $(".searchA.active").data("option");
 									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
-									console.log(selectedOption)
+									//console.log(selectedOption)
 								} 
 								
 								$(".searchFrom").submit();	// form 제출
@@ -250,7 +248,6 @@
             <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                 
-                <div class="backButton"><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
                 
 				<!-------------- 게시판 검색 & 카테고리 드롭다운 -------------->
 				
@@ -339,22 +336,20 @@
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	<span class="title">${mainList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${mainList.commentcount}</span>
+		                        	<c:if test="${mainList.bimagecount gt 0}"><span class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></span></c:if>
 		                        	<div class="UserBox">
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${sessionScope.muuid ne null && mainList.mphoto ne null}">
-														<img src="../userImgUpload/${mainList.mphoto}" alt="user-img" class="userImg">
+														<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
-														<img src="./img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+														<img src="./tradeImgUpload/defaultimg.jpg" alt="basic-user-img" class="userImg">
 													</c:otherwise>
 												</c:choose>
 											</div>
 		                        		<span class="mnickname">${mainList.mnickname}</span>
 		                        	</div>
-		                        </td>
-		                        <td class="bphoto">
-		                          <c:if test="${mainList.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
 		                        </td>
 		                       	<td class="bdateBox">
 		                       		<div class="bdate">${mainList.bdate}</div>
@@ -373,22 +368,20 @@
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
 		                        	 <span class="title">${list.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${list.commentcount}</span>
+		                        	<c:if test="${list.bimagecount gt 0}"><span class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></span></c:if>
 		                        	<div class="UserBox">
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${list.mphoto ne null}">
-														<img src="../userImgUpload/${list.mphoto}" alt="user-img" class="userImg">
+														<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
-														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+														<img src="../img/defaultimg.jpg" alt="basic-user-img" class="userImg">
 													</c:otherwise>
 												</c:choose>
 											</div>
 		                        		<span class="mnickname">${list.mnickname}</span>
 		                        	</div>
-		                        </td>
-		                        <td class="bphoto">
-		                          <c:if test="${list.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
 		                        </td>
 		                        <td class="bdateBox">
 		                        	<div class="bdate">${list.bdate}</div>
@@ -408,22 +401,20 @@
 		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
 		                        	 <span class="title">${searchList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${searchList.commentcount}</span>
+		                        	<c:if test="${searchList.bimagecount gt 0}"><span class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></span></c:if>
 		                        	<div class="UserBox">
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${searchList.mphoto ne null}">
-														<img src="../userImgUpload/${searchList.mphoto}" alt="user-img" class="userImg">
+														<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
-														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+														<img src="../img/defaultimg.jpg" alt="basic-user-img" class="userImg">
 													</c:otherwise>
 												</c:choose>
 											</div>
 		                        		<span class="mnickname">${searchList.mnickname}</span>
 		                        	</div>
-		                        </td>
-		                        <td class="bphoto">
-		                          <c:if test="${searchList.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
 		                        </td>
 		                        <td class="bdateBox">
 		                        	<div class="bdate">${searchList.bdate}</div>

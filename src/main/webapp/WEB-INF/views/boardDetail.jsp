@@ -149,7 +149,7 @@
 							<div class="userImgBox">
 								<c:choose>
 									<c:when test="${bdetail.mphoto ne null}">
-										<img src="../userImgUpload/${bdetail.mphoto}" alt="user-img" class="userImg">
+										<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
 									</c:when>
 									<c:otherwise>
 										<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
@@ -162,7 +162,7 @@
 					</div>
 					
 					<div class="contentBox">
-						<div class="bcontent" style="white-space:pre;">${bdetail.bcontent }</div>
+						<div class="bcontent" style="white-space:pre-wrap;">${bdetail.bcontent }</div>
 					</div>
 					
 						<div class="bimageBox">
@@ -213,7 +213,7 @@
 													<div class="userImgBox">
 														<c:choose>
 															<c:when test="${comments.mphoto ne null}">
-																<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
+																<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" alt="user-img" class="userImg">
 															</c:when>
 															<c:otherwise>
 																<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
@@ -244,7 +244,7 @@
 													<div class="userImgBox">
 														<c:choose>
 															<c:when test="${comments.mphoto ne null}">
-																<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
+																<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
 															</c:when>
 															<c:otherwise>
 																<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
@@ -273,7 +273,7 @@
 					<!-------------------- 댓글쓰기창 -------------------->
 						<div class="cWriteBox">
 							<form action="./commentWrite" method="post" class="commentWriteForm">
-								<textarea class="cContent" name="ccontent"></textarea>
+								<textarea class="cContent" name="ccontent" style="white-space:pre-wrap;" maxlength="30"></textarea>
 								<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 								<input type="hidden" name="cate" value="${param.cate }">
 								<input type="hidden" name="bno" value="${param.bno }">
