@@ -201,9 +201,9 @@
    $(function() {
       $("#toggleBtn").click(function() {
 
-         $(".otherBtnBox").toggle(800); // 속도조절
-         $(".toggleBtnBox").toggleClass("btnClicked"); // 버튼위로이동
-         $(".otherBtnBox").toggleClass("hide");
+			//$(".otherBtnBox").toggle(800); // 속도조절
+			$(".toggleBtnBox").toggleClass("btnClicked"); // 버튼위로이동
+			$(".otherBtnBox").toggleClass("hide");
 
          if ($(".toggleBtnBox").hasClass("btnClicked")) {
             $(".otherBtnBox").addClass("tBtnBox");

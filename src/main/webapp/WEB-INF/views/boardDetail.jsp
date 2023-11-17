@@ -65,6 +65,8 @@
         			let contentBox = $(this).parent().siblings(".cContentBox");
         			// 댓글버튼박스
         			let cButtonBox = $(this).parent(".commentsBtn");
+        			// 댓글내용박스
+        			let content = $(this).parent().siblings(".cContentBox").children(".content");
         			// 수정댓글창
         			let newContentBox = ""
         	
@@ -84,14 +86,14 @@
         				+ '</div>';
         	
         	
-        			contentBox.after(newContentBox);
-        			contentBox.hide();
+        			content.after(newContentBox);
+        			content.hide();
         			cButtonBox.hide();
         	
         			// 수정취소버튼클릭 
         			$(".reset").click(function() {
         				$(this).parents(".newWriteBox").remove();
-        				contentBox.show();
+        				content.show();
         				cButtonBox.show();
         			});
         	
@@ -129,7 +131,7 @@
          <!-- Section-->
         <section class="py-5 WholeContainer">
         
-            <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a> (${bdetail.bno })</div>
+            <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a></div>
             <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     

@@ -1,5 +1,7 @@
 package com.sellas.web.myPage;
 
+import javax.validation.constraints.Pattern;
+
 import lombok.Data;
 
 @Data
@@ -10,7 +12,11 @@ public class ReviewDTO {
 	 private int pno;
 	 private int rpoint;
 	 private String muuid;
+	 
+	 
 	 private String rcontent;
+
+	 
 	 private int rdate;
 	
 	 private String pseller;

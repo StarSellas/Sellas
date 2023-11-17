@@ -20,7 +20,13 @@
 	font-size: 20px;
 }
 
+.info{
+	margin-left: 40px;
+}
 
+.tdate{
+	margin-left: 40px;
+}
 
 #reviewBtn{
 	padding: 1%;
