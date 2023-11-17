@@ -218,23 +218,7 @@
 
 <script type="text/javascript">
    
-let lat = document.getElementById("lat").value;
-let lng = document.getElementById("lng").value;
 
-var markerPosition  = new kakao.maps.LatLng(lat, lng); 
-
-var marker = {
-   position: markerPosition
-};
-
-var staticMapContainer  = document.getElementById('map'), 
-   staticMapOption = { 
-      center: new kakao.maps.LatLng(lat, lng),
-      level: 3,
-      marker: marker
-    }; 
-
-var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
    
    $(function(){
       let tno = $(".normalTno").val();
@@ -409,6 +393,22 @@ var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
       
    });
     
-   
+   let lat = document.getElementById("lat").value;
+   let lng = document.getElementById("lng").value;
+
+   var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+
+   var marker = {
+      position: markerPosition
+   };
+
+   var staticMapContainer  = document.getElementById('map'), 
+      staticMapOption = { 
+         center: new kakao.maps.LatLng(lat, lng),
+         level: 3,
+         marker: marker
+       }; 
+
+   var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
    </script>
 </html>
