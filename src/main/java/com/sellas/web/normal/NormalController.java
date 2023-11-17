@@ -419,7 +419,7 @@ public class NormalController {
 			// 모델에 값 넣기
 			model.addAttribute("normalDetailImage", normalDetailImage);
 
-			System.out.println("노말 디테일 이미지 어떻게 오나오 ? : " + normalDetailImage);
+			//System.out.println("노말 디테일 이미지 어떻게 오나오 ? : " + normalDetailImage);
 		}
 		System.out.println("normalDetail값은 이렇게 옵니다 : " + normalDetail);
 		model.addAttribute("detail", normalDetail);

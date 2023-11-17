@@ -48,17 +48,17 @@ public class BoardController {
       
       //System.out.println("map : " + map);   // map : {cate=0, search=noSearch}
          
-      // 메인게시판일때 (조회순 10개)
+      // 메인게시판일때 (조회순 10개) _ 검색값 없는 경우 포함
       if (cate == 0) {
          
-         //System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
+         System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
          List<Map<String, Object>> mainList = boardService.mainList(map);
          List<Map<String, Object>> setupboardList = boardService.setupboardList();
          System.out.println(mainList);
          
-         // 메인게시판에서 검색했을 때 
+         // 메인게시판에서 검색했을 때 (검색값 없는경우 미포함)
          if(search != null && searchCate != null) {
-            //System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
+            System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
             List<Map<String, Object>> searchList = boardService.searchList(map);
             //System.out.println(searchList);
             model.addAttribute("searchList", searchList);

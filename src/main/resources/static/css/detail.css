@@ -179,7 +179,7 @@
 	align-items: flex-end; 
 }
 
-.cedit, .cdelete{
+.cedit, .cdelete {
 	border: none;
 	background: transparent;
 	padding: 0;
@@ -211,29 +211,41 @@
 	align-items: flex-end;
 }
 .newtWriteForm{
+	padding: 0;
+	margin: 10px;
 	width: inherit;
-	margin: auto;
 	display: flex;
+	align-items: flex-end;
 }
 
 .cContent{
 	padding: 0;
 	display: flex;
 	align-items: flex-end; 
-	height: 40px;
+	height: 30px;
 	flex-grow: 1;
 	max-width: 260px;
 	padding: 5px 8px 0 8px;
 }
 .newcContent{
-	width: 60%;
-	height: 40px;
-	margin: 5px 10px;
+	padding: 0;
+	padding-left: 8px;
+	border: none;
+	border-bottom: 1px solid #dee2e6;
+	display: flex;
+	align-items: flex-end;
+	height: 30px;
+	flex-grow: 1;
+	max-width: 210px;
+}
+.newcContent:focus{
+	outline: none;
 }
 .commentsBtn.cWriteBtnBox{
 	display: flex;
   	justify-content: flex-end;
 }
+
 #cWriteBtnBox{
 	height: 40px;
   	justify-content: center;
@@ -249,12 +261,13 @@
 	text-align: center;
 }
 
-.newcWriteBtn{
-	margin-right: 10px;
-}
-.newcWriteBtn, .reset {
+.newcWriteBtn, .reset{
 	border: none;
 	background: transparent;
 	padding: 0;
-	margin-bottom: 10px;
-}
+	margin: 0 15px 0px 0;
+	font-size: 13px;
+	font-weight: bold;
+	opacity: 40%;
+	}
+	
