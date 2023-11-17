@@ -84,13 +84,13 @@
          let wholePage = Math.ceil(count/10);	// 전체페이지수(글의갯수/10의 올림) 
          
          //console.log("firsttno : " + firsttno);
-         console.log("count : " + count); 
+         //console.log("count : " + count); 
          //console.log("wholePage : " + wholePage);
-         console.log("startpage : " + startpage);
+         //console.log("startpage : " + startpage);
          //console.log("nextPage : " + currentPage);
-         console.log("ino : " + ino)
+         //console.log("ino : " + ino)
          //console.log("sort : " + sort)
-         lastRow.css("color", "red");
+         //lastRow.css("color", "red");
 		
          
      	 // 다음페이지가 없다면 진행X
@@ -117,7 +117,7 @@
          data.ino = ino;
          data.startpage = startpage;
          data.pageCount = pageCount;
-         console.log(data)
+         //console.log(data)
          
          $.ajax({
              url: './nextTradePage',
@@ -197,13 +197,13 @@
 					$(".searchA").not(this).removeClass("active");
 				
 				let searchCate = $(this).text();
-				console.log(searchCate);
+				//console.log(searchCate);
 				$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
 				
 				if($(".searchA").hasClass("active")){
 					let selectedOption = $(".searchA.active").data("option");
 					$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
-					console.log(selectedOption)
+					//console.log(selectedOption)
 				} 
 			
 			});
@@ -221,12 +221,12 @@
        	
        	if (searchCate != ""){
        		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
-				console.log("선택한카테 : " + pick);
+				//console.log("선택한카테 : " + pick);
 				$("#navbarDropdown").text(pick);
        		$(".swrite").val(search);
        	}
        	
-       	console.log("검색이후 value값 : " + $(".ReSearchCate").val())
+       	//console.log("검색이후 value값 : " + $(".ReSearchCate").val())
        	
 		})
 	</script>

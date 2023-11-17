@@ -350,7 +350,7 @@
                   let btitle = $(this).parent().siblings(".btitleBox").children("#btitle").val();
                   let bcontent = $(this).parent().siblings(".bcontentBox").children("#bcontent").val();
                  
-                 alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
+                 //alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
                
                  // 글쓰기 유효성 검사 (로그인&빈칸)
                if(btitle.length < 3){
@@ -375,7 +375,7 @@
                         let bno = data.bno;
                         let cate = data.cate;
                         
-                        alert("이건? : "+ bno);
+                        //alert("이건? : "+ bno);
                         
                         if(selectImagePath.length > 0){
                            if (selectImagePath[0] === ''){
@@ -395,7 +395,7 @@
                                 }) => {
                                   // status code
                                   if (status === '200') {
-                                     alert("떠라");
+                                     //alert("떠라");
                                     $progress.text('업로드 완료')
                                     const bodyJson = JSON.parse(body)
                                     $uploadImg = $(document.createElement('img'))
@@ -438,7 +438,7 @@
                      }
                   },
                   error : function(error){
-                     alert("흑흑");
+                     alert("error");
                   }
                   
                });
