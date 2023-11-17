@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
 .backButton{
-	margin-bottom: 5px;
+	padding-top: 10px;
 }
 .HeaderBox{
 	width: 90%;
 	padding: 0;
-	margin: auto;
+	margin-left: 13px;
 	display: flex;
 	align-items: flex-end;
 }
@@ -15,25 +15,29 @@
 	align-items: flex-end;
 	flex: 1;
 }
-
 .searchFrom{
-	width: inherit;
+	width: 100%;
 	display: flex;
 	align-items: flex-end; 
 	border-bottom: 1px gray solid;
 }
-.swrite, .searchCate{
+.searchCate{
 	margin: 0;
 	padding: 1px 2px;
-	height: 30px;
+	height: inherit;
 }
 .swrite{
 	width: 150px;
+	height: 40px;
+	margin: 0;
+	padding: 1px 2px 0 0;
 	border: none;
+}
+.swrite:focus{
+	outline: none;
 }
 .swriteButton{
 	border: 0.5px solid white;
-	border-radius: 30px;
 	background-color: inherit;
 	margin: 0;
 	padding: 2px 2px 8px 2px;
@@ -43,17 +47,19 @@
 #searchIcon{
 	width: 80%;
 }
-
 .cateBox{
 	margin: 0;
 	margin-left: 10px; 
 }
-
-#navbarDropdown{
+#navbarDropdown, #navbarSDropdown{
 	text-decoration: none;
 	color: black;
 	padding-left: 5px;
 	margin-right: 5px;
+	border: none;
+}
+#navbarSDropdown{
+	width: 65px;
 }
 
 /****************** board *******************/
@@ -80,26 +86,21 @@
 }
 
 .btitle{
-	width: 60%; 
+	width: 70%; 
 	padding-left: 10px;
 }
 .title{
 	font-size: 15px;
 }
-.bdate, .mainbdate, .bread {
-	text-align: right;
-}
-
-.bdate, .mainbdate, .bread {
-	text-align: right;
-}
-
 .bdateBox{
-	margin-right: 10px;
-	text-align: left;
+	text-align: right;
+}
+.bdate{
+	text-align: right;
+	margin-top: 3px;
 }
 
-.bread, .bdate, .mainbdate, .mnickname{
+.bdate, .mnickname{
 	font-size: 13px;
 }
 
@@ -108,7 +109,30 @@
 	padding: 2px;
 	font-size: 14px;
 }
+.UserBox{
+	padding: 0;
+	margin: auto;
+	height: inherit;
+}
+.userImgBox{
+	width: 24px;
+    height: 24px;
+    border-radius: 70%;
+    border: solid #e3e3e3 1px;
+    overflow: hidden;
+    float: left;
+    margin: 0 5px 3px 0;
+}
+.userImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+.bphoto{
+	width: 24px;
+    height: 24px;
+}
 .bread{
 	font-weight: bolder;
 	padding-right: 10px;
@@ -132,19 +156,19 @@
 	color: #88abff;
 	opacity: 0.5;
 }
+
 .writeBtnBox{
     margin: 20px;
     position: fixed;
     right: 0;
     bottom: 85px;
 }
-
 .writeBtn{
    flex: right;
-   width: 85px;
-   height: 40px;
+   width: 90px;
+   height: 35px;
    background-color: white;
-   border: 1px solid #88abff;
-   box-shadow: 0 0 7px #88abff, 0 0 10px #fff, 0 0 21px #fff;
+   border: 1px solid #88abff ;
    border-radius: 5px;
+   margin: 5px;
 }

@@ -25,8 +25,9 @@
 
 
 a {
-	color: inherit;
+	color: black !important;
 }
+
 
 .index li {
     width: 100px;

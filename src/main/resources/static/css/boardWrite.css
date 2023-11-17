@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.cateBox{
+	margin: 0 15px;
+}
+
 .cateName{
 	text-align: center;
 }
@@ -15,66 +19,118 @@
 	width: 90%;
 	height: 90%;
 }
-.bwriteForm,.beditForm{
-	margin: auto;
-	padding: 0;
-	width: inherit;
-	height: inherit;
+.btitleBox{
+	margin-bottom: 10px;
 }
 
-.btitleBox, .bcontentBox, .titleBox, .contentBox{
-	margin: 20px 5px;
-	padding: 0;
-	width: 100%;
-	display: flex;
-}
-.btitle{
-	width: inherit;
-}
-.bcontent{
-	width: inherit;
-	height: 200px;
+button {
+	width: 350px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
 }
 
-.bimageBox {
-	margin: auto;
-	padding: 0;
+.form-floating {
+	margin: 0px auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100%;
+	text-align: center;
+}
+.accordion-item, .accordion-header{
 	width: 100%;
 }
+
+#accordion {
+	width: 100%;
+}
+
+#picker2, #camera {
+	width: 50px;
+}
+
+#btitle{
+	width: inherit;
+}
+
+#bcontent{
+	width: inherit;
+	height: 300px;
+}
+
 .photoInputs, .boardimg{
 	margin: 10px;
 }
-.addPhotoBtnBox{
-	margin-top: 25px;
-}
-.bwriteBtnBox, .buttonBox{
-	margin: 10px 0;
+
+.bwriteBtnBox {
+	margin: 20px 0;
 	padding: 0;
+	padding-bottom: 85px;
+	width: 100%;
+	display: inline-block;
+	position: relative;
+}
+.bwriteButton{
 	width: 100%;
 }
-.bwriteButton, .editbtn{
-	float: right;
-}
+
 /****************** boardEdit *******************/
-.boardImgBox editImgBox{
-	height: inherit;
+
+.boardOriginImgBox{
 	display: flex;
 	justify-content: center;
-	align-items: center;
 }
-
+.boardImgBox{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 20px;
+}
 .boardImg{
 	width: 250px;
-	margin: 10px;
+}
+.photoBtnBox{
+	display: flex;
+	margin-bottom: 10px;
+}
+#imgEditbtn{
+	width: 130px;
+	height: 40px;
+	margin: 15px 5px 15px 15px;
+}
+#BoardImageDeleteBtn{
+	width: 130px;
+	height: 40px;
+	margin: 15px 15px 15px 5px;
 }
 
-.imgEditbtn{
-	margin: auto;
-	width: 40px;
-	height: 30px;
-	font-size: 14px;
-	border: none;
+button {
+	width: 350px;
+	height: 50px;
+	background-color: white;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+	margin: 0px auto;
+}
+
+.buttonBox {
+	margin: 20px 0;
+	padding-bottom: 85px;
+	width: 100%;
+	display: inline-block;
+	position: relative;
+}
+
+#editbtn, #editCancelbtn{
+	width: 100%;
 	padding: 0;
 }
 
-
+#editbtn{
+	margin-bottom: 10px;	
+}
+#box img{
+	margin-bottom: 20px;
+}

@@ -39,5 +39,9 @@ public interface ChatRoomDAO {
 	int alarmcount(String oseller);
 
 	Map<String, Object> auctionChat(String roomId);
+
+	List<Map<String, Object>> chatRoomList(String muuid);
+
+	String getTitleByTno(Integer tno);
 	
 }

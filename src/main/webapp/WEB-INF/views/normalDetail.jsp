@@ -49,7 +49,6 @@
       <div class="container px-4 px-lg-5 mt-5 tradecontainter"
          style="z-index: 10" id="productContainer">
 
-
             <div id="detail">
                <input type="hidden" value="${detail.mnickname}" class="sellerMnickname">
                <input type="hidden" value="${sessionScope.mnickname }" class="mnickname">
@@ -64,14 +63,22 @@
   <!-- Additional required wrapper -->
   <div class="swiper-wrapper">
     <!-- Slides -->
-     <c:if test="${normalDetailImage ne null}">
+    <c:choose>
+     <c:when test="${normalDetailImage ne null}">
          <c:forEach items="${normalDetailImage}" var="i">
             <div class="swiper-slide">
                <img alt="" src="./tradeImgUpload/${i.timage}" style="width:100%; height: 100%">
             </div>
          </c:forEach>
-      </c:if>
-    ...
+      </c:when>
+      <c:otherwise>
+      <div class="swiper-slide">
+               <img alt="" src="./tradeImgUpload/defaultimg.jpg" style="width:100%; height: 100%">
+               
+           </div>
+      </c:otherwise>
+   </c:choose>
+
   </div>
   <!-- If we need pagination -->
   <div class="swiper-pagination"></div>
@@ -92,7 +99,7 @@
                <div class="user-img">
                <img src="./userImgUpload/${detail.mphoto}" alt="user-img" class="user-img-img">
             </div>
-
+				<div class="moveprofile">
                <div id="detailID">${detail.mnickname}</div>
                
                <div class="expDiv">
@@ -111,7 +118,7 @@
                         <c:if test="${detail.mpoint > 70 }">슈퍼고래</c:if>
             </div>
             </div><!--유저정보담은구역  -->
-            
+            </div>
          
             
             <div class="detailDiv">
@@ -135,7 +142,7 @@
                <!-- 판매중일때 -->
                <div class="TradeBtnBox">
 	               <c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
-		               <div class="toggleBtnBox"><button id="toggleBtn">나와라얍</button></div>
+		               <div class="toggleBtnBox"><button id="toggleBtn">+</button></div>
 		               <div class="otherBtnBox hide">
 			                  <button id="normalHikeUpBtn">끌올하기</button>
 			                  <button id="normalEditBtn">수정하기</button>
@@ -179,9 +186,6 @@
    </section>
    <!-- Footer-->
 
-   <!-- Bootstrap core JS-->
-   <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 <script type="text/javascript">
@@ -347,12 +351,14 @@
          }
       });// 거래 신청 버튼 끝
       
-      /*       최지은이건드림 */
-       $('detailID').click(function() {
-           var muuid = '${detail.muuid}';
-           window.location.href = '/profileMember?muuid=' + muuid;
-       });
-      
+
+      /* 		최지은이건드림 */
+	    $('.moveprofile').click(function() {
+	        var muuid = '${detail.muuid}';
+	        window.location.href = '/profileMember?muuid=' + muuid;
+	    });
+		
+
       
 /*       $("#requestChatBtn").click(function(){
          alert("!");

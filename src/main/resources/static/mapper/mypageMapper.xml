@@ -20,16 +20,17 @@ UPDATE member SET mpoint=mpoint+#{rpoint} WHERE muuid=#{targetMember}
 
 
 <select id="getprofileReview" parameterType="Object" resultType="Map">
-    SELECT r.rno, r.pno, r.mwriter, r.rcontent, r.rdate, m.mnickname, m.mphoto
+    SELECT r.rno, r.pno, r.mwriter, r.rcontent, r.rdate AS tdate, m.mnickname, m.mphoto
     FROM review r
     JOIN member m ON r.mwriter = m.muuid
     WHERE r.mtarget = #{muuid}
+    ORDER BY r.rno DESC
 </select>
 
 
 
 <select id="memberInfo" parameterType="String" resultType="Map">
-	SELECT mnickname, mpoint, mbalance, mphoto
+	SELECT mnickname, mpoint, mbalance, mphoto, mname
 	FROM member
 	WHERE muuid=#{uuid}
 </select>
@@ -88,50 +89,63 @@ SELECT t.*, r.* , ti.timage,
        CASE WHEN r.mwriter=#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
        CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM trade t
-JOIN tradeimage ti ON t.tno = ti.tno
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
 LEFT JOIN payment p ON t.tno = p.tno
 LEFT JOIN review r ON r.pno = p.pno
-WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0 AND tnormalstate != 3;
+WHERE t.muuid=#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL) AND tnormalstate != 3;
 </select>
 
 
 <select id="getBuy" parameterType="String" resultType="Map">
-SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tnormalprice, ti.timage, t.tnormalstate, r.rno,
+SELECT p.pno, p.penddate, t.tno, t.ttitle, t.tdate, t.tread, t.tnormalprice, ti.timage, t.tnormalstate, r.rno,
        CASE WHEN r.mwriter =#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
        CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
 FROM payment p
 LEFT JOIN review r ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
-JOIN tradeimage ti ON t.tno = ti.tno
-WHERE pbuyer =#{uuid} AND pstate = 0 AND ti.tthumbnail = 0;
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
+WHERE pbuyer =#{uuid} AND pstate = 0 AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL)
 </select>
 
 
-
 <select id="getAucSell" parameterType="String" resultType="Map">
-SELECT t.*, r.*, ti.timage, a.abidprice,
-       CASE WHEN r.mwriter=#{uuid} THEN 'Y' ELSE r.mwriter END writeYN,
-       CASE WHEN (SELECT COUNT(*) FROM review WHERE pno = p.pno) >= 2 THEN 'Y' END hastno
+SELECT t.*, ti.timage, a.abidprice
 FROM trade t
-JOIN tradeimage ti ON t.tno = ti.tno
-LEFT JOIN payment p ON t.tno = p.tno
-LEFT JOIN review r ON r.pno = p.pno
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
 LEFT JOIN (
     SELECT tno, MAX(ano) as max_ano
     FROM auctionhistory
     GROUP BY tno
 ) a_max ON a_max.tno = t.tno
 LEFT JOIN auctionhistory a ON a.tno = a_max.tno AND a.ano = a_max.max_ano
-WHERE t.muuid=#{uuid} AND ti.tthumbnail = 0 AND ttype = 1;
+WHERE t.muuid=#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL) AND ttype = 1
+ORDER BY t.tno DESC;
 </select>
+
+<select id="getAucBuy" parameterType="String" resultType="Map">
+SELECT ah.*, ah.abiddate AS tdate, ti.timage, t.ttitle
+FROM auctionhistory ah
+JOIN trade t ON ah.tno = t.tno
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
+WHERE ah.abidder =#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL)
+  AND (ah.tno, ah.abiddate) IN (
+    SELECT ah_sub.tno, MAX(ah_sub.abiddate)
+    FROM auctionhistory ah_sub
+    WHERE ah_sub.abidder =#{uuid}
+    GROUP BY ah_sub.tno
+    HAVING COUNT(*) >= 1
+  )
+  ORDER BY ah.ano DESC;
+</select>
+
 
 
 <select id="getWish" parameterType="String" resultType="Map">
 SELECT w.wno, w.muuid, t.tno, t.ttitle, t.tdate, t.tnormalprice, t.tnormalstate, ti.timage
 FROM wishlist w
 JOIN trade t ON w.tno = t.tno
-JOIN tradeimage ti ON t.tno = ti.tno
-WHERE w.muuid =#{uuid} AND (ti.tthumbnail = 0 OR ti.timage IS NULL)
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
+WHERE w.muuid =#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL)
 </select>
 
 

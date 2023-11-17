@@ -47,4 +47,6 @@ public interface MyPageDAO {
 
 	List<Map<String, Object>> getAucSell(String uuid);
 
+	List<Map<String, Object>> getAucBuy(String uuid);
+
 }

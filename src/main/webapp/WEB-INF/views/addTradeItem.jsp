@@ -405,7 +405,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.52:8080/file/upload2',
+         url: 'http://172.30.1.2:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
@@ -430,22 +430,59 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    $("#addPhotoBtn").click(function(){
       $("#addPhoto").show();
    });
-              
-              
-              
+             
+
    $("#addTradeItemBtn").click(function(){
          let category = $("input[name='category']").val();
          let title = $("input[name='title']").val();
          let content = $("textarea[name='content']").val();
          let locationLat = $("input[name='locationLat']").val();
+         locationLat = 37.51288350623703;
          let locationLng = $("input[name='locationLng']").val();
-
+         locationLng = 127.06480017558535;
          let tradeType = $("input[name='tradeType']").val();
          let normalPrice = $("input[name='normalPrice']").val();
          let auctionStartPrice = $("input[name='auctionStartPrice']").val();
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
-
          
+         if(title.length < 5){
+        	 M.pop.instance("제목은 5글자 이상 작성해주세요.");
+        	 $("#title").focus();
+        	 return false;
+         }
+         if(content.length < 5){
+        	 M.pop.instance("내용은 5글자 이상 작성해주세요.");
+        	 $("#content").focus();
+        	 return false;
+         }
+         
+         if(tradeType == 0){
+        	 if(normalPrice == 0 || normalPrice == null || normalPrice == ''){
+        		 M.pop.instance("가격을 입력해주세요.");
+        		 return false;
+        	 }
+        	 if(normalPrice < 1000){
+        		 M.pop.instance("최소 등록가격은 1000웨일 페이 이상입니다.");
+        		 return false;
+        	 }
+         }
+        if(tradeType == 1){
+        	if(auctionStartPrice == 0 || auctionStartPrice == null || auctionStartPrice == ''){
+        		M.pop.instance("시작 가격을 입력해주세요.");
+        		return false;
+        	}if(auctionMinBidUnit == 0 || auctionMinBidUnit == null || auctionMinBidUnit == ''){
+        		M.pop.instance("최소 입찰단위를 입력해주세요.");
+        		return false;
+        	}
+        }
+         if(category == null || category == ''){
+        	 M.pop.instance("카테고리를 선택해주세요.");
+        	 return false;
+         }
+         if($previewImgArray.length == 0){
+        	 M.pop.instance("사진을 추가해주세요.");
+        		 return false;
+         }
       $.ajax({
          url : "./addTradeItem",
          type : "post",
@@ -520,7 +557,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
             }
          },
          error : function(error){
-            alert("흑학힉");
+            alert("오류가 발생했습니다.");
          }   
       });
    });

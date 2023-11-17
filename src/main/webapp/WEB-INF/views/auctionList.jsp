@@ -26,7 +26,7 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<link rel="stylesheet" href="../css/myActivities.css">
+<link rel="stylesheet" href="../css/auctionList.css">
 
 </head>
 <body>
@@ -36,6 +36,7 @@
 	<header> </header>
 	<!-- Section-->
 	<section class="py-5">
+	
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="d-flex inside-bar align-items-center">
 				<div class="back col-auto" onclick="location.href='/'">
@@ -50,52 +51,89 @@
 			<li class="my showCommentList">구매 내역</li>
 		</ul>
 		</div>
-		
 			<div class="postList">
 			<div class="activities-div">
-<c:forEach items="${aucSellList}" var="p">
-			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${p.tno}'">
-			<div class="btitle">${p.ttitle}</div>
-			<div class="bdate">${p.displayDate}</div>
-			<div class="timage"></div>
-			<img src="../tradeImgUpload/${p.timage}" alt="sssdsd" class="sdsd" width="100px">
-			<div class="row1">
-			<div class="setup">
-			<c:if test="${p.tauctionstate eq 0}">낙찰</c:if>
-			<c:if test="${p.tauctionstate eq 2}">유찰</c:if>
-			<c:if test="${p.tauctionstate eq 3}">진행중</c:if>
-				</div>
+			<c:forEach items="${aucSellList}" var="row">
+			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${row.tno}'">
+			<div class="timage">
+			    <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+    </c:when>
+    <c:otherwise>
+      <img src="../tradeImgUpload/defaultimg.jpg"  alt="기본사진" width="130px" height="130px" />
+    </c:otherwise>
+      </c:choose>
 			</div>
-			<div class="ttitle">
-			${p.ttitle}
+			<div class="auctionInfo">
+			<div class="btitle">${row.ttitle}</div>
+			<div class="bdate">${row.displayDate}</div>
+			<div class="price">
+			<div class="startprice">시작가
+			<div>
+			 <fmt:formatNumber value="${row.tauctionstartprice}" pattern="#,###원"/>
 			</div>
 			</div>
+		<div class="lastprice">현재 입찰가
+			<c:if test="${row.abidprice ne null}">
+			<div>
+			 <fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
+			 </div>
+			</c:if>
+			<c:if test="${row.abidprice eq null}">
+			 <div>입찰이 없어요</div>
+			</c:if>
+			</div>
+				</div> <!--price 끝  -->
+		<div class="setup">
+    <c:choose>
+        <c:when test="${row.tauctionstate eq 0}">
+            <span style="color: green;">낙찰</span>
+        </c:when>
+        <c:when test="${row.tauctionstate eq 2}">
+            <span style="color: gray;">유찰</span>
+        </c:when>
+        <c:when test="${row.tauctionstate eq 3}">
+            <span style="color: #88abff;">진행중</span>
+        </c:when>
+    </c:choose>
+</div>
+			</div>
+			</div><!--경매정보info  -->
 			</c:forEach>
 				</div>
 			</div>
-			
 			<div class="commentList">
-			<c:forEach items="${myComment}" var="c">
-			<div class="movedetail" onclick="location.href='./boardDetail?cate=${p.sno}&bno=${c.bno }'">
-			
-			<div class="btitle">${c.ccontent}</div>
-			<div class="bdate">${c.cdate}</div>
-			<div class="row1">
-			<div id="commentcount">${c.btitle}</div>
+			<c:forEach items="${aucBuyList}" var="row">
+			<div class="movedetail" onclick="location.href='./auctionDetail?tno=${row.tno}'">
+				<div class="timage">
+			    <c:choose>
+    <c:when test="${row.timage ne null}">
+      <img src="../tradeImgUpload/${row.timage}" alt="물품사진" width="130px" height="130px">
+    </c:when>
+    <c:otherwise>
+      <img src="../tradeImgUpload/defaultimg.jpg"  alt="기본사진" width="130px" height="130px" />
+    </c:otherwise>
+      </c:choose>
+			</div>
+			<div class="auctionInfo">
+			<div class="btitle">${row.ttitle}</div>
+			<div class="bdate">${row.displayDate}</div>
+			<div class="price2">
+			<fmt:formatNumber value="${row.abidprice}" pattern="#,###원"/>
+			</div>
 			<div class="setup">
-			<c:if test="${c.sno eq 1}">공지사항</c:if>
-			<c:if test="${c.sno eq 2}">판매요청</c:if>
-			<c:if test="${c.sno eq 3}">나눔</c:if>
+			<c:if test="${row.astate eq 0}">낙찰</c:if>
+			<c:if test="${row.astate eq 1}">미낙찰</c:if>
+			<c:if test="${row.astate eq 2}">최고가입찰</c:if>
 				</div>
 			</div>
-				</div>
+			</div>
 			</c:forEach>
-			</div>
 			
-			<c:if test="${exp < 15}">아기고래</c:if>
-								<c:if test="${exp >= 15 && exp <= 20}">고래</c:if>
-								<c:if test="${exp > 20 }">슈퍼고래</c:if>
-		</div>
+			</div>
+			</div>
+
 
 	</section>
 	<!-- Footer-->

@@ -97,8 +97,8 @@ public class MyPageService {
 	}
 
 	public List<Map<String, Object>> getprofileReview(Object attribute) {
-		
-		return myPageDAO.getprofileReview(attribute);
+		 List<Map<String, Object>> profileReview = myPageDAO.getprofileReview(attribute);
+		return formatDates(profileReview);
 	}
 
 	public Map<String, Object> reviewDetail(Map<String, Object> map) {
@@ -125,6 +125,13 @@ public class MyPageService {
 		List<Map<String, Object>> aucSellList= myPageDAO.getAucSell(uuid);
 		return formatDates(aucSellList);
 	}
+
+
+	public List<Map<String, Object>> getAucBuy(String uuid) {
+		List<Map<String, Object>>  aucBuyList= myPageDAO.getAucBuy(uuid);
+		return formatDates(aucBuyList);
+	}
+
 
 	public int addWish(Map<String, Object> map) {
 		return myPageDAO.addWish(map);
@@ -238,6 +245,7 @@ public class MyPageService {
 	    private Date convertToDate(LocalDateTime dateTime) {
 	        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
 	    }
+
 
 
 }
