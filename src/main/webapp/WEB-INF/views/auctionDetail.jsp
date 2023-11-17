@@ -47,7 +47,9 @@
 		</div>
 
 		<div class="form-floating">
-			<div>사진</div>
+			<div><c:forEach items="${auctionImageList }" var="i">
+			<img alt="detailImage" src="./tradeImgUpload/${i.timage}">
+			</c:forEach></div>
 		</div>
 
 		<div class="form-floating">

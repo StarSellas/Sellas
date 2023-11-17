@@ -274,7 +274,7 @@
 								<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 								<input type="hidden" name="cate" value="${param.cate }">
 								<input type="hidden" name="bno" value="${param.bno }">
-								<div class="commentsBtn">
+								<div class="commentsBtn" id="cWriteBtnBox">
 									<button type="submit" class="cWriteBtn">등록</button>
 								</div>
 							</form>

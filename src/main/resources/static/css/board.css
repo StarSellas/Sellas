@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
 .backButton{
-	margin-bottom: 5px;
+	padding-top: 10px;
 }
 .HeaderBox{
 	width: 90%;
 	padding: 0;
-	margin: auto;
+	margin-left: 13px;
 	display: flex;
 	align-items: flex-end;
 }
@@ -16,7 +16,7 @@
 	flex: 1;
 }
 .searchFrom{
-	width: inherit;
+	width: 100%;
 	display: flex;
 	align-items: flex-end; 
 	border-bottom: 1px gray solid;
@@ -86,26 +86,21 @@
 }
 
 .btitle{
-	width: 60%; 
+	width: 70%; 
 	padding-left: 10px;
 }
 .title{
 	font-size: 15px;
 }
-.bdate, .mainbdate, .bread {
-	text-align: right;
-}
-
-.bdate, .mainbdate, .bread {
-	text-align: right;
-}
-
 .bdateBox{
-	margin-right: 10px;
-	text-align: left;
+	text-align: right;
+}
+.bdate{
+	text-align: right;
+	margin-top: 3px;
 }
 
-.bread, .bdate, .mainbdate, .mnickname{
+.bdate, .mnickname{
 	font-size: 13px;
 }
 
@@ -134,6 +129,10 @@
     object-fit: cover;
 }
 
+.bphoto{
+	width: 24px;
+    height: 24px;
+}
 .bread{
 	font-weight: bolder;
 	padding-right: 10px;
