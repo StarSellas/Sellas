@@ -214,9 +214,14 @@ public class MyPageController {
 	//거래후기글쓰기
 	@GetMapping("review")
 	public String review(@RequestParam("tno") String tno, Model model, HttpSession session) {
+		
+		if(!util.checkLogin()) {
+			return "/login";
+		}
+		
 		// 구매자,판매자확인
 		ReviewDTO reviewMember = myPageService.findId(tno);
-		
+		 session.setAttribute("reviewMember", reviewMember);
 		// 구매정보불러와서 화면전환
 		// 후기쓰는 자가 판매자인 경우
 		if (reviewMember.getPseller() == session.getAttribute("muuid")) {
@@ -261,15 +266,18 @@ public class MyPageController {
 	        
 	        // 모델에 errorMsg를 추가
 	        model.addAttribute("errorMsg", errorMsg);
-	        return "/review";
+	        return "review";
 	    }
-		
+
+	    
 		int result = myPageService.inputReview(reviewDTO, session);
 		if (result == 1) {
+			session.removeAttribute("reviewMember");
 			return "redirect:/mypage";
 			
 		} else {
 			String error = "오류가 발생했습니다.";
+			session.removeAttribute("reviewMember");
 	         model.addAttribute("error", error);
 			return "redirect:/mypage";
 		}
@@ -357,17 +365,14 @@ public class MyPageController {
 	public String getAuction(Model model, HttpSession session) {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
-		
 	
 		//판매내역
 		List<Map<String, Object>> aucSellList = myPageService.getAucSell(uuid);
 		model.addAttribute("aucSellList",aucSellList);
-		System.out.println("판매내역뭐있어"+aucSellList);
 		
 		//구매내역
 		List<Map<String, Object>> aucBuyList = myPageService.getAucBuy(uuid);
 		model.addAttribute("aucBuyList", aucBuyList);
-		System.out.println("구매내역뭐있어"+aucBuyList);
 		
 		return "auctionList";
 		

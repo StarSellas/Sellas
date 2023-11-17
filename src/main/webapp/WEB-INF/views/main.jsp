@@ -63,7 +63,7 @@ $(function() {
    loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
    
    // 로딩바 적용
-   loading.show();
+   //loading.show();
    
    //로딩바를 위해 1.5초 뒤 ajax 실행
    timer = setTimeout(function(){
@@ -281,15 +281,13 @@ $(function() {
    <%@ include file="menubar.jsp" %>
    
    <!-- Header-->
-   <header class="bg-dark py-5">
+   <header class="storyhead">
       <div class="container px-4 px-lg-5 my-5">
-         <div class="text-center text-white">
+         <div class="text-center">
             <h1 class="display-4 fw-bolder"></h1>
             <c:choose>
                <c:when test="${memberInfo != null }">
-                  <p class="lead fw-normal text-white-50 mb-0">안녕하세요
-                     ${memberInfo.mnickname }님!!</p>
-                  <br> 현재 남은 잔액 : ${memberInfo.mbalance } 웨일페이
+                여기서부터 시작하겠습니다.
 
                </c:when>
                <c:otherwise>
