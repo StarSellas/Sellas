@@ -455,7 +455,7 @@ $(function() {
             console.log(title.length);
             
             if(title.length > 10){
-               titlecut = title.substring(0, 6) + " ...";
+               titlecut = title.substring(0, 8) + "...";
                console.log("titlecut : " + titlecut);
                $(this).text(titlecut);
             }

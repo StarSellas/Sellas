@@ -53,7 +53,11 @@
 }
 
 .tradeState{
-	padding-top : 10px;
+	position: absolute;
+    bottom: 0; /* 부모 요소의 하단에 위치하도록 조정 */
+    left: 50%; /* 가운데 정렬 */
+    transform: translateX(-50%); /* 가운데 정렬을 위한 조정 */
+	padding-bottom : 20px;
 	text-align: center;
 }
 

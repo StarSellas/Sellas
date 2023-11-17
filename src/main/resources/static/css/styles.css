@@ -12,6 +12,9 @@
  */
  
 /* ******************** css 수정 *************************/ 
+.tradeRow{
+position: relative;	
+}
 
 button.navbar-toggler{
 	border: none;
