@@ -76,7 +76,7 @@
 			</div>
 			<div id="minimumPrice">
 				<div id="">최소입찰가</div>
-				<div id="">${auctionItemDetail.minbidprice }</div>
+				<div id="">${auctionItemDetail.minBidPrice }</div>
 			</div>
 		</div>
 
