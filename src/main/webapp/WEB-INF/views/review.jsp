@@ -134,9 +134,9 @@
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="row justify-content-center">
 				<form class="mb-3" name="review" id="review" method="post">
-				    <input type="hidden" name="pno" value="${reviewMember.pno}" />
-    <input type="hidden" name="pseller" value="${reviewMember.pseller}" />
-    <input type="hidden" name="pbuyer" value="${reviewMember.pbuyer}" />
+				    	<input type="hidden" name="pno" value="${reviewMember.pno}" />
+    					<input type="hidden" name="pseller" value="${reviewMember.pseller}" />
+    					<input type="hidden" name="pbuyer" value="${reviewMember.pbuyer}" />
 					<div class="question">약속 시간은 잘 지켰나요?
 					<fieldset id="ratePromise">
 						<input type="radio" name="reviewStar1" value="5" id="rate1"><label for="rate1">🐳</label>
@@ -159,7 +159,7 @@
 							<div class="explain4 explain-text2">!최고예요</div>
 							<div class="explain5 explain-text2">좋아요</div>
 							<div class="explain6 explain-text2">별로에요</div>
-							</div>
+								</div>
 					
 					</fieldset>
 					</div>
