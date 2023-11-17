@@ -361,9 +361,9 @@ public class ChatRoomController {
 		        Integer tno = (Integer) chatroom.get("tno");
 		        String thumbnail = chatRoomService.getThumbnailByTno(tno);
 		        
-		        String filePath = "../tradeImgUpload/" + chatroom.get("thumbnail");
+		        String filePath = "../tradeImgUpload/" + thumbnail;
 
-		        try {
+		        try { //이미지 파일이 그 경로에 실제로 있는지 검사합니다.
 		            // Resource 객체를 생성하여 파일을 로드
 		            Resource resource = new UrlResource(filePath);
 
@@ -483,9 +483,9 @@ public class ChatRoomController {
 	}
 	
 	@PostMapping("/auctionchat")
-	public String auctionChat(@RequestParam String roomId, Model model, HttpSession session) {
+	public String auctionChat(@RequestParam(name="roomId") String roomId, @RequestParam(name="lastroomcheck") int lastroomcheck, Model model, HttpSession session) {
 		
-		Map<String, Object> map = chatRoomService.auctionChat(roomId);
+		Map<String, Object> map = chatRoomService.auctionChat(roomId); //roomId를 이용해서 tno, oseller, obuyer를 가져왔습니다.
 		String tno = String.valueOf(map.get("tno"));
 		String oseller = String.valueOf(map.get("oseller"));
 		String obuyer = String.valueOf(map.get("obuyer"));
@@ -497,6 +497,7 @@ public class ChatRoomController {
 		
 		map.put("roomId", roomId);
 		
+		if(lastroomcheck == 1) {
 		List<Map<String, Object>> lastchatlist = chatRoomService.lastChatList(map);
 		
 		for (int n = 0; n < lastchatlist.size(); n++) {
@@ -507,7 +508,28 @@ public class ChatRoomController {
 		    if (!chatroom.containsKey("mphoto")) {
 		        String muuid = String.valueOf(session.getAttribute("muuid"));
 		        String mphoto = chatRoomService.getMphoto(muuid);
+		        
+		        String filePath = "../userImgUpload/" + mphoto;
 
+		        try {
+		            // Resource 객체를 생성하여 파일을 로드
+		            Resource resource = new UrlResource(filePath);
+
+		            // 파일이 존재하는지 확인
+		            if (resource.exists()) {
+		                int mphotocheck = 1;
+		                chatroom.put("mphotocheck", mphotocheck);
+		                chatroom.put("mphoto", mphoto);
+		            } else {
+		                // 파일이 존재하지 않으면 디폴트 이미지 사용
+		            	int mphotocheck = 0;
+		            	chatroom.put("mphotocheck", mphotocheck);
+		            }
+		        } catch (Exception e) {
+		            // 예외 처리
+		            e.printStackTrace();
+		        }
+		        
 		        // 조회된 ttitle을 chatroom 맵에 추가
 		        chatroom.put("mphoto", mphoto);
 		        lastchatlist.set(n, chatroom);
@@ -541,15 +563,35 @@ public class ChatRoomController {
 		    lastchatlist.set(n, chatroom);
 		}
 		model.addAttribute("lastchatlist", lastchatlist);
+		model.addAttribute("lastroomcheck", lastroomcheck);
+		
+		}
 
 		String mphoto = chatRoomService.getMphoto(String.valueOf(session.getAttribute("muuid")));
 		
-		model.addAttribute("mphoto", mphoto);
-		int searchchatroom = chatRoomService.searchChatRoom(map);
+		String filePath = "../userImgUpload/" + mphoto;
+
+        try {
+            // Resource 객체를 생성하여 파일을 로드
+            Resource resource = new UrlResource(filePath);
+
+            // 파일이 존재하는지 확인
+            if (resource.exists()) {
+                int mphotocheck = 1;
+                model.addAttribute("mphotocheck", mphotocheck);
+                model.addAttribute("mphoto", mphoto);
+            } else {
+                // 파일이 존재하지 않으면 디폴트 이미지 사용
+            	int mphotocheck = 0;
+            	model.addAttribute("mphotocheck", mphotocheck);
+            }
+        } catch (Exception e) {
+            // 예외 처리
+            e.printStackTrace();
+        }
 		
-		if(searchchatroom == 1) {
-			model.addAttribute("lastroomcheck", searchchatroom);
-		}
+		model.addAttribute("mphoto", mphoto);
+		
 		
 		return "/chat/auctionchat";
 	}

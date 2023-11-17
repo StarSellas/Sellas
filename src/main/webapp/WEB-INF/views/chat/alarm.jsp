@@ -41,7 +41,7 @@ u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 	            	</div>
                 	<div class="chat_ib">
                   		<h5>${chatroomlist.ttitle } <span class="chat_date">${chatroomlist.ddate }</span></h5>
-                  		<p>${chatroomlist.dcontent }</p>
+                  		<p class="dcontent">${chatroomlist.dcontent }</p>
                   		<p class="ouuid" style="display:none;">${chatroomlist.ouuid }</p>
                   		<p class="oseller" style="display:none;">${chatroomlist.oseller }</p>
                   		<p class="obuyer" style="display:none;">${chatroomlist.obuyer }</p>
@@ -65,93 +65,113 @@ u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
             var clickedSeller = clickedItem.find('.oseller').text();
             var clickedTno = clickedItem.find('.tno').text();
             var clickedLastroomcheck = clickedItem.find('.lastroomcheck').text();
-
-            if (clickedBuyer === "${sessionScope.muuid}") {
-                // Buyer와 세션의 muuid가 일치하는 경우
-                var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
-                
-                let form = document.createElement("form"); 
-    			form.setAttribute("action", "/chat/requestChat");
-    			form.setAttribute("method", "post");
-    			
-    			let tnoInput = document.createElement("input");
-    			tnoInput.setAttribute("type", "hidden");
-    			tnoInput.setAttribute("name", "tno");
-    			tnoInput.setAttribute("value", clickedTno); 
-    			form.appendChild(tnoInput);
-    			
-    			let obuyerInput = document.createElement("input");
-    			obuyerInput.setAttribute("type", "hidden");
-    			obuyerInput.setAttribute("name", "obuyer");
-    			obuyerInput.setAttribute("value", clickedBuyer); 
-    			form.appendChild(obuyerInput);
-    			
-    			let osellerInput = document.createElement("input");
-    			osellerInput.setAttribute("type", "hidden");
-    			osellerInput.setAttribute("name", "oseller");
-    			osellerInput.setAttribute("value", clickedSeller); 
-    			form.appendChild(osellerInput);
-    			
-    			let ouuidInput = document.createElement("input");
-    			ouuidInput.setAttribute("type", "hidden");
-    			ouuidInput.setAttribute("name", "roomId");
-    			ouuidInput.setAttribute("value", roomId);
-    			form.appendChild(ouuidInput);
-    			
-    			let lastroomcheckInput = document.createElement("input");
-    			lastroomcheckInput.setAttribute("type", "hidden");
-    			lastroomcheckInput.setAttribute("name", "lastroomcheck");
-    			lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
-    			form.appendChild(lastroomcheckInput);
-    			
-    			document.body.appendChild(form);
-    			form.submit();
-    			
-            } else if (clickedSeller === "${sessionScope.muuid}") {
-                // Seller와 세션의 muuid가 일치하는 경우
-                var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
-                
-                let form = document.createElement("form"); 
-    			form.setAttribute("action", "/chat/alarmChat");
-    			form.setAttribute("method", "post");
-    			
-    			let tnoInput = document.createElement("input");
-    			tnoInput.setAttribute("type", "hidden");
-    			tnoInput.setAttribute("name", "tno");
-    			tnoInput.setAttribute("value", clickedTno); 
-    			form.appendChild(tnoInput);
-    			
-    			let obuyerInput = document.createElement("input");
-    			obuyerInput.setAttribute("type", "hidden");
-    			obuyerInput.setAttribute("name", "obuyer");
-    			obuyerInput.setAttribute("value", clickedBuyer); 
-    			form.appendChild(obuyerInput);
-    			
-    			let osellerInput = document.createElement("input");
-    			osellerInput.setAttribute("type", "hidden");
-    			osellerInput.setAttribute("name", "oseller");
-    			osellerInput.setAttribute("value", clickedSeller); 
-    			form.appendChild(osellerInput);
-    			
-    			let ouuidInput = document.createElement("input");
-    			ouuidInput.setAttribute("type", "hidden");
-    			ouuidInput.setAttribute("name", "roomId");
-    			ouuidInput.setAttribute("value", roomId);
-    			form.appendChild(ouuidInput);
-    			
-    			let lastroomcheckInput = document.createElement("input");
-    			lastroomcheckInput.setAttribute("type", "hidden");
-    			lastroomcheckInput.setAttribute("name", "lastroomcheck");
-    			lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
-    			form.appendChild(lastroomcheckInput);
-    			
-    			document.body.appendChild(form); //좌석 빼줌
-    			form.submit();
-                
+            let clickedDcontent = clickedItem.find(".dcontent").text();
+            var roomId = clickedItem.find('.ouuid').text(); // 또는 원하는 방식으로 room ID를 가져옵니다.
+            
+            if(clickedDcontent.includes('낙찰')){
+            	
+            	let form = document.createElement("form"); 
+				form.setAttribute("action", "/chat/auctionchat");
+				form.setAttribute("method", "post");
+			
+				let ouuidInput = document.createElement("input");
+				ouuidInput.setAttribute("type", "hidden");
+				ouuidInput.setAttribute("name", "roomId");
+				ouuidInput.setAttribute("value", roomId);
+				form.appendChild(ouuidInput);
+			
+				let lastroomcheckInput = document.createElement("input");
+				lastroomcheckInput.setAttribute("type", "hidden");
+				lastroomcheckInput.setAttribute("name", "lastroomcheck");
+				lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
+				form.appendChild(lastroomcheckInput);
+				
+				document.body.appendChild(form);
+				form.submit();
+            	
             } else {
-                // 기타 상황에 대한 처리
-                //console.log("Not matched with obuyer or oseller");
-                wiwdow.location.href="../";
+
+          	  	if (clickedBuyer === "${sessionScope.muuid}") {
+              	  	// Buyer와 세션의 muuid가 일치하는 경우
+                
+              	 	let form = document.createElement("form"); 
+    				form.setAttribute("action", "/chat/requestChat");
+    				form.setAttribute("method", "post");
+    			
+    				let tnoInput = document.createElement("input");
+    				tnoInput.setAttribute("type", "hidden");
+    				tnoInput.setAttribute("name", "tno");
+    				tnoInput.setAttribute("value", clickedTno); 	
+    				form.appendChild(tnoInput);
+    			
+    				let obuyerInput = document.createElement("input");
+    				obuyerInput.setAttribute("type", "hidden");
+    				obuyerInput.setAttribute("name", "obuyer");
+    				obuyerInput.setAttribute("value", clickedBuyer); 
+    				form.appendChild(obuyerInput);
+    			
+    				let osellerInput = document.createElement("input");
+    				osellerInput.setAttribute("type", "hidden");
+    				osellerInput.setAttribute("name", "oseller");
+    				osellerInput.setAttribute("value", clickedSeller); 
+    				form.appendChild(osellerInput);
+    			
+    				let ouuidInput = document.createElement("input");
+    				ouuidInput.setAttribute("type", "hidden");
+    				ouuidInput.setAttribute("name", "roomId");
+    				ouuidInput.setAttribute("value", roomId);
+    				form.appendChild(ouuidInput);
+    			
+    				let lastroomcheckInput = document.createElement("input");
+    				lastroomcheckInput.setAttribute("type", "hidden");
+    				lastroomcheckInput.setAttribute("name", "lastroomcheck");
+    				lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
+    				form.appendChild(lastroomcheckInput);
+    				
+    				document.body.appendChild(form);
+    				form.submit();
+    			
+            	} else if (clickedSeller === "${sessionScope.muuid}") {
+                	// Seller와 세션의 muuid가 일치하는 경우
+                
+             	   	let form = document.createElement("form"); 
+    				form.setAttribute("action", "/chat/alarmChat");
+    				form.setAttribute("method", "post");
+    			
+    				let tnoInput = document.createElement("input");
+    				tnoInput.setAttribute("type", "hidden");
+    				tnoInput.setAttribute("name", "tno");
+    				tnoInput.setAttribute("value", clickedTno); 
+    				form.appendChild(tnoInput);
+    			
+    				let obuyerInput = document.createElement("input");
+    				obuyerInput.setAttribute("type", "hidden");
+    				obuyerInput.setAttribute("name", "obuyer");
+    				obuyerInput.setAttribute("value", clickedBuyer); 
+    				form.appendChild(obuyerInput);
+    			
+    				let osellerInput = document.createElement("input");
+    				osellerInput.setAttribute("type", "hidden");
+    				osellerInput.setAttribute("name", "oseller");
+    				osellerInput.setAttribute("value", clickedSeller); 
+    				form.appendChild(osellerInput);
+    			
+    				let ouuidInput = document.createElement("input");
+    				ouuidInput.setAttribute("type", "hidden");
+    				ouuidInput.setAttribute("name", "roomId");
+    				ouuidInput.setAttribute("value", roomId);
+    				form.appendChild(ouuidInput);
+    			
+    				let lastroomcheckInput = document.createElement("input");
+    				lastroomcheckInput.setAttribute("type", "hidden");
+    				lastroomcheckInput.setAttribute("name", "lastroomcheck");
+    				lastroomcheckInput.setAttribute("value", clickedLastroomcheck);
+    				form.appendChild(lastroomcheckInput);
+    			
+    				document.body.appendChild(form); //좌석 빼줌
+    				form.submit();
+                
+            	} 
             }
         });
     }); //function
@@ -165,7 +185,7 @@ u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
                 ws.subscribe("/sub0/ws/chat/user/" + muuid, function(message) {
                     var recv = JSON.parse(message.body);
                     if (recv.type == 'ALARM') { //알람만 받기위해서 온 메시지들을 거르는 코드입니다.
-                    	M.pop.instance("메세지가 도착했습니다.");
+                    	location.reload(true); //새로고침 합니다. gpt말로는 안드로이드 폰에서도 작동한다고 합니다.
                     } else {
                         return false;
                     }

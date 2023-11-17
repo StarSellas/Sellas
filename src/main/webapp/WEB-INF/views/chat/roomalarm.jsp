@@ -118,8 +118,8 @@
 	    var realtimechat = document.querySelector('.msg_history');
 	    realtimechat.scrollTop = realtimechat.scrollHeight;
 
-	    // 인풋 창이 항상 보이도록 처리
-	    var inputElement = document.getElementsByClassName("write_msg")[0];
+	    // 새로운 메시지가 도착할 때마다 자동으로 스크롤
+	    var inputElement = document.getElementById('messages');
 	    inputElement.scrollIntoView(false);
 	}
 
@@ -133,7 +133,7 @@
 	        let incoming_msg_img = document.createElement("div");
 	        incoming_msg_img.className = "incoming_msg_img";
 	        
-	        if('${mphoto}' !== null && '${mphoto}' !== ""){
+	        if('${mphotocheck}' === 1){
 	        	var imgElement = document.createElement("img");
 	        	var photoPath = '../userImgUpload/${mphoto}';
 	        	imgElement.src = photoPath;
@@ -172,7 +172,7 @@
         	}
         	if(recv.type == 'TRADECANCEL'){
         		alert("거래가 취소되었습니다. 메인으로 이동합니다.");
-        		location.href='/';
+        		location.href='../';
         	}
 	    } else {
 	        var messagesList = document.getElementsByClassName("msg_history");
@@ -198,7 +198,7 @@
         	}
         	if(recv.type == 'TRADECANCEL'){
         		alert("거래가 취소되었습니다. 메인으로 이동합니다.");
-        		location.href='/';
+        		location.href='../';
         	}
 		}
 		scrollChatToBottom();
@@ -262,7 +262,7 @@
 
 		$(".tradeno").click(function() { //거래취소 눌렀을 때 실행할 함수입니다.
 			trade = 2;
-			let nomessage = sender + "님이 거래를 거절하셨습니다.";
+			let nomessage = mnickname + "님이 거래를 거절하셨습니다.";
 			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 				type : 'TRADENO',
 				roomId : roomId,
@@ -317,56 +317,50 @@
 			});
 			
 		});//TradeAccept 끝
-		
-		$(".tradeCancel").click(function(){
-			$(".tradeCancel").hide();
-    		var reasonInput = document.createElement("input");
-    	    reasonInput.type = "text";
-    	    reasonInput.name = "cancellationReason";
-    	    reasonInput.placeholder = "취소 사유를 입력하세요";
-    	    reasonInput.className = "cancellation-reason"; 
-    	    // 생성한 input 태그를 페이지에 추가
-    	    $(".input-group").append(reasonInput);
-    	 // 동적으로 버튼을 생성하고 추가
-    	    var cancelButton = document.createElement("button");
-    	    cancelButton.textContent = "거래 취소하기"; // 버튼에 표시할 텍스트
-    	    cancelButton.className = "cancelbtn"; // 클래스 추가
-    	    $(".input-group").append(cancelButton);
-
-    	});// $(".recieveCancelled").click(function()끝
-    	
-    	$(document).on("click", ".cancelbtn", function() {
-    	    var reason = $(".cancellation-reason").val(); 
-    	 // 받아와야 하는 값 : tno, 세션의 muuid, 실패 사유, tnormalprice
-    	    $.ajax({
-    	        url: "/recieveCancelled",
-    	        type: "post", 
-    	        data: { reason: reason , muuid : sender, tno : tno}, 
-    	        dataType: "json",
-    	        success: function(data) {
-    	        	
-    	        	if(data.recieveCancelledSuccess ==1 ){
-    	        		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-							type : 'TRADECANCEL',
-							roomId : roomId,
-							sender : sender,
-							mnickname : mnickname,
-							message : "거래가 취소되었습니다."
-						}));
-    	        		
-    	        		alert("취소가 정상적으로 처리되었습니다.");
-    	        		location.href='/';
-    	        	}
-    	            // 서버로부터의 응답을 처리
-    	            console.log("서버 응답:", data);
-    	            // 이후 원하는 동작 수행
-    	        },
-    	        error: function(error) {
-    	            // 오류 처리
-    	            console.log("오류 발생:", error);
-    	        }
-    	    });
-    	});
+			
+			$("#tradeCancel").click(function(){ //거래취소버튼을 누를 경우
+				
+        		var reasonInput = document.querySelector("form-control");
+        		var cancelReason = reasonInput.value;
+        		
+        		document.querySelector('form-control').addEventListener('keyup', function (e) {
+        		    if (e.key === 'Enter') {
+        		        e.preventDefault(); // 이 부분을 추가
+        		        
+        		        let tcmessage =mnickname + "님이 거래를 취소하셨습니다."
+			        	    var reason = $(".form-control").val(); 
+			        	 // 받아와야 하는 값 : tno, 세션의 muuid, 실패 사유, tnormalprice
+			        	    $.ajax({
+			        	        url: "/recieveCancelled",
+			        	        type: "post", 
+			        	        data: { reason: reason , muuid : sender, tno : tno}, 
+			        	        dataType: "json",
+			        	        success: function(data) {
+			        	        	
+			        	        	if(data.recieveCancelledSuccess ==1 ){
+			        	        		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+			    							type : 'TRADECANCEL',
+			    							roomId : roomId,
+			    							sender : sender,
+			    							mnickname : mnickname,
+			    							message : "거래가 취소되었습니다."
+			    						}));
+			        	        		
+			        	        		alert("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
+			        	        		location.href='../';
+			        	        	}
+			        	            // 서버로부터의 응답을 처리
+			        	            console.log("서버 응답:", data);
+			        	            // 이후 원하는 동작 수행
+			        	        },
+			        	        error: function(error) {
+			        	            // 오류 처리
+			        	            console.log("오류 발생:", error);
+			        	        }
+			        		});
+        		    	}
+        			});
+        		});
 });
 </script>
 </head>
@@ -386,7 +380,7 @@
           <c:if test="${lastchat.chatnick ne sessionScope.mnickname }">
             <div class="incoming_msg">
               <div class="incoming_msg_img"><c:choose>
-	                        <c:when test="${lastchat.mphoto ne null }">
+	                        <c:when test="${lastchat.mphotocheck eq 1 }">
 	                           <img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
 	                        </c:when>
 	                        <c:otherwise>

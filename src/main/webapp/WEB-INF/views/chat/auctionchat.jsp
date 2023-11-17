@@ -86,8 +86,8 @@ $(function(){
 	    var realtimechat = document.querySelector('.msg_history');
 	    realtimechat.scrollTop = realtimechat.scrollHeight;
 
-	    // 인풋 창이 항상 보이도록 처리
-	    var inputElement = document.getElementsByClassName("write_msg")[0];
+	    // 새로운 메시지가 도착할 때마다 자동으로 스크롤
+	    var inputElement = document.getElementById('messages');
 	    inputElement.scrollIntoView(false);
 	}
 
@@ -101,7 +101,7 @@ $(function(){
 	        let incoming_msg_img = document.createElement("div");
 	        incoming_msg_img.className = "incoming_msg_img";
 
-	        if('${mphoto}' !== null){
+	        if('${mphotocheck}' === 1){
 	        	var imgElement = document.createElement("img");
 	        	var photoPath = '../userImgUpload/${mphoto}';
 	        	imgElement.src = photoPath;
@@ -153,7 +153,7 @@ $(function(){
 
 		}
 	    
-		scrollChatToBottom();
+	    scrollChatToBottom();
 	}
 
 	function startPing() {
@@ -406,7 +406,7 @@ $(function(){
             	<div class="incoming_msg">
               		<div class="incoming_msg_img">
               			<c:choose>
-	                    	<c:when test="${lastchat.mphoto ne null }">
+	                    	<c:when test="${lastchat.mphotocheck eq 1 }">
 	                        	<img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
 	                        </c:when>
 	                        <c:otherwise>

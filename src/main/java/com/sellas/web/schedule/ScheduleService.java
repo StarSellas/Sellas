@@ -1,5 +1,6 @@
 package com.sellas.web.schedule;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -62,7 +63,7 @@ public class ScheduleService {
 				String obuyer = auctionDAO.obuyer(ano);
 				String oseller = auctionDAO.oseller(tno);
 				
-				Map<String, Object> chatmap = null;
+				Map<String, Object> chatmap = new HashMap<>(); //hashmap대신 null 넣으면 오류납니다.
 				chatmap.put("ouuid", ouuid);
 				chatmap.put("tno", tno);
 				chatmap.put("oseller", oseller);
