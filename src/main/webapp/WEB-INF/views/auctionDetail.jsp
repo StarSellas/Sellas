@@ -19,8 +19,9 @@
 		<link href="css/auctionDetail.css" rel="stylesheet" />
 
 		<!-- ******************* 추가 *********************** -->
-		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+		<link href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet" >
 
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 	</head>
 	<body>
@@ -46,10 +47,27 @@
 			<div class="divider"></div>
 		</div>
 
-		<div class="form-floating">
-			<div><c:forEach items="${auctionImageList }" var="i">
-			<img alt="detailImage" src="./tradeImgUpload/${i.timage}">
-			</c:forEach></div>
+		<div class="form-floating ">
+			<div class="swiper">
+				<div class="swiper-wrapper">
+					<c:choose>
+					<c:when test="${auctionImageList ne null}">
+						<div class="swiper-slide text-center">
+							<c:forEach items="${auctionImageList }" var="i">
+								<img class="rounded" src="./tradeImgUpload/${i.timage}" alt="detailImage" width="275px" height="275px">
+							</c:forEach>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="swiper-slide">
+							<div class="text-center">
+								<img class="rounded" src="./tradeImgUpload/defaultimg.jpg" alt="" width="275px" height="275px">
+							</div>
+						</div>
+					</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
 		</div>
 
 		<div class="form-floating">
@@ -126,5 +144,20 @@
 
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="js/auctionDetail.js"></script>
+	
+		<script type="text/javascript">
+		/* 이미지 */
+		document.addEventListener('DOMContentLoaded', function() {
+			const swiper = new Swiper('.swiper', {
+				pagination: {
+					el: '.swiper-pagination',
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				},
+			});
+		});
+		</script>
 	</body>
 </html>
