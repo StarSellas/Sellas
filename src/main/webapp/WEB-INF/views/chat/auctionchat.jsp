@@ -19,7 +19,7 @@
 	
 $(function(){
 		
-		document.getElementById('messages').addEventListener('keydown', function (e) {
+		document.getElementById('messages').addEventListener('keyup', function (e) {
 		    if (e.key === 'Enter') {
 		        e.preventDefault(); // 이 부분을 추가
 		        sendMessage();
@@ -219,10 +219,6 @@ $(function(){
 		setTimeout(startPing, 30000); //30초에 한 번씩 startPing() 실행합니다.
 	};
 	$(function() {
-		$(".tradeRequest").hide();
-		$(".tradeAcceptOrCancel").hide();
-		
-		
 		$(".tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
 			$.ajax({
 				url : '/compareamounts',
@@ -416,77 +412,56 @@ $(function(){
 </script>
 </head>
 <body>
-	<div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-            <div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
-              <div><h4>${tnoname }</h4></div>
-            </div>
-            <!-- <div class="srch_bar">
-              <div class="stylish-input-group">
-                <input type="text" class="search-bar"  placeholder="Search" style="display:none;">
-                <span class="input-group-addon">
-                <i class="fa fa-search" id="findword" aria-hidden="true"></i>
-                </span> </div>
-            </div> -->
-          </div>
+<div class="inbox_people">
+	<div class="headind_srch">
+   		<div class="recent_heading">
+        	<div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
+            	<div><h4>${tnoname }</h4></div>
         </div>
-        <div class="inbox_msg">
-          <div class="msg_history">
-          <c:if test="${lastroomcheck eq 1 }">
-          <c:forEach items="${lastchatlist }" var="lastchat">
-          <c:if test="${lastchat.chatnick ne sessionScope.mnickname }">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"><c:choose>
-	                        <c:when test="${lastchat.mphoto ne null }">
-	                           <img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
+    </div>
+</div>
+<div class="inbox_msg">
+	<div class="msg_history">
+    <c:if test="${lastroomcheck eq 1 }">
+    	<c:forEach items="${lastchatlist }" var="lastchat">
+        	<c:if test="${lastchat.chatnick ne sessionScope.mnickname }">
+            	<div class="incoming_msg">
+              		<div class="incoming_msg_img">
+              			<c:choose>
+	                    	<c:when test="${lastchat.mphoto ne null }">
+	                        	<img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
 	                        </c:when>
 	                        <c:otherwise>
-	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg"
-	                              alt="sellas" />
+	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
 	                        </c:otherwise>
-	                     </c:choose></div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>${lastchat.dcontent }</p>
-                  <span class="time_date">${lastchat.ddate }</span></div>
-              </div>
-            </div>
+	          			</c:choose>
+	          		</div>
+              	<div class="received_msg">
+                	<div class="received_withd_msg">
+                  		<p>${lastchat.dcontent }</p>
+                  		<span class="time_date">${lastchat.ddate }</span></div>
+              		</div>
+           		</div>
             </c:if>
             <c:if test="${lastchat.chatnick eq sessionScope.mnickname }">
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>${lastchat.dcontent }</p>
-                <span class="time_date">${lastchat.ddate }</span> </div>
-            </div>
-            </c:if>
+            	<div class="outgoing_msg">
+              		<div class="sent_msg">
+                		<p>${lastchat.dcontent }</p>
+                		<span class="time_date">${lastchat.ddate }</span> </div>
+           			</div>
+            	</c:if>
             </c:forEach>
-            </c:if>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-            	<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
-              	<div class="otherBtnBox hide">
-              		<c:if test="${tnormalstate ==0 }">
-              			<div class="trade-buttons">
-                			<button id="tradeok">금액제시</button>
-                      		<button id="tradeRequest">제시하기</button>
-                      	</div>
-                	</c:if>
-                	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-                		<div class="tradeAcceptOrCancel2">
-                			<button id="tradeAccept">수령완료</button>
-                      		<button id="tradeCancel">거래취소</button>
-                      	</div>
-                	</c:if>
-                	<div class="tradeAcceptOrCancel">
-						<button id="tradeAccept">수령완료</button>
-                      	<button id="tradeCancel">거래취소</button>
-					</div>
-                </div>
-              	<input type="text" class="write_msg" id="messages" />
-            </div>
-          </div>
-      </div>
+		</c:if>
+	</div>
+    <div class="type_msg">
+          	<div class="input_msg_write">
+            	<div class="tradeAcceptOrCancel">
+					<button class="btn btn-outline-secondary" id="tradeAccept" type="button">수령완료</button>
+  					<button class="btn btn-outline-secondary" id="tradeCancel" type="button">거래취소</button>
+				</div>
+			<input type="text" class="form-control write_msg" aria-label="이거어디에쳐나오는거냐?" id="messages">
+		</div>
+	</div>
+</div>
 </body>
 </html>

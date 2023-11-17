@@ -19,7 +19,7 @@
 	
 	$(function(){
 		
-		document.getElementById('messages').addEventListener('keydown', function (e) {
+		document.getElementById('messages').addEventListener('keyup', function (e) {
 		    if (e.key === 'Enter') {
 		        e.preventDefault(); // 이 부분을 추가
 		        sendMessage();
@@ -367,22 +367,6 @@
     	    });
     	});
 });
-$(function(){
-    $("#toggleBtn").click(function(){
-       
-       $(".otherBtnBox").toggle(800);   // 속도조절
-       $(".toggleBtnBox").toggleClass("btnClicked");   // 버튼위로이동
-       $(".otherBtnBox").toggleClass("hide");
-       
-       if($(".toggleBtnBox").hasClass("btnClicked")){
-          $(".otherBtnBox").addClass("tBtnBox");
-          
-       } else {
-          $(".otherBtnBox").removeClass("tBtnBox");
-       }
-    })
- });
-
 </script>
 </head>
 <body>
@@ -427,27 +411,24 @@ $(function(){
             </c:if>
           </div>
           <div class="type_msg">
-            <div class="input_msg_write">
-            	<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
-              	<div class="otherBtnBox hide">
-              		<div class="tradeResponse">
-            			<div><button class="tradeok" type="button">거래수락</button></div>
-						<div><button class="tradeno" type="button">거래취소</button></div>
-					</div>
+          	<div class="input_msg_write">
+            	<div class="tradeResponse">
+                	<button class="btn btn-outline-secondary" id="tradeok" type="button">거래수락</button>
+  					<button class="btn btn-outline-secondary" id="tradeno" type="button">거래취소</button>
+               	</div>
                 	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-						<div>
-							<button class="tradeAccept" type="button">수령완료</button>
-							<button class="tradeCancel" type="button">거래취소</button>
-						</div>
-					</c:if>
-					<div class="tradeAcceptOrCancel">
-						<button class="tradeAccept" type="button">수령완료</button>
-						<button class="tradeCancel" type="button">거래취소</button>
-					</div>
-                </div>
-              	<input type="text" class="write_msg" id="messages" />
-            </div>
-          </div>
-      </div>
+                  	<div class="tradeAcceptOrCancel2">
+                    	<button class="btn btn-outline-secondary" id="tradeAccept" type="button">수령완료</button>
+  						<button class="btn btn-outline-secondary" id="tradeCancel" type="button">거래취소</button>
+                  	</div>
+               		</c:if>
+               		<div class="tradeAcceptOrCancel">
+                    	<button class="btn btn-outline-secondary" id="tradeAccept" type="button">수령완료</button>
+  						<button class="btn btn-outline-secondary" id="tradeCancel" type="button">거래취소</button>
+               		</div>
+               		<input type="text" class="form-control write_msg" aria-label="이거어디에쳐나오는거냐?" id="messages">
+            	</div>
+          	</div>
+      	</div>
 </body>
 </html>

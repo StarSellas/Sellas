@@ -103,94 +103,26 @@ img {
 .type_msg{
 	height: 48px;
 	width: 100%;
-    position: relative;
+	background:#d0d0d0; 
+	position: relative;
 }
 .input_msg_write {
   display: flex;
   align-items: center;
 }
-
-.xi-plus {
-	margin-top: 1px;
-  font-size: 175%;
-  margin-right: 10px; /* 아이콘과 인풋 간격 조절 */
-  margin-left: 10px;
-  display:flex !important;
-  
-}
-
-.write_msg {
-	margin-top: 1px;
-	margin-right: 5px;
-  width: calc(100% - 38px); /* xi-plus의 크기와 margin을 고려하여 계산 */
-  border: medium none;
-  border-radius: 10px;
-  color: #4c4c4c;
-  font-size: 15px;
-  background: #e0e0e0;
-}
-.type_msg {
-	background:#d0d0d0; 
-	position: relative;
-}
-.TradeBtnBox{
-   display: initial;
-}
-.hide{
-    display: none;
- }
-.tBtnBox {
-    display: flex !important;
-}
-.toggleBtnBox{
-   display: inline-block;
-}
-#tradeok{
-   width: 90px;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-   float: right;
-}
-#tradeno{
-   width: 90px;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-   float: right;
-}
-#tradeRequest{
-   width: 90px;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-   float: right;
-}
-#tradeAccept{
-   width: 90px;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-   float: right;
-}
-#tradeCancel{
-   width: 90px;
-   height: 35px;
-   background-color: white;
-   border: 1px solid #88abff ;
-   border-radius: 5px;
-   margin: 5px 5px;
-   float: right;
-}
-
-.btnClicked{
-   transition: transform 0.5s ease;
+.form-control {
+    display: block;
+    margin-top: 1px;
+    margin-right: 5px;
+    width: calc(100% - 38px);
+    padding: 0.375rem 0.75rem;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4c4c4c;
+    background-color: #e0e0e0;
+    background-clip: padding-box;
+    border: medium none;
+    border-radius: 20px !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-left: 2px;
 }
