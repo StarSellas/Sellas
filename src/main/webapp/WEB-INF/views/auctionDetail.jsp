@@ -16,7 +16,9 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
 		<!-- Core theme CSS (includes Bootstrap)-->
 		<link href="css/styles.css" rel="stylesheet" />
+		<link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 		<link href="css/auctionDetail.css" rel="stylesheet" />
+		
 
 		<!-- ******************* 추가 *********************** -->
 		<link href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet" >
@@ -47,33 +49,31 @@
 			<div class="divider"></div>
 		</div>
 
-		<div class="form-floating ">
-			<div class="swiper">
-				<div class="swiper-wrapper">
-					<c:choose>
-					<c:when test="${auctionImageList ne null}">
+		<div class="swiper">
+			<div class="swiper-wrapper">
+				<c:choose>
+				<c:when test="${auctionImageList ne null}">
+					<c:forEach items="${auctionImageList }" var="i">
 						<div class="swiper-slide text-center">
-							<c:forEach items="${auctionImageList }" var="i">
-								<img class="rounded" src="./tradeImgUpload/${i.timage}" alt="detailImage" width="275px" height="275px">
-							</c:forEach>
+							<img class="rounded" src="./tradeImgUpload/${i.timage}" alt="detailImage" width="275px" height="275px">
 						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="swiper-slide">
-							<div class="text-center">
-								<img class="rounded" src="./tradeImgUpload/defaultimg.jpg" alt="" width="275px" height="275px">
-							</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="swiper-slide">
+						<div class="text-center">
+							<img class="rounded" src="./tradeImgUpload/defaultimg.jpg" alt="" width="275px" height="275px">
 						</div>
-					</c:otherwise>
-					</c:choose>
-				</div>
-			</div>
+					</div>
+				</c:otherwise>
+				</c:choose>
+			</div>	
+			<div class="swiper-pagination"></div>
 		</div>
 
 		<div class="form-floating">
 			<div id="content">${auctionItemDetail.tcontent }</div>
 		</div>
-
 
 		<div class="form-floating">
 			<div id="map" style="width: 100%; height: 200px"></div>

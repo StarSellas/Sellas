@@ -25,8 +25,8 @@ button {
 	display: flex;
 }
 
-.text-center{
-	width:380px;
+.text-center {
+	width: 380px;
 }
 
 .divider {
@@ -42,6 +42,7 @@ button {
 
 #category {
 	width: 125px;
+	text-align: right;
 }
 
 #read {
@@ -59,8 +60,9 @@ button {
 }
 
 #content {
-	width: 375px;
+	width: 380px;
 	height: auto;
+	white-space: pre;
 	background-color: rgba(33, 133, 255, 0.1);
 }
 
@@ -74,4 +76,25 @@ button {
 
 #minimumPrice {
 	width: 125px;
+}
+
+/* 
+이미지 스와이퍼
+작성자 : 최지은 ヽ(´▽`)/
+*/
+.swiper {
+	width: 330px;
+	height: 310px;
+}
+
+.swiper-button-prev {
+	background-size: 30% auto;
+}
+
+.swiper-button-next {
+	background-size: 30% auto;
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+	display: none;
 }

@@ -22,9 +22,16 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		<script src="./js/jquery-3.7.0.min.js"></script>
+		<script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script>
 	</head>
 	<body>
 
+
+	<div class="form-floating">
+		<a href="./login"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+	</div>
 
 	<form action="./signup" method="post">
 
@@ -56,7 +63,7 @@
 				<div id="idMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
 			<div class="form-floating">	
-				<input class="form-control" type="password" id="pw" name="pw" placeholder="비밀번호" maxlength="15" required="required">
+				<input class="form-control" type="password" id="pw" name="password" placeholder="비밀번호" maxlength="15" required="required">
 				<label for="pw">비밀번호</label>
 				<div id="pwMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
@@ -65,6 +72,7 @@
 				<label for="pwcheck">비밀번호 확인</label>
 				<div id="pwcheckMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
+			<input type="hidden" id="encryptPassword" name="pw" value="">
 		</div>
 		<div class="form-floating">
 			<button type="button" id="next2" onclick="showPage('page3')" disabled="disabled">다음</button>
@@ -95,6 +103,7 @@
 	</div>
 
 	</form>
+
 
 	<!-- Bootstrap core JS-->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
