@@ -12,6 +12,16 @@
  */
  
 /* ******************** css 수정 *************************/ 
+.normalTitle{
+	 display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.tradeRow{
+position: relative;	
+}
 
 button.navbar-toggler{
 	border: none;
