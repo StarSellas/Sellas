@@ -15,11 +15,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-	<script>
-	
+<script>
 	$(function(){
 		
-		document.getElementById('messages').addEventListener('keyup', function (e) {
+		document.getElementById('messages').addEventListener('keyup', function (e) { // 엔터키 누르면 입력하게 만들었습니다.
 		    if (e.key === 'Enter') {
 		        e.preventDefault(); // 이 부분을 추가
 		        sendMessage();
@@ -37,7 +36,7 @@
 	let tno = '${tno}'; //거래물품 번호
 	let tnormalstate = '${tnormalstate}'; 
 	let ws = Stomp.over(sock);
-	let trade = 0; //거래상태
+	let trade = 0; //거래상태, 0=일반, 1=거래중, 2=거래완료, 3=거래취소
 	let requestMoney = '';
 
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
@@ -165,15 +164,20 @@
 	        messagesList[0].appendChild(incoming_msg);
 
 	        if(recv.type == 'TRADEOK'){
-        		$(".tradeAcceptOrCancel").show();
+	        	trade = 1;
         	}
         	if(recv.type == 'PAYMENT'){
-        		$(".tradeResponse").show();
+        		trade = 1;
         	}
         	if(recv.type == 'TRADECANCEL'){
         		alert("거래가 취소되었습니다. 메인으로 이동합니다.");
         		location.href='../';
+        		trade = 3;
         	}
+        	if(recv.type == 'TRADEACCEPT'){
+        		trade = 1; // 거래 진행 상황을 일반에서 진행중으로 변경합니다.
+        	}
+        	
 	    } else {
 	        var messagesList = document.getElementsByClassName("msg_history");
 
@@ -191,14 +195,18 @@
 	        messagesList[0].appendChild(outgoing_msg);
 
 	        if(recv.type == 'TRADEOK'){
-        		$(".tradeAcceptOrCancel").show();
+	        	trade = 1;
         	}
         	if(recv.type == 'PAYMENT'){
-        		$(".tradeResponse").show();
+        		trade = 1;
         	}
         	if(recv.type == 'TRADECANCEL'){
         		alert("거래가 취소되었습니다. 메인으로 이동합니다.");
         		location.href='../';
+        		trade = 3;
+        	}
+        	if(recv.type === 'TRADEACCEPT'){
+        		trade = 1; // 거래 진행 상황을 일반에서 거래중으로 바꿉니다.
         	}
 		}
 		scrollChatToBottom();
@@ -218,13 +226,21 @@
 	};
 	
 	$(function() {
-    	$(".tradeResponse").hide();
-    //숨겨야징
-    $(".tradeResponse").hide();
-    $(".tradeAcceptOrCancel").hide();
+		
+		if (trade === 0) {
+		    // trade가 0일 때만 버튼을 보이도록 설정
+		    document.getElementById("tradeok").style.display = "block";
+		    document.getElementById("tradeCancel").style.display = "block";
+		    document.getElementById("tradeAccept").style.display = "none";
+		} else if(trade === 1) {
+		    // trade가 0이 아닐 때는 버튼을 숨김
+		    document.getElementById("tradeok").style.display = "none";
+		    document.getElementById("tradeAccept").style.display = "block";
+		    document.getElementById("tradeCancel").style.display = "block";
+		}
     
 		$(".tradeok").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
-			console.log("거래수락")
+			//console.log("거래수락")
 			$.ajax({
 				url : '/tradeOk',
 				type : 'post',
@@ -238,7 +254,7 @@
 				success : function(data) { //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
 					if (data.tradeAccepted === 'ok') {
 						trade = 1;
-						alert("거래를 수락하셨습니다.");
+						//alert("거래를 수락하셨습니다.");
 						let okmessage = mnickname + "님이 거래를 수락하셨습니다.";
 						ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 							type : 'TRADEOK',
@@ -247,29 +263,12 @@
 							mnickname : mnickname,
 							message : okmessage
 						}));
-						
-						
-						$(".tradeResponse").hide();
 					}
-					
-				
 				},
 				error : function(error) {
 					
 				}
 			});
-		});
-
-		$(".tradeno").click(function() { //거래취소 눌렀을 때 실행할 함수입니다.
-			trade = 2;
-			let nomessage = mnickname + "님이 거래를 거절하셨습니다.";
-			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-				type : 'TRADENO',
-				roomId : roomId,
-				sender : sender,
-				mnickname : mnickname,
-				message : nomessage
-			}));
 		});
 
 		$(".tradeAccept").click(function(){
@@ -407,23 +406,14 @@
           </div>
           <div class="type_msg">
           	<div class="input_msg_write">
-            	<div class="tradeResponse">
-                	<button class="btn btn-outline-secondary" class="tradeok" id="tradeok" type="button">거래수락</button>
-  					<button class="btn btn-outline-secondary" class="tradeno" id="tradeno" type="button" style="display:none;">거래취소</button>
-               	</div>
-                	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-                  	<div class="tradeAcceptOrCancel2">
-                    	<button class="btn btn-outline-secondary" class="tradeAccept" id="tradeAccept" type="button">거래완료</button>
-  						<button class="btn btn-outline-secondary" class="tradeCancel" id="tradeCancel" type="button" style="display:none;">거래취소</button>
-                  	</div>
-               		</c:if>
-               		<div class="tradeAcceptOrCancel">
-                    	<button class="btn btn-outline-secondary" class="tradeAccept" id="tradeAccept" type="button">거래완료</button>
-  						<button class="btn btn-outline-secondary" class="tradeCancel" id="tradeCancel" type="button" style="display:none;">거래취소</button>
-               		</div>
+          		<div class="input-group mb-3">
                		<input type="text" class="form-control write_msg" aria-label="이거어디에쳐나오는거냐?" id="messages">
-            	</div>
-          	</div>
-      	</div>
+               		<button class="btn btn-outline-secondary" id="tradeok" type="button">거래수락</button>
+                    <button class="btn btn-outline-secondary" class="tradeAccept" id="tradeAccept" type="button">거래완료</button>
+  					<button class="btn btn-outline-secondary" class="tradeCancel" id="tradeCancel" type="button">거래취소</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

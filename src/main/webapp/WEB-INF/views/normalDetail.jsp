@@ -341,7 +341,7 @@
                
             },
             error : function(error){
-               alert("ㅠㅠ");
+               //alert("ㅠㅠ");
             }
          });//ajax 끝
          }

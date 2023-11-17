@@ -566,7 +566,7 @@ public class NormalController {
 
 			// }//if(takeMamount == 1) 끝
 		} else {
-			System.out.println("ㅠㅠ 못사요");
+			//System.out.println("ㅠㅠ 못사요");
 			// json에 따로 값을 넣어서 경고창을 날릴 수 있게 해주자
 		}
 		return json.toString();
@@ -663,11 +663,12 @@ public class NormalController {
 	@ResponseBody
 	@PostMapping("/recieveChecked")
 	public String recieveChecked(@RequestParam Map<String, Object> map) {
-		System.out.println("recieveChecked의 맵값은 : " + map);
+		//System.out.println("recieveChecked의 맵값은 : " + map);
 		JSONObject json = new JSONObject();
 		// 당신은 구매자인가요 판매자인가요? + pamount가져오기
-		Map<String, Object> buyerOrSeller = normalService.buyerOrSeller(map);
-		System.out.println("buyerOrSeller의 값을 알려줘 : " + buyerOrSeller);
+		Map<String, Object> buyerOrSeller = normalService.buyerOrSeller(map); // 구매를 수락한 사람이 구매자인지 판매자인지 판단합니다.
+		// 그리고 물품의 가격을 가져옵니다.
+		//System.out.println("buyerOrSeller의 값을 알려줘 : " + buyerOrSeller);
 		// SELECT
 		// (SELECT COUNT(*) FROM payment WHERE pbuyer =
 		// 'a3d69eb4-bc98-47c6-abc5-55ba93c9fb99' AND tno = 48) AS buyer,
@@ -675,21 +676,21 @@ public class NormalController {
 		// 'a3d69eb4-bc98-47c6-abc5-55ba93c9fb99' AND tno = 48) AS seller;
 
 		// buyer든 seller 든 누가 눌렀든 값을 가져와서 payment에 입력
-		if (Integer.parseInt(String.valueOf(buyerOrSeller.get("buyer"))) == 1) {
+		if (Integer.parseInt(String.valueOf(buyerOrSeller.get("buyer"))) == 1) { // 구매를 수락한 사람이 구매자면 
 			map.put("ok", "pbuyerok");
-		} else {
+		} else { // 판매자면
 			map.put("ok", "psellerok");
 		} 
 
-		map.put("pamount", buyerOrSeller.get("pamount"));
-		int recieveChecked = normalService.recieveChecked(map);
+		map.put("pamount", buyerOrSeller.get("pamount")); // 물품 가격을 map에 넣습니다.
+		int recieveChecked = normalService.recieveChecked(map); // psellerok, pbuyerok 둘 중 하나를 승인 상태(0)로 바꿉니다.
 		// UPDATE payment
 		// SET #{ok} = 0
 		// WHERE tno = #{tno} and pstate = 2
-		if (recieveChecked == 1) {
-			int selectPaymentResult = normalService.selectPaymentResult(map);
+		if (recieveChecked == 1) { // 승인 상태로 바꿨습니다.
+			int selectPaymentResult = normalService.selectPaymentResult(map); // 상품을 구매자, 판매자가 전부 거래를 수락했고, pstate도 거래중인거 개수가져옵니다.
 			 
-			if (selectPaymentResult == 1) {
+			if (selectPaymentResult == 1) { // 있다면 tnormalstate, pstate의 값을 거래완료로 변경합니다.
 				// tnormalstate 값 변경(거래완료)
 				map.put("state", 2);
 				normalService.changeStateForNormal(map);
@@ -698,13 +699,13 @@ public class NormalController {
 				normalService.changePstateForNormal(map);
 
 				// 판매자한테 돈 주기
-				int giveMamountForSeller = normalService.giveMamountForSeller(map);
+				int giveMamountForSeller = normalService.giveMamountForSeller(map); //판매자에게 pamount에 묶여있던 돈만큼 member mbalance에 추가합니다.
 				if (giveMamountForSeller == 1) {
-					json.put("tradeAllSuccess", 1);
+					json.put("tradeAllSuccess", 1); // 입금이 성공하면 1을 보냅니다.
 				}
 			}//selectPaymentResult == 1 끝
-			else {
-				json.put("tradesuccess", 1);
+			else { //한쪽만 수락하면 여기로갑니다.
+				json.put("tradesuccess", 1); //그냥 내 상태를 바꿨음을 알립니다.
 			}
 		}
 

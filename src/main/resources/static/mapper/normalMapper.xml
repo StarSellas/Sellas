@@ -274,10 +274,6 @@ SET mbalance = mbalance + #{pamount}
 WHERE muuid = #{buyer}
 </update>
 
-<select id="alarmCount" parameterType="String" resultType = "Integer">
-	select COUNT(*) from alarm where oseller = #{muuid} and acheck = 1
-</select>
-
 <select id="productAmount" parameterType="Integer" resultType="Integer">
 	select tnormalprice from trade where tno = #{tno}
 </select>
