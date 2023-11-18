@@ -298,7 +298,7 @@ WHERE muuid = #{buyer}
 </select>
 
 <select id="SelectLastTno" resultType="Integer">
-SELECT MAX(tno) FROM normaltradeview;
+SELECT MAX(tno) FROM trade;
 </select>
 
 <update id="normalHikeUp" parameterType="Map">

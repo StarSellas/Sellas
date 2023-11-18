@@ -27,9 +27,10 @@
 <link rel="stylesheet" href="../css/review.css">
  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-        	
 
+        $(document).ready(function() {
+
+                
             // 선택한 값을 저장할 변수
             let ratePromiseValue = null;
             let rateResponseValue = null;
@@ -133,9 +134,9 @@
 		<div class="container px-4 px-lg-5 mt-5" style="z-index: 10">
 			<div class="row justify-content-center">
 				<form class="mb-3" name="review" id="review" method="post">
-				    <input type="hidden" name="pno" value="${reviewMember.pno}" />
-    <input type="hidden" name="pseller" value="${reviewMember.pseller}" />
-    <input type="hidden" name="pbuyer" value="${reviewMember.pbuyer}" />
+				    	<input type="hidden" name="pno" value="${reviewMember.pno}" />
+    					<input type="hidden" name="pseller" value="${reviewMember.pseller}" />
+    					<input type="hidden" name="pbuyer" value="${reviewMember.pbuyer}" />
 					<div class="question">약속 시간은 잘 지켰나요?
 					<fieldset id="ratePromise">
 						<input type="radio" name="reviewStar1" value="5" id="rate1"><label for="rate1">🐳</label>
@@ -158,7 +159,7 @@
 							<div class="explain4 explain-text2">!최고예요</div>
 							<div class="explain5 explain-text2">좋아요</div>
 							<div class="explain6 explain-text2">별로에요</div>
-							</div>
+								</div>
 					
 					</fieldset>
 					</div>
@@ -181,6 +182,7 @@
 						<div class="writeReview">따듯한 후기를 남겨주세요.(선택사항)</div>
 						<textarea style="height:140px;" class="col-auto form-control"  name="rcontent" id="reviewContents" placeholder="후기는 상대방 프로필에 보입니다."></textarea>
 					</div>
+					<span class="msg_box">${errorMsg.rcontent}</span>
 					<button type="button" class="reviewSubmit">후기보내기</button>
 				</form>
 

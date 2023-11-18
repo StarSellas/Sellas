@@ -4,6 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -58,39 +59,41 @@
 		</style>
 
 <!--
+
 <script type="text/javascript">
 var loading = "";
 $(function() {
-	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
+   loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/WHALE.gif" />').appendTo(document.body).hide();
 
-	// 로딩바 적용
-	loading.show();
+   // 로딩바 적용
+   loading.show();
 
-	//로딩바를 위해 1.5초 뒤 ajax 실행
-	timer = setTimeout(function(){
-		jQuery.ajax({
-			type : "POST",
-			url : "ajax.php",
-			data : $("#frm").serialize(),
-			cache: false,
-			success : function(data) {
-				if(data == "0000"){
-					alert("작업성공");
-					// 로딩바 해제
-					loading.hide();
-				} else{
-					// 로딩바 해제
-					loading.hide();   
-				}
-			},
-			error : function(e) {
-				// 로딩바 해제
-				loading.hide();
-			}, timeout:10000
-		});
-	},3000);      
+   //로딩바를 위해 1.5초 뒤 ajax 실행
+   timer = setTimeout(function(){
+      jQuery.ajax({
+         type : "POST",
+         url : "ajax.php",
+         data : $("#frm").serialize(),
+         cache: false,
+         success : function(data) {
+            if(data == "0000"){
+               alert("작업성공");
+               // 로딩바 해제
+               loading.hide();
+            } else{
+               // 로딩바 해제
+               loading.hide();   
+            }
+         },
+         error : function(e) {
+            // 로딩바 해제
+            loading.hide();
+         }, timeout:10000
+      });
+   },3000);      
 });
 </script>
+
 -->
 
 	</head>
@@ -99,10 +102,11 @@ $(function() {
 	
 	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 
-	<form action="./addTradeItem" method="post" id="productContainer">
 
-	<div class="page" id="page1">
-         
+   <form action="./addTradeItem" method="post" id="productContainer">
+
+   <div class="page" id="page1">
+
 		<div class="form-floating">
 			<input class="form-control" type="text" id="title" name="title" placeholder="제목" maxlength="50" required="required">
 			<label for="title">제목</label>
@@ -356,6 +360,7 @@ $picker2.on('click', () => {
             if ($box.find('img').length >= 4) {
                continue;
             }
+
             
             $previewImg = $(document.createElement('img'));
 			$previewImg.attr('height', '275px');
@@ -367,6 +372,7 @@ $picker2.on('click', () => {
 			$slide.attr('class', 'swiper-slide');
 			$slide.append($previewImg);
 			$box.append($slide);
+
          }
          alert($('.swiper-wrapper').children().length);
          pagination();
@@ -434,7 +440,9 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
+
          url: 'http://172.30.1.67:8080/file/upload2',
+
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
@@ -473,42 +481,42 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
          
          if(title.length < 5){
-        	 M.pop.instance("제목은 5글자 이상 작성해주세요.");
-        	 $("#title").focus();
-        	 return false;
+            M.pop.instance("제목은 5글자 이상 작성해주세요.");
+            $("#title").focus();
+            return false;
          }
          if(content.length < 5){
-        	 M.pop.instance("내용은 5글자 이상 작성해주세요.");
-        	 $("#content").focus();
-        	 return false;
+            M.pop.instance("내용은 5글자 이상 작성해주세요.");
+            $("#content").focus();
+            return false;
          }
          
          if(tradeType == 0){
-        	 if(normalPrice == 0 || normalPrice == null || normalPrice == ''){
-        		 M.pop.instance("가격을 입력해주세요.");
-        		 return false;
-        	 }
-        	 if(normalPrice < 1000){
-        		 M.pop.instance("최소 등록가격은 1000웨일 페이 이상입니다.");
-        		 return false;
-        	 }
+            if(normalPrice == 0 || normalPrice == null || normalPrice == ''){
+               M.pop.instance("가격을 입력해주세요.");
+               return false;
+            }
+            if(normalPrice < 1000){
+               M.pop.instance("최소 등록가격은 1000웨일 페이 이상입니다.");
+               return false;
+            }
          }
         if(tradeType == 1){
-        	if(auctionStartPrice == 0 || auctionStartPrice == null || auctionStartPrice == ''){
-        		M.pop.instance("시작 가격을 입력해주세요.");
-        		return false;
-        	}if(auctionMinBidUnit == 0 || auctionMinBidUnit == null || auctionMinBidUnit == ''){
-        		M.pop.instance("최소 입찰단위를 입력해주세요.");
-        		return false;
-        	}
+           if(auctionStartPrice == 0 || auctionStartPrice == null || auctionStartPrice == ''){
+              M.pop.instance("시작 가격을 입력해주세요.");
+              return false;
+           }if(auctionMinBidUnit == 0 || auctionMinBidUnit == null || auctionMinBidUnit == ''){
+              M.pop.instance("최소 입찰단위를 입력해주세요.");
+              return false;
+           }
         }
          if(category == null || category == ''){
-        	 M.pop.instance("카테고리를 선택해주세요.");
-        	 return false;
+            M.pop.instance("카테고리를 선택해주세요.");
+            return false;
          }
          if($previewImgArray.length == 0){
-        	 M.pop.instance("사진을 추가해주세요.");
-        		 return false;
+            M.pop.instance("사진을 추가해주세요.");
+               return false;
          }
       $.ajax({
          url : "./addTradeItem",
