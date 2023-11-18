@@ -10,8 +10,6 @@ button {
 }
 
 .endTypeButton {
-	position: fixed;
-	bottom: 100px;
 	color: white;
 	background-color: #88abff;
 }
@@ -115,7 +113,7 @@ button {
 .resultTitleT {
 	width: 100%;
 	margin: 20px 0px;
-	font-size: 40px;
+	font-size: 32px;
 	font-weight: bold;
 	color: rgba(33, 133, 255, 0.8);
 	text-align: center;
@@ -125,7 +123,7 @@ button {
 .resultTitleF {
 	width: 100%;
 	margin: 20px 0px;
-	font-size: 40px;
+	font-size: 32px;
 	font-weight: bold;
 	color: rgba(233, 53, 53, 0.7);
 	text-align: center;

@@ -145,7 +145,7 @@
 
 		<div class="page resultPage" id="page0" style="display:none">
 			<div class="form-floating">
-				<a href="./auctionDetail?tno=${auctionItemDetail.tno }"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+				<a href="#" onclick="window.location.reload();"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
 			</div>
 
 			<div class="form-floating">
@@ -188,7 +188,7 @@
 		<div class="page resultPage" id="page3" style="display:none">
 
 			<div class="form-floating">
-				<a href="./auctionDetail?tno=${auctionItemDetail.tno }"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+				<a href="#" onclick="window.location.reload();"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
 			</div>
 
 			<div class="form-floating">
@@ -204,7 +204,7 @@
 
 		<div class="page resultPage" id="page4" style="display:none">
 			<div class="form-floating">
-				<a href="./auctionDetail?tno=${auctionItemDetail.tno }"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+				<a href="#" onclick="window.location.reload();"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
 			</div>
 
 			<div class="form-floating">
