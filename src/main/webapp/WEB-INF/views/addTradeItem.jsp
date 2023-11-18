@@ -10,22 +10,25 @@
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<title>Shop Homepage - Start Bootstrap Template</title>
+		
 		<!-- Favicon-->
 		<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		
 		<!-- Bootstrap icons-->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+		
 		<!-- Core theme CSS (includes Bootstrap)-->
 		<link href="css/styles.css" rel="stylesheet" />
 		<link href="css/addTradeItem.css" rel="stylesheet" />
 
 		<!-- ******************* 추가 *********************** -->
-		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-		<script src="./js/jquery-3.7.0.min.js"></script>
+		<link href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet" >
+		<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"  />
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 		<script src="./js/wnInterface.js"></script> 
 		<script src="./js/mcore.min.js"></script> 
 		<script src="./js/mcore.extends.js"></script> 
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 		<style type="text/css">
 		.loading {
 			background-color: white;
@@ -92,9 +95,9 @@ $(function() {
 
 	</head>
 	<body>
-	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 	<%@ include file="menubar.jsp" %>
-
+	
+	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 
 	<form action="./addTradeItem" method="post" id="productContainer">
 
@@ -137,8 +140,10 @@ $(function() {
 						<button id="picker2" type="button"><img src="../img/image.png" width="38"></button>
 						<button id="camera" type="button"><img src="../img/camera.png" width="38"></button>
 					</div>
-					<!-- TODO : 미리보기 -->
-					<div id="box"></div>
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+						<div class="swiper-pagination"></div>
+					</div>
 					<div id="progress"></div>
 					<div id="upload-box"></div>
 				</div>
@@ -227,13 +232,29 @@ $(function() {
 	</form>
 
 	<!-- Core theme JS-->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="js/addTradeItem.js"></script>
 
 </body>
 
 <script type="text/javascript">
+
 // 모피어스 사진 촬영 및 앨범 사진 업로드
 // 작성자 : 이대원 ヽ(´▽`)/
+
+/* 이미지 */
+function pagination() {
+	const swiper = new Swiper('.swiper', {
+		pagination: {
+			el: '.swiper-pagination',
+		},
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+	});
+}
+
 
 $(function(){
 let cameraImagePath ='';
@@ -244,7 +265,7 @@ let $previewImgArray = [];
 let tradeType = 0;
 let count = 0;
 
-const $box = $('#box');
+const $box = $('.swiper-wrapper');
 const $uploadBox = $('#upload-box');
 const $progress = $('#progress');
 const $picker = $('#picker');
@@ -258,40 +279,45 @@ $("#camera").click(function(){
       return false;
    }
 
-   selectImagePath = [];
-   M.media.camera({
-      path: "/media",
-      mediaType: "PHOTO",
-      saveAlbum: true,
-      callback: function(status, result, option) {
-         if (status == 'SUCCESS') {
+	/* 업로드 이미지 미리보기 슬라이드 적용 */
+	selectImagePath = [];
+	M.media.camera({
+		path: "/media",
+		mediaType: "PHOTO",
+		saveAlbum: true,
+		callback: function(status, result, option) {
+			if (status == 'SUCCESS') {
               
-            var photo_path = result.fullpath;
-            $previewImgArray[count] = result.path;
-            selectImagePath[0] = result.path;
-            $.convertBase64ByPath2(selectImagePath)
-            .then(({ status, result }) => {
-            if (status === 'SUCCESS') {
-               $previewImg = $(document.createElement('img'))
-               $previewImg.attr('height', '200px')
-               $previewImg.attr('width', '200px');
-               $previewImg.attr('src', "data:image/png;base64," + result[0].data)
-           
-               $box.append($previewImg);
-               count++;
-               } else {
-                  return Promise.reject('BASE64 변환 실패')
-               }
-            })
-            .catch((err) => {
-               if (typeof err === 'string') alert(err)
-               console.error(err)
-            })
-               
-            //  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
-         }
-      }
-   });
+				var photo_path = result.fullpath;
+				$previewImgArray[count] = result.path;
+				selectImagePath[0] = result.path;
+				$.convertBase64ByPath2(selectImagePath)
+				.then(({ status, result }) => {
+					if (status === 'SUCCESS') {
+						$previewImg = $(document.createElement('img'));
+						$previewImg.attr('height', '275px');
+						$previewImg.attr('width', '275px');
+						$previewImg.attr('src', "data:image/png;base64," + result[0].data);
+						$previewImg.attr('class','rounded');
+						
+						$slide = $(document.createElement('div'));
+						$slide.attr('class', 'swiper-slide');
+						$slide.append($previewImg);
+						$box.append($slide);
+						pagination();
+						count++;
+					} else {
+						return Promise.reject('BASE64 변환 실패')
+					}
+				})
+				.catch((err) => {
+					if (typeof err === 'string') alert(err)
+					console.error(err)
+				})
+				//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
+			}
+		}
+	});
 }); 
 
 $picker2.on('click', () => {
@@ -328,19 +354,22 @@ $picker2.on('click', () => {
       if (status === 'SUCCESS') {
          for (let i = 0; i < result.length; i++) {
             if ($box.find('img').length >= 4) {
-               
                continue;
             }
             
-            
-            
-            let imageSrc = "data:image/png;base64," + result[i].data;
-            let $previewImg = $(document.createElement('img'));
-            $previewImg.attr('height', '200px');
-            $previewImg.attr('width', '200px');
-            $previewImg.attr('src', imageSrc);
-            $box.append($previewImg);
+            $previewImg = $(document.createElement('img'));
+			$previewImg.attr('height', '275px');
+			$previewImg.attr('width', '275px');
+			$previewImg.attr('src', "data:image/png;base64," + result[i].data);
+			$previewImg.attr('class','rounded');
+			
+			$slide = $(document.createElement('div'));
+			$slide.attr('class', 'swiper-slide');
+			$slide.append($previewImg);
+			$box.append($slide);
          }
+         alert($('.swiper-wrapper').children().length);
+         pagination();
       } else {
          return Promise.reject('이미지 가져오기 실패');
       }
