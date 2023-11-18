@@ -42,7 +42,7 @@
 		
 		if(sort == ""){
 			sort = 0
-			console.log("sort : " + sort)
+			//console.log("sort : " + sort)
 		} 
 		$(".sortForSearch").val(sort);
 		

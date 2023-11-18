@@ -132,10 +132,10 @@
 									<div class="userImgBox">
 										<c:choose>
 											<c:when test="${comments.mphoto ne null}">
-												<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
+												<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
 											</c:when>
 											<c:otherwise>
-												<img src="../img/흰배경셀라스.jpg" alt="basic-user-img"	class="userImg">
+												<img src="../userImgUpload/defaultimg.png" alt="basic-user-img"	class="userImg">
 											</c:otherwise>
 										</c:choose>
 									</div>

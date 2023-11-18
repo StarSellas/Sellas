@@ -103,7 +103,7 @@
                
                   // 다음페이지가 없다면 진행X
                   if(wholePage < currentPage){
-                	  	alert("마지막 페이지 입니다.");
+                	  	//alert("마지막 페이지 입니다.");
    						return false;
                   }
                   
@@ -138,23 +138,23 @@
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
                         	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>" +
-                        	                "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>" +
-                        	                "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">" +
-                        	                    "<span class='title'>" + this.list[i].btitle + "</span>" +
-                        	                    " <i class='xi-speech-o count' id='counticon'></i>" +
-                        	                    " <span class='commentcount'>" + this.list[i].commentcount + "</span>" +
-                        	                    (this.list[i].bimagecount > 0 ? "<span class='bphotoBox'><img src='./img/board_photo.png' class='bphoto' alt='img'></span>" : "") +
-                        	                    "<div class='UserBox'>" +
-                        	                        "<div class='userImgBox'>" +
-                        	                            (this.list[i].mphoto ? "<img src='./tradeImgUpload/defaultimg.jpg' alt='user-img' class='userImg'>" : "<img src='./tradeImgUpload/defaultimg.jpg' alt='basic-user-img' class='userImg'>") +
-                        	                        "</div>" +
-                        	                        "<span class='mnickname'>" + this.list[i].mnickname + "</span>" +
-                        	                    "</div>" +
-                        	                "</td>" +
-                        	                "<td class='bdateBox'>" +
-                        	                    "<div class='bdate'>" + this.list[i].bdate + "</div>" +
-                        	                "</td>" +
-                        	              "</tr>";
+		                        	                "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>" +
+		                        	                "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">" +
+		                        	                    "<span class='title'>" + this.list[i].btitle + "</span>" +
+		                        	                    " <i class='xi-speech-o count' id='counticon'></i>" +
+		                        	                    " <span class='commentcount'>" + this.list[i].commentcount + "</span>" +
+		                        	                    (this.list[i].bimagecount > 0 ? "<span class='bphotoBox'><img src='./img/board_photo.png' class='bphoto' alt='img'></span>" : "") +
+		                        	                    "<div class='UserBox'>" +
+		                        	                        "<div class='userImgBox'>" +
+		                        	                        (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>": "<img src='./tradeImgUpload/defaultimg.jpg' alt='basic-user-img' class='userImg'>") +
+		                        	                        "</div>" +
+		                        	                        "<span class='mnickname'>" + this.list[i].mnickname + "</span>" +
+		                        	                    "</div>" +
+		                        	                "</td>" +
+		                        	                "<td class='bdateBox'>" +
+		                        	                    "<div class='bdate'>" + this.list[i].bdate + "</div>" +
+		                        	                "</td>" +
+		                        	              "</tr>";
 	
 	                    	                    lastRow.after(newRow); // lastRow 뒤에 추가
 	                        	        	  
@@ -341,7 +341,7 @@
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${sessionScope.muuid ne null && mainList.mphoto ne null}">
-														<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
+														<img src="../userImgUpload/${mainList.mphoto}" class="bphoto" alt="userImg">
 													</c:when>
 													<c:otherwise>
 														<img src="./tradeImgUpload/defaultimg.jpg" alt="basic-user-img" class="userImg">
@@ -373,7 +373,7 @@
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${list.mphoto ne null}">
-														<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
+														<img src="../userImgUpload/${list.mphoto}" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
 														<img src="../img/defaultimg.jpg" alt="basic-user-img" class="userImg">
@@ -406,7 +406,7 @@
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${searchList.mphoto ne null}">
-														<img src="./tradeImgUpload/defaultimg.jpg" alt="user-img" class="userImg">
+														<img src="../userImgUpload/${searchList.mphoto}" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
 														<img src="../img/defaultimg.jpg" alt="basic-user-img" class="userImg">
