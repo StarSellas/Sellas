@@ -123,8 +123,11 @@
     background-clip: content-box, border-box;
 }
 
+.container1{
+	padding-left: 10px
+}
 .headinfo{
-	margin-bottom: 5px;
+	margin-bottom: 3px;
 }
 
 
@@ -137,7 +140,7 @@
 .storyhead{
 	border-bottom: 1px #dcdcdc solid;
 	padding-top: 70px;
-	padding-bottom: 10px;
+	padding-bottom: 8px;
 }
 
 .plus{

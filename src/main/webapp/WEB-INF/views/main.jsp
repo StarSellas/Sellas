@@ -316,7 +316,7 @@ $(function() {
    
    <!-- Header-->
    <header class="storyhead">
-      <div class="container">
+      <div class="container1">
          <div class="text-center">
             <h1 class="display-4 fw-bolder"></h1>
             <c:choose>
