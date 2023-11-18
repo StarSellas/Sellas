@@ -306,7 +306,7 @@ $(function() {
 
    <section class="py-3">
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
-         <div class="searchBox justify-content-center">
+         <div class="searchBox">
          
                <form action="./" method="get" class="searchFrom" id="searchFromM">
                   <div class="searchCateBox" id="searchCateBox">
