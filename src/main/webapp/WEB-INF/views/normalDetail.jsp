@@ -75,7 +75,6 @@
       <c:otherwise>
       <div class="swiper-slide">
                <img alt="" src="./tradeImgUpload/defaultimg.jpg" style="width:100%; height: 100%">
-               
            </div>
       </c:otherwise>
    </c:choose>

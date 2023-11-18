@@ -52,6 +52,13 @@ public class NormalController {
 	      Map<String, Object> mainMemberInfo = normalService.mainMember(muuid);
 	      // System.out.println("메인 회원의 정보입니다 : " + mainMemberInfo);
 	      model.addAttribute("memberInfo", mainMemberInfo);
+	      
+	      //TODO 경매내역 스토리
+	      List<Map<String, Object>> auctionStoryList = normalService.findAuctionStoryById(muuid);
+	      model.addAttribute("auctionStoryList", auctionStoryList);
+	      System.out.println("경매스토리를 만들어요~"+auctionStoryList);
+	    
+	      
 	      model.addAttribute("addTradeItem", 1);
 	      
 	   // 검색누른경우(검색값 없는경우 포함)

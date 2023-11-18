@@ -318,6 +318,7 @@
          
          
           $(".normalTradeChangeBtn").click(function () {
+        	  $(this).hide();
               // 선택한 이미지 이름 가져오기
               var imageName = $(this).data("image-name");
               var container = $(this).closest(".image-container");
@@ -326,6 +327,7 @@
           });
 
           $(".normalTradeChangeBtn").each(function (index) {
+        	  
               // 현재 .normalTradeChangeBtn에 대한 상위 .image-container 찾기
               var container = $(this).closest(".image-container");
               // .box 엘리먼트 찾기

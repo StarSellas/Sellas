@@ -277,6 +277,11 @@ const $upload = $('#upload');
 const $camera = $('#camera');
 const $picker2 = $('#picker2');
 
+M.onBack( function(e) {
+	M.page.back();
+});
+
+
 $("#camera").click(function(){
    if ($box.find('img').length >= 4) {
       alert('더 이상 이미지를 추가할 수 없습니다.');
