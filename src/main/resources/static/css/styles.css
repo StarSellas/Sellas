@@ -12,6 +12,17 @@
  */
  
 /* ******************** css 수정 *************************/ 
+.productcontent{
+	margin-top: 15px;
+}
+
+.normalTtitle{
+	 display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .tradeRow{
 position: relative;	
 }

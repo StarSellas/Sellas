@@ -4,7 +4,8 @@
 
 <insert id="signup" parameterType="Map">
 	INSERT INTO member (muuid, mid, mpw, mname, mnickname, memail, mphone, maddress, mdetailaddress)
-	VALUES(#{uuid}, #{id}, HEX(AES_ENCRYPT(#{pw}, 'sellas')), #{name}, #{nickname}, #{email}, #{phone}, #{address}, #{detailaddress})
+	<!-- VALUES(#{uuid}, #{id}, HEX(AES_ENCRYPT(#{pw}, 'sellas')), #{name}, #{nickname}, #{email}, #{phone}, #{address}, #{detailaddress}) -->
+	VALUES(#{uuid}, #{id}, #{pw}, #{name}, #{nickname}, #{email}, #{phone}, #{address}, #{detailaddress})
 </insert>
 
 <select id="idDuplicationCheck" parameterType="String" resultType="Integer">

@@ -35,7 +35,7 @@
 	<footer id="footer" style="z-index: 9999">
 		<c:if test="${addTradeItem == 1 }">
 			<div style="position: absolute; right: 0px; bottom: 95px;"
-				class="swrite" id="tWriteBtnBox" onclick="location.href='./addTradeItem'">
+				class="tradewrite" id="tWriteBtnBox" onclick="location.href='./addTradeItem'">
 				<button id="tWriteBtn">물품 등록</button>
 			</div>
 		</c:if>
