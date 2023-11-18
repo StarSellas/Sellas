@@ -485,26 +485,36 @@ $(function(){
           </div>
           <div class="type_msg">
             <div class="input_msg_write">
-            	<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
-              	<div class="otherBtnBox hide">
+            
+            	                	<div class="input-group mb-3">
+            	                	<c:if test="${tnormalstate ==0 }">
+  <button class="btn btn-outline-secondary" id="tradeok" type="button">Button</button>
+  <button class="btn btn-outline-secondary" type="button">Button</button>
+  </c:if>
+  <input type="text" class="form-control" placeholder="" aria-label="Example text with two button addons">
+</div>
+           
+<%--               	<div class="otherBtnBox hide">
               		<c:if test="${tnormalstate ==0 }">
               			<div class="trade-buttons">
                 			<button id="tradeamount">금액제시</button>
                       		<button id="tradeRequest">제시하기</button>
                       	</div>
                 	</c:if>
+                	<!-- 야!!!!!!!!!!!!!!!!여기수정이다!!!!!!!!!!!!!!!!! -->
                 	<c:if test="${tnormalstate == 1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
                 		<div class="tradeAcceptOrCancel2">
                 			<button id="tradeAccept">수령완료</button>
                       		<button id="tradeCancel">거래취소</button>
                       	</div>
                 	</c:if>
+                	<!-- 여기까지가 원래 부분입니다요!!!!!!!!!!!!!!! -->     	
                 	<div class="tradeAcceptOrCancel">
 						<button id="tradeAccept">수령완료</button>
                       	<button id="tradeCancel">거래취소</button>
 					</div>
                 </div>
-              	<input type="text" class="write_msg" id="messages" />
+              	<input type="text" class="write_msg form-control" id="messages" /> --%>
             </div>
           </div>
 	</div>

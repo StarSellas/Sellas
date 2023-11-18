@@ -1,16 +1,27 @@
 @charset "UTF-8";
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{
+	font-family: 'NanumSquareNeo-Variable';
+}
+
+a{
+	color: inherit !important;
+}
+
+
 img {
   max-width: 100%;
 }
 .inbox_people {
-	position: fixed;
-	display: fixed;
-	height: 60px;
-  background: #f8f8f8 none repeat scroll 0 0;
-  float: left;
-  overflow: hidden;
-  width: 100%;
-  padding-top: 10px;
+background-color: #a6e4ff;
+color: white;
+font-weight: bold;
 }
 
 .inbox_msg {
@@ -35,7 +46,8 @@ img {
 }
 
 .recent_heading h4 {
-  color: #05728f;
+ color: white;
+ font-weight: bold;
   font-size: 21px;
   margin: 0;
 }
@@ -44,7 +56,6 @@ img {
 	padding: 0 0 0 0;
 	}
 .msg_history {
-	margin-top:60px;
   height: 730px;
   overflow-y: auto;
   padding: 30px 15px 0 25px;
@@ -66,12 +77,12 @@ img {
  }
  .received_withd_msg p {
   background: #ebebeb none repeat scroll 0 0;
-  border-radius: 3px;
+  border-radius: 5px;
   color: #646464;
   font-size: 14px;
-  margin: 0;
   padding: 5px 10px 5px 12px;
   width: 100%;
+  margin-bottom: 5px;
 }
 .time_date {
   color: #747474;
@@ -85,7 +96,7 @@ img {
 
  .sent_msg p {
   background: #88abff none repeat scroll 0 0;
-  border-radius: 3px;
+  border-radius: 5px;
   font-size: 14px;
   margin: 0; color:#fff;
   padding: 5px 10px 5px 12px;
@@ -94,6 +105,7 @@ img {
 .outgoing_msg{ 
 	overflow:hidden; 
 	margin:26px 0 26px;
+/* 	    height: 80px; */
 }
 .sent_msg {
   float: right;
