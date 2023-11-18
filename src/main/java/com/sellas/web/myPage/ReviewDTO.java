@@ -1,6 +1,7 @@
 package com.sellas.web.myPage;
 
-import org.intellij.lang.annotations.Pattern;
+
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 
