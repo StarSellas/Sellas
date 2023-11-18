@@ -306,4 +306,25 @@ UPDATE trade
 SET tno = #{LastTno}, tnormalhikeup = tnormalhikeup +1
 WHERE tno = #{tno}
 </update>
+
+<select id="findAuctionStoryById" parameterType="String" resultType="Map">
+  SELECT ah.*, ah.abiddate AS tdate, ti.timage, t.ttitle
+FROM auctionhistory ah
+JOIN trade t ON ah.tno = t.tno
+LEFT JOIN tradeimage ti ON t.tno = ti.tno
+WHERE ah.abidder =#{muuid}
+  AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL)
+  AND (ah.tno, ah.abiddate) IN (
+    SELECT ah_sub.tno, MAX(ah_sub.abiddate) AS max_abiddate
+    FROM auctionhistory ah_sub
+    WHERE ah_sub.abidder =#{muuid}
+    GROUP BY ah_sub.tno
+    HAVING COUNT(*) >= 1
+  )
+ORDER BY ah.astate, ah.ano DESC;
+
+</select>
+
+
+
 </mapper>

@@ -11,6 +11,10 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title>Shop Homepage - Start Bootstrap Template</title>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Bootstrap icons-->
@@ -24,7 +28,7 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
    href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-   
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="./js/jquery-3.7.0.min.js"></script>
 <script src="./js/wnInterface.js"></script> 
       <script src="./js/mcore.min.js"></script> 
@@ -253,8 +257,7 @@ $(function() {
    });   // 스크롤
 
 });    
-   </script>
-   
+   </script>   
                      <!---------------- 검색 ------------------>
                <script type="text/javascript">
                
@@ -313,19 +316,35 @@ $(function() {
    
    <!-- Header-->
    <header class="storyhead">
-      <div class="container px-4 px-lg-5 my-5">
+      <div class="container">
          <div class="text-center">
             <h1 class="display-4 fw-bolder"></h1>
             <c:choose>
                <c:when test="${memberInfo != null }">
-                  <p class="lead fw-normal text-white-50 mb-0">안녕하세요
-                  <br> <fmt:formatNumber value="${memberInfo.mbalance }" pattern="#,### 웨일페이"/>
-                여기서부터 시작하겠습니다.
-                     ${memberInfo.mnickname }님!!</p>
-	
+               <div class="headinfo">${memberInfo.mnickname}님의 경매현황</div>
+               
+<!-- Slider main container -->
+<div class="swiper mySwiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+<c:if test="${auctionStoryList ne null}">
+    <c:forEach items="${auctionStoryList}" var="i" varStatus="loop">
+        <div class="swiper-slide">
+            <div class="user-img" onclick="location.href='./auctionDetail?tno=${i.tno}'"
+     style="${i.astate == 2 ? 'border: 3px solid #00b53f;' :
+      (i.astate == 1 ? 'border: 3px solid #e33939;' : '')}">
+                <img alt="경매물품" src="./tradeImgUpload/${i.timage}" class="user-img-img">    
+            </div>
+        </div>
+    </c:forEach>
+</c:if>
+  </div>
+</div>
+<div class="footerinfo">현재 웨일페이 : <fmt:formatNumber value="${memberInfo.mbalance}" pattern="#,###원"/></div>
                </c:when>
                <c:otherwise>
-                  <p class="lead fw-normal text-white-50 mb-0">로그인 해주세요</p>
+                  <p class="lead fw-normal text-gray-50 mb-0">로그인 해주세요</p>
                   <a href="./login">로그인</a>
                </c:otherwise>
             </c:choose>
@@ -337,7 +356,7 @@ $(function() {
 
    <section class="py-3">
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
-         <div class="searchBox justify-content-center">
+         <div class="searchBox">
          
                <form action="./" method="get" class="searchFrom" id="searchFromM">
                   <div class="searchCateBox" id="searchCateBox">
@@ -509,5 +528,17 @@ $(function(){
    cutTitle();
 
 });
+
+var swiper = new Swiper(".mySwiper", {
+  slidesPerView: 3,
+  spaceBetween: 20,
+  freeMode: true,
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+});
+
+
 </script>
 </html>

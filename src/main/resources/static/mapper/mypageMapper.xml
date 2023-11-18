@@ -122,6 +122,7 @@ WHERE t.muuid=#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL) AND ttype
 ORDER BY t.tno DESC;
 </select>
 
+
 <select id="getAucBuy" parameterType="String" resultType="Map">
 SELECT ah.*, ah.abiddate AS tdate, ti.timage, t.ttitle
 FROM auctionhistory ah
@@ -137,6 +138,7 @@ WHERE ah.abidder =#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL)
   )
   ORDER BY ah.ano DESC;
 </select>
+
 
 
 
