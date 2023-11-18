@@ -22,10 +22,17 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		<script src="./js/jquery-3.7.0.min.js"></script>
+		<script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script>
 	</head>
 	<body>
 	
-	
+
+	<div class="form-floating">
+		<a href="./login"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+	</div>
+
 	<div class="loginDiv">
 
 	<div>
@@ -43,7 +50,7 @@
 		</div>
 
 		<div class="form-floating">
-			<button class="loginButton" id="loginButton" onclick="login()">로그인</button>
+			<button class="endTypeButton" id="loginButton" onclick="login()">로그인</button>
 		</div>
 	</div>
 	<div class="form-floating">
