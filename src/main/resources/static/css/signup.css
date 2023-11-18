@@ -45,6 +45,10 @@ button {
 	text-align: center;
 }
 
+.text {
+	text-decoration: none;
+}
+
 #sendCode {
 	margin-top: 10px;
 	margin-bottom: 10px;

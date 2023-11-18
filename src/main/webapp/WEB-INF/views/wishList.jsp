@@ -51,25 +51,25 @@
                                     <div class="col-4">
                                         <c:choose>
     <c:when test="${row.timage ne null}">
-      <img src="./tradeImgUpload/${row.timage}" id="timage" class="custom-rounded-start object-fit-cover" alt="물품이미지">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
     </c:when>
     <c:otherwise>
-      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="custom-rounded-start object-fit-cover" alt="기본이미지" />
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
     </c:otherwise>
       </c:choose>
-                </div>
-                <div class="col-8">
-                <div class="card-body">
-                <h5 class="card-title">${row.ttitle}</h5>
-                   <p class="card-text">
-                   <p class="card-text">
-                  <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
-        			</p>
-       			 <small class="text-body-secondary tdate1">
-        			 ${row.displayDate}
-        		</small>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${row.ttitle}</h5>
+                                            <p class="card-text">
+                                                <p class="card-text">
+                                                    <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
+                                                </p>
+        <small class="text-body-secondary tdate">
+         ${row.displayDate}
+        </small>
                                     <div class="row2">
-                                    	<div class="setup info">
+                                    	<div class="setup">
 								<c:if test="${row.tnormalstate eq 0 }">판매중</c:if>
 								<c:if test="${row.tnormalstate eq 1 }">거래중</c:if>
 								<c:if test="${row.tnormalstate eq 2 }">판매완료</c:if>
