@@ -222,6 +222,11 @@ public class NormalService {
 		// TODO Auto-generated method stub
 		return normalDAO.SelectLastTno();
 	}
+	
+	//TODO 경매스토리
+	public List<Map<String, Object>> findAuctionStoryById(String muuid) {
+		return  normalDAO.findAuctionStoryById(muuid);
+	}
 
 
 

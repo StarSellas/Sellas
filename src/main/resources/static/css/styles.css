@@ -12,7 +12,11 @@
  */
  
 /* ******************** css 수정 *************************/ 
-.normalTitle{
+.productcontent{
+	margin-top: 15px;
+}
+
+.normalTtitle{
 	 display: block;
     width: 100%;
     overflow: hidden;
