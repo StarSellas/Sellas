@@ -4,56 +4,61 @@
 
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-      <meta name="description" content="" />
-      <meta name="author" content="" />
-      <title>Shop Homepage - Start Bootstrap Template</title>
-      <!-- Favicon-->
-      <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-      <!-- Bootstrap icons-->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-      <!-- Core theme CSS (includes Bootstrap)-->
-      <link href="css/styles.css" rel="stylesheet" />
-      <link href="css/addTradeItem.css" rel="stylesheet" />
 
-      <!-- ******************* 추가 *********************** -->
-      <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-      <script src="./js/jquery-3.7.0.min.js"></script>
-      <script src="./js/wnInterface.js"></script> 
-      <script src="./js/mcore.min.js"></script> 
-      <script src="./js/mcore.extends.js"></script> 
-      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
-      <style type="text/css">
-      .loading {
-         background-color: white;
-         z-index: 999;
-      }
-      #loading {
-         position: fixed;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         background-color: white; /* 배경색을 흰색으로 지정 */
-         z-index: 999;
-         text-align: center;
-      }
-      #loading_img {
-         position: absolute;
-         top: 0;
-         left: 0;
-         width: 100%;
-         height: 100%;
-         object-fit: contain;
-         z-index: 999;
-         max-width: 100%;
-         max-height: 100%;
-      }
-      </style>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<title>Shop Homepage - Start Bootstrap Template</title>
+		
+		<!-- Favicon-->
+		<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		
+		<!-- Bootstrap icons-->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+		
+		<!-- Core theme CSS (includes Bootstrap)-->
+		<link href="css/styles.css" rel="stylesheet" />
+		<link href="css/addTradeItem.css" rel="stylesheet" />
 
+		<!-- ******************* 추가 *********************** -->
+		<link href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet" >
+		<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"  />
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
+		<script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script> 
+		<style type="text/css">
+		.loading {
+			background-color: white;
+			z-index: 999;
+		}
+		#loading {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: white; /* 배경색을 흰색으로 지정 */
+			z-index: 999;
+			text-align: center;
+		}
+		#loading_img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			z-index: 999;
+			max-width: 100%;
+			max-height: 100%;
+		}
+		</style>
+
+<!--
 
 <script type="text/javascript">
 var loading = "";
@@ -89,151 +94,171 @@ $(function() {
 });
 </script>
 
+-->
 
-   </head>
-   <body>
-   <form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
-   <%@ include file="menubar.jsp" %>
+	</head>
+	<body>
+	<%@ include file="menubar.jsp" %>
+	
+	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 
 
    <form action="./addTradeItem" method="post" id="productContainer">
 
    <div class="page" id="page1">
-         
-      <div class="form-floating">
-         <input class="form-control" type="text" id="title" name="title" placeholder="제목" maxlength="50" required="required">
-         <label for="title">제목</label>
-      </div>
 
-      <div class="form-floating">
-         <textarea class="form-control" id="content" name="content" placeholder="내용" required="required"></textarea>
-         <label for="content">내용</label>
-      </div>
+		<div class="form-floating">
+			<input class="form-control" type="text" id="title" name="title" placeholder="제목" maxlength="50" required="required">
+			<label for="title">제목</label>
+		</div>
 
-      <input type="hidden" id="category" name="category" value="">
-      <div id="categoryDiv">
-         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</a>
-               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <c:forEach var="itemCategory" items="${itemCategory }">
-                     <li><div class="dropdown-item" id="category${itemCategory.key }" onclick="setCategory(${itemCategory.key })">${itemCategory.value }</div></li>
-                     <li><hr class="dropdown-divider" /></li>
-                  </c:forEach>
-               </ul>
-            </li>
-         </ul>
-      </div>
+		<div class="form-floating">
+			<textarea class="form-control" id="content" name="content" placeholder="내용" required="required"></textarea>
+			<label for="content">내용</label>
+		</div>
 
-      <div class="accordion form-floating" id="accordion">
-         <div class="accordion-item">
-            <h2 class="accordion-header">
-               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
-                  사진 추가하기
-               </button>
-            </h2>
-            <div id="collapsePhoto" class="accordion-collapse collapse">
-               <div class="accordion-body">
-                  <button id="picker2" type="button"><img src="../img/image.png" width="38"></button>
-                  <button id="camera" type="button"><img src="../img/camera.png" width="38"></button>
-               </div>
-               <!-- TODO : 미리보기 -->
-               <div id="box"></div>
-               <div id="progress"></div>
-               <div id="upload-box"></div>
-            </div>
-         </div>
-      </div>
+		<input type="hidden" id="category" name="category" value="">
+		<div id="categoryDiv">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">카테고리</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<c:forEach var="itemCategory" items="${itemCategory }">
+							<li><div class="dropdown-item" id="category${itemCategory.key }" onclick="setCategory(${itemCategory.key })">${itemCategory.value }</div></li>
+							<li><hr class="dropdown-divider" /></li>
+						</c:forEach>
+					</ul>
+				</li>
+			</ul>
+		</div>
 
-      <div class="form-floating">
-         <button type="button" onclick="showPage('page2')">거래 희망 장소 선택하기</button>
-      </div>
+		<div class="accordion form-floating" id="accordion">
+			<div class="accordion-item">
+				<h2 class="accordion-header">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoto" aria-expanded="false" aria-controls="collapsePhoto">
+						사진 추가하기
+					</button>
+				</h2>
+				<div id="collapsePhoto" class="accordion-collapse collapse">
+					<div class="accordion-body">
+						<button id="picker2" type="button"><img src="../img/image.png" width="38"></button>
+						<button id="camera" type="button"><img src="../img/camera.png" width="38"></button>
+					</div>
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+						<div class="swiper-pagination"></div>
+					</div>
+					<div id="progress"></div>
+					<div id="upload-box"></div>
+				</div>
+			</div>
+		</div>
 
-      <input type="hidden" id="locationLat" name="locationLat">
-      <input type="hidden" id="locationLng" name="locationLng">
+		<div class="form-floating">
+			<button type="button" onclick="showPage('page2')">거래 희망 장소 선택하기</button>
+		</div>
 
-      <div class="form-floating">
-         <button type="button" id="type0" onclick="selectTradeType('0')" class="selectedType">일반</button>
-         <button type="button" id="type1" onclick="selectTradeType('1')">경매</button>
-         <input type="hidden" id="tradeType" name="tradeType" value="0">
-      </div>
+		<input type="hidden" id="locationLat" name="locationLat">
+		<input type="hidden" id="locationLng" name="locationLng">
 
-      <div id="normalTradeDiv">
-         <div class="form-floating">
-            <input class="form-control" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
-            <label for="normalPrice">가격</label>
-         </div>
-      </div>
+		<div class="form-floating">
+			<button type="button" id="type0" onclick="selectTradeType('0')" class="selectedType">일반</button>
+			<button type="button" id="type1" onclick="selectTradeType('1')">경매</button>
+			<input type="hidden" id="tradeType" name="tradeType" value="0">
+		</div>
 
-      <div id="auctionTradeDiv" style="display:none">
-         <div class="form-floating">
-            <input class="form-control" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
-            <label for="auctionStartPrice">경매시작가격</label>
-         </div>
-         <div class="form-floating">
-            <input class="form-control" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
-            <label for="auctionMinBidUnit">최소입찰단위</label>
-         </div>
-      </div>
+		<div id="normalTradeDiv">
+			<div class="form-floating">
+				<input class="form-control" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
+				<label for="normalPrice">가격</label>
+			</div>
+		</div>
 
-      <div class="form-floating">
-         <button class="endTypeButton" type="button" id="addTradeItemBtn">확인</button>
-      </div>
+		<div id="auctionTradeDiv" style="display:none">
+			<div class="form-floating">
+				<input class="form-control" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
+				<label for="auctionStartPrice">경매시작가격</label>
+			</div>
+			<div class="form-floating">
+				<input class="form-control" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
+				<label for="auctionMinBidUnit">최소입찰단위</label>
+			</div>
+		</div>
 
-   </div>
+		<div class="form-floating">
+			<button class="endTypeButton" type="button" id="addTradeItemBtn">확인</button>
+		</div>
 
-   <div class="page" id="page2">
+	</div>
+
+	<div class="page" id="page2">
       
-      <div id="map" style="width: 100%; height: 350px"></div>
-      <div id="userLocationDiv"></div>
-      <div>
-         <!-- ${locationList } -->
-         <div class="accordion form-floating" id="accordion">
-            <div class="accordion-item">
-               <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLocaiton" aria-expanded="false" aria-controls="collapseLocaiton">
-                     내 장소 선택하기
-                  </button>
-               </h2>
-               <div id="collapseLocaiton" class="accordion-collapse collapse">
-                  <div class="accordion-body">
-                     <c:forEach var="locationList" items="${locationList }">
-                        <div>
-                           <div class="locationButtonDiv">
-                              <div class="locationNameDiv"><div>${locationList.lname }</div></div>
-                              <button class="locationButton" type="button" onclick="selectLocation('${locationList.lname}')">선택<!-- img src="../img/location.png" width="25" --></button>
-                              <input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
-                              <input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
-                           </div>
-                        </div>
-                     </c:forEach>
-                     <div class="addLocationDiv">
-                        <a class="text" href="./addTradeLocation">내 장소 등록하기</a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="form-floating">
-            <button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
-         </div>
-         <div class="form-floating">
-            <button class="endTypeButton" type="button" onclick="showPage('page1')">선택 완료</button>
-         </div>
-      </div>
+		<div id="map" style="width: 100%; height: 350px"></div>
+		<div id="userLocationDiv"></div>
+		<div>
+			<!-- ${locationList } -->
+			<div class="accordion form-floating" id="accordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLocaiton" aria-expanded="false" aria-controls="collapseLocaiton">
+							내 장소 선택하기
+						</button>
+					</h2>
+					<div id="collapseLocaiton" class="accordion-collapse collapse">
+						<div class="accordion-body">
+							<c:forEach var="locationList" items="${locationList }">
+								<div>
+									<div class="locationButtonDiv">
+										<div class="locationNameDiv"><div>${locationList.lname }</div></div>
+										<button class="locationButton" type="button" onclick="selectLocation('${locationList.lname}')">선택<!-- img src="../img/location.png" width="25" --></button>
+										<input type="hidden" id="${locationList.lname }lat" value="${locationList.llat }">
+										<input type="hidden" id="${locationList.lname }lng" value="${locationList.llng }">
+									</div>
+								</div>
+							</c:forEach>
+							<div class="addLocationDiv">
+								<a class="text" href="./addTradeLocation">내 장소 등록하기</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-floating">
+				<button type="button" onclick="markingCurrentLocation()">현재 위치로 설정하기</button>
+			</div>
+			<div class="form-floating">
+				<button class="endTypeButton" type="button" onclick="showPage('page1')">선택 완료</button>
+			</div>
+		</div>
 
-   </div>
+	</div>
 
-   </form>
+	</form>
 
-   <!-- Core theme JS-->
-   <script src="js/addTradeItem.js"></script>
+	<!-- Core theme JS-->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="js/addTradeItem.js"></script>
 
 </body>
 
 <script type="text/javascript">
+
 // 모피어스 사진 촬영 및 앨범 사진 업로드
 // 작성자 : 이대원 ヽ(´▽`)/
+
+/* 이미지 */
+function pagination() {
+	const swiper = new Swiper('.swiper', {
+		pagination: {
+			el: '.swiper-pagination',
+		},
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+	});
+}
+
 
 $(function(){
 let cameraImagePath ='';
@@ -244,7 +269,7 @@ let $previewImgArray = [];
 let tradeType = 0;
 let count = 0;
 
-const $box = $('#box');
+const $box = $('.swiper-wrapper');
 const $uploadBox = $('#upload-box');
 const $progress = $('#progress');
 const $picker = $('#picker');
@@ -263,40 +288,45 @@ $("#camera").click(function(){
       return false;
    }
 
-   selectImagePath = [];
-   M.media.camera({
-      path: "/media",
-      mediaType: "PHOTO",
-      saveAlbum: true,
-      callback: function(status, result, option) {
-         if (status == 'SUCCESS') {
+	/* 업로드 이미지 미리보기 슬라이드 적용 */
+	selectImagePath = [];
+	M.media.camera({
+		path: "/media",
+		mediaType: "PHOTO",
+		saveAlbum: true,
+		callback: function(status, result, option) {
+			if (status == 'SUCCESS') {
               
-            var photo_path = result.fullpath;
-            $previewImgArray[count] = result.path;
-            selectImagePath[0] = result.path;
-            $.convertBase64ByPath2(selectImagePath)
-            .then(({ status, result }) => {
-            if (status === 'SUCCESS') {
-               $previewImg = $(document.createElement('img'))
-               $previewImg.attr('height', '200px')
-               $previewImg.attr('width', '200px');
-               $previewImg.attr('src', "data:image/png;base64," + result[0].data)
-           
-               $box.append($previewImg);
-               count++;
-               } else {
-                  return Promise.reject('BASE64 변환 실패')
-               }
-            })
-            .catch((err) => {
-               if (typeof err === 'string') alert(err)
-               console.error(err)
-            })
-               
-            //  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
-         }
-      }
-   });
+				var photo_path = result.fullpath;
+				$previewImgArray[count] = result.path;
+				selectImagePath[0] = result.path;
+				$.convertBase64ByPath2(selectImagePath)
+				.then(({ status, result }) => {
+					if (status === 'SUCCESS') {
+						$previewImg = $(document.createElement('img'));
+						$previewImg.attr('height', '275px');
+						$previewImg.attr('width', '275px');
+						$previewImg.attr('src', "data:image/png;base64," + result[0].data);
+						$previewImg.attr('class','rounded');
+						
+						$slide = $(document.createElement('div'));
+						$slide.attr('class', 'swiper-slide');
+						$slide.append($previewImg);
+						$box.append($slide);
+						pagination();
+						count++;
+					} else {
+						return Promise.reject('BASE64 변환 실패')
+					}
+				})
+				.catch((err) => {
+					if (typeof err === 'string') alert(err)
+					console.error(err)
+				})
+				//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
+			}
+		}
+	});
 }); 
 
 $picker2.on('click', () => {
@@ -333,16 +363,24 @@ $picker2.on('click', () => {
       if (status === 'SUCCESS') {
          for (let i = 0; i < result.length; i++) {
             if ($box.find('img').length >= 4) {
-               
                continue;
             }
-            let imageSrc = "data:image/png;base64," + result[i].data;
-            let $previewImg = $(document.createElement('img'));
-            $previewImg.attr('height', '200px');
-            $previewImg.attr('width', '200px');
-            $previewImg.attr('src', imageSrc);
-            $box.append($previewImg);
+
+            
+            $previewImg = $(document.createElement('img'));
+			$previewImg.attr('height', '275px');
+			$previewImg.attr('width', '275px');
+			$previewImg.attr('src', "data:image/png;base64," + result[i].data);
+			$previewImg.attr('class','rounded');
+			
+			$slide = $(document.createElement('div'));
+			$slide.attr('class', 'swiper-slide');
+			$slide.append($previewImg);
+			$box.append($slide);
+
          }
+         alert($('.swiper-wrapper').children().length);
+         pagination();
       } else {
          return Promise.reject('이미지 가져오기 실패');
       }
@@ -407,7 +445,9 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.52:8080/file/upload2',
+
+         url: 'http://172.30.1.67:8080/file/upload2',
+
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({

@@ -138,6 +138,9 @@ function validateOnKeyUp(event)	{
 				pwcheckInputChecked = true;
 				// pwcheck OK
 				clearMessage(msgDiv);
+				
+				// 비밀번호 암호화
+				document.getElementById("encryptPassword").value = encryptPassword(password);
 			}
 			break;
 			
@@ -338,6 +341,12 @@ function validateEmailCode() {
 			alert("ERROR : " + JSON.stringify(error));
 		}
 	});
+}
+
+/* 비밀번호 암호화 */
+function encryptPassword(pw) {
+	
+	return M.sec.encrypt(pw).result;
 }
 
 /* Message 출력 */

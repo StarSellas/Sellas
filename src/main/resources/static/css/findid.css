@@ -1,5 +1,18 @@
 @charset "UTF-8";
 
+@font-face {
+	font-family: 'NanumSquareNeo-Variable';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2')
+		format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: 'NanumSquareNeo-Variable';
+}
+
 button {
 	width: 350px;
 	height: 50px;
@@ -9,8 +22,14 @@ button {
 	margin: 0px auto;
 }
 
+.sellasText {
+	margin-top: 200px;
+	margin-bottom: 50px;
+	width: 300px;
+}
+
 .page {
-	margin: 200px 0px;
+	margin-bottom: 200px;
 }
 
 .form-floating {
@@ -23,6 +42,18 @@ button {
 
 .text {
 	text-decoration: none;
+}
+
+.resultText {
+	font-size: 40px;
+	font-weight: bold;
+	color: rgba(33, 133, 255, 0.8);
+}
+
+.guideText {
+	margin: 20px 0px;
+	font-size: 22px;
+	color: rgba(0, 0, 0, 0.7);
 }
 
 .idDiv {
