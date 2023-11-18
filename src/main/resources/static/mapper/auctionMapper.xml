@@ -9,26 +9,8 @@
 </select>
 
 <sql id="auctionListBaseSQL">
-	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname,
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname, tradeimage.timage, tradeimage.tthumbnail,
 	COALESCE(auctionhistory.abidprice, 0) AS abidprice,
-	COALESCE(auctionhistory.abidprice + trade.tauctionminbidunit, trade.tauctionstartprice) AS minbidprice
-	FROM trade
-		INNER JOIN member
-		ON member.muuid = trade.muuid
-		INNER JOIN itemcategory
-		ON itemcategory.ino = trade.ino
-		LEFT JOIN auctionhistory
-		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
-	WHERE trade.ttype = 1 AND trade.tauctionstate = 2
-</sql>
-
-<sql id="searchKeywordSQL">
-    AND (trade.ttitle LIKE CONCAT('%', #{keyword}, '%') OR member.mnickname LIKE CONCAT('%', #{keyword}, '%'))
-</sql>
-
-<select id="getAuctionItemList" parameterType="Map" resultType="Map">
-	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname,
-	COALESCE(auctionhistory.abidprice, 0) AS abidprice,tradeimage.timage,tradeimage.tthumbnail,
 	COALESCE(auctionhistory.abidprice + trade.tauctionminbidunit, trade.tauctionstartprice) AS minbidprice
 	FROM trade
 		INNER JOIN member
@@ -39,7 +21,15 @@
 		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
 		LEFT JOIN tradeimage
 		ON tradeimage.tno = trade.tno
-	WHERE trade.ttype = 1 AND trade.tauctionstate = 2
+	WHERE trade.ttype = 1 AND trade.tauctionstate = 2 AND tradeimage.tthumbnail = 0
+</sql>
+
+<sql id="searchKeywordSQL">
+    AND (trade.ttitle LIKE CONCAT('%', #{keyword}, '%') OR member.mnickname LIKE CONCAT('%', #{keyword}, '%'))
+</sql>
+
+<select id="getAuctionItemList" parameterType="Map" resultType="Map">
+	<include refid="auctionListBaseSQL"/>
 	<if test="keyword != null and keyword != ''">
         <include refid="searchKeywordSQL"/>
     </if>
@@ -185,8 +175,8 @@
 </insert>
 
 <select id="auctionImageList" resultType="Map">
-SELECT *
-FROM tradeimage
-WHERE tno = #{tno}
+	SELECT *
+	FROM tradeimage
+	WHERE tno = #{tno}
 </select>
 </mapper>
