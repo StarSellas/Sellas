@@ -539,7 +539,7 @@
                return false;
             }
             if($("#tnormalprice").val() < 1000){
-            	M.pop.instance("최소가격은 1000 웨일페이 이상입니다.");
+            	M.pop.instance("최소 가격은 1000원 이상입니다.");
                $("#tnormalprice").focus();
                return false;
             }

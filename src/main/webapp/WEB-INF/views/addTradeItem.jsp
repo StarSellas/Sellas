@@ -502,7 +502,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
                return false;
             }
             if(normalPrice < 1000){
-               M.pop.instance("최소 등록가격은 1000웨일 페이 이상입니다.");
+               M.pop.instance("최소 등록가격은 1000원 이상입니다.");
                return false;
             }
          }
