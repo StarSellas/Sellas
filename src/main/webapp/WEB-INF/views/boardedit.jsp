@@ -210,6 +210,7 @@
                   selectImagePath[count] = null;
                   continue;
                }
+<<<<<<< HEAD
             })
             .then(({ status, result }) => {
                if (status === 'SUCCESS') {
@@ -385,7 +386,7 @@
           $.uploadImageByPath2 = function ($previewImgArray, bno,cate, progress) {
                return new Promise((resolve) => {
                  const _options = {
-                   url: 'http://172.30.1.4:8080/fileUpload',
+                   url: 'http://172.30.52:8080/fileUpload',
                    header: {},
                    params: { bno: bno, cate: cate },
                    body: $previewImgArray.map((filePath) => ({
@@ -416,6 +417,8 @@
             let bcontent = $("#bcontent").val();
             let bno = $(".bno").val();   
              
+            
+            //카테고리 설정 안 했을 때
             
             if(btitle.length < 3){
                alert("제목을 입력하세요.");

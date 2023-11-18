@@ -23,9 +23,7 @@ function nickChange() {
     const nicknameRegex = /^[a-zA-Z0-9가-힣]+$/;
     const nicknamelength = /^.{2,10}$/;
     const msgBox = $("#page2 .msg_box");
-	const filteredWords = ['바보', '운영자', '거지'];
 
-	
     if (!nicknameRegex.test(newNickname)) {
         msgBox.text("닉네임은 한글, 영문자, 숫자만 사용할 수 있습니다").css("color", "red");
         return false;
@@ -34,13 +32,6 @@ function nickChange() {
     if (!nicknamelength.test(newNickname)) {
         msgBox.text("닉네임은 2글자 이상이어야 합니다.").css("color", "red");
         return false;
-    }
-
-    for (const word of filteredWords) {
-        if (newNickname.includes(word)) {
-            msgBox.text("사용할 수 없는 단어가 포함되어 있습니다.").css("color", "red");
-            return false;
-        }
     }
 
     $.ajax({

@@ -7,6 +7,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/> 
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<title>Shop Homepage - Start Bootstrap Template</title>
@@ -86,7 +87,7 @@
 			</div>
 		</div>
 		
-		<div class="page" id="page4" style="display:none">
+		<div class="page resultPage" id="page4" style="display:none">
 			<div class="form-floating">
 				<div class="resultText">비밀번호 변경이</div>
 				<div class="resultText">완료되었습니다.</div>
@@ -104,4 +105,13 @@
 		<!-- Core theme JS-->
 		<script src="js/findpw.js"></script>
 	</body>
+
+<script>
+
+M.onBack( function(e) {
+	window.history.back();
+});
+
+</script>
+
 </html>

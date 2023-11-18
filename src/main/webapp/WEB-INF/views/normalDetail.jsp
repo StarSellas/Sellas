@@ -35,7 +35,6 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="../js/wishlist.js"></script>
 <script src="../js/normalTrade.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 </head>
 <body>
    <!-- Navigation-->
@@ -100,7 +99,7 @@
                <div class="user-img">
                <img src="./userImgUpload/${detail.mphoto}" alt="user-img" class="user-img-img">
             </div>
-            <div class="moveprofile">
+				<div class="moveprofile">
                <div id="detailID">${detail.mnickname}</div>
                
                <div class="expDiv">
@@ -136,27 +135,20 @@
                         <c:if test="${detail.tnormalstate eq 1}">거래중</c:if>
                         <c:if test="${detail.tnormalstate eq 2}">거래완료</c:if>
                               </div>
-             <div class="dcontent">
+       		<div class="dcontent">
                ${detail.tcontent}
                </div>
-               <div>
-               거래 희망 장소
-               <div id="map" style="width: 100%; height: 200px"></div>
-               <input type="hidden" value="${detail.tlocationlat }" id="lat">
-               <input type="hidden" value="${detail.tlocationlng }" id="lng">
-               </div>
-               <br>
                
                <!-- 판매중일때 -->
                <div class="TradeBtnBox">
-                  <c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
-                     <div class="toggleBtnBox"><button id="toggleBtn">+</button></div>
-                     <div class="otherBtnBox hide">
-                           <button id="normalHikeUpBtn">끌올하기</button>
-                           <button id="normalEditBtn">수정하기</button>
-                           <button id="normalDeleteBtn">등록 취소</button>
-                     </div>
-                  </c:if>
+	               <c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
+		               <div class="toggleBtnBox"><button id="toggleBtn">+</button></div>
+		               <div class="otherBtnBox hide">
+			                  <button id="normalHikeUpBtn">끌올하기</button>
+			                  <button id="normalEditBtn">수정하기</button>
+			                  <button id="normalDeleteBtn">등록 취소</button>
+		               </div>
+	               </c:if>
                </div>
                
                
@@ -198,27 +190,27 @@
 
 <script type="text/javascript">
 
-   $(function() {
-      $("#toggleBtn").click(function() {
+	$(function() {
+		$("#toggleBtn").click(function() {
 
-			//$(".otherBtnBox").toggle(800); // 속도조절
+			$(".otherBtnBox").toggle(800); // 속도조절
 			$(".toggleBtnBox").toggleClass("btnClicked"); // 버튼위로이동
 			$(".otherBtnBox").toggleClass("hide");
 
-         if ($(".toggleBtnBox").hasClass("btnClicked")) {
-            $(".otherBtnBox").addClass("tBtnBox");
+			if ($(".toggleBtnBox").hasClass("btnClicked")) {
+				$(".otherBtnBox").addClass("tBtnBox");
 
-         } else {
-            $(".otherBtnBox").removeClass("tBtnBox");
-         }
-      })
-   });
-   
+			} else {
+				$(".otherBtnBox").removeClass("tBtnBox");
+			}
+		})
+	});
+	
 </script>
 
 <script type="text/javascript">
    
-
+   
    
    $(function(){
       let tno = $(".normalTno").val();
@@ -230,44 +222,44 @@
       let buyerMuuid = '${sessionScope.muuid}';
       
    //끌올
-        $("#normalHikeUpBtn").click(function(){
-           if(tnormalhikeup >= 3){
-              alert("더이상 끌올을 사용할 수 없습니다.");
-              return false;
-           }
-           
-           
-          if(confirm("끌어올리기는 게시글당 3번만 가능합니다. 게시글을 끌어올릴까요?")){
-             $.ajax({
-               url : "./normalHikeUp",
-               type : "post",
-               data : {tno : tno, tnormalhikeup : tnormalhikeup},
-               dataType : "json",
-               success : function(data){
-                  if(data.noNeedToHikeUp ==1){
-                     alert("이미 제일 최근 게시판입니다.");
-                     return false;
-                  }
-                  
-                  
-                  if(data.tnormalhikeupok == 1){
-                     tnormalhikeup = tnormalhikeup + 1;
-                     hikeupresult = 3-tnormalhikeup;
-                     alert("끌올이 성공적으로 완료되었습니다.\n남은 끌올 횟수는 "+hikeupresult+"회 입니다.");
-                     
-                     
-                     location.href='/redirectnormalDetail?tno='+data.tno;
-                  }
-               },
-               error : function(error){
-                  alert("에러가 발생했습니다.");
-               }
-                
-             });
-             
-          }
-          
-        });
+   	  $("#normalHikeUpBtn").click(function(){
+   		  if(tnormalhikeup >= 3){
+   			  alert("더이상 끌올을 사용할 수 없습니다.");
+   			  return false;
+   		  }
+   		  
+   		  
+   		 if(confirm("끌어올리기는 게시글당 3번만 가능합니다. 게시글을 끌어올릴까요?")){
+   			 $.ajax({
+   				url : "./normalHikeUp",
+   				type : "post",
+   				data : {tno : tno, tnormalhikeup : tnormalhikeup},
+   				dataType : "json",
+   				success : function(data){
+   					if(data.noNeedToHikeUp ==1){
+   						alert("이미 제일 최근 게시판입니다.");
+   						return false;
+   					}
+   					
+   					
+   					if(data.tnormalhikeupok == 1){
+   						tnormalhikeup = tnormalhikeup + 1;
+   						hikeupresult = 3-tnormalhikeup;
+   						alert("끌올이 성공적으로 완료되었습니다.\n남은 끌올 횟수는 "+hikeupresult+"회 입니다.");
+   						
+   						
+   						location.href='/redirectnormalDetail?tno='+data.tno;
+   					}
+   				},
+   				error : function(error){
+   					alert("에러가 발생했습니다.");
+   				}
+   				 
+   			 });
+   			 
+   		 }
+   		 
+   	  });
    
       $("#normalEditBtn").click(function(){
          if(confirm("수정하시겠습니까?")){
@@ -360,12 +352,12 @@
       });// 거래 신청 버튼 끝
       
 
-      /*       최지은이건드림 */
-       $('.moveprofile').click(function() {
-           var muuid = '${detail.muuid}';
-           window.location.href = '/profileMember?muuid=' + muuid;
-       });
-      
+      /* 		최지은이건드림 */
+	    $('.moveprofile').click(function() {
+	        var muuid = '${detail.muuid}';
+	        window.location.href = '/profileMember?muuid=' + muuid;
+	    });
+		
 
       
 /*       $("#requestChatBtn").click(function(){
@@ -393,22 +385,6 @@
       
    });
     
-   let lat = document.getElementById("lat").value;
-   let lng = document.getElementById("lng").value;
-
-   var markerPosition  = new kakao.maps.LatLng(lat, lng); 
-
-   var marker = {
-      position: markerPosition
-   };
-
-   var staticMapContainer  = document.getElementById('map'), 
-      staticMapOption = { 
-         center: new kakao.maps.LatLng(lat, lng),
-         level: 3,
-         marker: marker
-       }; 
-
-   var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+   
    </script>
 </html>

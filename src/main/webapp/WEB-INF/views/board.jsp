@@ -65,7 +65,7 @@
             		cate = $(".cateNum").val();
             	}
             	
-            	//console.log("search값 잡아: " + search);
+            	console.log("search값 잡아: " + search);
             	
             	// 스크롤 이벤트 발생
             	$(window).on("scroll",function(){
@@ -97,7 +97,7 @@
                let wholePage = Math.ceil(count/10);					// 전체페이지수(글의갯수/10의 올림) 
                
                //console.log("wholePage : " + wholePage);
-               //console.log("count : " + count);
+               console.log("count : " + count);
                //console.log("firstbno : " + firstbno);
                
                
@@ -205,7 +205,7 @@
 	   							$(".searchA").not(this).removeClass("active");
 	    						
 	    						let searchCate = $(this).text();
-	    						//console.log(searchCate);
+	    						console.log(searchCate);
 	    						$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
 							});
 							
@@ -387,9 +387,6 @@
 		                        		<span class="mnickname">${list.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                        <td class="bphoto">
-		                          <c:if test="${list.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
-		                        </td>
 		                        <td class="bdateBox">
 		                        	<div class="bdate">${list.bdate}</div>
 		                        </td>
@@ -399,7 +396,7 @@
              		</c:if>
              		
              		<!--------------카테고리별 게시판 검색결과 -------------->
-             		<c:if test="${param.search ne null && param.searchCate ne null}">
+             		<c:if test="${param.cate ne null && param.search ne null && param.searchCate ne null}">
              			<c:if test="${empty  searchList}">
              				<div class="NoSearchList">검색결과가 없습니다.</div>
              			</c:if>
@@ -423,7 +420,7 @@
 		                        	</div>
 		                        </td>
 		                        <td class="bphoto">
-		                          <c:if test="${searchList.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
+		                          <c:if test="${mainList.bimagecount gt 0}"><div class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></div></c:if>
 		                        </td>
 		                        <td class="bdateBox">
 		                        	<div class="bdate">${searchList.bdate}</div>

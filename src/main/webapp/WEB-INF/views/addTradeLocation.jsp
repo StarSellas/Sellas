@@ -22,9 +22,6 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		<script src="./js/jquery-3.7.0.min.js"></script>
-		<script src="./js/wnInterface.js"></script> 
-		<script src="./js/mcore.min.js"></script> 
-		<script src="./js/mcore.extends.js"></script> 
 
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 	</head>
@@ -54,14 +51,14 @@
 			</div>
 		</div>
 
-		<div class="page" id="page2" style="display:none">
+		<div class="page resultPage" id="page2" style="display:none">
 			정상적으로 등록되었습니다.
 			<div class="form-floating">
 				<button class="endTypeButton" type="button" onclick="javascript:history.back()">확인</button>
 			</div>
 		</div>
 
-		<div class="page" id="page3" style="display:none">
+		<div class="page resultPage" id="page3" style="display:none">
 			등록에 실패했습니다.
 			<div class="form-floating">
 				<button class="endTypeButton" type="button" onclick="showPage('page1')">확인</button>
@@ -73,4 +70,5 @@
 		<script src="js/addTradeLocation.js"></script>
 
 	</body>
+
 </html>

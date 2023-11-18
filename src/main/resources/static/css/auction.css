@@ -35,12 +35,16 @@ button {
 	font-weight: bolder;
 }
 
+.thumbnail {
+	border-radius: 7px 7px 0 0;
+}
+
 .itemCategory {
 	position: absolute;
 	width: 125px;
 	text-align: center;
 	color: white;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.3);
 	bottom: 0;
 	left: 0;
 }
@@ -102,9 +106,9 @@ button {
 }
 
 .remainingTime {
-	margin-top: 8px;
 	display: flex;
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(173, 173, 173, 0.3);
+	border-radius: 0 0 7px 7px;
 }
 
 .ImageInfo {
@@ -129,6 +133,7 @@ button {
 .RegistrationInfo {
 	display: flex;
 	width: 260px;
+	height: 30px;
 	margin-bottom: 10px;
 }
 

@@ -248,12 +248,14 @@ function duplicationCheckOnFocusOut(event) {
 					if(emailInputChecked){
 						if(result > 0){
 							document.getElementById("emailCodeDiv").style.visibility = "hidden";
+							document.getElementById("guideMessage").style.visibility = "visible";
 							emailDuplicationChecked = false;
 							let msg = "이미 가입된 이메일입니다.";
 							setMessage(msgDiv, msg, false);
 							invalidInput(inputField);
 						} else {
 							document.getElementById("emailCodeDiv").style.visibility = "visible";
+							document.getElementById("guideMessage").style.visibility = "hidden";
 							emailDuplicationChecked = true;
 							sendVerificationCode();
 							clearMessage(msgDiv);
