@@ -63,7 +63,7 @@ $(function() {
    loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
    
    // 로딩바 적용
-   //loading.show();
+   loading.show();
    
    //로딩바를 위해 1.5초 뒤 ajax 실행
    timer = setTimeout(function(){
@@ -131,10 +131,10 @@ $(function() {
          let wholePage = Math.ceil(count/10);   // 전체페이지수(글의갯수/10의 올림) 
          
          //console.log("firsttno : " + firsttno);
-         console.log("count : " + count);
+         //console.log("count : " + count);
          //console.log("wholePage : " + wholePage);
-         console.log("currentPage : " + currentPage);
-         console.log("startpage : " + startpage);
+         //console.log("currentPage : " + currentPage);
+         //console.log("startpage : " + startpage);
          //console.log("nextPage : " + currentPage);
          //lastRow.css("color", "red");
       
@@ -177,27 +177,58 @@ $(function() {
                       //alert(data.list[0].tno);
                       
                      for (let i = 0; i < this.list.length; i++) {
-                        
-                        newRow = $('<div class="col mb-5 tradeRow normalTradeDetail" data-count="' + this.list[i].count + '" data-scount="' + this.list[i].scount + '">' +
-                                '<div class="card h-100" onclick="location.href=\'./normalDetail?tno=' + this.list[i].tno + '\'">' +
-                                '<img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/' + this.list[i].thumbnail : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />' +
-                                '<div class="card-body p-4">' +
-                                '<div class="text-center">' +
-                                '<h6 class="fw-bolder normalTtitle">' + this.list[i].ttitle + '</h6>' +
-                                '<div class="mickname">' + this.list[i].mnickname + '</div> <div style="font-size: large;"> ' + this.list[i].tnormalprice + ' WP</div>' +
-                                '<div style="font-size: small;">' + this.list[i].ttdate + '</div>' +
-                                '</div>' +
-                                '<input type="hidden" class="rowNum" data-tno="' + this.list[i].tno + '">' +
-                                '<div class="tradeState">' +
-                                (this.list[i].tnormalstate == 0 ? '<span class="state_selling">판매중</span>' : (this.list[i].tnormalstate == 1 ? '<span class="state_ing">거래중</span>' : '<span class="state_done">판매완료</span>')) +
-                                '</div>' +
-                                '</div>' +
-                                
-                                '<div class="text-center">' +
-                               
-                                '</div>' +
-                                '</div>' +
-                                '</div>');
+                    	
+                    	 function formatNumberWithCommas(number) {
+                    	        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    	    }
+                   	 
+                    	 newRow = $(
+                    			  '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' +
+                    			    this.list[i].count +
+                    			    '" data-scount="' +
+                    			    this.list[i].scount +
+                    			    '">' +
+                    			    '<div class="card h-100" onclick="location.href=\'./normalDetail?tno=' +
+                    			    this.list[i].tno +
+                    			    '\'">' +
+                    			    (this.list[i].thumbnail
+                    			      ? '<img class="card-img-top" src="./tradeImgUpload/' +
+                    			        this.list[i].thumbnail +
+                    			        '" alt="thumbnail" />'
+                    			      : '<img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg" alt="..." />') +
+                    			    '<div class="card-body p-4">' +
+                    			    '<div class="text-center">' +
+                    			    '<h6 class="fw-bolder normalTtitle">' +
+                    			    this.list[i].ttitle +
+                    			    '</h6>' +
+                    			    '<div class="productcontent">' +
+                    			    '<div class="mickname">' +
+                    			    this.list[i].mnickname +
+                    			    '</div> <div style="font-size: large;"> ' +
+                    			    formatNumberWithCommas(this.list[i].tnormalprice)+'원'+
+                    			    '</div>' +
+                    			    '<div style="font-size: small;">' +
+                    			    this.list[i].ttdate +
+                    			    '</div>' +
+                    			    '</div>' +
+                    			    '<input type="hidden" class="rowNum" data-tno="' +
+                    			    this.list[i].tno +
+                    			    '">' +
+                    			    '<div class="card-footer border-top-0 bg-transparent">' +
+                    			    '<div class="tradeState">' +
+                    			    (this.list[i].tnormalstate == 0
+                    			      ? '<span class="state_selling">판매중</span>'
+                    			      : this.list[i].tnormalstate == 1
+                    			      ? '<span class="state_ing">거래중</span>'
+                    			      : '<span class="state_done">판매완료</span>') +
+                    			    '</div>' +
+                    			    '<div class="text-center">' +
+                    			    '</div>' +
+                    			    '</div>' +
+                    			    '</div>' +
+                    			    '</div>' +
+                    			    '</div>'
+                    			);
 
                             lastRow.after(newRow); // lastRow 뒤에 추가
                             lastRow = $(".tradeRow:last"); // 최하단 row
@@ -287,8 +318,11 @@ $(function() {
             <h1 class="display-4 fw-bolder"></h1>
             <c:choose>
                <c:when test="${memberInfo != null }">
+                  <p class="lead fw-normal text-white-50 mb-0">안녕하세요
+                  <br> <fmt:formatNumber value="${memberInfo.mbalance }" pattern="#,### 웨일페이"/>
                 여기서부터 시작하겠습니다.
-
+                     ${memberInfo.mnickname }님!!</p>
+	
                </c:when>
                <c:otherwise>
                   <p class="lead fw-normal text-white-50 mb-0">로그인 해주세요</p>
@@ -305,8 +339,8 @@ $(function() {
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
          <div class="searchBox justify-content-center">
          
-               <form action="./" method="get" class="searchFrom">
-                  <div class="searchCateBox">
+               <form action="./" method="get" class="searchFrom" id="searchFromM">
+                  <div class="searchCateBox" id="searchCateBox">
                      <ul class="navbar-nav">
                         <li class="nav-item dropdown"><a
                            class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
@@ -320,11 +354,9 @@ $(function() {
                         </li>
                      </ul>
                   </div>
-                     <input type="text" name="search" class="swrite"> 
+                     <input type="text" name="search" class="swrite" id="swriteM"> 
                      <input type="hidden" name="searchCate" class="searchCate" value="title">
-                  <div class="swriteBtnBox">
-                     <button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
-                  </div>
+                     <button type="button" class="swriteButton" id="swriteButtonM"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
                </form>
                
                <input type="hidden" class="ReSearchCate" value="${searchCate }">
@@ -357,8 +389,10 @@ $(function() {
                               <!-- Product name-->
                               <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
                               <!-- Product price-->
-                             <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"> ${i.tnormalprice } WP</div>
+                              <div class="productcontent">
+                             <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${i.tnormalprice }" pattern="#,###원"/></div>
                                <div style="font-size: small;">${i.ttdate }</div>
+                           </div>
                            </div>
                            <input type="hidden" class="rowNum" data-tno="${i.tno }">
                         <div class="card-footer border-top-0 bg-transparent">
@@ -390,7 +424,7 @@ $(function() {
          
             <c:forEach items="${normalSearchList }" var="s" varStatus="loop">
                
-                  <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}" data-scount="${s.scount}">
+                  <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}" data-scount="${i.scount}">
                      <div class="card h-100" onclick="location.href='./normalDetail?tno=${s.tno }'">
                         <!-- Product image-->
                         <c:choose>
@@ -408,8 +442,10 @@ $(function() {
                               <!-- Product name-->
                               <h6 class="fw-bolder normalTtitle">${s.ttitle }</h6>
                               <!-- Product price-->
-                             <div class="mickname">${s.mnickname }</div> <div style="font-size: large;"> ${s.tnormalprice } WP</div>
+                              <div class="productcontent">
+                             <div class="mickname">${s.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${s.tnormalprice }" pattern="#,###원"/></div>
                                <div style="font-size: small;">${s.ttdate }</div>
+                           </div>
                            </div>
                            <input type="hidden" class="rowNum" data-tno="${s.tno }">
                         <div class="card-footer border-top-0 bg-transparent">
@@ -446,14 +482,20 @@ $(function() {
    <script src="js/scripts.js"></script>
 </body>
 <script type="text/javascript">
+M.onBack( function(e) {
+	alert("뒤로가기");
+	CLEAR_TOP;
+});
+
+
    function cutTitle(){
         $(".normalTtitle").each(function() {
             let title = $(this).text();
             console.log(title);
             console.log(title.length);
             
-            if(title.length > 10){
-               titlecut = title.substring(0, 8) + "...";
+            if(title.length > 11){
+               titlecut = title.substring(0, 10) + "...";
                console.log("titlecut : " + titlecut);
                $(this).text(titlecut);
             }

@@ -54,7 +54,7 @@ public class TradeService {
 
 		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
         map.put("muuid", session.getAttribute("muuid"));
-		
+
         // 거래 타입이 추가될 경우 새로운 case 작성
         switch((String)map.get("tradeType")) {
         	case "0":	// 일반

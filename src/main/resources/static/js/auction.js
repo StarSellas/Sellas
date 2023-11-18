@@ -167,10 +167,10 @@ function addAuctionItem(item){
 
 	// 썸네일
 	let itemImage = document.createElement("img");
-    itemImage.src = "/tradeImgUpload/"+item.timage;
+    itemImage.src = "/tradeImgUpload/" + item.timage;
 	itemImage.alt = "Auction Item";
 	itemImage.style.width = "125px";
-	itemImage.style.height = "125px";
+	itemImage.style.height = "100px";
 	//itemImage.style.marginTop = "15px";
 	//itemImage.style.marginBottom = "15px";
 
@@ -261,11 +261,16 @@ function addAuctionItem(item){
 	minimumBidPrice.append(minimumBidPriceLabel);
 	minimumBidPrice.append(minimumBidPriceValue);
 
-	// 썸네일 + 카테고리 ++ 남은시간
+	// 썸네일 + 카테고리
+	let ImageInfo = document.createElement("div");
+	ImageInfo.classList.add("ImageInfo");
+	ImageInfo.append(itemImage);
+	ImageInfo.append(itemCategory);
+	
+	// ++ 남은시간
 	let ItemInfo = document.createElement("div");
 	ItemInfo.classList.add("ItemInfo");
-	ItemInfo.append(itemImage);
-	ItemInfo.append(itemCategory);
+	ItemInfo.append(ImageInfo);
 	ItemInfo.append(remainingTime);
 
 	// 제목 + 조회수

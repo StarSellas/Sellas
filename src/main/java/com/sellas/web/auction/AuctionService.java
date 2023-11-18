@@ -149,10 +149,8 @@ public class AuctionService {
 		}
 	}
 
-
 	public List<Map<String, Object>> auctionImageList(int tno) {
 	
 		return auctionDAO.auctionImageList(tno);
 	}
-
 }

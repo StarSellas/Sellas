@@ -63,6 +63,8 @@
             <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
 
+                <div class="backButton"><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+
                <!-- 게시판 카테고리 드롭다운 -->
                <div class="cateBox">
                      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 align-items-end" id="cateBar">

@@ -5,7 +5,8 @@
 <select id="login" parameterType="Map" resultType="Map">
 	SELECT muuid, mnickname
 	FROM member
-	WHERE mid=#{id} AND mpw=HEX(AES_ENCRYPT(#{pw}, 'sellas'))
+	<!-- WHERE mid=#{id} AND mpw=HEX(AES_ENCRYPT(#{pw}, 'sellas')) -->
+	WHERE mid=#{id} AND mpw=#{pw}
 </select>
 
 <select id="findid" parameterType="String" resultType="String">
@@ -22,7 +23,8 @@
 
 <update id="changepw" parameterType="Map">
 	UPDATE member
-	SET mpw=HEX(AES_ENCRYPT(#{pw}, 'sellas'))
+	<!-- SET mpw=HEX(AES_ENCRYPT(#{pw}, 'sellas')) -->
+	SET mpw=#{pw}
 	WHERE mid=#{id} AND memail=#{email}
 </update>
   

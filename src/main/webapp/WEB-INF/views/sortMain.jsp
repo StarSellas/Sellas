@@ -42,7 +42,7 @@
 		
 		if(sort == ""){
 			sort = 0
-			console.log("sort : " + sort)
+			//console.log("sort : " + sort)
 		} 
 		$(".sortForSearch").val(sort);
 		
@@ -134,30 +134,61 @@
            	    	 
            	    	for (let i = 0; i < this.list.length; i++) {
            	    		
-           	    		newRow = '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' + this.list[i].count + '">'
-	           	            + '<div class="card h-100"><img class="card-img-top" src="' + (this.list[i].thumbnail ? './tradeImgUpload/' + this.list[i].thumbnail : './tradeImgUpload/defaultimg.jpg') + '" alt="thumbnail" />'
-	           	            + '<div class="card-body p-4">'
-	           	            + '<div class="text-center tnprice"  data-tnprice="' + this.list[i].tnormalprice + '">'
-	           	            + '<h5 class="fw-bolder normalTtitle">' + this.list[i].ttitle + '</h5>'
-	           	            + '작성자 : ' + this.list[i].mnickname + '<br>' + this.list[i].tnormalprice + ' 웨일페이<br>'
-	           	            + '</div>'
-	           	            + '<input type="hidden" class="rowNum" data-tno="' + this.list[i].tno + '">' + this.list[i].tno
-	           	            + '</div>'
-	           	            + '<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">'
-	           	            + '<div style="text-align: center;">'
-	           	            + (this.list[i].tnormalstate == 0 ? '판매중' : (this.list[i].tnormalstate == 1 ? '거래중' : '판매완료'))
-	           	            + '</div>'
-	           	            + '<div class="text-center">'
-	           	            + '<a class="btn btn-outline-dark mt-auto" href="./normalDetail?tno=' + this.list[i].tno + '">상품 보러가기</a>'
-	           	            + '</div>'
-	           	            + '</div>'
-	           	            + '</div>'
-	           	            + '</div>';
-           	    	
-	           	         	lastRow.after(newRow); // lastRow 뒤에 추가
-	           	         	
-	           	       		lastRow = $(".tradeRow:last");   // 최하단row
-	           	      	 	//console.log("lastRow :" + i + "번째");
+           	    	 function formatNumberWithCommas(number) {
+             	        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+             	    }
+            	 
+             	 newRow = $(
+             			  '<div class="col mb-5 tradeRow normalTradeDetail" data-count="' +
+             			    this.list[i].count +
+             			    '" data-scount="' +
+             			    this.list[i].scount +
+             			    '">' +
+             			    '<div class="card h-100" onclick="location.href=\'./normalDetail?tno=' +
+             			    this.list[i].tno +
+             			    '\'">' +
+             			    (this.list[i].thumbnail
+             			      ? '<img class="card-img-top" src="./tradeImgUpload/' +
+             			        this.list[i].thumbnail +
+             			        '" alt="thumbnail" />'
+             			      : '<img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg" alt="..." />') +
+             			    '<div class="card-body p-4">' +
+             			    '<div class="text-center">' +
+             			    '<h6 class="fw-bolder normalTtitle">' +
+             			    this.list[i].ttitle +
+             			    '</h6>' +
+             			    '<div class="productcontent">' +
+             			    '<div class="mickname">' +
+             			    this.list[i].mnickname +
+             			    '</div> <div style="font-size: large;"> ' +
+             			    formatNumberWithCommas(this.list[i].tnormalprice)+' WP'+
+             			    '</div>' +
+             			    '<div style="font-size: small;">' +
+             			    this.list[i].ttdate +
+             			    '</div>' +
+             			    '</div>' +
+             			    '<input type="hidden" class="rowNum" data-tno="' +
+             			    this.list[i].tno +
+             			    '">' +
+             			    '<div class="card-footer border-top-0 bg-transparent">' +
+             			    '<div class="tradeState">' +
+             			    (this.list[i].tnormalstate == 0
+             			      ? '<span class="state_selling">판매중</span>'
+             			      : this.list[i].tnormalstate == 1
+             			      ? '<span class="state_ing">거래중</span>'
+             			      : '<span class="state_done">판매완료</span>') +
+             			    '</div>' +
+             			    '<div class="text-center">' +
+             			    '</div>' +
+             			    '</div>' +
+             			    '</div>' +
+             			    '</div>' +
+             			    '</div>'
+             			);
+
+                     lastRow.after(newRow); // lastRow 뒤에 추가
+                     lastRow = $(".tradeRow:last"); // 최하단 row
+                     cutTitle();
 	           	       		
            	    	} // for
            	    	 
@@ -200,29 +231,28 @@
 				//console.log(searchCate);
 				$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
 				
+			});
+			
+			// 검색버튼 클릭
+			$(".swriteButton").click(function(){
+				
 				if($(".searchA").hasClass("active")){
 					let selectedOption = $(".searchA.active").data("option");
 					$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
 					//console.log(selectedOption)
 				} 
-			
-			});
-			
-			// 검색버튼 클릭
-			$(".swriteButton").click(function(){
+				
 				$(".searchFrom").submit();	// form 제출
 			});
 			
-			
-			// 검색카테고리 & 검색단어 검색창에 남기기
-       	
+		// 검색카테고리 & 검색단어 검색창에 남기기
    		let firstOption = $(".searchCate option:first").val();
    		$(".searchCate").val(firstOption);
        	
        	if (searchCate != ""){
        		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
 				//console.log("선택한카테 : " + pick);
-				$("#navbarDropdown").text(pick);
+				$("#navbarSDropdown").text(pick);
        		$(".swrite").val(search);
        	}
        	
@@ -302,7 +332,7 @@
 						<input type="hidden" name="searchCate" class="searchCate" value="title">
 						<input type="hidden" name="ino" class="inoForSearch">
 						<input type="hidden" name="sort" class="sortForSearch">
-						<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+						<button type="button" class="swriteButton" id="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
 
 					</form>
 		</div>
@@ -316,50 +346,49 @@
             
 	            <c:forEach items="${SnormalBoardList }" var="i" varStatus="loop">
 	            
-	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}">
-	                  <div class="card h-100">
-	                     <!-- Product image-->
-	                     <c:choose>
-	                        <c:when test="${i.thumbnail ne null }">
-	                           <img class="card-img-top" src="./tradeImgUpload/${i.thumbnail }" alt="thumbnail" />
-	                        </c:when>
-	                        <c:otherwise>
-	                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
-	                              alt="..." />
-	                        </c:otherwise>
-	                     </c:choose>
-	                     <!-- Product details-->
-	                     <div class="card-body p-4">
-	                        <div class="text-center">
-	                           <!-- Product name-->
-	                           <h5 class="fw-bolder normalTtitle">${i.ttitle }</h5>
-	                           <!-- Product price-->
-	                           작성자 : ${i.mnickname }<br> ${i.tnormalprice } 웨일페이<br>
-	                        </div>
-	                        <input type="hidden" class="rowNum" data-tno="${i.tno }">${i.tno }
-	                        <input type="hidden" class="tread" data-tread="${i.tread }">조회 : ${i.tread }
-	                        <input type="hidden" class="tnprice"  data-tnprice="${i.tnormalprice }">
-	                     </div>
-	                     <!-- Product actions-->
-	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-	                        <div style="text-align: center;">
-	                           <c:if test="${i.tnormalstate ==0 }">
-	                               판매중
-	                               </c:if>
-	                           <c:if test="${i.tnormalstate ==1 }">
-	                               거래중
-	                               </c:if>
-	                           <c:if test="${i.tnormalstate ==2 }">
-	                               판매완료
-	                               </c:if>
-	                        </div>
-	                        <div class="text-center">
-	                           <a class="btn btn-outline-dark mt-auto"
-	                              href="./normalDetail?tno=${i.tno }">상품 보러가기</a>
-	                        </div>
-	                     </div>
-	                  </div>
-	               </div>
+	             <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}" data-scount="${i.scount}">
+                     <div class="card h-100" onclick="location.href='./normalDetail?tno=${i.tno }'">
+                        <!-- Product image-->
+                        <c:choose>
+                           <c:when test="${i.thumbnail ne null }">
+                              <img class="card-img-top" src="./tradeImgUpload/${i.thumbnail }" alt="thumbnail" />
+                           </c:when>
+                           <c:otherwise>
+                              <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
+                                 alt="..." />
+                           </c:otherwise>
+                        </c:choose>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                           <div class="text-center">
+                              <!-- Product name-->
+                              <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
+                              <!-- Product price-->
+                              <div class="productcontent">
+                             <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${i.tnormalprice }" pattern="#,###원"/></div>
+                               <div style="font-size: small;">${i.ttdate }</div>
+                           </div>
+                           </div>
+                           <input type="hidden" class="rowNum" data-tno="${i.tno }">
+                        <div class="card-footer border-top-0 bg-transparent">
+                        <!-- Product actions-->
+                           <div class="tradeState">
+                              <c:if test="${i.tnormalstate ==0 }">
+                                  <span class="state_selling">판매중</span>
+                              </c:if>
+                              <c:if test="${i.tnormalstate ==1 }">
+                                  <span class="state_ing">거래중</span>
+                              </c:if>
+                              <c:if test="${i.tnormalstate ==2 }">
+                                 <span class="state_done">판매완료</span>
+                              </c:if>
+                           </div>
+                           <div class="text-center">
+                           </div>
+                        </div>
+                        </div>
+                     </div>
+                  </div>
 	               
 	            </c:forEach>
 	            
@@ -369,50 +398,49 @@
 			<c:if test="${param.search ne null && param.searchCate ne null}">
 				<c:forEach items="${SnormalSearchList }" var="s" varStatus="loop">
 	            
-	               <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}">
-	                  <div class="card h-100">
-	                     <!-- Product image-->
-	                     <c:choose>
-	                        <c:when test="${s.thumbnail ne null }">
-	                           <img class="card-img-top" src="./tradeImgUpload/${s.thumbnail }" alt="thumbnail" />
-	                        </c:when>
-	                        <c:otherwise>
-	                           <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
-	                              alt="..." />
-	                        </c:otherwise>
-	                     </c:choose>
-	                     <!-- Product details-->
-	                     <div class="card-body p-4">
-	                        <div class="text-center tnprice" data-tnprice="${s.tnormalprice }">
-	                           <!-- Product name-->
-	                           <h5 class="fw-bolder normalTtitle">${s.ttitle }</h5>
-	                           <!-- Product price-->
-	                           작성자 : ${s.mnickname }<br> ${s.tnormalprice } 웨일페이<br>
-	                        </div>
-	                        <input type="hidden" class="rowNum" data-tno="${s.tno }">${s.tno }
-	                        <input type="hidden" class="tread" data-tread="${s.tread }">조회 : ${s.tread }
-	                        <input type="hidden" class="tnprice"  data-tnprice="${s.tnormalprice }">
-	                     </div>
-	                     <!-- Product actions-->
-	                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-	                        <div style="text-align: center;">
-	                           <c:if test="${s.tnormalstate ==0 }">
-	                               판매중
-	                               </c:if>
-	                           <c:if test="${s.tnormalstate ==1 }">
-	                               거래중
-	                               </c:if>
-	                           <c:if test="${s.tnormalstate ==2 }">
-	                               판매완료
-	                               </c:if>
-	                        </div>
-	                        <div class="text-center">
-	                           <a class="btn btn-outline-dark mt-auto"
-	                              href="./normalDetail?tno=${s.tno }">상품 보러가기</a>
-	                        </div>
-	                     </div>
-	                  </div>
-	               </div>
+	              <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${s.count}" data-scount="${i.scount}">
+                     <div class="card h-100" onclick="location.href='./normalDetail?tno=${s.tno }'">
+                        <!-- Product image-->
+                        <c:choose>
+                           <c:when test="${s.thumbnail ne null }">
+                              <img class="card-img-top" src="./tradeImgUpload/${s.thumbnail }" alt="thumbnail" />
+                           </c:when>
+                           <c:otherwise>
+                              <img class="card-img-top" src="./tradeImgUpload/defaultimg.jpg"
+                                 alt="..." />
+                           </c:otherwise>
+                        </c:choose>
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                           <div class="text-center">
+                              <!-- Product name-->
+                              <h6 class="fw-bolder normalTtitle">${s.ttitle }</h6>
+                              <!-- Product price-->
+                              <div class="productcontent">
+                             <div class="mickname">${s.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${s.tnormalprice }" pattern="#,###원"/></div>
+                               <div style="font-size: small;">${s.ttdate }</div>
+                           </div>
+                           </div>
+                           <input type="hidden" class="rowNum" data-tno="${s.tno }">
+                        <div class="card-footer border-top-0 bg-transparent">
+                        <!-- Product actions-->
+                           <div class="tradeState">
+                              <c:if test="${s.tnormalstate ==0 }">
+                                  <span class="state_selling">판매중</span>
+                              </c:if>
+                              <c:if test="${s.tnormalstate ==1 }">
+                                  <span class="state_ing">거래중</span>
+                              </c:if>
+                              <c:if test="${s.tnormalstate ==2 }">
+                                 <span class="state_done">판매완료</span>
+                              </c:if>
+                           </div>
+                           <div class="text-center">
+                           </div>
+                        </div>
+                        </div>
+                     </div>
+                  </div>
 	               
 	            </c:forEach>
 			
