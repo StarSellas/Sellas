@@ -1,25 +1,38 @@
 
 /* 지도 */
-// static map
+
 let lat = document.getElementById("lat").value;
 let lng = document.getElementById("lng").value;
 
-var markerPosition  = new kakao.maps.LatLng(lat, lng); 
-
-var marker = {
-	position: markerPosition
-};
-
-var staticMapContainer  = document.getElementById('map'),
-	staticMapOption = {
-		center: new kakao.maps.LatLng(lat, lng),
-		level: 3,
-		marker: marker
+var mapContainer = document.getElementById('map'),
+    mapOption = { 
+        center: new kakao.maps.LatLng(lat, lng),
+        level: 3
     };
 
-var staticMap = new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+var map = new kakao.maps.Map(mapContainer, mapOption);
+
+var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+
+var marker = new kakao.maps.Marker({
+    position: markerPosition
+});
+
+marker.setMap(map);
+
 
 /* 입찰 금액 유효성 검사 */
+
+// 입찰 금액 input keyup 이벤트 발생 시 입력값 유효성 검사
+document.getElementById("bidPrice").addEventListener("keyup", function(){
+	
+	let bidPriceInput = document.getElementById("bidPrice");
+	
+	if(bidPriceInput.value > 999999999){
+		bidPriceInput.value = 999999999;
+	}
+});
+
 // 입찰 금액 input focusout 이벤트 발생 시 입력값 유효성 검사
 document.getElementById("bidPrice").addEventListener("focusout", validateBidding);
 
@@ -30,10 +43,13 @@ function validateBidding(){
 	if(bidPriceInput.value != ""){
 	
 	let bidPrice = parseInt(bidPriceInput.value);
-    let minBidPrice = parseInt(bidPriceInput.placeholder);
+    let minBidPrice = parseInt(bidPriceInput.min);
 
 	if(bidPrice < minBidPrice){
-		alert("입찰 금액이 최소입찰가보다 작습니다.");
+		bidPriceInput.classList.add("is-invalid");
+
+		document.getElementById("errorMessage").textContent = "입찰 금액이 최소입찰가보다 작습니다.";
+		document.getElementById("errorMessage").style.color = "red";
 		document.getElementById("biddingButton").setAttribute("disabled", "true");
 	} else {
 		$.ajax({
@@ -44,9 +60,21 @@ function validateBidding(){
 			success : function(result) {
 				if(result){
 					// 입찰 진행
+					bidPriceInput.classList.remove("is-invalid");
+					
+					document.getElementById("errorMessage").textContent = " ";
+					document.getElementById("guideText").style.visibility = "hidden";
 					document.getElementById("biddingButton").removeAttribute("disabled");
+					
+					document.getElementById("bidPriceDiv").textContent = "입찰가격 : " + bidPrice;
 				} else {
 					// 잔액 부족
+					bidPriceInput.classList.add("is-invalid");
+
+					document.getElementById("errorMessage").textContent = "잔액이 부족합니다.";
+					document.getElementById("errorMessage").style.fontWeight = "bold";
+					document.getElementById("errorMessage").style.color = "gray";
+					document.getElementById("guideText").style.visibility = "visible";
 					document.getElementById("biddingButton").setAttribute("disabled", "true");
 				}
 			},

@@ -368,7 +368,7 @@ $picker2.on('click', () => {
 			$slide.append($previewImg);
 			$box.append($slide);
          }
-         alert($('.swiper-wrapper').children().length);
+         //alert($('.swiper-wrapper').children().length);
          pagination();
       } else {
          return Promise.reject('이미지 가져오기 실패');
