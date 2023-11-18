@@ -155,10 +155,10 @@
 				<div class="resultText">입찰에 성공했습니다.</div>
 			</div>
 			<div class="form-floating bidSuccessInfo">
-				<div class="form-floating textDiv">
+				<div class="form-floating textDiv bidITemInfo">
 						입찰물품 : ${auctionItemDetail.ttitle }
 				</div>
-				<div class="form-floating textDiv" id="bidPriceDiv">
+				<div class="form-floating textDiv bidITemInfo" id="bidPriceDiv">
 				</div>
 			</div>
 			<div class="form-floating">
