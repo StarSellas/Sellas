@@ -127,5 +127,15 @@ public class ChatRoomService {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.getMphoto(muuid);
 	}
+
+	public int tNormalPrice(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.tNormalPrice(map);
+	}
+
+	public int checkEnter(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.checkEnter(map);
+	}
 	
 }

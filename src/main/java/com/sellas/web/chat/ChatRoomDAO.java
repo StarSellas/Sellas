@@ -54,5 +54,9 @@ public interface ChatRoomDAO {
 	int auctionCheck(Map<String, Object> map);
 
 	String getMphoto(String muuid);
+
+	int tNormalPrice(Map<String, Object> map);
+
+	int checkEnter(Map<String, Object> map);
 	
 }

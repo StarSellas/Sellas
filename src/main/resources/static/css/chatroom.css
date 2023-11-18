@@ -76,7 +76,7 @@ img {
 .time_date {
   color: #747474;
   display: block;
-  font-size: 12px;
+  font-size: 10px;
   margin: 8px 0 0;
 }
 .received_withd_msg { 
@@ -108,21 +108,66 @@ img {
 }
 .input_msg_write {
   display: flex;
-  align-items: center;
 }
-.form-control {
-    display: block;
-    margin-top: 1px;
-    margin-right: 5px;
-    width: calc(100% - 38px);
-    padding: 0.375rem 0.75rem;
-    font-size: 15px;
-    line-height: 1.5;
-    color: #4c4c4c;
-    background-color: #e0e0e0;
-    background-clip: padding-box;
-    border: medium none;
-    border-radius: 20px !important;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    margin-left: 2px;
+.xi-plus {
+	margin-top: 1px;
+  font-size: 175%;
+  margin-right: 10px; /* 아이콘과 인풋 간격 조절 */
+  margin-left: 10px;
+  display:flex !important;
+  
+}
+.write_msg {
+	margin-top: 1px;
+	margin-right: 5px;
+  width: calc(100% - 38px); /* xi-plus의 크기와 margin을 고려하여 계산 */
+  border: medium none;
+  border-radius: 10px;
+  color: #4c4c4c;
+  font-size: 15px;
+  background: #e0e0e0;
+}
+.TradeBtnBox{
+   display: initial;
+}
+.hide{
+    display: none !important;
+ }
+.tBtnBox {
+    display: flex !important;
+}
+.toggleBtnBox{
+   display: inline-block;
+}
+.tradeResponse {
+    display: flex;
+}
+.tradeResponse button {
+    width: 90px;
+    height: 27px;
+    background-color: white;
+    border: 1px solid #88abff;
+    border-radius: 5px;
+    margin-top:1px;
+    margin-left:3px;
+    margin-right:3px;
+    text-align: center;
+}
+#tradeamount,
+#tradeRequest,
+#tradeAccept,
+#tradeCancel{
+   width: 90px;
+   height: 27px;
+   background-color: white;
+   border: 1px solid #88abff;
+   border-radius: 5px;
+   margin-top:1px;
+    margin-left:3px;
+    margin-right:3px;
+   text-align: center;
+   display: inline-block;
+}
+.btnClicked{
+   transition: transform 0.5s ease;
 }

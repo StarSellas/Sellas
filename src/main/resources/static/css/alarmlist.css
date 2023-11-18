@@ -14,7 +14,7 @@
 
 
 .recent_heading {float: left; width:40%;}
-.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden;}
+.headind_srch{ padding:10px 29px 3px 20px; overflow:hidden;}
 
 .recent_heading h4 {
   color: #05728f;
@@ -40,5 +40,5 @@
   margin: 0;
   padding: 18px 16px 10px;
 }
-.inbox_chat { height: 550px; overflow-y: scroll;}
+.inbox_chat { height: 100%; overflow-y: scroll;}
  

@@ -77,7 +77,7 @@ ORDER BY
 	</select>
 	
 	<select id="chatRoomList" parameterType="Map" resultType="Map">
-		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid} or obuyer = #{muuid} order by odate desc
+		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid} or obuyer = #{muuid}
 	</select>
 	
 	<select id="getTitleByTno" parameterType="Integer" resultType="String">
@@ -94,8 +94,7 @@ LIMIT 1
 	</select>
 	
 	<select id="getDdateByOuuid" parameterType="String" resultType="java.sql.Timestamp">
-		select ddate from dialogue where ouuid = #{ouuid} ORDER BY ddate DESC
-LIMIT 1
+		select ddate from dialogue where ouuid = #{ouuid} ORDER BY ddate DESC LIMIT 1
 	</select>
 	
 	<select id="auctionCheck" parameterType="Map" resultType="Integer">
@@ -104,6 +103,14 @@ LIMIT 1
 	
 	<select id="getMphoto" parameterType="String" resultType="String">
 		select mphoto from member where muuid = #{muuid}
+	</select>
+	
+	<select id="tNormalPrice" parameterType="Map" resultType="Integer">
+		select tnormalprice from trade where tno = #{tno} and muuid = #{oseller}
+	</select>
+	
+	<select id="checkEnter" parameterType="Map" resultType="Integer">
+		select count(*) from dialogue where ouuid = #{ouuid} and muuid = #{obuyer}
 	</select>
 	
 </mapper>

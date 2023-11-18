@@ -1,5 +1,6 @@
 package com.sellas.web.chat;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +19,14 @@ public class ChatController {
 
 	@Autowired
 	private ChatMessageService chatMessageService;
+	
+	private LocalDateTime timestamp;
 	 
 	// 일반대화를 포함한 roomId를 사용하는 메시지들이 들르는 곳입니다.
 	// 여기를 지나는 메시지들은 전부 dialogue 테이블에 저장됩니다.
 	@MessageMapping("ws/chat/message")
 	public void message(ChatMessage message) {
+		
 //		System.out.println("message content: " + message.getMessage());
 		if (ChatMessage.MessageType.ENTER.equals(message.getType())) { //채팅방에 입장하면 보내는 메소드입니다.
 			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);

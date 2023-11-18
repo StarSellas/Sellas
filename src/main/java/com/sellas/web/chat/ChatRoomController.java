@@ -3,6 +3,8 @@ package com.sellas.web.chat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +41,7 @@ public class ChatRoomController {
 	// 웹소켓 서버가 한 jsp페이지에 2개를 실행시키는게 저는 실패해서 이렇게 했습니다.
 	@PostMapping("/onlyalarm")
 	public String onlyAlarm(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
-		//System.out.println("onlyalarm에ㅐ서 받아오는 맵값 : " + map);
+		//System.out.println("onlyalarm에ㅐ서 받아오는 맵값 : " + map); tno, oseller, obuyer
 		
 		if (session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) { //로그인 여부 검사합니다.
 			
@@ -72,7 +74,10 @@ public class ChatRoomController {
 			model.addAttribute("obuyer", obuyer);
 			model.addAttribute("oseller", oseller);
 			model.addAttribute("acontent", acontent);
-			
+			int checkenter = chatRoomService.checkEnter(map);
+			if(checkenter > 0) {
+				model.addAttribute("checkenter", checkenter);
+			}
 			
 			return "/chat/onlyalarm";
 		}
@@ -99,6 +104,8 @@ public class ChatRoomController {
 			int lastroomcheck = Integer.parseInt(String.valueOf(map.get("lastroomcheck")));
 			int searchchatroom = chatRoomService.searchChatRoom(map);
 			int tnormalstate = chatRoomService.selectTnormalstate(map);
+			int tnormalprice = chatRoomService.tNormalPrice(map);
+			model.addAttribute("tnormalprice", tnormalprice);
 			String tnoname = chatRoomService.tnoName(tno);
 			if (tnoname.length() >= 10) {
 			    tnoname = tnoname.substring(0, 10) + "...";
@@ -195,6 +202,9 @@ public class ChatRoomController {
 				return "/chat/roomdetail";
 
 			}
+			int checkenter = chatRoomService.checkEnter(map);
+			
+			model.addAttribute("checkenter", checkenter);
 			
 			//System.out.println("최종적으로 담기는 값 : " + map);
 			return "/chat/roomdetail";
@@ -357,24 +367,39 @@ public class ChatRoomController {
 		    Map<String, Object> chatroom = chatroomlist.get(n);
 
 		    // chatroom 맵에 ttitle 키가 없다면, tno를 사용하여 trade 테이블에서 ttitle 조회
-		    if (!chatroom.containsKey("thumbnail")) {
-		        Integer tno = (Integer) chatroom.get("tno");
-		        String thumbnail = chatRoomService.getThumbnailByTno(tno);
+		    if (!chatroom.containsKey("sortdate")) {
+		        String ouuid = String.valueOf(chatroom.get("ouuid"));
+		        Timestamp sortdate = chatRoomService.getDdateByOuuid(ouuid);
+
+		        // 조회된 ttitle을 chatroom 맵에 추가
+		        chatroom.put("sortdate", sortdate);
+		        chatroomlist.set(n, chatroom);
+		    }
+		}
+		
+		for (int n = 0; n < chatroomlist.size(); n++) {
+		    // List<Map<String, Object>> chatroomlist에서 n번째 Map<String, Object> chatroom 맵을 가져옴
+		    Map<String, Object> chatroom = chatroomlist.get(n);
+
+		    // chatroom 맵에 ttitle(물품제목) 키가 없다면, tno(물품번호)를 사용하여 trade 테이블에서 ttitle 조회
+		    if (!chatroom.containsKey("thumbnail")) { //chatroom에 썸네일이라는 이름의 키가 없으면
+		        Integer tno = (Integer) chatroom.get("tno"); //물품번호 가져오고
+		        String thumbnail = chatRoomService.getThumbnailByTno(tno); //서버에서 이미지 가져옵니다.
 		        
-		        String filePath = "../tradeImgUpload/" + thumbnail;
+		        String filePath = "../tradeImgUpload/" + thumbnail; //파일경로를 만듭니다.
 
 		        try { //이미지 파일이 그 경로에 실제로 있는지 검사합니다.
 		            // Resource 객체를 생성하여 파일을 로드
-		            Resource resource = new UrlResource(filePath);
+		            Resource resource = new UrlResource(filePath); //파일경로에 실제로 파일이 있는지 검사합니다.
 
 		            // 파일이 존재하는지 확인
-		            if (resource.exists()) {
-		                int thumbnailcheck = 1;
-		                chatroom.put("thumbnailcheck", thumbnailcheck);
+		            if (resource.exists()) { //검사하는 if문입니다.
+		                int thumbnailcheck = 1; //1이면 사진이 실제로 있다는 의미입니다.
+		                chatroom.put("thumbnailcheck", thumbnailcheck); //jsp에 chatroomlist를 모델로 보내서 거기서 ${chatroomlist.thumbnailcheck}가 1이면 사진을 등록합니다.
 		                chatroom.put("thumbnail", thumbnail);
 		            } else {
 		                // 파일이 존재하지 않으면 디폴트 이미지 사용
-		            	int thumbnailcheck = 0;
+		            	int thumbnailcheck = 0; //0이면 그냥 디폴트 이미지를 등록합니다.
 		            	chatroom.put("thumbnailcheck", thumbnailcheck);
 		            }
 		        } catch (Exception e) {
@@ -401,10 +426,10 @@ public class ChatRoomController {
 		}
 		
 		for (int n = 0; n < chatroomlist.size(); n++) {
-		    // chatroomlist에서 n번째 chatroom 맵을 가져옴
+		    // List<Map<String,Object>> chatroomlist에서 n번째 Map<String, Object> chatroom 맵을 가져옴
 		    Map<String, Object> chatroom = chatroomlist.get(n);
 
-		    // chatroom 맵에 ttitle 키가 없다면, tno를 사용하여 trade 테이블에서 ttitle 조회
+		    // chatroom 맵에 ttitle(물품 이름) 키가 없다면, tno(물품 번호)를 사용하여 trade 테이블에서 ttitle 조회
 		    if (!chatroom.containsKey("ddate")) {
 		        String ouuid = String.valueOf(chatroom.get("ouuid"));
 		        Timestamp ddate = chatRoomService.getDdateByOuuid(ouuid);
@@ -432,6 +457,18 @@ public class ChatRoomController {
 		    }
 		}
 		
+		Collections.sort(chatroomlist, new Comparator<Map<String, Object>>() {
+		    @Override
+		    public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+		        // 각 Map에서 sortdate 값을 가져옴
+		        Timestamp sortdate1 = (Timestamp) o1.get("sortdate");
+		        Timestamp sortdate2 = (Timestamp) o2.get("sortdate");
+
+		        // sortdate 값을 비교하여 정렬
+		        return sortdate2.compareTo(sortdate1);
+		    }
+		});
+		
 		model.addAttribute("chatroomlist", chatroomlist);
 		
 		return "/chat/alarm"; //채팅방 리스트 페이지입니다.
@@ -451,36 +488,36 @@ public class ChatRoomController {
 		return json.toString();
 	}
 	
-	//알람 리스트 페이지에 들어가면 세션을 사용해서 받아온 알람들의 acheck 값을 다 0으로 update합니다.
-	@PostMapping("/alarmcheck")
-	@ResponseBody
-	public String alarm(@RequestBody String ouuid, HttpSession session) {
-		
-		//System.out.println("muuid는 " + muuid);
-		
-		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
-			
-			
-			int setcheckzero = chatRoomService.setCheckZero(ouuid);
-			
-			JSONObject json = new JSONObject();
-			
-			if(setcheckzero > 0) {
-				
-				json.put("check", 1);
-				
-			} else {
-				
-				json.put("check", 0);
-				
-			}
-			
-			return json.toString();
-			
-		}
-		
-		return "/";
-	}
+	//채팅 리스트 페이지에 들어가면 세션을 사용해서 받아온 알람들의 acheck 값을 다 0으로 update합니다.
+//	@PostMapping("/alarmcheck")
+//	@ResponseBody
+//	public String alarm(@RequestBody String ouuid, HttpSession session) {
+//		
+//		//System.out.println("muuid는 " + muuid);
+//		
+//		if(session.getAttribute("muuid") != null && !(session.getAttribute("muuid").equals(""))) {
+//			
+//			
+//			int setcheckzero = chatRoomService.setCheckZero(ouuid);
+//			
+//			JSONObject json = new JSONObject();
+//			
+//			if(setcheckzero > 0) {
+//				
+//				json.put("check", 1);
+//				
+//			} else {
+//				
+//				json.put("check", 0);
+//				
+//			}
+//			
+//			return json.toString();
+//			
+//		}
+//		
+//		return "/";
+//	}
 	
 	@PostMapping("/auctionchat")
 	public String auctionChat(@RequestParam(name="roomId") String roomId, @RequestParam(name="lastroomcheck") int lastroomcheck, Model model, HttpSession session) {

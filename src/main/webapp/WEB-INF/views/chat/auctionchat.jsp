@@ -37,6 +37,10 @@ $(function(){
 	let mnickname = '${mnickname}'; //구매자 닉
 	let tno = '${tno}'; //거래물품 번호
 	let ws = Stomp.over(sock);
+	
+	var currentDate = new Date();
+	var currentHour = currentDate.getHours();
+	var formattedDate = currentHour +'시' + ' ' + currentDate.getMinutes() + '분';
 
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
@@ -56,7 +60,8 @@ $(function(){
 			roomId : roomId,
 			sender : sender,
 			mnickname : mnickname,
-			message : emessage
+			message : emessage,
+			time : formattedDate
 		}));
 		startPing();
 	});
@@ -77,7 +82,8 @@ $(function(){
 			roomId : roomId,
 			sender : sender,
 			mnickname : mnickname,
-			message : message
+			message : message,
+			time : formattedDate
 		}));
 		messageInput.value = '';
 	}
@@ -126,10 +132,12 @@ $(function(){
 	        var messageElement = document.createElement("p");
 	        messageElement.textContent = recv.message;
 	        
-	        let ddate = document.createElement("span");
-	        ddate.
+	        let timeElement = document.createElement("span");
+	        timeElement.className = "time_date";
+	        timeElement.textContent = recv.time;
 
 	        received_withd_msg.appendChild(messageElement);
+	        received_withd_msg.appendChild(timeElement);
 	        received_msg.appendChild(received_withd_msg);
 	        incoming_msg.appendChild(received_msg);
 
@@ -146,8 +154,14 @@ $(function(){
 
 	        var messageElement = document.createElement("p");
 	        messageElement.textContent = recv.message;
+	        
+	        let timeElement = document.createElement("span");
+	        timeElement.className = "time_date";
+	        timeElement.textContent = recv.time;
+	        console.log(recv.time)
 
 	        sent_msg.appendChild(messageElement);
+	        received_withd_msg.appendChild(timeElement);
 	        outgoing_msg.appendChild(sent_msg);
 	        messagesList[0].appendChild(outgoing_msg);
 
@@ -193,6 +207,7 @@ $(function(){
 							sender : sender,
 							mnickname : mnickname,
 							message : "거래가 완료되었습니다. 후기를 작성해주시기 바랍니다.",
+							time : formattedDate
 						}));
     					
 						trade = 1;
@@ -243,7 +258,8 @@ $(function(){
 			    							roomId : roomId,
 			    							sender : sender,
 			    							mnickname : mnickname,
-			    							message : mnicname"님이 거래를 취소하셨습니다."
+			    							message : mnicname"님이 거래를 취소하셨습니다.",
+			    							time : formattedDate
 			    						}));
 										
 										location.href='/';
@@ -279,7 +295,8 @@ $(function(){
 						    							roomId : roomId,
 						    							sender : sender,
 						    							mnickname : mnickname,
-						    							message : mnicname"님이 거래를 취소하셨습니다."
+						    							message : mnicname"님이 거래를 취소하셨습니다.",
+						    							time : formattedDate
 						    						}));
 						        	        		
 						        	        		alert("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
@@ -304,7 +321,8 @@ $(function(){
 											sender : sender,
 											mnickname : mnickname,
 											message : mnickname+ "님이 " + message + " 웨일페이를 제시했습니다.",
-											requestMoney : message
+											requestMoney : message,
+											time : formattedDate
 										// 숫자로 변환한 값을 전송합니다.
 										}));
 										
@@ -342,7 +360,8 @@ $(function(){
 				roomId : roomId,
 				sender : sender,
 				mnickname : mnickname,
-				message : nomessage
+				message : nomessage,
+				time : formattedDate
 			}));
 		});
 		
@@ -365,6 +384,7 @@ $(function(){
 							sender : sender,
 							mnickname : mnickname,
 							message : mnickname+ "님이 거래 수령 완료 버튼을 눌렀습니다.",
+							time : formattedDate
 						}));
     					$(".tradeAcceptOrCancel2").hide();
     					$(".tradeAcceptOrCancel").hide();
@@ -378,6 +398,7 @@ $(function(){
 							sender : sender,
 							mnickname : mnickname,
 							message : "거래가 완료되었습니다.",
+							time : formattedDate
 						}));
     				}
 				},

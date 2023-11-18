@@ -2,6 +2,7 @@ u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- 채팅방은 두고 알람만 지운다. muuid의 dcheck가 0으로 수정함과 동시에 채팅방을 만듭니다. -->
+<!-- 가장 최근의 ddate 순으로 정렬합니다. -->
 <!DOCTYPE html>
 <html>
 <head>
