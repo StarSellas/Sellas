@@ -12,6 +12,10 @@
  */
  
 /* ******************** css 수정 *************************/ 
+.productcontent{
+	margin-top: 15px;
+}
+
 .normalTitle{
 	 display: block;
     width: 100%;

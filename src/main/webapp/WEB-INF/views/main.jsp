@@ -288,9 +288,9 @@ $(function() {
             <c:choose>
                <c:when test="${memberInfo != null }">
                   <p class="lead fw-normal text-white-50 mb-0">안녕하세요
-                     ${memberInfo.mnickname }님!!</p>
                   <br> <fmt:formatNumber value="${memberInfo.mbalance }" pattern="#,### 웨일페이"/>
                 여기서부터 시작하겠습니다.
+                     ${memberInfo.mnickname }님!!</p>
 	
                </c:when>
                <c:otherwise>
@@ -360,8 +360,10 @@ $(function() {
                               <!-- Product name-->
                               <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
                               <!-- Product price-->
+                              <div class="productcontent">
                              <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"> ${i.tnormalprice } WP</div>
                                <div style="font-size: small;">${i.ttdate }</div>
+                           </div>
                            </div>
                            <input type="hidden" class="rowNum" data-tno="${i.tno }">
                         <div class="card-footer border-top-0 bg-transparent">
@@ -449,6 +451,12 @@ $(function() {
    <script src="js/scripts.js"></script>
 </body>
 <script type="text/javascript">
+M.onBack( function(e) {
+	alert("뒤로가기");
+	CLEAR_TOP;
+});
+
+
    function cutTitle(){
         $(".normalTtitle").each(function() {
             let title = $(this).text();
