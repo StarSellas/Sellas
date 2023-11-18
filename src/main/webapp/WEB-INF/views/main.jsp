@@ -463,8 +463,8 @@ M.onBack( function(e) {
             console.log(title);
             console.log(title.length);
             
-            if(title.length > 10){
-               titlecut = title.substring(0, 9) + "...";
+            if(title.length > 11){
+               titlecut = title.substring(0, 10) + "...";
                console.log("titlecut : " + titlecut);
                $(this).text(titlecut);
             }
