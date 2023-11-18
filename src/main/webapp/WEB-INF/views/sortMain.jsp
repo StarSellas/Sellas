@@ -42,7 +42,7 @@
 		
 		if(sort == ""){
 			sort = 0
-			console.log("sort : " + sort)
+			//console.log("sort : " + sort)
 		} 
 		$(".sortForSearch").val(sort);
 		
@@ -201,29 +201,28 @@
 				//console.log(searchCate);
 				$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
 				
+			});
+			
+			// 검색버튼 클릭
+			$(".swriteButton").click(function(){
+				
 				if($(".searchA").hasClass("active")){
 					let selectedOption = $(".searchA.active").data("option");
 					$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
 					//console.log(selectedOption)
 				} 
-			
-			});
-			
-			// 검색버튼 클릭
-			$(".swriteButton").click(function(){
+				
 				$(".searchFrom").submit();	// form 제출
 			});
 			
-			
-			// 검색카테고리 & 검색단어 검색창에 남기기
-       	
+		// 검색카테고리 & 검색단어 검색창에 남기기
    		let firstOption = $(".searchCate option:first").val();
    		$(".searchCate").val(firstOption);
        	
        	if (searchCate != ""){
        		let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
 				//console.log("선택한카테 : " + pick);
-				$("#navbarDropdown").text(pick);
+				$("#navbarSDropdown").text(pick);
        		$(".swrite").val(search);
        	}
        	
@@ -303,7 +302,7 @@
 						<input type="hidden" name="searchCate" class="searchCate" value="title">
 						<input type="hidden" name="ino" class="inoForSearch">
 						<input type="hidden" name="sort" class="sortForSearch">
-						<button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
+						<button type="button" class="swriteButton" id="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
 
 					</form>
 		</div>

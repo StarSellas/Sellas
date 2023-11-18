@@ -225,7 +225,7 @@ function nickChange() {
              $.uploadImageByPath2 = function ($previewImgArray, uuid, progress) {
                   return new Promise((resolve) => {
                     const _options = {
-                      url: 'http://172.30.1.2:8080/profileEdit/photoModify',
+                      url: 'http://172.30.1.4:8080/profileEdit/photoModify',
                       header: {},
                       params: {uuid : uuid},
                       body: $previewImgArray.map((filePath) => ({

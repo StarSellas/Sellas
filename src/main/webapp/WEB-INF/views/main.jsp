@@ -131,10 +131,10 @@ $(function() {
          let wholePage = Math.ceil(count/10);   // 전체페이지수(글의갯수/10의 올림) 
          
          //console.log("firsttno : " + firsttno);
-         console.log("count : " + count);
+         //console.log("count : " + count);
          //console.log("wholePage : " + wholePage);
-         console.log("currentPage : " + currentPage);
-         console.log("startpage : " + startpage);
+         //console.log("currentPage : " + currentPage);
+         //console.log("startpage : " + startpage);
          //console.log("nextPage : " + currentPage);
          //lastRow.css("color", "red");
       
@@ -308,8 +308,8 @@ $(function() {
       <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
          <div class="searchBox justify-content-center">
          
-               <form action="./" method="get" class="searchFrom">
-                  <div class="searchCateBox">
+               <form action="./" method="get" class="searchFrom" id="searchFromM">
+                  <div class="searchCateBox" id="searchCateBox">
                      <ul class="navbar-nav">
                         <li class="nav-item dropdown"><a
                            class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">검색</a>
@@ -323,11 +323,9 @@ $(function() {
                         </li>
                      </ul>
                   </div>
-                     <input type="text" name="search" class="swrite"> 
+                     <input type="text" name="search" class="swrite" id="swriteM"> 
                      <input type="hidden" name="searchCate" class="searchCate" value="title">
-                  <div class="swriteBtnBox">
-                     <button type="button" class="swriteButton"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
-                  </div>
+                     <button type="button" class="swriteButton" id="swriteButtonM"><img src="../img/searchIcon.png" id="searchIcon" alt="searchIcon"></button>
                </form>
                
                <input type="hidden" class="ReSearchCate" value="${searchCate }">
