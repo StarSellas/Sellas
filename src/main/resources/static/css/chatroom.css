@@ -1,6 +1,8 @@
 @charset "UTF-8";
 img {
   	max-width: 100%;
+  	border-radius: 3px;
+
 }
 .inbox_people {
 	position: fixed;
@@ -11,6 +13,7 @@ img {
   	overflow: hidden;
   	width: 100%;
   	padding-top: 10px;
+  	opacity: 0.7;
 }
 
 .inbox_msg {
@@ -43,9 +46,28 @@ img {
 .messaging { 
 	padding: 0 0 0 0;
 	}
-.msg_history {
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  /* 600px 이하인 경우에 적용될 스타일 */
+  .msg_history {
+	margin-top:60px;
+  	height: 790px;
+  	overflow-y: auto;
+  	padding: 30px 15px 0 25px;
+  }
+}
+@media screen and (min-width: 601px) and (max-width: 800px) {
+  /* 600px 이하인 경우에 적용될 스타일 */
+  .msg_history {
 	margin-top:60px;
   	height: 680px;
+  	overflow-y: auto;
+  	padding: 30px 15px 0 25px;
+	}
+}
+.msg_history {
+	margin-top:60px;
+  	height: 800px;
   	overflow-y: auto;
   	padding: 30px 15px 0 25px;
 }
@@ -144,6 +166,22 @@ img {
 	margin-top: 5px;
 	text-align: center;
     font-size: 10px;
+}
+
+#tradeamount{
+	background-color:#8FBC8F;
+}
+#tradeRequest{
+	background-color:#ADD8E6;
+}
+#tradeAccept{
+	background-color:#D8BFD8;
+}
+#tradeCancel{
+	background-color:#E6E6FA  ;
+}
+#picker{
+	background-color:#FFB6C1;
 }
 .tradeResponse button {
     width: 35px;

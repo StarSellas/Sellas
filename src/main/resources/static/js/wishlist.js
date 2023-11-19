@@ -15,11 +15,11 @@ $(function() {
                M.pop.alert({
                   title: 'Sellas',
                   message: '위시리스트로 이동하시겠습니까?',
-                  buttons: ['계속보기', '이동하기'],
+                  buttons: ['이동하기', '계속보기'],
                   callback: function(index) {
-                     if (index === 0) { // 취소버튼
+                     if (index === 1) { // 취소버튼
                         window.location.reload();
-                     } else if (index === 1) { // 이동하기
+                     } else if (index === 0) { // 이동하기
                      window.location.href = '/getwish';
                      }
                   }

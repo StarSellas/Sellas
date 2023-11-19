@@ -26,6 +26,8 @@
 
  .tdate1{
 	margin-left: 40px;
+	color: gray;
+	font-weight: bold;
 }
 
 #reviewBtn{

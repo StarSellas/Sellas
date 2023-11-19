@@ -67,30 +67,21 @@
     <c:choose>
      <c:when test="${normalDetailImage ne null}">
          <c:forEach items="${normalDetailImage}" var="i">
-            <div class="swiper-slide">
-               <img alt="" src="./tradeImgUpload/${i.timage}" style="width:100%; height: 100%">
+            <div class="swiper-slide text-center">
+               <img class="rounded" alt="" src="./tradeImgUpload/${i.timage}" width="275px" height="275px">
             </div>
          </c:forEach>
       </c:when>
       <c:otherwise>
-      <div class="swiper-slide">
-               <img alt="" src="./tradeImgUpload/defaultimg.jpg" style="width:100%; height: 100%">
-           </div>
+      <div class="swiper-slide text-center">
+               <img class="rounded" alt="" src="./tradeImgUpload/defaultimg.jpg" width="275px" height="275px">
+      </div>
       </c:otherwise>
    </c:choose>
 
   </div>
   <!-- If we need pagination -->
   <div class="swiper-pagination"></div>
-
-  <!-- If we need navigation buttons -->
-  <div class="swiper-button-prev">
-  <img alt="" src="../img/pre.png" style="width: 30px; height: 30px;">
-  </div>
-  <div class="swiper-button-next">
-   <img alt="" src="../img/next.png" style="width: 30px; height: 30px;">
-  </div>
-
 </div>
                <div class="normalDiv">
                
@@ -135,7 +126,7 @@
                         <c:if test="${detail.tnormalstate eq 1}">거래중</c:if>
                         <c:if test="${detail.tnormalstate eq 2}">거래완료</c:if>
                               </div>
-             <div class="dcontent" style="white-space:pre-wrap;">
+             <div class="dcontent" style="white-space: pre-line;">
                ${detail.tcontent}
                </div>
                <div>
@@ -149,8 +140,7 @@
                <!-- 판매중일때 -->
                <div class="TradeBtnBox">
                   <c:if test="${sessionScope.muuid == detail.muuid && detail.tnormalstate == 0}">
-                     <div class="toggleBtnBox"><button id="toggleBtn">+</button></div>
-                     <div class="otherBtnBox hide">
+                     <div class="otherBtnBox">
                            <button id="normalHikeUpBtn">끌올하기</button>
                            <button id="normalEditBtn">수정하기</button>
                            <button id="normalDeleteBtn">등록 취소</button>
@@ -244,7 +234,7 @@
                dataType : "json",
                success : function(data){
                   if(data.noNeedToHikeUp ==1){
-                	  M.pop.instance("이미 제일 최근 게시판입니다.");
+                	  M.pop.instance("이미 제일 최근 게시글입니다.");
                      return false;
                   }
                   

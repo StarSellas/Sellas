@@ -476,6 +476,10 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          let normalPrice = $("input[name='normalPrice']").val();
          let auctionStartPrice = $("input[name='auctionStartPrice']").val();
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
+         let auctionDeposit = 0;
+         if(tradeType === "1"){
+        	 auctionDeposit = parseFloat(auctionStartPrice) * 0.1 + parseFloat(auctionMinBidUnit);
+         }
          
          if(title.length < 5){
         	 M.pop.instance("제목은 5글자 이상 작성해주세요.");
@@ -520,7 +524,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          type : "post",
          data : {category : category, title : title, content : content, tradeType : tradeType,
                   locationLat : locationLat, locationLng : locationLng, normalPrice : normalPrice, 
-                  auctionStartPrice: auctionStartPrice, auctionMinBidUnit : auctionMinBidUnit},
+                  auctionStartPrice: auctionStartPrice, auctionMinBidUnit : auctionMinBidUnit, auctionDeposit : auctionDeposit},
          dataType : "json",
          success : function(data){
             tradeType = data.tradeType;
