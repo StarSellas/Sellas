@@ -89,15 +89,15 @@
 		<div class="form-floating">
 			<div id="startPrice">
 				<div id="">경매시작가</div>
-				<div id="">${auctionItemDetail.tauctionstartprice }</div>
+				<div id="startPriceValue">${auctionItemDetail.tauctionstartprice }</div>
 			</div>
 			<div id="currentPrice">
 				<div id="">현재입찰가</div>
-				<div id="">${auctionItemDetail.abidprice }</div>
+				<div id="currentPriceValue">${auctionItemDetail.abidprice }</div>
 			</div>
 			<div id="minimumPrice">
 				<div id="">최소입찰가</div>
-				<div id="">${auctionItemDetail.minBidPrice }</div>
+				<div id="minimumPriceValue">${auctionItemDetail.minBidPrice }</div>
 			</div>
 		</div>
 
@@ -134,6 +134,12 @@
 			</c:if>
 		</c:if>
 
+		<!-- 
+		<button onclick="showPage('page0')">page0</button>
+		<button onclick="showPage('page2')">page2</button>
+		<button onclick="showPage('page3')">page3</button>
+		<button onclick="showPage('page4')">page4</button>
+		-->
 
 		</div>
 
@@ -144,13 +150,34 @@
 
 			<div class="form-floating">
 				<div class="resultTitleT">입찰성공</div>
-			</div>		
+			</div>
 			<!-- div class="form-floating textDiv">
 				<div class="resultText">입찰에 성공했습니다.</div>
 			</div -->
 			<div class="form-floating bidSuccessInfo">
+				<div class="swiper">
+					<div class="swiper-wrapper">
+						<c:choose>
+							<c:when test="${auctionImageList ne null}">
+								<c:forEach items="${auctionImageList }" var="i">
+									<div class="swiper-slide text-center">
+										<img class="rounded" src="./tradeImgUpload/${i.timage}" alt="detailImage" width="245px" height="245px">
+									</div>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="swiper-slide">
+									<div class="text-center">
+										<img class="rounded" src="./tradeImgUpload/defaultimg.jpg" alt="" width="275px" height="275px">
+									</div>
+								</div>
+							</c:otherwise>
+						</c:choose>
+					</div>	
+					<div class="swiper-pagination"></div>
+				</div>
 				<div class="form-floating textDiv bidITemInfo">
-						입찰물품 : ${auctionItemDetail.ttitle }
+						${auctionItemDetail.ttitle }
 				</div>
 				<div class="form-floating textDiv bidITemInfo" id="bidPriceDiv">
 				</div>
@@ -175,7 +202,7 @@
 				<div class="resultText">로그인 후 다시 시도해주세요.</div>
 			</div>
 			<div class="form-floating">
-				<button class="endTypeButton" onclick="window.location.href = '/login'">확인</button>
+				<button class="endTypeButton failedButton" onclick="window.location.href = '/login'">확인</button>
 			</div>
 		</div>
 
@@ -192,7 +219,7 @@
 				<div class="resultText">입찰 가격은 최소입찰가보다 높아야 합니다.</div>
 			</div>
 			<div class="form-floating">
-				<button class="endTypeButton" onclick="window.location.href = '/auctionDetail?tno='+${auctionItemDetail.tno }">확인</button>
+				<button class="endTypeButton failedButton" onclick="window.location.href = '/auctionDetail?tno='+${auctionItemDetail.tno }">확인</button>
 			</div>
 		</div>
 
@@ -211,7 +238,7 @@
 				<div class="resultText">충전 후 다시 시도해주세요.</div>
 			</div>
 			<div class="form-floating">
-				<button class="endTypeButton" onclick="window.location.href = '/fillPay'">확인</button>
+				<button class="endTypeButton failedButton" onclick="window.location.href = '/fillPay'">확인</button>
 			</div>
 		</div>
 

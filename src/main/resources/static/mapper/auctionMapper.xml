@@ -20,8 +20,8 @@
 		LEFT JOIN auctionhistory
 		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
 		LEFT JOIN tradeimage
-		ON tradeimage.tno = trade.tno
-	WHERE trade.ttype = 1 AND trade.tauctionstate = 2 AND tradeimage.tthumbnail = 0
+		ON tradeimage.tno = trade.tno AND tradeimage.tthumbnail = 0
+	WHERE trade.ttype = 1 AND trade.tauctionstate = 2
 </sql>
 
 <sql id="searchKeywordSQL">
