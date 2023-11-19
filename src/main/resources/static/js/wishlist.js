@@ -62,11 +62,11 @@ $(function() {
 		        M.pop.alert({
                   title: 'Sellas',
                   message: '고객센터로 전화하시겠습니까?',
-                  buttons: ['돌아가기', '전화하기'],
+                  buttons: ['전화하기', '돌아가기'],
                   callback: function(index) {
-                     if (index === 0) { // 취소버튼
+                     if (index === 1) { // 취소버튼
                         window.location.reload();
-                     } else if (index === 1) { // 이동하기
+                     } else if (index === 0) { // 이동하기
                   	M.sys.call('01012345678');
                      }
                   }

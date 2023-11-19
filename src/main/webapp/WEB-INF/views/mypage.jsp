@@ -97,7 +97,7 @@
 		        <h6 class="title">환경 설정</h6>
 		<div class="movedetail">
 <div class="listdiv" onclick="location.href='./addTradeLocation'">
-<i class="fa-solid fa-location-crosshairs" style="color: #88abff;">&nbsp;&nbsp;위치지정</i>
+<i class="fa-solid fa-location-crosshairs" style="color: #88abff;"></i>&nbsp;&nbsp;위치지정
 </div>		
 <div class="listdiv call">
 <i class="fa-solid fa-headset" style="color: #88abff;"></i>&nbsp;&nbsp;고객센터
