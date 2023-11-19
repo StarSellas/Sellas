@@ -162,18 +162,18 @@ $(function() {
 
 		<div id="normalTradeDiv">
 			<div class="form-floating">
-				<input class="form-control" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
+				<input class="form-control ceiledNumber" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
 				<label for="normalPrice">가격</label>
 			</div>
 		</div>
 
 		<div id="auctionTradeDiv" style="display:none">
 			<div class="form-floating">
-				<input class="form-control" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
+				<input class="form-control ceiledNumber" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
 				<label for="auctionStartPrice">경매시작가격</label>
 			</div>
 			<div class="form-floating">
-				<input class="form-control" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
+				<input class="form-control ceiledNumber" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
 				<label for="auctionMinBidUnit">최소입찰단위</label>
 			</div>
 		</div>
@@ -439,7 +439,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.67:8080/file/upload2',
+         url: 'http://172.30.1.40:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({

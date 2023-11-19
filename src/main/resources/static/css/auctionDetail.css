@@ -14,9 +14,16 @@ button {
 	background-color: #88abff;
 }
 
+.failedButton {
+	position: fixed;
+    bottom: 120px;	
+}
+
 .sellasText {
-	margin-top: 100px;
-	width: 380px;
+	margin-top: 80px;
+	margin-left: 40px;
+	margin-right: 40px;
+	width: 300px;
 }
 
 .page {
@@ -112,12 +119,11 @@ button {
 
 .resultTitleT {
 	width: 100%;
-	margin: 20px 0px;
+	margin: 0px;
 	font-size: 32px;
 	font-weight: bold;
 	color: rgba(33, 133, 255, 0.8);
 	text-align: center;
-	margin: 20px 0px;
 }
 
 .resultTitleF {
@@ -142,15 +148,17 @@ button {
 	padding: 20px 30px;
 	border-radius: 5px;
 	border: 1px solid #88abff;
-	height: 100px;
+	height: 400px;
 	display: block !important;
 	padding: 20px 30px;
 }
 
 .bidITemInfo {
+	margin-left: 40px !important;
 	margin-bottom: 10 px !important;
 	font-size: 20px !important;
 	font-weight: bold !important;
+	color: rgba(0, 0, 0, 0.4);
 }
 
 /* 

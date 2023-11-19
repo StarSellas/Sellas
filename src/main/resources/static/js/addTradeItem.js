@@ -103,6 +103,25 @@ window.onload = function() {
 	showPage("page1");
 };
 
+/* 입력 금액 유효성 검사 */
+
+let elements = Array.from(document.getElementsByClassName("ceiledNumber"));
+
+// 입찰 금액 input keyup 이벤트 발생 시 입력값 유효성 검사
+elements.forEach(input => {
+	input.addEventListener('keyup', function(){
+		if(input.value > 999999999) {
+			input.value = 999999999;
+		}
+	});
+});
+
+elements.forEach(input => {
+	input.addEventListener('focusout', function(){
+		input.value = input.value - input.value % 10;
+	});
+});
+
 /* 카테고리 설정 */
 function setCategory(category) {
 
