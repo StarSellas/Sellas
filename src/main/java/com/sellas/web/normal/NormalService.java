@@ -228,6 +228,11 @@ public class NormalService {
 		return  normalDAO.findAuctionStoryById(muuid);
 	}
 
+	public int normalLastTno() {
+		// TODO Auto-generated method stub
+		return normalDAO.normalLastTno();
+	}
+
 
 
 	

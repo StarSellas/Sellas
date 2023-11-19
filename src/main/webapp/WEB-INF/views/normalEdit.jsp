@@ -423,7 +423,7 @@
               M.media.picker({
                 mode: "SINGLE",
                 media: "PHOTO",
-                path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+                //path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
                 column: 3,
                 callback: (status, result) => {
                   resolve({ status, result })
@@ -439,7 +439,7 @@
                  mode: "MULTI",
                  media: "PHOTO",
                  maxCount : 4,
-                 path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+                 //path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
                  column: 3,
                  callback: (status, result) => {
                     resolve({ status, result })             
@@ -616,7 +616,7 @@
                                     
                         }
                      }
-                     alert("작성이 완료되었습니다.");
+                     M.pop.instance("작성이 완료되었습니다.");
                      var form = document.createElement("form");
                      form.method = "GET";
                      form.action = "./normalDetail"; // 컨트롤러 경로 설정

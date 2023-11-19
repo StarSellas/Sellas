@@ -439,7 +439,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.67:8080/file/upload2',
+         url: 'http://172.30.1.40:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
