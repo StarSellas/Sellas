@@ -231,7 +231,7 @@
    //끌올
         $("#normalHikeUpBtn").click(function(){
            if(tnormalhikeup >= 3){
-              alert("더이상 끌올을 사용할 수 없습니다.");
+        	   M.pop.instance("더이상 끌올을 사용할 수 없습니다.");
               return false;
            }
            
@@ -244,7 +244,7 @@
                dataType : "json",
                success : function(data){
                   if(data.noNeedToHikeUp ==1){
-                     alert("이미 제일 최근 게시판입니다.");
+                	  M.pop.instance("이미 제일 최근 게시판입니다.");
                      return false;
                   }
                   
@@ -283,7 +283,7 @@
                      dataType : "json",
                      success:function(data){
                         if(data.deleteSuccess == 1){
-                           alert("삭제가 완료되었습니다.");
+                        	M.pop.instance("삭제가 완료되었습니다.");
                            location.href='/';
                         }
                      },
@@ -317,7 +317,7 @@
                //오는 데이터 : tnormalstate , mamount, 
                
                if(data.paymentCount > 0){
-                  alert("이미 진행중인 채팅방이 있거나 실패한 거래입니다.");
+            	   M.pop.instance("이미 진행중인 채팅방이 있거나 실패한 거래입니다.");
                   return false;
                }
                
@@ -330,7 +330,7 @@
                   }
                }
                      if(data.success == 1){
-                        alert("거래 신청이 완료되었습니다.");
+                    	 M.pop.instance("거래 신청이 완료되었습니다.");
                         //가상 form 만들어서  submit하기
                            var form = $("<form></form>").attr({
                                  action: "./chat/onlyalarm",

@@ -94,6 +94,13 @@
 </div>
 
 
+		        <h6 class="title">고객 센터</h6>
+		<div class="movedetail">
+<div class="ddd">
+<img src="../img/acti.png" class="bag" width="20px;">&nbsp;고객센터
+</div>
+</div>
+
   <h6 class="logout" onclick="location.href='./logout'">로그아웃</h6>
 
 
@@ -108,5 +115,7 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="js/scripts.js"></script>
+	<script src="../js/wishlist.js"></script>
+	
 </body>
 </html>
