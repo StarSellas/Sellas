@@ -25,6 +25,8 @@
 <!-- ******************* 추가 *********************** -->
 <link rel="stylesheet"
    href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+   <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"  />
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
       <script src="./js/jquery-3.7.0.min.js"></script>
       <script src="./js/wnInterface.js"></script> 
       <script src="./js/mcore.min.js"></script> 
@@ -144,7 +146,10 @@
 											<img src="../img/camera.png" width="38">
 										</button>
 									</div>
-									<div id="box"></div>
+								<div class="swiper">
+									<div class="swiper-wrapper"></div>
+									<div class="swiper-pagination" id="paginationDiv"></div>
+								</div>
 									<div id="progress"></div>
 									<div id="upload-box"></div>
 								</div>
@@ -166,11 +171,28 @@
 
    <script type="text/javascript">
         
-   
-   $(function(){
-		
-		
-	});
+   /* 미리보기 이미지 슬라이드 by민성 */
+	
+   let swiper = null;
+
+   function pagination() {
+   	if (swiper) {
+   		swiper.destroy();
+   		swiper = null;
+   		document.getElementById("paginationDiv").innerHTML = "";
+   	}
+   	swiper = new Swiper(".swiper", {
+   		pagination: {
+   			el: ".swiper-pagination",
+   		},
+   		navigation: {
+   			nextEl: ".swiper-button-next",
+   			prevEl: ".swiper-button-prev",
+   		},
+   	});
+
+   }
+  
    
     $(function () {
            $(".normalTradeChangeBtn").click(function () {
@@ -194,7 +216,7 @@
          let addCount = 0;
          let deleteCount = 0;
          const $picker2 = $('#picker2');
-         const $box = $('#box');
+         const $box = $('.swiper-wrapper');
          const $camera = $('#camera');
          
          
@@ -223,11 +245,18 @@
                          .then(({ status, result }) => {
                   if (status === 'SUCCESS') {
                      //alert("뜨나?22")
-                    $previewImg = $(document.createElement('img'))
-                    $previewImg.attr('width', '250px')
-                    $previewImg.attr('src', "data:image/png;base64," + result[0].data)
-                    $box.append($previewImg);
-                    count++;
+                	  $previewImg = $(document.createElement('img'));
+						$previewImg.attr('height', '275px');
+						$previewImg.attr('width', '250px');
+						$previewImg.attr('src', "data:image/png;base64," + result[0].data);
+						$previewImg.attr('class','rounded');
+						
+						$slide = $(document.createElement('div'));
+						$slide.attr('class', 'swiper-slide');
+						$slide.append($previewImg);
+						$box.append($slide);
+						pagination();
+						count++;
                   } else {
                     return Promise.reject('BASE64 변환 실패')
                   }
@@ -285,13 +314,20 @@
                               continue;
                               }
 
-                     let imageSrc = "data:image/png;base64," + result[i].data;
-                     let $previewImg = $(document.createElement('img'));
-                     $previewImg.attr('width', '250px');
-                     $previewImg.attr('src', imageSrc);
-                     $box.append($previewImg);
+                     
+                     $previewImg = $(document.createElement('img'));
+         			$previewImg.attr('height', '275px');
+         			$previewImg.attr('width', '200px');
+         			$previewImg.attr('src', "data:image/png;base64," + result[i].data);
+         			$previewImg.attr('class','rounded');
+         			
+         			$slide = $(document.createElement('div'));
+         			$slide.attr('class', 'swiper-slide');
+         			$slide.append($previewImg);
+         			$box.append($slide);
                   }
                    count = $previewImgArray.length;
+                   pagination();
                } else {
                   return Promise.reject('이미지 가져오기 실패');
                }
@@ -387,7 +423,7 @@
               M.media.picker({
                 mode: "SINGLE",
                 media: "PHOTO",
-                path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+                //path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
                 column: 3,
                 callback: (status, result) => {
                   resolve({ status, result })
@@ -403,7 +439,7 @@
                  mode: "MULTI",
                  media: "PHOTO",
                  maxCount : 4,
-                 path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
+                 //path: "/media", // 값을 넘기지않아야 기본 앨범 경로를 바라본다.
                  column: 3,
                  callback: (status, result) => {
                     resolve({ status, result })             
@@ -450,7 +486,7 @@
           $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
                return new Promise((resolve) => {
                  const _options = {
-                   url: 'http://172.30.1.52:8080/file/upload2',
+                   url: 'http://172.30.1.12:8080/file/upload2',
                    header: {},
                    params: { tno: tno },
                    body: $previewImgArray.map((filePath) => ({
@@ -580,7 +616,7 @@
                                     
                         }
                      }
-                     alert("작성이 완료되었습니다.");
+                     M.pop.instance("작성이 완료되었습니다.");
                      var form = document.createElement("form");
                      form.method = "GET";
                      form.action = "./normalDetail"; // 컨트롤러 경로 설정

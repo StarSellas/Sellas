@@ -691,7 +691,10 @@ public class NormalController {
 	public String normalHikeUp(@RequestParam Map<String,Object> map) {
 		JSONObject json = new JSONObject();
 		int LastTno = normalService.SelectLastTno();
-		if(Integer.parseInt(String.valueOf(map.get("tno")))==LastTno) {
+		int compareNormalLastTno = normalService.normalLastTno();
+		
+		
+		if(Integer.parseInt(String.valueOf(map.get("tno")))==LastTno|| LastTno != compareNormalLastTno) {
 			json.put("noNeedToHikeUp", 1);
 			return json.toString();
 		}

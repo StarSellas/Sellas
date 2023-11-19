@@ -2,11 +2,9 @@
 /* 거래 위치 설정 */
 
 // 지도 생성하기
-function drawMap(mapOption) {
+function drawMap(mapContainer, mapOption, isStatic) {
 	
-	var container = document.getElementById('map');
-	
-	var map = new kakao.maps.Map(container, mapOption);
+	var map = new kakao.maps.Map(mapContainer, mapOption);
 	var marker = new kakao.maps.Marker({
 		position: map.getCenter() 
 	});
@@ -14,6 +12,9 @@ function drawMap(mapOption) {
 	marker.setMap(map);
 	// Location : 마커 생성 위치로 설정하기
 	setLocation(marker.getPosition());
+	
+	if(!isStatic){
+	
 	// 마커 드래그 속성 변경
 	marker.setDraggable(true);
 	
@@ -32,6 +33,9 @@ function drawMap(mapOption) {
 		
 		setLocation(marker.getPosition());
 	});
+	
+	} else {
+	}
 }
 
 function setLocation(latlng) {
@@ -59,6 +63,7 @@ function markingCurrentLocation() {
 			}
 			else {
 				if ( result.coords ) {
+					let container = document.getElementById("map");
 					var { latitude, longitude } = result.coords;
               		var lat = parseFloat(latitude);
               		var lng = parseFloat(longitude);
@@ -66,7 +71,7 @@ function markingCurrentLocation() {
 						center: new kakao.maps.LatLng(lat, lng),
 						level: 3
 					};
-					drawMap(options);
+					drawMap(container, options, false);
 				}
 				else {
 					alert( 'It cann\'t get GPS Coords.' );
@@ -77,15 +82,15 @@ function markingCurrentLocation() {
 }
 
 window.onload = function() {
+	
+	let container = document.getElementById("map");
 
     mapOption = {
         center: new kakao.maps.LatLng(37.512883503134304, 127.06480583103462),
         level: 3
     };
 
-	drawMap(mapOption);
-	
-	hideLocationDiv();
+	drawMap(container, mapOption, false);
 };
 
 /* 장소 등록 */
@@ -102,7 +107,18 @@ function addTradeLocation() {
 		data : {locationLat : lat, locationLng : lng, locationName : name},
 		success : function(result) {
 			if(result == 1){
+				
 				showPage("page2");
+				
+				let container = document.getElementById("resultMap");
+				var options = {
+					center: new kakao.maps.LatLng(lat, lng),
+					draggable: false,
+					level: 3
+				};
+				drawMap(container, options, true);
+				
+				document.getElementById("resultName").textContent = document.getElementById("locationName").value;
 			} else {
 				showPage("page3");
 			}
@@ -122,4 +138,5 @@ function showPage(pageId) {
 		pages[i].style.display = "none";
 	}
 	document.getElementById(pageId).style.display = "block";
+	
 }

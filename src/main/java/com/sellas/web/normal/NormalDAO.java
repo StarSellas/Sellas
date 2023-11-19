@@ -95,6 +95,8 @@ public interface NormalDAO {
 	//TODO 경매스토리
 	List<Map<String, Object>> findAuctionStoryById(String muuid);
 
+	int normalLastTno();
+
 	
 
 

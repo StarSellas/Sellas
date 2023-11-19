@@ -139,7 +139,7 @@ $(function() {
 					</div>
 					<div class="swiper">
 						<div class="swiper-wrapper"></div>
-						<div class="swiper-pagination"></div>
+						<div class="swiper-pagination" id="paginationDiv"></div>
 					</div>
 					<div id="progress"></div>
 					<div id="upload-box"></div>
@@ -240,18 +240,26 @@ $(function() {
 // 작성자 : 이대원 ヽ(´▽`)/
 
 /* 이미지 */
+
+let swiper = null;
+
 function pagination() {
-	const swiper = new Swiper('.swiper', {
+	if (swiper) {
+		swiper.destroy();
+		swiper = null;
+		document.getElementById("paginationDiv").innerHTML = "";
+	} 
+	swiper = new Swiper(".swiper", {
 		pagination: {
-			el: '.swiper-pagination',
+			el: ".swiper-pagination",
 		},
 		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev",
 		},
 	});
-}
 
+}
 
 $(function(){
 let cameraImagePath ='';
@@ -431,7 +439,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.67:8080/file/upload2',
+         url: 'http://172.30.1.40:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
