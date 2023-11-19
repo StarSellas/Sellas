@@ -72,7 +72,7 @@
 			lastroomcheckInput.setAttribute("value", lastroomcheck);
 			form.appendChild(lastroomcheckInput);
 			
-			document.body.appendChild(form); //좌석 빼줌
+			document.body.appendChild(form);
 			form.submit(); 
 			});
 		});

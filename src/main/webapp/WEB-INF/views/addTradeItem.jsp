@@ -477,8 +477,8 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          let auctionStartPrice = $("input[name='auctionStartPrice']").val();
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
          let auctionDeposit = 0;
-         if(tradeType === 1){
-        	 auctionDeposit = parseInt(auctionStartPrice) * 0.1 + parseInt(auctionMinBidUnit);
+         if(tradeType === "1"){
+        	 auctionDeposit = parseFloat(auctionStartPrice) * 0.1 + parseFloat(auctionMinBidUnit);
          }
          
          if(title.length < 5){

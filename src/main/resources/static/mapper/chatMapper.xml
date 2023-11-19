@@ -55,7 +55,7 @@ ORDER BY
 	</select>
 	
 	<update id="setCheckZero" parameterType="String">
-		update dialogue set dcheck = 0 where muuid = #{muuid} and dcheck = 1
+		update dialogue set dcheck = 0 where ouuid = #{ouuid} and dcheck = 1
 	</update>
 	
 	<select id="selectTnormalstate" parameterType="Map" resultType="Integer">
@@ -77,10 +77,40 @@ ORDER BY
 	</select>
 	
 	<select id="chatRoomList" parameterType="Map" resultType="Map">
-		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid}
+		select ouuid, tno, oseller, obuyer from onlinechat where oseller = #{muuid} or obuyer = #{muuid}
 	</select>
 	
 	<select id="getTitleByTno" parameterType="Integer" resultType="String">
 		select ttitle from trade where tno = #{tno}
 	</select>
+	
+	<select id="getDcontentByTno" parameterType="String" resultType="String">
+		select dcontent from dialogue where ouuid = #{ouuid} ORDER BY ddate DESC
+LIMIT 1
+	</select>
+	
+	<select id="getThumbnailByTno" parameterType="Integer" resultType="String">
+		select timage as thumbnail from tradeimage where tno=#{tno} and tthumbnail = 0
+	</select>
+	
+	<select id="getDdateByOuuid" parameterType="String" resultType="java.sql.Timestamp">
+		select ddate from dialogue where ouuid = #{ouuid} ORDER BY ddate DESC LIMIT 1
+	</select>
+	
+	<select id="auctionCheck" parameterType="Map" resultType="Integer">
+		select count(*) from dialogue where ouuid = #{ouuid} and muuid = #{muuid} and dcontent like concat('%','낙찰','%')
+	</select>
+	
+	<select id="getMphoto" parameterType="String" resultType="String">
+		select mphoto from member where muuid = #{muuid}
+	</select>
+	
+	<select id="tNormalPrice" parameterType="Map" resultType="Integer">
+		select tnormalprice from trade where tno = #{tno} and muuid = #{oseller}
+	</select>
+	
+	<select id="checkEnter" parameterType="Map" resultType="Integer">
+		select count(*) from dialogue where ouuid = #{ouuid} and muuid = #{obuyer}
+	</select>
+	
 </mapper>

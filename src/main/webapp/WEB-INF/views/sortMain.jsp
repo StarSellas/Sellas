@@ -160,7 +160,7 @@
              			    '<div class="productcontent">' +
              			    '<div class="mickname">' +
              			    this.list[i].mnickname +
-             			    '</div> <div style="font-size: large;"> ' +
+             			    '</div> <div class="priceTag"> ' +
              			    formatNumberWithCommas(this.list[i].tnormalprice)+' WP'+
              			    '</div>' +
              			    '<div style="font-size: small;">' +
@@ -267,27 +267,6 @@
 <body>
    <%@ include file="menubar.jsp" %>
    
-   <!-- Header-->
-   <header class="bg-dark py-5">
-      <div class="container px-4 px-lg-5 my-5">
-         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder"></h1>
-            <c:choose>
-               <c:when test="${memberInfo != null }">
-                  <p class="lead fw-normal text-white-50 mb-0">안녕하세요
-                     ${memberInfo.mnickname }님!!</p>
-                  <br> 현재 남은 잔액 : ${memberInfo.mbalance } 웨일페이
-
-               </c:when>
-               <c:otherwise>
-                  <p class="lead fw-normal text-white-50 mb-0">로그인 해주세요</p>
-                  <a href="./login">로그인</a>
-               </c:otherwise>
-            </c:choose>
-
-         </div>
-      </div>
-   </header>
    <!-- Section-->
 
    <section class="py-3">
@@ -365,7 +344,7 @@
                               <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
                               <!-- Product price-->
                               <div class="productcontent">
-                             <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${i.tnormalprice }" pattern="#,###원"/></div>
+                             <div class="mickname">${i.mnickname }</div> <div class="priceTag"><fmt:formatNumber value="${i.tnormalprice }" pattern="#,###원"/></div>
                                <div style="font-size: small;">${i.ttdate }</div>
                            </div>
                            </div>
@@ -417,7 +396,7 @@
                               <h6 class="fw-bolder normalTtitle">${s.ttitle }</h6>
                               <!-- Product price-->
                               <div class="productcontent">
-                             <div class="mickname">${s.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${s.tnormalprice }" pattern="#,###원"/></div>
+                             <div class="mickname">${s.mnickname }</div> <div class="priceTag"><fmt:formatNumber value="${s.tnormalprice }" pattern="#,###원"/></div>
                                <div style="font-size: small;">${s.ttdate }</div>
                            </div>
                            </div>

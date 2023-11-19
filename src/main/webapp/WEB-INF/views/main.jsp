@@ -208,7 +208,7 @@ $(function() {
                     			    '<div class="productcontent">' +
                     			    '<div class="mickname">' +
                     			    this.list[i].mnickname +
-                    			    '</div> <div style="font-size: large;"> ' +
+                    			    '</div> <div class="priceTag"> ' +
                     			    formatNumberWithCommas(this.list[i].tnormalprice)+'원'+
                     			    '</div>' +
                     			    '<div style="font-size: small;">' +
@@ -263,9 +263,6 @@ $(function() {
                
                   $(function(){
                      
-                     let selectedOption;
-                     let searchCate = "${param.searchCate}";
-                        let search = "${param.search}";
                      
                         $(".searchA").click(function() {
                             // 클릭된 항목에 active 클래스 추가
@@ -276,34 +273,34 @@ $(function() {
                          let searchCate = $(this).text();
                          console.log(searchCate);
                          $("#navbarDropdown").text(searchCate);   // 선택한 카테고리 보여주기
-                        
-                         if($(".searchA").hasClass("active")){
-                           let selectedOption = $(".searchA.active").data("option");
-                           $(".searchCate").val(selectedOption);   // searchCate 서버로 보낼 input창에 넣기
-                           console.log(selectedOption)
-                        } 
                       
                      });
                      
                      // 검색버튼 클릭
                      $(".swriteButton").click(function(){
+                        
+                        if($(".searchA").hasClass("active")){
+                             let selectedOption = $(".searchA.active").data("option");
+                             $(".searchCate").val(selectedOption);   // searchCate 서버로 보낼 input창에 넣기
+                          } 
+                        
                         $(".searchFrom").submit();   // form 제출
                      });
                      
                      
                      // 검색카테고리 & 검색단어 검색창에 남기기
-                        
+                        let searchCate = "${param.searchCate}";
+                     let search = "${param.search}";
+                     
                        let firstOption = $(".searchCate option:first").val();
                        $(".searchCate").val(firstOption);
                         
                         if (searchCate != ""){
                            let pick = $("a.dropdown-item[data-option="+searchCate+"]").text();
-                        console.log("선택한카테 : " + pick);
+                        //console.log("선택한카테 : " + pick);
                         $("#navbarDropdown").text(pick);
                            $(".swrite").val(search);
                         }
-                        
-                        console.log("검색이후 value값 : " + $(".ReSearchCate").val())
                         
                   })
                </script>
@@ -409,7 +406,7 @@ $(function() {
                               <h6 class="fw-bolder normalTtitle">${i.ttitle }</h6>
                               <!-- Product price-->
                               <div class="productcontent">
-                             <div class="mickname">${i.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${i.tnormalprice }" pattern="#,###원"/></div>
+                             <div class="mickname">${i.mnickname }</div> <div class="priceTag"><fmt:formatNumber value="${i.tnormalprice }" pattern="#,###원"/></div>
                                <div style="font-size: small;">${i.ttdate }</div>
                            </div>
                            </div>
@@ -462,7 +459,7 @@ $(function() {
                               <h6 class="fw-bolder normalTtitle">${s.ttitle }</h6>
                               <!-- Product price-->
                               <div class="productcontent">
-                             <div class="mickname">${s.mnickname }</div> <div style="font-size: large;"><fmt:formatNumber value="${s.tnormalprice }" pattern="#,###원"/></div>
+                             <div class="mickname">${s.mnickname }</div> <div class="priceTag"><fmt:formatNumber value="${s.tnormalprice }" pattern="#,###원"/></div>
                                <div style="font-size: small;">${s.ttdate }</div>
                            </div>
                            </div>

@@ -1,5 +1,6 @@
 package com.sellas.web.chat;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +19,14 @@ public class ChatController {
 
 	@Autowired
 	private ChatMessageService chatMessageService;
+	
+	private LocalDateTime timestamp;
 	 
 	// 일반대화를 포함한 roomId를 사용하는 메시지들이 들르는 곳입니다.
 	// 여기를 지나는 메시지들은 전부 dialogue 테이블에 저장됩니다.
 	@MessageMapping("ws/chat/message")
 	public void message(ChatMessage message) {
+		
 //		System.out.println("message content: " + message.getMessage());
 		if (ChatMessage.MessageType.ENTER.equals(message.getType())) { //채팅방에 입장하면 보내는 메소드입니다.
 			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
@@ -53,11 +57,9 @@ public class ChatController {
 			Map<String, Object> outmap = new HashMap<>();
 			String ouuid =  message.getRoomId();
 			String muuid = message.getSender();
-			String ocontent = message.getMessage();
 			String dtype = String.valueOf(message.getType());
 			outmap.put("ouuid", ouuid);
 			outmap.put("muuid", muuid);
-			outmap.put("ocontent", ocontent);
 			outmap.put("dtype", dtype);
 			int out = chatMessageService.outMessage(outmap); //서버에 보냅니다.
 		} else if (ChatMessage.MessageType.TRADEOK.equals(message.getType())) { //거래수락 버튼을 누르면 전송되는 메시지입니다.
@@ -132,12 +134,19 @@ public class ChatController {
 			tradecompletemap.put("tcmcontent", tncontent);
 			tradecompletemap.put("dtype", dtype);
 			int tradecomplete = chatMessageService.tradeCompleteMessage(tradecompletemap); //거래취소 메시지를 서버에 저장합니다.
-		}
-		
-		 
-		
-		
-		else if (ChatMessage.MessageType.INTERVAL.equals(message.getType())) { //인터벌 메시지를 보냅니다.
+		} else if(ChatMessage.MessageType.IMAGE.equals(message.getType())) {
+			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
+			Map<String, Object> imagemap = new HashMap<>();
+			String ouuid =  message.getRoomId();
+			String muuid = message.getSender();
+			String icontent = "이미지를 넣습니다.";
+			String dtype = String.valueOf(message.getType());
+			imagemap.put("ouuid", ouuid);
+			imagemap.put("muuid", muuid);
+			imagemap.put("icontent", icontent);
+			imagemap.put("dtype", dtype);
+			int imagego = chatMessageService.imageGoMessage(imagemap); //거래취소 메시지를 서버에 저장합니다.
+		} else if (ChatMessage.MessageType.INTERVAL.equals(message.getType())) { //인터벌 메시지를 보냅니다.
 			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
 		}
 	}

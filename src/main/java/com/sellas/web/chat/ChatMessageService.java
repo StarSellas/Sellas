@@ -86,5 +86,10 @@ public class ChatMessageService {
 		return chatMessageDAO.tradeCompleteMessage(tradecompletemap);
 	}
 
+	public int imageGoMessage(Map<String, Object> imagemap) {
+		// TODO Auto-generated method stub
+		return chatMessageDAO.imageGoMessage(imagemap);
+	}
+
 	
 }
