@@ -177,7 +177,7 @@
     
     $("#camera").click(function(){
        if(selectImagePath.length >= 4){
-          alert("더 이상 사진을 추가할 수 없습니다.");
+    	   M.pop.instance("더 이상 사진을 추가할 수 없습니다.");
           return false;
        }
        
@@ -221,7 +221,7 @@
     
              $picker2.on('click', () => {
                if(selectImagePath.length >= 4){
-                   alert("더 이상 사진을 추가할 수 없습니다.");
+            	   M.pop.instance("더 이상 사진을 추가할 수 없습니다.");
                    return false;
                 }
                
@@ -356,12 +356,12 @@
                
                  // 글쓰기 유효성 검사 (로그인&빈칸)
                if(btitle.length < 3){
-                  alert("제목을 입력하세요.");
+            	   M.pop.instance("제목을 입력하세요.");
                   return false;
                }
                
                if(bcontent.length < 3){
-                  alert("내용을 입력하세요.");
+            	   M.pop.instance("내용을 입력하세요.");
                   return false;
                }      
                
@@ -415,7 +415,7 @@
                            
                         }
                         
-                        alert("작성이 완료되었습니다.");
+                        M.pop.instance("작성이 완료되었습니다.");
                         var form = document.createElement("form");
                         form.method = "GET";
                         form.action = "./boardDetail"; // 컨트롤러 경로 설정

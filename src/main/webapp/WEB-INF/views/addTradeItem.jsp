@@ -280,7 +280,7 @@ const $picker2 = $('#picker2');
 
 $("#camera").click(function(){
    if ($box.find('img').length >= 4) {
-      alert('더 이상 이미지를 추가할 수 없습니다.');
+	   M.pop.instance('더 이상 이미지를 추가할 수 없습니다.');
       return false;
    }
 
@@ -380,12 +380,12 @@ $picker2.on('click', () => {
       }
    })
    .catch((err) => {
-      alert(err);
+	   M.pop.instance(err);
       if (typeof err === 'string') alert(err);
       
          console.error(err);
    });
-})
+});
 
 $.imagePicker2 = function () {
    return new Promise((resolve) => {
@@ -562,12 +562,12 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
                      }
                   })
                   .catch((err) => {
-                     if (typeof err === 'string') alert(err)
+                     if (typeof err === 'string') M.pop.instance(err)
                      console.error(err)
                   })
                            
                }
-               alert("작성이 완료되었습니다.");
+               M.pop.instance("작성이 완료되었습니다.");
                
                var form = document.createElement("form");
                form.method = "GET";
@@ -593,7 +593,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
             }
          },
          error : function(error){
-            alert("오류가 발생했습니다.");
+        	 M.pop.instance("오류가 발생했습니다.");
          }   
       });
    });

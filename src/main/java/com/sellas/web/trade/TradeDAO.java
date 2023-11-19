@@ -18,4 +18,12 @@ public interface TradeDAO {
 
 	int checkBalance(String attribute);
 
+	int tradeComplete(Map<String, Object> map);
+
+	int getAbidprice(Map<String, Object> map);
+
+	int putAbidprice(Map<String, Object> map);
+
+	int depositReturn(Map<String, Object> map);
+
 }

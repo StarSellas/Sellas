@@ -28,7 +28,7 @@ $(function() {
             }
          },
          error: function(error) {
-            alert("현재 서비스가 불가합니다.");
+            M.pop.instance("현재 서비스가 불가합니다.");
          }
       });
    });
@@ -43,12 +43,12 @@ $(function() {
          dataType: "json",
          success: function(data) {
             if (data.delWish == 1) {
-               alert("위시리스트에서 삭제되었습니다.");
+               M.pop.instance("위시리스트에서 삭제되었습니다.");
                window.location.reload();
             }
          },
          error: function(error) {
-            alert("현재 서비스가 불가합니다.");
+            M.pop.instance("현재 서비스가 불가합니다.");
          }
       });
 

@@ -216,7 +216,7 @@ $(".normalDeleteBtn").click(function(){
                dataType : "json",
                success:function(data){
             	   if(data.deleteSuccess == 1){
-            		   alert("삭제가 완료되었습니다.");
+            		   M.pop.instance("삭제가 완료되었습니다.");
             		   window.location.reload();
             	   }
                },

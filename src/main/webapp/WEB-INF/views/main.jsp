@@ -63,6 +63,8 @@
 </style>
 <script type="text/javascript">
 var loading = "";
+var timer;
+
 $(function() {
    loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
    
@@ -78,7 +80,7 @@ $(function() {
          cache: false,
          success : function(data) {
             if(data == "0000"){
-               alert("작업성공");
+              // alert("작업성공");
                // 로딩바 해제
                loading.hide();
             } else{
@@ -91,7 +93,7 @@ $(function() {
             loading.hide();
          }, timeout:10000
       });
-    },1000);      
+    },1000);
 });
 </script>
    <script type="text/javascript">
@@ -384,7 +386,6 @@ $(function() {
             
             <!---------------- 메인화면(검색X) ------------>
             <c:if test="${param.search eq null}">
-            
                <c:forEach items="${normalBoardList }" var="i" varStatus="loop">
                
                   <div class="col mb-5 tradeRow normalTradeDetail${loop.index }" data-count="${i.count}" data-scount="${i.scount}">
@@ -432,7 +433,6 @@ $(function() {
                   </div>
                   
                </c:forEach>
-               
             </c:if>
             
           <!---------------- 메인화면(검색O) ------------>
@@ -499,7 +499,7 @@ $(function() {
 </body>
 <script type="text/javascript">
 M.onBack( function(e) {
-	alert("뒤로가기");
+	//alert("뒤로가기");
 	CLEAR_TOP;
 });
 

@@ -30,4 +30,23 @@
 	SELECT mbalance FROM member WHERE muuid=#{muuid}
 </select>
 
+<select id="getAbidprice" parameterType="Map" resultType="Integer">
+	select abidprice from auctionhistory where tno = #{tno} and astate = 0
+</select>
+
+<update id="putAbidprice" parameterType="Map">
+	UPDATE member
+	SET mbalance = mbalance + #{abidprice}
+	WHERE muuid = #{oseller}
+</update>
+
+<select id="getDeposit" parameterType="Map" resultType="Integer">
+	select tauctiondeposit from trade where tno = #{tno}
+</select>
+
+<update id="depositReturn" parameterType="Map">
+	update member set mbalance = mbalance + #{deposit}
+	where muuid = #{oseller}
+</update>
+
 </mapper>

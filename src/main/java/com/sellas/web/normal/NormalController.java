@@ -544,6 +544,7 @@ public class NormalController {
 
 			// }//if(takeMamount == 1) 끝
 		} else {
+			
 		}
 		return json.toString();
 	}
@@ -593,20 +594,20 @@ public class NormalController {
 	@ResponseBody
 	@PostMapping("/recieveChecked")
 	public String recieveChecked(@RequestParam Map<String, Object> map) {
+		
 		JSONObject json = new JSONObject();
 		Map<String, Object> buyerOrSeller = normalService.buyerOrSeller(map);
 		if (Integer.parseInt(String.valueOf(buyerOrSeller.get("buyer"))) == 1) {
 			map.put("ok", "pbuyerok");
-		} else {
+		} else { // 판매자면
 			map.put("ok", "psellerok");
 		} 
-
 		map.put("pamount", buyerOrSeller.get("pamount"));
 		int recieveChecked = normalService.recieveChecked(map);
 		if (recieveChecked == 1) {
 			int selectPaymentResult = normalService.selectPaymentResult(map);
 			 
-			if (selectPaymentResult == 1) {
+			if (selectPaymentResult == 1) { // 있다면 tnormalstate, pstate의 값을 거래완료로 변경합니다.
 				// tnormalstate 값 변경(거래완료)
 				map.put("state", 2);
 				normalService.changeStateForNormal(map);
@@ -615,13 +616,13 @@ public class NormalController {
 				normalService.changePstateForNormal(map);
 
 				// 판매자한테 돈 주기
-				int giveMamountForSeller = normalService.giveMamountForSeller(map);
+				int giveMamountForSeller = normalService.giveMamountForSeller(map); //판매자에게 pamount에 묶여있던 돈만큼 member mbalance에 추가합니다.
 				if (giveMamountForSeller == 1) {
-					json.put("tradeAllSuccess", 1);
+					json.put("tradeAllSuccess", 1); // 입금이 성공하면 1을 보냅니다.
 				}
 			}//selectPaymentResult == 1 끝
-			else {
-				json.put("tradesuccess", 1);
+			else { //한쪽만 수락하면 여기로갑니다.
+				json.put("tradesuccess", 1); //그냥 내 상태를 바꿨음을 알립니다.
 			}
 		}
 

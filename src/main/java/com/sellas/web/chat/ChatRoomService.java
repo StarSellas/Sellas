@@ -143,6 +143,9 @@ public class ChatRoomService {
 		return chatRoomDAO.chatCompareCount(ouuid);
 	}
 
-	
+	public List<Map<String, Object>> getAllOuuid(String oseller) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getAllOuuid(oseller);
+	}
 	
 }
