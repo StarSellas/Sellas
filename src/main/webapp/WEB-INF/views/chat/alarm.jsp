@@ -131,8 +131,7 @@ u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
     				document.body.appendChild(form);
     				form.submit();
     			
-            	} else if (clickedSeller === "${sessionScope.muuid}") {
-                	// Seller와 세션의 muuid가 일치하는 경우
+            	} else if (clickedSeller === "${sessionScope.muuid}") { // Seller와 세션의 muuid가 일치하는 경우
                 
              	   	let form = document.createElement("form"); 
     				form.setAttribute("action", "/chat/alarmChat");
