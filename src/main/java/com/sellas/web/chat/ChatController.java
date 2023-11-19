@@ -136,12 +136,19 @@ public class ChatController {
 			tradecompletemap.put("tcmcontent", tncontent);
 			tradecompletemap.put("dtype", dtype);
 			int tradecomplete = chatMessageService.tradeCompleteMessage(tradecompletemap); //거래취소 메시지를 서버에 저장합니다.
-		}
-		
-		 
-		
-		
-		else if (ChatMessage.MessageType.INTERVAL.equals(message.getType())) { //인터벌 메시지를 보냅니다.
+		} else if(ChatMessage.MessageType.IMAGE.equals(message.getType())) {
+			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
+			Map<String, Object> imagemap = new HashMap<>();
+			String ouuid =  message.getRoomId();
+			String muuid = message.getSender();
+			String icontent = "이미지를 넣습니다.";
+			String dtype = String.valueOf(message.getType());
+			imagemap.put("ouuid", ouuid);
+			imagemap.put("muuid", muuid);
+			imagemap.put("icontent", icontent);
+			imagemap.put("dtype", dtype);
+			int imagego = chatMessageService.imageGoMessage(imagemap); //거래취소 메시지를 서버에 저장합니다.
+		} else if (ChatMessage.MessageType.INTERVAL.equals(message.getType())) { //인터벌 메시지를 보냅니다.
 			messagingTemplate.convertAndSend("/sub/ws/chat/room/" + message.getRoomId(), message);
 		}
 	}

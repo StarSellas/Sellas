@@ -37,6 +37,10 @@
 	<insert id="tradeCompleteMessage"  parameterType="Map">
 		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{tcmcontent}, #{dtype})
 	</insert>
+
+	<insert id="imageGoMessage"  parameterType="Map">
+		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{icontent}, #{dtype})
+	</insert>
 	
 	<insert id="alarmMessage" parameterType="Map">
 		insert into dialogue (ouuid, dcontent, muuid, dtype, dcheck) values (#{ouuid}, #{acontent}, #{oseller}, #{dtype}, 1)

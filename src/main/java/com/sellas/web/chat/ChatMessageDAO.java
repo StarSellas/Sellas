@@ -39,6 +39,8 @@ public interface ChatMessageDAO {
 
 	int tradeCompleteMessage(Map<String, Object> tradecompletemap);
 
+	int imageGoMessage(Map<String, Object> imagemap);
+
 	
 	
 }

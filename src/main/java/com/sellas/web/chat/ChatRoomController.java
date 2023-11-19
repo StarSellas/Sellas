@@ -2,14 +2,19 @@ package com.sellas.web.chat;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -18,14 +23,19 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
+import retrofit2.http.POST;
 
 @RequiredArgsConstructor
 @Controller
@@ -645,4 +655,58 @@ public class ChatRoomController {
 		
 		return json.toString();
 	}
+	
+	@ResponseBody
+	@PostMapping("/chatImage")
+	   public String chatImageupload(@RequestParam(name = "file") List<MultipartFile> chatImgFile) {
+	      System.out.println(chatImgFile);
+	      Map<String, Object> map = new HashMap<String, Object>();
+	      
+	      
+	      if (chatImgFile != null && !chatImgFile.isEmpty()) {
+
+	         for (int i = 0; i < chatImgFile.size(); i++) {
+
+	            // 저장할 경로명 뽑기 request뽑기
+	            HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder
+	                  .currentRequestAttributes()).getRequest();
+	            String path = req.getServletContext().getRealPath("/chatImgUpload");
+	            System.out.println("이미지 오리지널 파일 이름 : " + chatImgFile.get(i).getOriginalFilename());
+	            LocalDateTime ldt = LocalDateTime.now();
+	            String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
+	            
+	            // 확장자 자르기
+	            String[] parts = chatImgFile.get(i).getOriginalFilename().split("\\.");
+	            String lastPart = parts[parts.length - 1];
+	            System.out.println(lastPart);
+
+	            String realFileName = format + "num" + i +"."+lastPart;
+	            // 확장자 아니면 파일 없애보리기
+
+	            if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
+	                  || lastPart.equals("bmp") || lastPart.equals("gif") || lastPart.equals("jpe"))) {
+	               continue;
+	            }
+	            
+	            
+	            
+
+	            File newFileName = new File(path, realFileName);
+
+	            // 진짜 이름을 맵에 넣기
+	            map.put("realFileName", realFileName);
+
+	            try {
+	               FileCopyUtils.copy(chatImgFile.get(i).getBytes(), newFileName);
+
+
+
+	            } catch (IOException e) {
+	               e.printStackTrace();
+	            }
+
+	         } // for문의 끝
+	      } // (!tradeimg.isEmpty()) 의 끝(사진 넣기 끝)
+	      return "";
+	   }
 }

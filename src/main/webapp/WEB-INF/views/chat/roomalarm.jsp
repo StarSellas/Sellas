@@ -391,30 +391,67 @@
     	    });
     	});
 });
+    	
 $(function () {
     $("#toggleBtn").click(function () {
         toggleButtons();
     });
 
     function toggleButtons() {
-        $(".otherBtnBox").toggle(800);
-        $(".toggleBtnBox").toggleClass("btnClicked");
-        $(".otherBtnBox").toggleClass("hide");
+    	
+    	// btnClicked 클래스의 여부에 따라 높이 동적 설정
+        var newHeight = $(".toggleBtnBox").hasClass("btnClicked") ? '98px' : '48px';
+    	
+    	if(newHeight === '48px'){
+    	
+        	// 인풋창을 위로 올리는 애니메이션
+        	$(".type_msg").animate({height: '108px' }, 250);
+        	$(".msg_history").animate({ marginTop: '-10px' }, 250);
 
-        if ($(".toggleBtnBox").hasClass("btnClicked")) {
+       		// 토글 버튼들을 나타내는 애니메이션
+        	$(".tradeResponse").slideToggle(500);
+
+        	// 토글 버튼의 클래스를 토글
+        	$(".toggleBtnBox").toggleClass("btnClicked");
+
+        	// 토글된 상태에 따라 다른 클래스를 추가 또는 제거
+        	if ($(".toggleBtnBox").hasClass("btnClicked")) {
             $(".otherBtnBox").addClass("tBtnBox");
-        } else {
-            $(".otherBtnBox").removeClass("tBtnBox");
-        }
+        	} else {
+            	$(".otherBtnBox").removeClass("tBtnBox");
+        	}
+    	} else if(newHeight === '98px'){
+    		
+    		// 인풋창을 아래로 내리는 애니메이션
+        	$(".type_msg").animate({ marginTop: '2px', height: '48px' }, 250);
+        	$(".msg_history").animate({ marginTop: '60px'}, 250);
+
+        	// 토글 버튼들을 나타내는 애니메이션
+        	$(".tradeResponse").slideToggle(250);
+
+        	// 토글 버튼의 클래스를 토글
+        	$(".toggleBtnBox").toggleClass("btnClicked");
+
+        	// 토글된 상태에 따라 다른 클래스를 추가 또는 제거
+        	if ($(".toggleBtnBox").hasClass("btnClicked")) {
+            $(".otherBtnBox").addClass("tBtnBox");
+        	} else {
+            	$(".otherBtnBox").removeClass("tBtnBox");
+        	}
+    	}
     }
 });
+
+M.onBack( function(e) {
+	   window.history.back();
+	});
 </script>
 </head>
 <body>
     <div class="inbox_people">
         <div class="headind_srch">
             <div class="recent_heading">
-                <div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
+                <%-- <div class="goback"><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div> --%>
                 <div><h4>${tnoname }</h4></div>
             </div>
         </div>
@@ -452,27 +489,56 @@ $(function () {
             </c:if>
           </div>
           <div class="type_msg">
-            <div class="input_msg_write">
+          	<div class="input_msg_write">
             	<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
+              	<input type="text" class="write_msg" id="messages" />
+            </div>
+            <div>
               	<div class="otherBtnBox hide">
               		<div class="tradeResponse">
-            			<div><button class="tradeok" type="button">거래수락</button></div>
-						<div><button class="tradeno" type="button">거래취소</button></div>
+              			<div class="button-container">
+            				<button class="tradeok" type="button">
+            					<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+            				</button>
+            				<span class="buttontext">거래수락</span>
+            			</div>
+            			<div class="button-container">
+							<button class="tradeno" type="button">거래취소</button>
+						</div>
 					</div>
                 	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
 						<div>
-							<button class="tradeAccept" type="button">수령완료</button>
-							<button class="tradeCancel" type="button">거래취소</button>
+							<div class="button-container">
+								<button class="tradeAccept" type="button">
+									<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+								</button>
+								<span class="buttontext">수령완료</span>
+							</div>
+							<div class="button-container">
+								<button class="tradeCancel" type="button">
+									<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+								</button>
+								<span class="buttontext">거래취소</span>
+							</div>
 						</div>
 					</c:if>
 					<div class="tradeAcceptOrCancel">
-						<button class="tradeAccept" type="button">수령완료</button>
-						<button class="tradeCancel" type="button">거래취소</button>
+						<div class="button-container">
+							<button class="tradeAccept" type="button">
+								<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+							</button>
+							<span class="buttontext">수령완료</span>
+						</div>
+						<div class="button-container">
+							<button class="tradeCancel" type="button">
+								<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+							</button>
+							<span class="buttontext">거래취소</span>
+						</div>
 					</div>
-                </div>
-              	<input type="text" class="write_msg" id="messages" />
-            </div>
-          </div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

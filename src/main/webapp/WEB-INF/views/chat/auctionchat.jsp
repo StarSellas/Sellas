@@ -408,13 +408,66 @@ $(function(){
 			});
 		});	
 	});
+	$(function () {
+	    $("#toggleBtn").click(function () {
+	        toggleButtons();
+	    });
+
+	    function toggleButtons() {
+	    	
+	    	// btnClicked 클래스의 여부에 따라 높이 동적 설정
+	        var newHeight = $(".toggleBtnBox").hasClass("btnClicked") ? '98px' : '48px';
+	    	
+	    	if(newHeight === '48px'){
+	    	
+	        	// 인풋창을 위로 올리는 애니메이션
+	        	$(".type_msg").animate({height: '108px' }, 250);
+	        	$(".msg_history").animate({ marginTop: '-10px' }, 250);
+
+	       		// 토글 버튼들을 나타내는 애니메이션
+	        	$(".tradeResponse").slideToggle(500);
+
+	        	// 토글 버튼의 클래스를 토글
+	        	$(".toggleBtnBox").toggleClass("btnClicked");
+
+	        	// 토글된 상태에 따라 다른 클래스를 추가 또는 제거
+	        	if ($(".toggleBtnBox").hasClass("btnClicked")) {
+	            $(".otherBtnBox").addClass("tBtnBox");
+	        	} else {
+	            	$(".otherBtnBox").removeClass("tBtnBox");
+	        	}
+	    	} else if(newHeight === '98px'){
+	    		
+	    		// 인풋창을 아래로 내리는 애니메이션
+	        	$(".type_msg").animate({ marginTop: '2px', height: '48px' }, 250);
+	        	$(".msg_history").animate({ marginTop: '60px'}, 250);
+
+	        	// 토글 버튼들을 나타내는 애니메이션
+	        	$(".tradeResponse").slideToggle(250);
+
+	        	// 토글 버튼의 클래스를 토글
+	        	$(".toggleBtnBox").toggleClass("btnClicked");
+
+	        	// 토글된 상태에 따라 다른 클래스를 추가 또는 제거
+	        	if ($(".toggleBtnBox").hasClass("btnClicked")) {
+	            $(".otherBtnBox").addClass("tBtnBox");
+	        	} else {
+	            	$(".otherBtnBox").removeClass("tBtnBox");
+	        	}
+	    	}
+	    }
+	});
+	
+	M.onBack( function(e) {
+		   window.history.back();
+		});
 </script>
 </head>
 <body>
 <div class="inbox_people">
 	<div class="headind_srch">
    		<div class="recent_heading">
-        	<div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
+        	<%-- <div class="goback"><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div> --%>
             	<div><h4>${tnoname }</h4></div>
         </div>
     </div>
@@ -459,16 +512,31 @@ $(function(){
 		판매자 거래 취소 시 : trade테이블 deposit 돌려주지 않음 (실제로 할건 구매자 입찰금액 100% 반환말고 없음)
 		구매자 거래 취소 시 : trade테이블 deposit을 판매자에게 돌려주고, 구매자의 입찰금액90%를 반환해줌 -->
     <div class="type_msg">
-          	<div class="input_msg_write">
+    	<div class="input_msg_write">
           	<c:if test="${sessionScope.muuid eq obuyer }">
             	<div class="buyertradeCompleteOrCancel">
-					<button class="btn btn-outline-secondary" id="tradeComplete" type="button">수령완료</button>
-  					<button class="btn btn-outline-secondary" id="buyertradeCancel" type="button">거래취소</button>
+            		<div class="button-container">
+						<button class="btn btn-outline-secondary" id="tradeComplete" type="button">
+							<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+						</button>
+						<span class="buttontext">수령완료</span>
+					</div>
+					<div class="button-container">
+  						<button class="btn btn-outline-secondary" id="buyertradeCancel" type="button">
+  							<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+  						</button>
+  						<span class="buttontext">거래취소</span>
+  					</div>
 				</div>
 			</c:if>
 			<c:if test="${sessionScope.muuid eq oseller }">
 				<div class="sellertradecancel">
-					<button class="btn btn-outline-secondary" id="sellertradeCancel" type="button">거래취소</button>
+					<div class="button-container">
+						<button class="btn btn-outline-secondary" id="sellertradeCancel" type="button">
+							<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+						</button>
+						<span class="buttontext">거래취소</span>
+					</div>
 				</div>
 			</c:if>
 			<input type="text" class="form-control write_msg" aria-label="이거어디에쳐나오는거냐?" id="messages">

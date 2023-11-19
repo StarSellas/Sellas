@@ -56,35 +56,39 @@
 </style>
 <script type="text/javascript">
 var loading = "";
+var timer;
+
 $(function() {
-	loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
-	
-	// 로딩바 적용
-	loading.show();
-	
-	//로딩바를 위해 1.5초 뒤 ajax 실행
-	timer = setTimeout(function(){
+    loading = $('<div id="loading" class="loading"></div><img id="loading_img" alt="로딩중입니다" src="./tradeImgUpload/movingWhale.gif" />').appendTo(document.body).hide();
+
+    // 로딩바 적용
+    loading.show();
+
+    // 로딩바를 위해 1.5초 뒤 ajax 실행
+    timer = setTimeout(function() {
         jQuery.ajax({
-			type : "POST",
-			url : "ajax.php",
-			data : $("#frm").serialize(),
-			cache: false,
-			success : function(data) {
-				if(data == "0000"){
-					alert("작업성공");
-					// 로딩바 해제
-					loading.hide();
-				} else{
-					// 로딩바 해제
-					loading.hide();	
-				}
-			},
-			error : function(e) {
-				// 로딩바 해제
-				loading.hide();
-			}, timeout:10000
-		});
-    },1000);		
+            type: "POST",
+            url: "ajax.php",
+            data: $("#frm").serialize(),
+            cache: false,
+            success: function(data) {
+                if (data == "0000") {
+                    alert("작업성공");
+                } else {
+                    // 실패 시에도 로딩바 숨기기
+                    alert("작업실패");
+                }
+            },
+            error: function(e) {
+                // 에러 처리
+            },
+            complete: function() {
+                // AJAX 요청이 완료되면 로딩바를 숨깁니다.
+                loading.hide();
+            },
+            timeout: 10000
+        });
+    }, 1500);
 });
 </script>
    <script type="text/javascript">

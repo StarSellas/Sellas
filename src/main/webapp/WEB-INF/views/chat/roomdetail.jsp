@@ -16,6 +16,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<script src="./js/wnInterface.js"></script> 
+<script src="./js/mcore.min.js"></script> 
+<script src="./js/mcore.extends.js"></script>
 <script>
 $(function(){
 		
@@ -45,11 +48,15 @@ $(function(){
 	var currentHour = currentDate.getHours();
 	let formattedDate = currentHour +'시' + ' ' + currentDate.getMinutes() + '분';
 
-
+	/* else if(recv.type == 'IMAGE') {
+				const imgElement = document.getElementById('receivedImage');
+		        imgElement.src = 'data:image/jpeg;base64,' + recv.image;
+			}  */
 	                    
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
 		scrollChatToBottom()
+		console.log("fsddfs")
 		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
 			console.log(message);
 			var recv = JSON.parse(message.body);
@@ -129,50 +136,100 @@ $(function(){
 
 	function recvMessage(recv) {
 	    if (recv.mnickname !== '${sessionScope.mnickname}') {
-	        var messagesList = document.getElementsByClassName("msg_history");
-
-	        var incoming_msg = document.createElement("div");
-	        incoming_msg.className = "incoming_msg";
-
-	        let incoming_msg_img = document.createElement("div");
-	        incoming_msg_img.className = "incoming_msg_img";
 	        
-	        if('${mphotocheck}' === 1){
-	        	var imgElement = document.createElement("img");
-	        	var photoPath = '../userImgUpload/${mphoto}';
-	        	imgElement.src = photoPath;
-	        	imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+	        if(recv.type !== 'IMAGE'){
+				
+	        	var messagesList = document.getElementsByClassName("msg_history");
+
+		        var incoming_msg = document.createElement("div");
+		        incoming_msg.className = "incoming_msg";
+
+		        let incoming_msg_img = document.createElement("div");
+		        incoming_msg_img.className = "incoming_msg_img";
+		        
+		        if('${mphotocheck}' === 1){
+		        	var imgElement = document.createElement("img");
+		        	var photoPath = '../userImgUpload/${mphoto}';
+		        	imgElement.src = photoPath;
+		        	imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+		        	
+		        } else {
+		        	var imgElement = document.createElement("img");
+		        	var photoPath = '../tradeImgUpload/defaultimg.jpg';
+		 	        imgElement.src = photoPath;
+		 	        imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+		        }
+		        
+		        incoming_msg_img.appendChild(imgElement);
+		        incoming_msg.appendChild(incoming_msg_img);
+		        
+		        var received_msg = document.createElement("div");
+		        received_msg.className = "received_msg";
+
+		        var received_withd_msg = document.createElement("div");
+		        received_withd_msg.className = "received_withd_msg";
+		        
+	        	let messageElement = document.createElement("p");
+	        	messageElement.textContent = recv.message;
+	        
+	        	let timeElement = document.createElement("span");
+	        	timeElement.className = "time_date";
+	        	timeElement.textContent = recv.time;
+
+	        	received_withd_msg.appendChild(messageElement);
+	        	received_withd_msg.appendChild(timeElement);
+	        	received_msg.appendChild(received_withd_msg);
+	        	incoming_msg.appendChild(received_msg);
+
+	        	messagesList[0].appendChild(incoming_msg);
+	        
+	        } else if(recv.type === 'IMAGE'){
 	        	
-	        } else {
-	        	var imgElement = document.createElement("img");
-	        	var photoPath = '../tradeImgUpload/defaultimg.jpg';
-	 	        imgElement.src = photoPath;
-	 	        imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+	        	var messagesList = document.getElementsByClassName("msg_history");
+
+		        var incoming_msg = document.createElement("div");
+		        incoming_msg.className = "incoming_msg";
+
+		        let incoming_msg_img = document.createElement("div");
+		        incoming_msg_img.className = "incoming_msg_img";
+		        
+		        if('${mphotocheck}' === 1){
+		        	var imgElement = document.createElement("img");
+		        	var photoPath = '../userImgUpload/${mphoto}';
+		        	imgElement.src = photoPath;
+		        	imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+		        	
+		        } else {
+		        	var imgElement = document.createElement("img");
+		        	var photoPath = '../tradeImgUpload/defaultimg.jpg';
+		 	        imgElement.src = photoPath;
+		 	        imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+		        }
+		        
+		        incoming_msg_img.appendChild(imgElement);
+		        incoming_msg.appendChild(incoming_msg_img);
+		        
+		        var received_msg = document.createElement("div");
+		        received_msg.className = "received_msg";
+
+		        var received_withd_msg = document.createElement("div");
+		        received_withd_msg.className = "received_withd_msg";
+		        
+	        	const imageElement = document.createElement("img");
+	        	imageElement.className = "goimg"
+	        	imageElement.src = 'data:image/jpeg;base64,' + recv.image;
+	        
+	        	let timeElement = document.createElement("span");
+	        	timeElement.className = "time_date";
+	        	timeElement.textContent = recv.time;
+
+	        	received_withd_msg.appendChild(imageElement);
+	        	received_withd_msg.appendChild(timeElement);
+	        	received_msg.appendChild(received_withd_msg);
+	        	incoming_msg.appendChild(received_msg);
+
+	        	messagesList[0].appendChild(incoming_msg);
 	        }
-	        
-	        incoming_msg_img.appendChild(imgElement);
-	        incoming_msg.appendChild(incoming_msg_img);
-	        
-	        var received_msg = document.createElement("div");
-	        received_msg.className = "received_msg";
-
-	        var received_withd_msg = document.createElement("div");
-	        received_withd_msg.className = "received_withd_msg";
-
-	        var messageElement = document.createElement("p");
-	        messageElement.textContent = recv.message;
-	        
-	        let timeElement = document.createElement("span");
-	        timeElement.className = "time_date";
-	        timeElement.textContent = recv.time;
-	        console.log(recv.time)
-
-	        received_withd_msg.appendChild(messageElement);
-	        received_withd_msg.appendChild(timeElement);
-	        received_msg.appendChild(received_withd_msg);
-	        incoming_msg.appendChild(received_msg);
-
-	        messagesList[0].appendChild(incoming_msg);
 
 	        if (recv.type == 'TRADEOK') {
 	            $(".tradeAcceptOrCancel").show();
@@ -190,25 +247,54 @@ $(function(){
 	            location.href = '/';
 	        }
 	    } else {
-	        var messagesList = document.getElementsByClassName("msg_history");
 
-	        var outgoing_msg = document.createElement("div");
-	        outgoing_msg.className = "outgoing_msg";
+	        if(recv.type !== 'IMAGE'){
 
-	        var sent_msg = document.createElement("div");
-	        sent_msg.className = "sent_msg";
+	        	var messagesList = document.getElementsByClassName("msg_history");
 
-	        var messageElement = document.createElement("p");
-	        messageElement.textContent = recv.message;
+		        var outgoing_msg = document.createElement("div");
+		        outgoing_msg.className = "outgoing_msg";
+
+		        var sent_msg = document.createElement("div");
+		        sent_msg.className = "sent_msg";
+		        
+	        	var messageElement = document.createElement("p");
+	        	messageElement.textContent = recv.message;
 	        
-	        let timeElement = document.createElement("span");
-	        timeElement.className = "time_date";
-	        timeElement.textContent = recv.time;
+	        	let timeElement = document.createElement("span");
+	        	timeElement.className = "time_date";
+	        	timeElement.textContent = recv.time;
 
-	        sent_msg.appendChild(messageElement);
-	        sent_msg.appendChild(timeElement);
-	        outgoing_msg.appendChild(sent_msg);
-	        messagesList[0].appendChild(outgoing_msg);
+	        	sent_msg.appendChild(messageElement);
+		        sent_msg.appendChild(timeElement);
+		        outgoing_msg.appendChild(sent_msg);
+		        messagesList[0].appendChild(outgoing_msg);
+
+	        	messagesList[0].appendChild(incoming_msg);
+	        
+	        } else if(recv.type === 'IMAGE'){
+	        	
+	        	var messagesList = document.getElementsByClassName("msg_history");
+
+		        var outgoing_msg = document.createElement("div");
+		        outgoing_msg.className = "outgoing_msg";
+
+		        var sent_msg = document.createElement("div");
+		        sent_msg.className = "sent_msg";
+		        
+	        	const imageElement = document.createElement("img");
+	        	imageElement.className = "goimg"
+	        	imageElement.src = 'data:image/jpeg;base64,' + recv.image;
+	        
+	        	let timeElement = document.createElement("span");
+	        	timeElement.className = "time_date";
+	        	timeElement.textContent = recv.time;
+	        	
+	        	sent_msg.appendChild(imageElement);
+		        sent_msg.appendChild(timeElement);
+		        outgoing_msg.appendChild(sent_msg);
+		        messagesList[0].appendChild(outgoing_msg);
+	        }
 
 	        if (recv.type == 'TRADEOK') {
 	            $(".tradeAcceptOrCancel").show();
@@ -429,94 +515,309 @@ $(function(){
 	    });
 
 	    function toggleButtons() {
-	        $(".otherBtnBox").toggle(800);
-	        $(".toggleBtnBox").toggleClass("btnClicked");
-	        $(".otherBtnBox").toggleClass("hide");
+	    	
+	    	// btnClicked 클래스의 여부에 따라 높이 동적 설정
+	        var newHeight = $(".toggleBtnBox").hasClass("btnClicked") ? '98px' : '48px';
+	    	
+	    	if(newHeight === '48px'){
+	    	
+	        	// 인풋창을 위로 올리는 애니메이션
+	        	$(".type_msg").animate({height: '108px' }, 250);
+	        	$(".msg_history").animate({ marginTop: '-10px' }, 250);
 
-	        if ($(".toggleBtnBox").hasClass("btnClicked")) {
+	       		// 토글 버튼들을 나타내는 애니메이션
+	        	$(".tradeResponse").slideToggle(500);
+
+	        	// 토글 버튼의 클래스를 토글
+	        	$(".toggleBtnBox").toggleClass("btnClicked");
+
+	        	// 토글된 상태에 따라 다른 클래스를 추가 또는 제거
+	        	if ($(".toggleBtnBox").hasClass("btnClicked")) {
 	            $(".otherBtnBox").addClass("tBtnBox");
-	        } else {
-	            $(".otherBtnBox").removeClass("tBtnBox");
-	        }
+	        	} else {
+	            	$(".otherBtnBox").removeClass("tBtnBox");
+	        	}
+	    	} else if(newHeight === '98px'){
+	    		
+	    		// 인풋창을 아래로 내리는 애니메이션
+	        	$(".type_msg").animate({ marginTop: '2px', height: '48px' }, 250);
+	        	$(".msg_history").animate({ marginTop: '60px'}, 250);
+
+	        	// 토글 버튼들을 나타내는 애니메이션
+	        	$(".tradeResponse").slideToggle(250);
+
+	        	// 토글 버튼의 클래스를 토글
+	        	$(".toggleBtnBox").toggleClass("btnClicked");
+
+	        	// 토글된 상태에 따라 다른 클래스를 추가 또는 제거
+	        	if ($(".toggleBtnBox").hasClass("btnClicked")) {
+	            $(".otherBtnBox").addClass("tBtnBox");
+	        	} else {
+	            	$(".otherBtnBox").removeClass("tBtnBox");
+	        	}
+	    	}
 	    }
+	});
+	$(function(){
+		
+		$(".goback").click(function(){
+			M.onBack( function(e) {
+				location.href="/normalDetail?tno=${tno}";
+			});
+		});
+		
+		/* const fileInput = document.getElementById('album');
+		
+		fileInput.addEventListener('change', function (event) {
+		    const file = event.target.files[0];
+
+		    if (file) {
+		        const reader = new FileReader();
+
+		        reader.onloadend = function () {
+		            const base64Data = reader.result.split(',')[1];
+
+		            // Stomp로 이미지 데이터 전송
+		            ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+						type : 'IMAGE',
+						roomId : roomId,
+						sender : sender,
+						mnickname : mnickname,
+						image : base64Data,
+						time : formattedDate
+					}));
+		        };
+
+		        reader.readAsDataURL(file);
+		    }
+		}); */
+	});
+	
+	$(function(){
+	     
+		 let BASE64Array = [];
+		  let $previewImgArray = [];
+		  let count = 0;
+		  let $previewImg = null;
+		  let $uploadImg = null;
+		  
+		  const $picker = $('#picker');
+		  const $push = $('#push');
+		  const $box = $('#box');
+		  
+		  $picker.on('click', () => {
+		      if ($box.find('img').length >= 4) {
+		         alert('더 이상 이미지를 추가할 수 없습니다.');
+		         return false;
+		      }
+		       
+		      if ($previewImg !== null) {
+		         $previewImg.remove();
+		         $previewImg = null;
+		      }
+		      selectImagePath = '';
+		      $.imagePicker2()
+		      .then(({ status, result }) => {
+		         if (status === 'SUCCESS') {
+		            for (let i = 0; i < result.length; i++) {
+		               $previewImgArray[i] = result[i].path;
+		            }
+		            return $.uploadImageByPath2($previewImgArray)
+		         } else {
+		            return Promise.reject('파일 업로드 실패')
+		         }
+		      })
+		      .then(({ status, result }) => {
+		         if (status === 'SUCCESS') {
+		            alert("야호 값이 온다");
+		         } else {
+		            return Promise.reject('이미지 업로드 실패');
+		         }
+		      })
+		      .catch((err) => {
+		         if (typeof err === 'string') alert(err);
+		      });
+		   })
+		   
+		   $("#push").click(function(){
+		      alert(BASE64Array[0]);
+		      $.ajax({
+		         url : "/chat/chatImage",
+		         type : "post",
+		         data : {BASE64Array : BASE64Array[0]},
+		         dataType : "json",
+		         success : function(data){
+		            alert("ㅎㅇ");
+		         },
+		         error : function(error){
+		            alert(error);
+		         }
+		         
+		      });
+		   });
+		  
+		  $.imagePicker2 = function () {
+		         return new Promise((resolve) => {
+		            M.media.picker({
+		               mode: "MULTI",
+		               media: "PHOTO",
+		               maxCount : 4,
+		               //path: "/media",
+		               column: 3,
+		               callback: (status, result) => {
+		                  resolve({ status, result })             
+		               }
+		            });
+		         })
+		      }
+		  
+		  $.uploadImageByPath2 = function ($previewImgArray, progress) {
+			   return new Promise((resolve) => {
+			      const _options = {
+			         url: 'http://192.168.219.103:8080/chat/chatImage',
+			         header: {},
+			         params: {},
+			         body: $previewImgArray.map((filePath) => ({
+			         name: 'file',
+			         content: filePath,
+			         type: 'FILE',
+			      })),
+			      encoding: 'UTF-8',
+			      finish: (status, header, body, setting) => {
+			         resolve({ status, header, body });
+			      },
+			      progress: function (total, current) {
+			         progress(total, current);
+			      },
+			   };
+
+			   M.net.http.upload(_options);
+			   });
+			};
 	});
 </script>
 </head>
 <body>
-        <div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-            <div><a href="/normalDetail?tno=${tno}"><i class="xi-angle-left xi-x"></i></a></div>
-              <div><h4>${tnoname }</h4></div>
-            </div>
-          </div>
-        </div>
-        <div class="inbox_msg">
-          <div class="msg_history">
-          <c:if test="${lastroomcheck == 1 }">
-          <c:forEach items="${lastchatlist }" var="lastchat">
-          <c:if test="${lastchat.chatnick != sessionScope.mnickname }">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"><c:choose>
-	                        <c:when test="${lastchat.mphotocheck eq 1 }">
-	                           <img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
-	                        </c:when>
-	                        <c:otherwise>
-	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg"
-	                              alt="sellas" />
-	                        </c:otherwise>
-	                     </c:choose></div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>${lastchat.dcontent }</p>
-                  <span class="time_date">${lastchat.ddate }</span></div>
-              </div>
-            </div>
-            </c:if>
-            <c:if test="${lastchat.chatnick == sessionScope.mnickname }">
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>${lastchat.dcontent }</p>
-                <span class="time_date">${lastchat.ddate }</span></div>
-            </div>
-            </c:if>
-            </c:forEach>
-            </c:if>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-            
-            	                	<div class="input-group mb-3">
-            	                	<c:if test="${tnormalstate ==0 }">
-  <button class="btn btn-outline-secondary" id="tradeok" type="button">Button</button>
-  <button class="btn btn-outline-secondary" type="button">Button</button>
-  </c:if>
-  <input type="text" class="form-control" placeholder="" aria-label="Example text with two button addons">
-</div>
-           
-<%--               	<div class="otherBtnBox hide">
-              		<c:if test="${tnormalstate ==0 }">
-              			<div class="trade-buttons">
-                			<button id="tradeamount">금액제시</button>
-                      		<button id="tradeRequest">제시하기</button>
-                      	</div>
-                	</c:if>
-                	<!-- 야!!!!!!!!!!!!!!!!여기수정이다!!!!!!!!!!!!!!!!! -->
-                	<c:if test="${tnormalstate == 1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-                		<div class="tradeAcceptOrCancel2">
-                			<button id="tradeAccept">수령완료</button>
-                      		<button id="tradeCancel">거래취소</button>
-                      	</div>
-                	</c:if>
-                	<!-- 여기까지가 원래 부분입니다요!!!!!!!!!!!!!!! -->     	
-                	<div class="tradeAcceptOrCancel">
-						<button id="tradeAccept">수령완료</button>
-                      	<button id="tradeCancel">거래취소</button>
-					</div>
-                </div>
-              	<input type="text" class="write_msg form-control" id="messages" /> --%>
-            </div>
-          </div>
+<div class="inbox_people">
+	<div class="headind_srch">
+		<div class="recent_heading">
+			<div class="goback">
+				<a href="/normalDetail?tno=${tno}">
+					<i class="xi-angle-left xi-x">
+					</i>
+				</a>
+			</div>
+			<div>
+				<h4>
+					${tnoname }
+				</h4>
+			</div>
+		</div>
 	</div>
+</div>
+	<div class="inbox_msg">
+		<div class="msg_history">
+			<c:if test="${lastroomcheck == 1 }">
+				<c:forEach items="${lastchatlist }" var="lastchat">
+					<c:if test="${lastchat.chatnick != sessionScope.mnickname }">
+						<div class="incoming_msg">
+							<div class="incoming_msg_img">
+								<c:choose>
+									<c:when test="${lastchat.mphotocheck eq 1 }">
+										<img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
+									</c:when>
+									<c:otherwise>
+	            						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+	         						</c:otherwise>
+	          					</c:choose>
+	          				</div>
+              			<div class="received_msg">
+                			<div class="received_withd_msg">
+                  				<p>${lastchat.dcontent }</p>
+                  				<span class="time_date">${lastchat.ddate }</span></div>
+              				</div>
+            			</div>
+            		</c:if>
+            		<c:if test="${lastchat.chatnick == sessionScope.mnickname }">
+            			<div class="outgoing_msg">
+              				<div class="sent_msg">
+                				<p>${lastchat.dcontent }</p>
+                				<span class="time_date">${lastchat.ddate }</span></div>
+            				</div>
+            			</c:if>
+            		</c:forEach>
+            	</c:if>
+          	</div>
+          	<!-- <input type="file" id="fileInput"> -->
+          	<div id="box"></div>
+			<div class="type_msg">
+            	<div class="input_msg_write">
+            		<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
+              		<input type="text" class="write_msg" id="messages" />
+            	</div>
+            	<div>
+              		<div class="otherBtnBox hide">
+              			<c:if test="${tnormalstate ==0 }">
+              				<div class="trade-buttons">
+                				<div class="button-container">
+    								<button id="tradeamount">
+        								<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+    								</button>
+    								<span class="buttontext">금액제시</span>
+								</div>
+								<div class="button-container">
+                      				<button id="tradeRequest">
+										<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+									</button>
+									<span class="buttontext">제시하기</span>
+								</div>
+                      		</div>
+                		</c:if>
+                		<c:if test="${tnormalstate == 1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
+                			<div class="tradeAcceptOrCancel2">
+                				<div class="button-container">
+                					<button id="tradeAccept">
+                						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                					</button>
+                					<span class="buttontext">수령완료</span>
+                				</div>
+                				<div class="button-container">
+                      				<button id="tradeCancel">
+                      					<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                      				</button>
+                      				<span class="buttontext">거래취소</span>
+                      			</div>
+                      		</div>
+                		</c:if>
+                		<div class="tradeAcceptOrCancel">
+							<div class="button-container">
+                				<button id="tradeAccept">
+                					<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                				</button>
+                				<span class="buttontext">수령완료</span>
+                			</div>
+                			<div class="button-container">
+                      			<button id="tradeCancel">
+                      				<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                      			</button>
+                      			<span class="buttontext">거래취소</span>
+                      		</div>
+						</div>
+						<div class="button-container">
+    						<button id="picker">
+        						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+    						</button>
+    						<span class="buttontext">사진선택</span>
+						</div>
+						<div class="button-container">
+    						<button id="push">
+        						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+    						</button>
+    						<span class="buttontext">사진전송</span>
+						</div>
+                	</div>
+           		</div>
+    		</div>
+		</div> 
 </body>
 </html>
