@@ -9,11 +9,6 @@ button {
 	margin: 0px auto;
 }
 
-#keyword {
-	width: 72%;
-	height: 30px;
-}
-
 .categoryButton {
 	width: 300px;
 	height: 50px;
@@ -165,7 +160,7 @@ button {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	background-color: #fff;
-	padding: 20px;
+	padding: 30px 20px;
 	border-radius: 5px;
 }
 
@@ -176,4 +171,31 @@ button {
 	font-size: 20px;
 	cursor: pointer;
 	color: #000;
+}
+
+#searchDiv {
+	width: 338px;
+	height: 50px;
+	padding: 5px 10px;
+	border: 1px solid #88abff;
+	border-radius: 5px;
+}
+
+#keyword {
+	width: 268px;
+	height: 40px;
+	border: none;
+	outline: none;
+}
+
+#search {
+	width: 40px;
+	border: none;
+}
+
+#openCategoryFilter {
+	padding: 5px 0px;
+	width: 40px;
+	height: 50px;
+	border: none;
 }

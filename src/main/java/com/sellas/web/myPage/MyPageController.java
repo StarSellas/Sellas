@@ -475,12 +475,5 @@ public class MyPageController {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-
 
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -23,20 +22,10 @@
         <!-- ******************* 추가 *********************** -->
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
         <script src="./js/jquery-3.7.0.min.js"></script>
+        
     </head>
     <body>
-	<!-- Navigation-->
-	<nav class="navbar navbar-expand-lg navbar-light bg-light"
-		style="z-index: 10">
-		<div class="container px-4 px-lg-5">
-			<a class="navbar-brand" href="">SellAS</a>
-            <button class="navbar-toggler" type="button" data-bs-target="" aria-controls="navbarSupportedContent"><img src="../img/menuIcon.png" id="menuIcon" alt="menuIcon"></button>
-		</div>
-	</nav>
-	<!-- Header-->
-        <header>
-
-        </header>
+<%@ include file="menubar.jsp" %>
         <!-- Section-->
         <section class="py-5">
         
@@ -120,7 +109,7 @@
 				
 				form.appendChild(inputMnickname);
 
-				alert("결제가 완료되었습니다.");
+				M.pop.instance("결제가 완료되었습니다.");
 				
 				// 폼을 문서에 추가하고 자동으로 제출
 				document.body.appendChild(form);
@@ -184,16 +173,6 @@
             </div>
             
         </section>
-        <!-- Footer-->
-        <footer id="footer">
-            <div class="container">
-	            <ul class="menubar">
-	            	<li onclick="location.href='./'"><i class="xi-home xi-2x"></i><div id="menu">홈</div></li>
-	            	<li><i class="xi-message xi-2x"></i><div id="menu">채팅</div></li>
-	            	<li><i class="xi-profile xi-2x"></i><div id="menu">마이페이지</div></li>
-	            </ul>
-            </div>
-        </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->

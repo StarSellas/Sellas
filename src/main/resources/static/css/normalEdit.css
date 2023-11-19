@@ -105,3 +105,32 @@ button {
 #box img{
 	margin-bottom: 20px;
 }
+
+.swiper-slide {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+.swiper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.swiper-button-prev {
+	background-size: 30% auto;
+}
+
+.swiper-button-next {
+	background-size: 30% auto;
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+	display: none;
+}

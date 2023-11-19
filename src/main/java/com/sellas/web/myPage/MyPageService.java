@@ -214,12 +214,12 @@ public class MyPageService {
 	}
 
 	
-	/**
-	 * 오늘이면 시간, 아니라면 날짜를 보여주는 로직
-	 * @param currentDateTime
-	 * @param targetDateTime
-	 * @return
-	 */
+    /**
+     * 오늘이면 시간, 아니라면 날짜를 보여주는 메서드
+     * @param currentDateTime 현재 날짜 및 시간
+     * @param targetDateTime 대상 날짜 및 시간
+     * @return 
+     */
 	  public boolean isToday(LocalDateTime currentDateTime, LocalDateTime targetDateTime) {
 	        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
 	        return sdfDate.format(convertToDate(currentDateTime)).equals(sdfDate.format(convertToDate(targetDateTime)));
@@ -236,7 +236,6 @@ public class MyPageService {
 	                    ? sdfDateTime.format(convertToDate(tDateTime))
 	                    : sdfDate.format(convertToDate(tDateTime));
 	            data.put("displayDate", displayDate);
-
 	        }
 
 	        return dataList;

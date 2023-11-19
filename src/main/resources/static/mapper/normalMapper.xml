@@ -321,6 +321,9 @@ ORDER BY ah.astate, ah.ano DESC;
 
 </select>
 
+<select id="normalLastTno" parameterType="Integer">
+SELECT MAX(tno) FROM normaltradeview;
+</select>
 
 
 </mapper>
