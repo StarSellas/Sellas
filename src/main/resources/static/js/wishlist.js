@@ -57,7 +57,7 @@ $(function() {
 
 
 
-	$(".ddd").click(function() {
+	$(".call").click(function() {
 		
 		        M.pop.alert({
                   title: 'Sellas',
