@@ -222,7 +222,7 @@
          
           $("#camera").click(function(){
                 if ($box.find('img').length + editPhotoSize >= 4) {
-                   alert('더 이상 이미지를 추가할 수 없습니다.');
+                   M.pop.instance('더 이상 이미지를 추가할 수 없습니다.');
                    return false;
                 }
                 if ($previewImgArray[0] === ''){
@@ -277,7 +277,7 @@
          
          $picker2.on('click', () => {
             if ($box.find('img').length + editPhotoSize >= 4) {
-               alert('더 이상 이미지를 추가할 수 없습니다.');
+               M.pop.instance('더 이상 이미지를 추가할 수 없습니다.');
                return false;
             }
              

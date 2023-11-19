@@ -16,9 +16,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-<script src="./js/wnInterface.js"></script> 
-<script src="./js/mcore.min.js"></script> 
-<script src="./js/mcore.extends.js"></script>
+<script src="../js/wnInterface.js"></script> 
+<script src="../js/mcore.min.js"></script> 
+<script src="../js/mcore.extends.js"></script>
 <script>
 $(function(){
 		
@@ -214,7 +214,7 @@ $(function(){
 		        received_withd_msg.className = "received_withd_msg";
 		        
 	        	const imageElement = document.createElement("img");
-	        	imageElement.className = "goimg"
+	        	imageElement.className = "goimg";
 	        	imageElement.src = 'data:image/jpeg;base64,' + recv.image;
 	        
 	        	let timeElement = document.createElement("span");
@@ -233,15 +233,16 @@ $(function(){
 	            $(".tradeAcceptOrCancel").show();
 	        }
 	        if (recv.type == 'TRADECANCEL') {
-	            alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
+	        	 M.pop.instance("거래가 취소되었습니다.");
+	        	 $("#title").focus();
 	            location.href = '/';
 	        }
 	        if (recv.type == 'TRADENO') {
-	            alert("거래가 거절되었습니다. 메인으로 돌아갑니다.");
+	        	M.pop.instance("거래를 거절되었습니다.");
 	            location.href = '/';
 	        }
 	        if (recv.type == 'TRADECOMPLETE') {
-	            alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
+	        	M.pop.instance("거래가 완료되었습니다.");
 	            location.href = '/';
 	        }
 	    } else {
@@ -298,15 +299,15 @@ $(function(){
 	            $(".tradeAcceptOrCancel").show();
 	        }
 	        if (recv.type == 'TRADECANCEL') {
-	            alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
+	        	M.pop.instance("거래가 취소되었습니다.");
 	            location.href = '/';
 	        }
 	        if (recv.type == 'TRADENO'){
-	            alert("거래가 거절되었습니다. 메인으로 돌아갑니다.");
+	        	M.pop.instance("거래가 거절되었습니다.");
 	            location.href='/';
 	        }
 	        if(recv.type =='TRADECOMPLETE'){
-	            alert("거래가 완료되었습니다. 메인으로 돌아갑니다.");
+	        	M.pop.instance("거래가 완료되었습니다.");
 	            location.href='/';
 	        }
 		}
@@ -400,7 +401,7 @@ $(function(){
 						    							time : formattedDate
 						    						}));
 						        	        		
-						        	        		alert("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
+						        	        		M.pop.instance("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
 						        	        		location.href='/';
 						        	        	}
 						        	            // 서버로부터의 응답을 처리
@@ -437,17 +438,17 @@ $(function(){
 										inputElement.attr("placeholder", "");
 									} else {
 										// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
-										alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
+										M.pop.instance('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
 									}
 								}
 							})
 						} else {
-						alert("충전금액이 부족합니다.");
+							M.pop.instance("충전금액이 부족합니다.");
 						location.href = '../fillPay';
 					}
 				},
 				error : function(error) {
-					alert("에러가 발생했습니다. 다시 시도하지 마십시오.");
+					M.pop.instance("에러가 발생했습니다. 다시 시도하지 마십시오.");
 				}
 			});
 		});
@@ -473,7 +474,7 @@ $(function(){
 				dataType : "json",
 				success : function(data){
 					if(data.tradeAllSuccess==1){
-    					alert("거래가 완료되었습니다. 후기를 작성해주세요.");
+						M.pop.instance("거래가 완료되었습니다. 후기를 작성해주세요.");
     					location.href='/';
     				}
     				if(data.tradesuccess==1){
@@ -487,7 +488,7 @@ $(function(){
 						}));
     					$(".tradeAcceptOrCancel2").hide();
     					$(".tradeAcceptOrCancel").hide();
-    				alert("수락이 완료되었습니다. 상대방의 수락을 기다리고 있습니다.");
+    					M.pop.instance("수락이 완료되었습니다. 상대방의 수락을 기다리고 있습니다.");
     				}
     				if(data.tradeAllSuccess == 1){
     					ws.send("/pub/ws/chat/message", {}, JSON.stringify({
@@ -501,7 +502,7 @@ $(function(){
     				}
 				},
 				error : function(error){
-					alert("에러가 발생했습니다." + error);
+					M.pop.instance("에러가 발생했습니다." + error);
 				}
 			});
 		})	
@@ -611,39 +612,66 @@ $(function(){
 		  const $box = $('#box');
 		  
 		  $picker.on('click', () => {
-		      if ($box.find('img').length >= 4) {
-		         alert('더 이상 이미지를 추가할 수 없습니다.');
-		         return false;
-		      }
-		       
-		      if ($previewImg !== null) {
-		         $previewImg.remove();
-		         $previewImg = null;
-		      }
-		      selectImagePath = '';
-		      $.imagePicker2()
-		      .then(({ status, result }) => {
-		         if (status === 'SUCCESS') {
-		            for (let i = 0; i < result.length; i++) {
-		               $previewImgArray[i] = result[i].path;
-		            }
-		            return $.uploadImageByPath2($previewImgArray)
-		         } else {
-		            return Promise.reject('파일 업로드 실패')
-		         }
-		      })
-		      .then(({ status, result }) => {
-		         if (status === 'SUCCESS') {
-		            alert("야호 값이 온다");
-		         } else {
-		            return Promise.reject('이미지 업로드 실패');
-		         }
-		      })
-		      .catch((err) => {
-		         if (typeof err === 'string') alert(err);
-		      });
-		   })
-		   
+			   if ($box.find('img').length >= 4) {
+			      //alert('더 이상 이미지를 추가할 수 없습니다.');
+			      return false;
+			   }
+
+			   
+			   if ($previewImgArray[0] === ''){
+			           $previewImg.remove();
+			           $previewImg = null;
+			   }
+			     
+			   selectImagePath = [];
+			   $.imagePicker2()
+			   .then(({ status, result }) => {
+			      if (status === 'SUCCESS') {
+			         for (let i = 0; i < result.length; i++) {
+			            $previewImgArray[count] = result[i].path;
+			            selectImagePath[i] = result[i].path;
+			            if(count > 3){
+			               $previewImgArray[count] = null;
+			            }
+			            
+			            count++;
+			         }
+			         return $.convertBase64ByPath2(selectImagePath)
+			      } else {
+			         return Promise.reject('이미지 가져오기 실패')
+			      }
+			   })
+			   .then(({ status, result }) => {
+			      if (status === 'SUCCESS') {
+			         for (let i = 0; i < result.length; i++) {
+			            if ($box.find('img').length >= 4) {
+			               continue;
+			            }
+			            
+			            ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+							type : 'IMAGE',
+							roomId : roomId,
+							sender : sender,
+							mnickname : mnickname,
+							image : result[i].data,
+							time : formattedDate
+						}));
+			            
+			            
+			         }
+			         //alert($('.swiper-wrapper').children().length);
+			         //pagination();
+			      } else {
+			         return Promise.reject('이미지 가져오기 실패');
+			      }
+			   })
+			   .catch((err) => {
+			      alert(err);
+			      if (typeof err === 'string') alert(err);
+			      
+			         console.error(err);
+			   });
+			});
 		   $("#push").click(function(){
 		      alert(BASE64Array[0]);
 		      $.ajax({
@@ -661,25 +689,25 @@ $(function(){
 		      });
 		   });
 		  
-		  $.imagePicker2 = function () {
-		         return new Promise((resolve) => {
-		            M.media.picker({
-		               mode: "MULTI",
-		               media: "PHOTO",
-		               maxCount : 4,
-		               //path: "/media",
-		               column: 3,
-		               callback: (status, result) => {
-		                  resolve({ status, result })             
-		               }
-		            });
-		         })
-		      }
+		   $.imagePicker2 = function () {
+			   return new Promise((resolve) => {
+			      M.media.picker({
+			         mode: "MULTI",
+			         media: "PHOTO",
+			         maxCount : 4,
+			         //path: "/media",
+			         column: 3,
+			         callback: (status, result) => {
+			            resolve({ status, result })             
+			         }
+			      });
+			   })
+			}
 		  
 		  $.uploadImageByPath2 = function ($previewImgArray, progress) {
 			   return new Promise((resolve) => {
 			      const _options = {
-			         url: 'http://192.168.219.103:8080/chat/chatImage',
+			         url: 'http://172.30.1.73:8080/chat/chatImage',
 			         header: {},
 			         params: {},
 			         body: $previewImgArray.map((filePath) => ({
@@ -700,6 +728,39 @@ $(function(){
 			   });
 			};
 	});
+	$.convertBase64ByPath2 = function ($previewImgArray) {
+		   if (!Array.isArray($previewImgArray)) {
+		      throw new Error('$previewImgArray must be an array');
+		   }
+
+		   return new Promise((resolve) => {
+		      const results = [];
+
+		      const readNextFile = (index) => {
+		         if (index < $previewImgArray.length) {
+		            M.file.read({
+		               path: $previewImgArray[index],
+		               encoding: 'BASE64',
+		               indicator: true,
+		               callback: function (status, result) {
+		                  if (status === 'SUCCESS') {
+		                     results.push(result);
+		                     readNextFile(index + 1);
+		                  } else {
+		                     // Handle error
+		                     results.push(null); // Push null for failed file
+		                     readNextFile(index + 1);
+		                  }
+		               }
+		            });
+		         } else {
+		            resolve({ status: 'SUCCESS', result: results });
+		         }
+		      };
+
+		      readNextFile(0);
+		   });
+		};
 </script>
 </head>
 <body>
@@ -753,8 +814,6 @@ $(function(){
             		</c:forEach>
             	</c:if>
           	</div>
-          	<!-- <input type="file" id="fileInput"> -->
-          	<div id="box"></div>
 			<div class="type_msg">
             	<div class="input_msg_write">
             		<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
@@ -808,18 +867,12 @@ $(function(){
                       			<span class="buttontext">거래취소</span>
                       		</div>
 						</div>
-						<!-- <div class="button-container">
+						<div class="button-container">
     						<button id="picker">
-        						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+        						<img class="card-img-top" src="../img/camera.png" alt="sellas" />
     						</button>
     						<span class="buttontext">사진선택</span>
 						</div>
-						<div class="button-container">
-    						<button id="push">
-        						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
-    						</button>
-    						<span class="buttontext">사진전송</span>
-						</div> -->
                 	</div>
            		</div>
     		</div>

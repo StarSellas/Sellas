@@ -252,7 +252,7 @@
                   if(data.tnormalhikeupok == 1){
                      tnormalhikeup = tnormalhikeup + 1;
                      hikeupresult = 3-tnormalhikeup;
-                     alert("끌올이 성공적으로 완료되었습니다.\n남은 끌올 횟수는 "+hikeupresult+"회 입니다.");
+                     M.pop.instance("끌올이 성공적으로 완료되었습니다.\n남은 끌올 횟수는 "+hikeupresult+"회 입니다.");
                      
                      
                      location.href='/redirectnormalDetail?tno='+data.tno;
@@ -310,7 +310,7 @@
             dataType : "json",
             success : function(data){
                if(data.emptySession == 1){
-                  alert("로그인이 필요한 서비스입니다.");
+            	   M.pop.instance("로그인이 필요한 서비스입니다.");
                   location.href='./login';
                   return false;
                }
@@ -322,7 +322,7 @@
                }
                
                if(data.nomoney == 1){
-                  alert("잔액이 부족합니다.");
+            	   M.pop.instance("잔액이 부족합니다.");
                   if(confirm("현재 보고 계신 물품의 가격보다 가지고 있는 잔액이 부족합니다.\n그래도 채팅방을 개설할까요?")){
                      //location.href='./fillPay';
                   }else{

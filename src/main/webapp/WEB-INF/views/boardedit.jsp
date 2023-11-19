@@ -129,7 +129,7 @@
        
         $("#camera").click(function(){
              if ($box.find('img').length + bimagecount>= 4) {
-                alert('더 이상 이미지를 추가할 수 없습니다.');
+            	 M.pop.instance('더 이상 이미지를 추가할 수 없습니다.');
                 return false;
              }
 		
@@ -169,7 +169,7 @@
         //앨범 추가하기 눌렀을 때
                $picker2.on('click', () => {
             if ($box.find('img').length + bimagecount >= 4) {
-               alert('더 이상 이미지를 추가할 수 없습니다.');
+            	M.pop.instance('더 이상 이미지를 추가할 수 없습니다.');
                return false;
             }
              
@@ -388,12 +388,12 @@
              
             
             if(btitle.length < 3){
-               alert("제목을 입력하세요.");
+            	M.pop.instance("제목을 입력하세요.");
                return false;
             }
             
             if(bcontent.length < 3){
-               alert("내용을 입력하세요.");
+            	M.pop.instance("내용을 입력하세요.");
                return false;
             }   
       
@@ -418,7 +418,7 @@
                            }) => {
                               // status code
                               if (status === '200') {
-                                 alert("성공!!");
+                                 /* alert("성공!!"); */
                                  const bodyJson = JSON.parse(body)
                                  
                               } else {
@@ -432,7 +432,7 @@
                                     
                         }
                      }
-                     alert("작성이 완료되었습니다.");
+                     M.pop.instance("작성이 완료되었습니다.");
                      var form = document.createElement("form");
                      form.method = "GET";
                      form.action = "./boardDetail"; // 컨트롤러 경로 설정

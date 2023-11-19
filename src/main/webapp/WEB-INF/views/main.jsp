@@ -80,7 +80,7 @@ $(function() {
          cache: false,
          success : function(data) {
             if(data == "0000"){
-               alert("작업성공");
+              // alert("작업성공");
                // 로딩바 해제
                loading.hide();
             } else{
@@ -502,7 +502,7 @@ $(function() {
 </body>
 <script type="text/javascript">
 M.onBack( function(e) {
-	alert("뒤로가기");
+	//alert("뒤로가기");
 	CLEAR_TOP;
 });
 

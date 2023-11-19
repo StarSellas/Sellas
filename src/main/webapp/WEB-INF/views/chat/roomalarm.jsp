@@ -185,7 +185,7 @@
         		$(".tradeResponse").show();
         	}
         	if(recv.type == 'TRADECANCEL'){
-        		alert("거래가 취소되었습니다. 메인으로 이동합니다.");
+        		M.pop.instance("거래가 취소되었습니다.");
         		location.href='../';
         	}
 	    } else {
@@ -216,7 +216,7 @@
         		$(".tradeResponse").show();
         	}
         	if(recv.type == 'TRADECANCEL'){
-        		alert("거래가 취소되었습니다. 메인으로 이동합니다.");
+        		M.pop.instance("거래가 취소되었습니다.");
         		location.href='../';
         	}
 		}
@@ -256,7 +256,7 @@
 				success : function(data) { //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
 					if (data.tradeAccepted === 'ok') {
 						trade = 1;
-						alert("거래를 수락하셨습니다.");
+						M.pop.instance("거래를 수락하셨습니다.");
 						let okmessage = mnickname + "님이 거래를 수락하셨습니다.";
 						ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 							type : 'TRADEOK',
@@ -300,8 +300,8 @@
 				dataType : "json",
 				success : function(data){
 					if(data.tradeAllSuccess==1){
-    					alert("거래가 완료되었습니다. 후기를 작성해주세요.");
-    					location.href='/';
+						M.pop.instance("거래가 완료되었습니다. 후기를 작성해주세요.");
+    					location.href='../';
     				}
     				
     				
@@ -316,7 +316,7 @@
 						}));
     					$(".tradeAcceptOrCancel2").hide();
     					$(".tradeAcceptOrCancel").hide();
-    				alert("수락이 완료되었습니다. 상대방의 수락을 기다리고 있습니다.");
+    					M.pop.instance("수락이 완료되었습니다. 상대방의 수락을 기다리고 있습니다.");
     				}if(data.tradeAllSuccess == 1){
     					ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 							type : 'TRADECOMPLETE',
@@ -331,7 +331,7 @@
     				
 				},
 				error : function(error){
-					alert("에러가 발생했습니다." + error);
+					M.pop.instance("에러가 발생했습니다." + error);
 				}
 				
 				
@@ -377,8 +377,8 @@
 							time : formattedDate
 						}));
     	        		
-    	        		alert("취소가 정상적으로 처리되었습니다.");
-    	        		location.href='/';
+    	        		M.pop.instance("취소가 정상적으로 처리되었습니다.");
+    	        		location.href='../';
     	        	}
     	            // 서버로부터의 응답을 처리
     	            console.log("서버 응답:", data);
@@ -452,6 +452,166 @@ M.onBack( function(e) {
 	}));
 	window.history.back();
 	});
+	
+$(function(){
+    
+	 let BASE64Array = [];
+	  let $previewImgArray = [];
+	  let count = 0;
+	  let $previewImg = null;
+	  let $uploadImg = null;
+	  
+	  const $picker = $('#picker');
+	  
+	  $picker.on('click', () => {
+		   if ($box.find('img').length >= 4) {
+		      //alert('더 이상 이미지를 추가할 수 없습니다.');
+		      return false;
+		   }
+
+		   
+		   if ($previewImgArray[0] === ''){
+		           $previewImg.remove();
+		           $previewImg = null;
+		   }
+		     
+		   selectImagePath = [];
+		   $.imagePicker2()
+		   .then(({ status, result }) => {
+		      if (status === 'SUCCESS') {
+		         for (let i = 0; i < result.length; i++) {
+		            $previewImgArray[count] = result[i].path;
+		            selectImagePath[i] = result[i].path;
+		            if(count > 3){
+		               $previewImgArray[count] = null;
+		            }
+		            
+		            count++;
+		         }
+		         return $.convertBase64ByPath2(selectImagePath)
+		      } else {
+		         return Promise.reject('이미지 가져오기 실패')
+		      }
+		   })
+		   .then(({ status, result }) => {
+		      if (status === 'SUCCESS') {
+		         for (let i = 0; i < result.length; i++) {
+		            if ($box.find('img').length >= 4) {
+		               continue;
+		            }
+		            
+		            ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+						type : 'IMAGE',
+						roomId : roomId,
+						sender : sender,
+						mnickname : mnickname,
+						image : result[i].data,
+						time : formattedDate
+					}));
+		            
+		            
+		         }
+		         //alert($('.swiper-wrapper').children().length);
+		         //pagination();
+		      } else {
+		         return Promise.reject('이미지 가져오기 실패');
+		      }
+		   })
+		   .catch((err) => {
+			   M.pop.instance(err);
+		      if (typeof err === 'string') alert(err);
+		      
+		         console.error(err);
+		   });
+		});
+	   $("#push").click(function(){
+	      alert(BASE64Array[0]);
+	      $.ajax({
+	         url : "/chat/chatImage",
+	         type : "post",
+	         data : {BASE64Array : BASE64Array[0]},
+	         dataType : "json",
+	         success : function(data){
+	         },
+	         error : function(error){
+	            alert(error);
+	         }
+	         
+	      });
+	   });
+	  
+	   $.imagePicker2 = function () {
+		   return new Promise((resolve) => {
+		      M.media.picker({
+		         mode: "MULTI",
+		         media: "PHOTO",
+		         maxCount : 4,
+		         //path: "/media",
+		         column: 3,
+		         callback: (status, result) => {
+		            resolve({ status, result })             
+		         }
+		      });
+		   })
+		}
+	  
+	  $.uploadImageByPath2 = function ($previewImgArray, progress) {
+		   return new Promise((resolve) => {
+		      const _options = {
+		         url: 'http://172.30.1.73:8080/chat/chatImage',
+		         header: {},
+		         params: {},
+		         body: $previewImgArray.map((filePath) => ({
+		         name: 'file',
+		         content: filePath,
+		         type: 'FILE',
+		      })),
+		      encoding: 'UTF-8',
+		      finish: (status, header, body, setting) => {
+		         resolve({ status, header, body });
+		      },
+		      progress: function (total, current) {
+		         progress(total, current);
+		      },
+		   };
+
+		   M.net.http.upload(_options);
+		   });
+		};
+});
+$.convertBase64ByPath2 = function ($previewImgArray) {
+	   if (!Array.isArray($previewImgArray)) {
+	      throw new Error('$previewImgArray must be an array');
+	   }
+
+	   return new Promise((resolve) => {
+	      const results = [];
+
+	      const readNextFile = (index) => {
+	         if (index < $previewImgArray.length) {
+	            M.file.read({
+	               path: $previewImgArray[index],
+	               encoding: 'BASE64',
+	               indicator: true,
+	               callback: function (status, result) {
+	                  if (status === 'SUCCESS') {
+	                     results.push(result);
+	                     readNextFile(index + 1);
+	                  } else {
+	                     // Handle error
+	                     results.push(null); // Push null for failed file
+	                     readNextFile(index + 1);
+	                  }
+	               }
+	            });
+	         } else {
+	            resolve({ status: 'SUCCESS', result: results });
+	         }
+	      };
+
+	      readNextFile(0);
+	   });
+	};
 </script>
 </head>
 <body>
@@ -544,6 +704,12 @@ M.onBack( function(e) {
 								<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
 							</button>
 							<span class="buttontext">거래취소</span>
+						</div>
+						<div class="button-container">
+    						<button id="picker">
+        						<img class="card-img-top" src="../img/camera.png" alt="sellas" />
+    						</button>
+    						<span class="buttontext">사진선택</span>
 						</div>
 					</div>
 				</div>

@@ -61,14 +61,14 @@ function nickChange() {
 						dataType: "json",
 						success: function(result) {
 							if (result == 1) {
-								alert("변경이 완료되었습니다.");
+								M.pop.instance("변경이 완료되었습니다.");
 								showPage('page1');
 							} else {
-								alert("변경에 실패했습니다.");
+								M.pop.instance("변경에 실패했습니다.");
 							}
 						},
 						error: function(error) {
-							alert("현재 이용 불가한 서비스입니다.");
+							M.pop.instance("현재 이용 불가한 서비스입니다.");
 						}
 					});
 				}
@@ -139,7 +139,7 @@ $("#camera").click(function() {
 $picker2.on('click', () => {
 	if ($box.find('img').length >= 5) {
 		s
-		alert('더 이상 이미지를 변경할 수 없습니다 잠시후 이용해주세요.');
+		M.pop.instance('더 이상 이미지를 변경할 수 없습니다 잠시후 이용해주세요.');
 		return false;
 	}
 
@@ -298,13 +298,13 @@ $("#bwriteButton").click(function() {
 
 				}
 
-				alert("프로필 사진이 변경되었습니다.");
+				M.pop.instance("프로필 사진이 변경되었습니다.");
 				showPage('page1');
 
 			}
 		},
 		error: function(error) {
-			alert("잠시후 다시 시도해주세요.");
+			M.pop.instance("잠시후 다시 시도해주세요.");
 		}
 
 	});

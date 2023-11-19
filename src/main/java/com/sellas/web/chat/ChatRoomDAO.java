@@ -61,6 +61,6 @@ public interface ChatRoomDAO {
 
 	int chatCompareCount(List<Map<String, Object>> ouuid);
 
-	List<Map<String, Object>> getOuuid(String oseller);
+	List<Map<String, Object>> getAllOuuid(String oseller);
 	
 }

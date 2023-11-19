@@ -105,7 +105,7 @@
 
                     // 선택된 라디오 버튼이 없거나 2개 이상이면
                     if (checkBtn.length !== 1) {
-                        alert("평가하지 않은 문항이 있어요.");
+                        M.pop.instance("평가하지 않은 문항이 있어요.");
                         isValid = false; // 유효성 검사 실패
                         return false; // 각각의 질문에서 나가기
                     }

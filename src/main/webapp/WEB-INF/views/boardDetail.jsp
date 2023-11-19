@@ -115,7 +115,7 @@
         			}
         			
 					if(cContent == "" || cContent == null){
-						alert("댓글을 입력해주세요");
+						M.pop.instance("댓글을 입력해주세요");
 						return false;
 					}
         			//alert("댓글등록")

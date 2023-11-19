@@ -72,7 +72,7 @@ ORDER BY
 		select count(*) from dialogue where muuid = #{oseller} and dtype="ALARM" and dcheck = 1
 	</select>
 	
-	<select id="getOuuid" parameterType="String" resultType="Map">
+	<select id="getAllOuuid" parameterType="String" resultType="Map">
 		select ouuid from onlinechat where oseller = #{oseller} and obuyer = #{oseller}
 	</select>
 	
