@@ -47,7 +47,7 @@
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
 		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
-			console.log(message);
+			//console.log(message);
 			var recv = JSON.parse(message.body);
 			//console.log("recv" + recv); 정상적으로 들어옵니다.
 			if (recv.type != 'ALARM' && recv.type != 'INTERVAL' && recv.type != 'OUT') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.

@@ -158,7 +158,7 @@ $(function(){
 	        let timeElement = document.createElement("span");
 	        timeElement.className = "time_date";
 	        timeElement.textContent = recv.time;
-	        console.log(recv.time)
+	        //console.log(recv.time)
 
 	        sent_msg.appendChild(messageElement);
 	        received_withd_msg.appendChild(timeElement);

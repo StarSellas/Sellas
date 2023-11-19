@@ -56,9 +56,7 @@ $(function(){
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
 		scrollChatToBottom()
-		console.log("fsddfs")
 		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
-			console.log(message);
 			var recv = JSON.parse(message.body);
 			//console.log("recv" + recv); 정상적으로 들어옵니다.
 			if (recv.type != 'ALARM' && recv.type != 'INTERVAL' && recv.type != 'OUT') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
@@ -411,7 +409,7 @@ $(function(){
 						        	        },
 						        	        error: function(error) {
 						        	            // 오류 처리
-						        	            console.log("오류 발생:", error);
+						        	            //console.log("오류 발생:", error);
 						        	        }
 						        	    });
 						        	});
@@ -810,7 +808,7 @@ $(function(){
                       			<span class="buttontext">거래취소</span>
                       		</div>
 						</div>
-						<div class="button-container">
+						<!-- <div class="button-container">
     						<button id="picker">
         						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
     						</button>
@@ -821,7 +819,7 @@ $(function(){
         						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
     						</button>
     						<span class="buttontext">사진전송</span>
-						</div>
+						</div> -->
                 	</div>
            		</div>
     		</div>
