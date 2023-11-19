@@ -137,5 +137,15 @@ public class ChatRoomService {
 		// TODO Auto-generated method stub
 		return chatRoomDAO.checkEnter(map);
 	}
+
+	public int chatCompareCount(List<Map<String, Object>> ouuid) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.chatCompareCount(ouuid);
+	}
+
+	public List<Map<String, Object>> getOuuid(String oseller) {
+		// TODO Auto-generated method stub
+		return chatRoomDAO.getOuuid(oseller);
+	}
 	
 }

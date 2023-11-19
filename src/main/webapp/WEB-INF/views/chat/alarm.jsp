@@ -32,11 +32,10 @@ u<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
                 	<div class="chat_img">
                 		<c:choose>
 	                		<c:when test="${chatroomlist.thumbnailcheck eq 1 }">
-	                          	<img class="card-img-top" src="../tradeImgUpload/${chatroomlist.thumbnail }" alt="sellas" />
+	                          	<img class="card-img-top" src="../tradeImgUpload/${chatroomlist.thumbnail }" alt="sellas" style="border-radius:5px;"/>
 	                        </c:when>
 	                        <c:otherwise>
-	                           <img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg"
-	                              alt="sellas"/>
+	                           <img class="card-img-top" src="../img/흰배경셀라스.jpg" alt="sellas" style="border-radius:5px;"/>
 	                        </c:otherwise>
 	            		</c:choose>
 	            	</div>

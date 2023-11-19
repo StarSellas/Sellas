@@ -50,7 +50,7 @@
 			console.log(message);
 			var recv = JSON.parse(message.body);
 			//console.log("recv" + recv); 정상적으로 들어옵니다.
-			if (recv.type != 'ALARM' && recv.type != 'INTERVAL') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
+			if (recv.type != 'ALARM' && recv.type != 'INTERVAL' && recv.type != 'OUT') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
 				recvMessage(recv);
 			} else {
 				return false;
@@ -443,7 +443,14 @@ $(function () {
 });
 
 M.onBack( function(e) {
-	   window.history.back();
+	ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+		type : 'OUT',
+		roomId : roomId,
+		sender : sender,
+		mnickname : mnickname,
+		time : formattedDate
+	}));
+	window.history.back();
 	});
 </script>
 </head>
@@ -498,25 +505,28 @@ M.onBack( function(e) {
               		<div class="tradeResponse">
               			<div class="button-container">
             				<button class="tradeok" type="button">
-            					<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+            					<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
             				</button>
             				<span class="buttontext">거래수락</span>
             			</div>
             			<div class="button-container">
-							<button class="tradeno" type="button">거래취소</button>
+							<button class="tradeno" type="button">
+							<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+							</button>
+							<span class="buttontext">거래취소</span>
 						</div>
 					</div>
                 	<c:if test="${tnormalstate ==1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
 						<div>
 							<div class="button-container">
 								<button class="tradeAccept" type="button">
-									<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+									<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
 								</button>
 								<span class="buttontext">수령완료</span>
 							</div>
 							<div class="button-container">
 								<button class="tradeCancel" type="button">
-									<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+									<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
 								</button>
 								<span class="buttontext">거래취소</span>
 							</div>
@@ -525,13 +535,13 @@ M.onBack( function(e) {
 					<div class="tradeAcceptOrCancel">
 						<div class="button-container">
 							<button class="tradeAccept" type="button">
-								<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+								<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
 							</button>
 							<span class="buttontext">수령완료</span>
 						</div>
 						<div class="button-container">
 							<button class="tradeCancel" type="button">
-								<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+								<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
 							</button>
 							<span class="buttontext">거래취소</span>
 						</div>

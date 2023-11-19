@@ -72,6 +72,16 @@ ORDER BY
 		select count(*) from dialogue where muuid = #{oseller} and dtype="ALARM" and dcheck = 1
 	</select>
 	
+	<select id="getOuuid" parameterType="String" resultType="Map">
+		select ouuid from onlinechat where oseller = #{oseller} and obuyer = #{oseller}
+	</select>
+	
+	<select id="chatCompareCount" parameterType="Map" resultType="Integer">
+		SELECT count(*) from dialogue where 
+		(select ddate from dialogue where ouuid = #{ouuid} and dtype = 'OUT' order by desc limit 1) >
+		(select ddate from dialogue where ouuid = #{ouuid} order by desc limit 1)
+	</select>
+	
 	<select id="auctionChat" parameterType="String" resultType="Map">
 		select tno, oseller, obuyer from onlinechat where ouuid = #{roomId}
 	</select>

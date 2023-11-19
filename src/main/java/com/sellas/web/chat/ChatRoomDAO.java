@@ -58,5 +58,9 @@ public interface ChatRoomDAO {
 	int tNormalPrice(Map<String, Object> map);
 
 	int checkEnter(Map<String, Object> map);
+
+	int chatCompareCount(List<Map<String, Object>> ouuid);
+
+	List<Map<String, Object>> getOuuid(String oseller);
 	
 }

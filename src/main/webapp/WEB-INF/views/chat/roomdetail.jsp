@@ -61,7 +61,7 @@ $(function(){
 			console.log(message);
 			var recv = JSON.parse(message.body);
 			//console.log("recv" + recv); 정상적으로 들어옵니다.
-			if (recv.type != 'ALARM' && recv.type != 'INTERVAL') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
+			if (recv.type != 'ALARM' && recv.type != 'INTERVAL' && recv.type != 'OUT') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
 				recvMessage(recv);
 			} else {
 				return false;
@@ -562,6 +562,13 @@ $(function(){
 		
 		$(".goback").click(function(){
 			M.onBack( function(e) {
+				ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+					type : 'OUT',
+					roomId : roomId,
+					sender : sender,
+					mnickname : mnickname,
+					time : formattedDate
+				}));
 				location.href="/normalDetail?tno=${tno}";
 			});
 		});
@@ -761,13 +768,13 @@ $(function(){
               				<div class="trade-buttons">
                 				<div class="button-container">
     								<button id="tradeamount">
-        								<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+        								<img class="card-img-top" src="../tradeImgUpload/chatcoin.png" alt="sellas" />
     								</button>
     								<span class="buttontext">금액제시</span>
 								</div>
 								<div class="button-container">
                       				<button id="tradeRequest">
-										<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+										<img class="card-img-top" src="../tradeImgUpload/chatcoingo.png" alt="sellas" />
 									</button>
 									<span class="buttontext">제시하기</span>
 								</div>
@@ -777,13 +784,13 @@ $(function(){
                 			<div class="tradeAcceptOrCancel2">
                 				<div class="button-container">
                 					<button id="tradeAccept">
-                						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                						<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
                 					</button>
                 					<span class="buttontext">수령완료</span>
                 				</div>
                 				<div class="button-container">
                       				<button id="tradeCancel">
-                      					<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                      					<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
                       				</button>
                       				<span class="buttontext">거래취소</span>
                       			</div>
@@ -792,13 +799,13 @@ $(function(){
                 		<div class="tradeAcceptOrCancel">
 							<div class="button-container">
                 				<button id="tradeAccept">
-                					<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                					<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
                 				</button>
                 				<span class="buttontext">수령완료</span>
                 			</div>
                 			<div class="button-container">
                       			<button id="tradeCancel">
-                      				<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+                      				<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
                       			</button>
                       			<span class="buttontext">거래취소</span>
                       		</div>

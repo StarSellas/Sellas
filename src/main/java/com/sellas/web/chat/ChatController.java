@@ -57,11 +57,9 @@ public class ChatController {
 			Map<String, Object> outmap = new HashMap<>();
 			String ouuid =  message.getRoomId();
 			String muuid = message.getSender();
-			String ocontent = message.getMessage();
 			String dtype = String.valueOf(message.getType());
 			outmap.put("ouuid", ouuid);
 			outmap.put("muuid", muuid);
-			outmap.put("ocontent", ocontent);
 			outmap.put("dtype", dtype);
 			int out = chatMessageService.outMessage(outmap); //서버에 보냅니다.
 		} else if (ChatMessage.MessageType.TRADEOK.equals(message.getType())) { //거래수락 버튼을 누르면 전송되는 메시지입니다.

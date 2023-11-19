@@ -11,7 +11,7 @@
 	</insert>
 	
 	<insert id="outMessage" parameterType="Map">
-		insert into dialogue (ouuid, muuid, dcontent, dtype) values (#{ouuid}, #{muuid}, #{ocontent}, #{dtype})
+		insert into dialogue (ouuid, muuid, dtype) values (#{ouuid}, #{muuid}, #{dtype})
 	</insert>
 	
 	<insert id="tradeOkMessage" parameterType="Map">
