@@ -133,13 +133,7 @@
 				</c:choose>
 			</c:if>
 		</c:if>
-		
-		
-		<button onclick="showPage('page0')">0000</button>
-		<button onclick="showPage('page2')">2222</button>
-		<button onclick="showPage('page3')">3333</button>
-		<button onclick="showPage('page4')">4444</button>
-		
+
 
 		</div>
 
