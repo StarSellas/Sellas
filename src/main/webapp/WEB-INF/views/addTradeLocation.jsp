@@ -31,7 +31,7 @@
 
 		<div class="page" id="page1">
 			<div class="form-floating">
-				<div id="map" style="width: 100%; height: 350px"></div>
+				<div id="map" style="width: 380px; height: 350px;"></div>
 			</div>
 
 			<div class="form-floating">
@@ -49,19 +49,37 @@
 			<div class="form-floating">
 				<button class="endTypeButton" type="button" onclick="addTradeLocation()">확인</button>
 			</div>
+			
+			
 		</div>
 
 		<div class="page resultPage" id="page2" style="display:none">
-			정상적으로 등록되었습니다.
+			<div class="form-floating">
+				<a href="#" onclick="window.location.reload();"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+			</div>
+			<div class="form-floating">
+				<div class="resultTitleT">정상적으로 등록되었습니다.</div>
+			</div>
+			<div class="form-floating">
+				<div id="resultMap" style="width: 380px; height: 220px;"></div>
+			</div>
+			<div class="form-floating">
+				<div id="resultName"></div>
+			</div>
 			<div class="form-floating">
 				<button class="endTypeButton" type="button" onclick="javascript:history.back()">확인</button>
 			</div>
 		</div>
 
 		<div class="page resultPage" id="page3" style="display:none">
-			등록에 실패했습니다.
 			<div class="form-floating">
-				<button class="endTypeButton" type="button" onclick="showPage('page1')">확인</button>
+				<a href="#" onclick="window.location.reload();"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+			</div>
+			<div class="form-floating">
+				<div class="resultTitleF">등록이 실패했습니다.</div>
+			</div>
+			<div class="form-floating">
+				<button class="endTypeButton resultButton" type="button" onclick="showPage('page1')">확인</button>
 			</div>
 		</div>
 
