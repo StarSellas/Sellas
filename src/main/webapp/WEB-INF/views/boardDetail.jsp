@@ -65,6 +65,8 @@
         			let contentBox = $(this).parent().siblings(".cContentBox");
         			// 댓글버튼박스
         			let cButtonBox = $(this).parent(".commentsBtn");
+        			// 댓글내용박스
+        			let content = $(this).parent().siblings(".cContentBox").children(".content");
         			// 수정댓글창
         			let newContentBox = ""
         	
@@ -84,14 +86,14 @@
         				+ '</div>';
         	
         	
-        			contentBox.after(newContentBox);
-        			contentBox.hide();
+        			content.after(newContentBox);
+        			content.hide();
         			cButtonBox.hide();
         	
         			// 수정취소버튼클릭 
         			$(".reset").click(function() {
         				$(this).parents(".newWriteBox").remove();
-        				contentBox.show();
+        				content.show();
         				cButtonBox.show();
         			});
         	
@@ -129,7 +131,7 @@
          <!-- Section-->
         <section class="py-5 WholeContainer">
         
-            <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a> (${bdetail.bno })</div>
+            <div class="cateName"><a href="/board?cate=${bdetail.sno }">${bdetail.sname }</a></div>
             <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                     
@@ -138,6 +140,7 @@
 				<div class="detailContainer justify-content-center">
 					
 					<div class="titleBox">
+					
 						<div class="btitle">
 							${bdetail.btitle }
 						</div>
@@ -146,10 +149,10 @@
 							<div class="userImgBox">
 								<c:choose>
 									<c:when test="${bdetail.mphoto ne null}">
-										<img src="../userImgUpload/${bdetail.mphoto}" alt="user-img" class="userImg">
+										<img src="./userImgUpload/${bdetail.mphoto}" alt="user-img" class="userImg">
 									</c:when>
 									<c:otherwise>
-										<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+										<img src="../userImgUpload/defaultimg.png" alt="basic-user-img" class="userImg">
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -159,7 +162,7 @@
 					</div>
 					
 					<div class="contentBox">
-						<div class="bcontent">${bdetail.bcontent }</div>
+						<div class="bcontent" style="white-space:pre-wrap;">${bdetail.bcontent }</div>
 					</div>
 					
 						<div class="bimageBox">
@@ -213,7 +216,7 @@
 																<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
 															</c:when>
 															<c:otherwise>
-																<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+																<img src="../userImgUpload/defaultimg.png" alt="basic-user-img" class="userImg">
 															</c:otherwise>
 														</c:choose>
 													</div>
@@ -244,7 +247,7 @@
 																<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
 															</c:when>
 															<c:otherwise>
-																<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+																<img src="../userImgUpload/defaultimg.png" alt="basic-user-img" class="userImg">
 															</c:otherwise>
 														</c:choose>
 													</div>
@@ -270,11 +273,11 @@
 					<!-------------------- 댓글쓰기창 -------------------->
 						<div class="cWriteBox">
 							<form action="./commentWrite" method="post" class="commentWriteForm">
-								<textarea class="cContent" name="ccontent"></textarea>
+								<textarea class="cContent" name="ccontent" style="white-space:pre-wrap;" maxlength="30"></textarea>
 								<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
 								<input type="hidden" name="cate" value="${param.cate }">
 								<input type="hidden" name="bno" value="${param.bno }">
-								<div class="commentsBtn">
+								<div class="commentsBtn" id="cWriteBtnBox">
 									<button type="submit" class="cWriteBtn">등록</button>
 								</div>
 							</form>
@@ -286,4 +289,5 @@
         	</div>
         </section>
     </body>
+
 </html>

@@ -16,6 +16,8 @@ function login() {
 		document.getElementById("id").classList.remove("is-invalid");
 		document.getElementById("pw").classList.remove("is-invalid");
 	
+		pw = encryptPassword(pw);
+	
 		$.ajax({
 			url : "./login",
 			method : "post",
@@ -38,4 +40,10 @@ function login() {
 		});
 	
 	}
+}
+
+/* 비밀번호 암호화 */
+function encryptPassword(pw) {
+	
+	return M.sec.encrypt(pw).result;
 }

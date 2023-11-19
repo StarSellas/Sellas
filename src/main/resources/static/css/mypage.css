@@ -51,6 +51,7 @@
 }
 
 
+
 .location {
 	text-align: center;
 	font-weight: bold;
@@ -67,6 +68,8 @@
 		border-bottom: solid #e3e3e3 1px;
 		margin: 10px;
 		padding-bottom: 10px;
+		margin-left: 15px;
+
 }
 .card-body  {
 	padding: 30px;
@@ -82,11 +85,23 @@
 }
 
 h6{
+
 		margin-left: 40px;
-		font-weight: bold;
 		margin-top: 20px;
 }
 
+.title{
+	font-weight: bold;
+
+	}
+	
+	
+	
+.logout{
+	float: right;
+	margin-right: 40px;
+	
+}
 
 
 .payname{
@@ -117,4 +132,8 @@ h6{
 	margin-top: 15px;
 }
 
-	
+
+
+.fa-regular,.fa-solid{
+	margin-left: 4px;
+}

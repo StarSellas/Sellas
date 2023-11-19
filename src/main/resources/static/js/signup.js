@@ -138,6 +138,9 @@ function validateOnKeyUp(event)	{
 				pwcheckInputChecked = true;
 				// pwcheck OK
 				clearMessage(msgDiv);
+				
+				// 비밀번호 암호화
+				document.getElementById("encryptPassword").value = encryptPassword(password);
 			}
 			break;
 			
@@ -245,12 +248,14 @@ function duplicationCheckOnFocusOut(event) {
 					if(emailInputChecked){
 						if(result > 0){
 							document.getElementById("emailCodeDiv").style.visibility = "hidden";
+							document.getElementById("guideMessage").style.visibility = "visible";
 							emailDuplicationChecked = false;
 							let msg = "이미 가입된 이메일입니다.";
 							setMessage(msgDiv, msg, false);
 							invalidInput(inputField);
 						} else {
 							document.getElementById("emailCodeDiv").style.visibility = "visible";
+							document.getElementById("guideMessage").style.visibility = "hidden";
 							emailDuplicationChecked = true;
 							sendVerificationCode();
 							clearMessage(msgDiv);
@@ -338,6 +343,12 @@ function validateEmailCode() {
 			alert("ERROR : " + JSON.stringify(error));
 		}
 	});
+}
+
+/* 비밀번호 암호화 */
+function encryptPassword(pw) {
+	
+	return M.sec.encrypt(pw).result;
 }
 
 /* Message 출력 */

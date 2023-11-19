@@ -108,8 +108,16 @@
 
 
 a {
-	color: inherit;
+	color: inherit !important;
 }
 
+
+/* 툴팁 */
+
+.tooltip-inner {
+    background-color: white !important;
+    border: solid 1px gray !important;
+    color: black !important;
+}
 
 	

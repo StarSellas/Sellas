@@ -7,6 +7,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/> 
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<title>Shop Homepage - Start Bootstrap Template</title>
@@ -22,18 +23,26 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		<script src="./js/jquery-3.7.0.min.js"></script>
+		<script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script>
 	</head>
 	<body>
 
 
+	<div class="form-floating">
+		<a href="./login"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+	</div>
+
 		<div class="page" id="page1">
 			<div class="form-floating">
-				<input class="form-control" type="text" id="id" name="id" placeholder="아이디" maxlength="15" required="required"> 	
+				<input class="form-control" type="text" id="id" placeholder="아이디" maxlength="15" required="required"> 	
 				<label for="id">아이디</label>
 			</div>
 			<div class="form-floating">
 				<input class="form-control" type="text" id="email" placeholder="이메일 주소" maxlength="36" required="required">
 				<label for="email">이메일 주소</label>
+				<div id="emailMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
 			<div class="form-floating">
 				<button onclick="showEmailCodeDiv()">다음</button>
@@ -60,8 +69,11 @@
 		</div>
 		
 		<div class="page" id="page3" style="display:none">
+			<div class="form-floating">
+				<div class="guideText">새로운 비밀번호를 입력하세요.</div>
+			</div>
 			<div class="form-floating">	
-				<input class="form-control" type="password" id="pw" name="pw" placeholder="비밀번호" maxlength="15" required="required">
+				<input class="form-control" type="password" id="pw" placeholder="비밀번호" maxlength="15" required="required">
 				<label for="pw">비밀번호</label>
 				<div id="pwMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
@@ -75,9 +87,16 @@
 			</div>
 		</div>
 		
-		<div class="page" id="page4" style="display:none">
+		<div class="page resultPage" id="page4" style="display:none">
 			<div class="form-floating">
-				<a class="text" href="./login">로그인</a>
+				<div class="resultText">비밀번호 변경이</div>
+				<div class="resultText">완료되었습니다.</div>
+			</div>
+			<div class="form-floating">
+				<div class="guideText">변경된 비밀번호로 로그인하실 수 있습니다.</div>
+			</div>
+			<div class="form-floating">
+				<a href="./login"><button>확인</button></a>
 			</div>
 		</div>
 
@@ -86,4 +105,13 @@
 		<!-- Core theme JS-->
 		<script src="js/findpw.js"></script>
 	</body>
+
+<script>
+
+M.onBack( function(e) {
+	window.history.back();
+});
+
+</script>
+
 </html>

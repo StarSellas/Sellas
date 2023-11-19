@@ -27,17 +27,19 @@
 	            
 	     // 글제목 길면 자르기
 	    	function cutTitle(){
+	    	 
 	        	$(".btitle").each(function() {
 	        	    let title = $(this).children(".title").text();
 	        	    //console.log(title);
 	        	    //console.log(title.length);
 	        	    
-	        	    if(title.length > 10){
-	            		titlecut = title.substring(0, 9) + " ...";
+	        	    if(title.length > 12){
+	            		titlecut = title.substring(0, 11) + " ...";
 	            		//console.log("titlecut : " + titlecut);
 	            		$(this).children(".title").text(titlecut);
 	            	}
 	        	});
+	        	
 	    	}	
         
             $(function(){
@@ -63,7 +65,7 @@
             		cate = $(".cateNum").val();
             	}
             	
-            	console.log("search값 잡아: " + search);
+            	//console.log("search값 잡아: " + search);
             	
             	// 스크롤 이벤트 발생
             	$(window).on("scroll",function(){
@@ -95,13 +97,13 @@
                let wholePage = Math.ceil(count/10);					// 전체페이지수(글의갯수/10의 올림) 
                
                //console.log("wholePage : " + wholePage);
-               console.log("count : " + count);
+               //console.log("count : " + count);
                //console.log("firstbno : " + firstbno);
                
                
                   // 다음페이지가 없다면 진행X
                   if(wholePage < currentPage){
-                	  	alert("마지막 페이지 입니다.");
+                	  	//alert("마지막 페이지 입니다.");
    						return false;
                   }
                   
@@ -135,21 +137,24 @@
                         	        	
                         	        	for (let i = 0; i < this.list.length; i++) {
                         	        		
-                        	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>"
-	                        	        	    + "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>"
-	                        	        	    + "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">"
-	                        	        	    + "<span class='title'>" + this.list[i].btitle + "</span>"
-	                        	        	    + " <i class='xi-speech-o count' id='counticon'></i>"
-	                        	        	    + " <span class='commentcount'>" + this.list[i].commentcount + "</span>"
-	                        	        	    + "<div class='UserBox'>"
-	                        	        	    + "<div class='userImgBox'>"
-	                        	        	    + (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>" : "<img src='../img/흰배경셀라스.jpg' alt='basic-user-img' class='userImg'>")
-	                        	        	    + "</div>"
-	                        	        	    + "<span class='mnickname'>" + this.list[i].mnickname + "</span>"
-	                        	        	    + "</div>"
-	                        	        	    + "</td>"
-	                        	        	    + "<td class='bdate'>" + this.list[i].bdate + "</td>"
-	                        	        	    + "</tr>";
+                        	        		newRow = "<tr class='boardRow' data-count='" + this.list[i].count + "'>" +
+		                        	                "<td class='rowNum' data-bno='" + this.list[i].bno + "'>" + this.list[i].bno + "</td>" +
+		                        	                "<td class='btitle' onclick=\"location.href='/boardDetail?cate=" + this.list[i].sno + "&bno=" + this.list[i].bno + "'\">" +
+		                        	                    "<span class='title'>" + this.list[i].btitle + "</span>" +
+		                        	                    " <i class='xi-speech-o count' id='counticon'></i>" +
+		                        	                    " <span class='commentcount'>" + this.list[i].commentcount + "</span>" +
+		                        	                    (this.list[i].bimagecount > 0 ? "<span class='bphotoBox'><img src='./img/board_photo.png' class='bphoto' alt='img'></span>" : "") +
+		                        	                    "<div class='UserBox'>" +
+		                        	                        "<div class='userImgBox'>" +
+		                        	                        (this.list[i].mphoto ? "<img src='../userImgUpload/" + this.list[i].mphoto + "' alt='user-img' class='userImg'>": "<img src='./tradeImgUpload/defaultimg.jpg' alt='basic-user-img' class='userImg'>") +
+		                        	                        "</div>" +
+		                        	                        "<span class='mnickname'>" + this.list[i].mnickname + "</span>" +
+		                        	                    "</div>" +
+		                        	                "</td>" +
+		                        	                "<td class='bdateBox'>" +
+		                        	                    "<div class='bdate'>" + this.list[i].bdate + "</div>" +
+		                        	                "</td>" +
+		                        	              "</tr>";
 	
 	                    	                    lastRow.after(newRow); // lastRow 뒤에 추가
 	                        	        	  
@@ -198,7 +203,7 @@
 	   							$(".searchA").not(this).removeClass("active");
 	    						
 	    						let searchCate = $(this).text();
-	    						console.log(searchCate);
+	    						//console.log(searchCate);
 	    						$("#navbarSDropdown").text(searchCate);	// 선택한 카테고리 보여주기
 							});
 							
@@ -208,7 +213,7 @@
 								if($(".searchA").hasClass("active")){
 									let selectedOption = $(".searchA.active").data("option");
 									$(".searchCate").val(selectedOption);	// searchCate 서버로 보낼 input창에 넣기
-									console.log(selectedOption)
+									//console.log(selectedOption)
 								} 
 								
 								$(".searchFrom").submit();	// form 제출
@@ -243,7 +248,6 @@
             <div class="container mt-4" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
                 
-                <div class="backButton"><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
                 
 				<!-------------- 게시판 검색 & 카테고리 드롭다운 -------------->
 				
@@ -327,27 +331,29 @@
 					
 					<!-------------- 메인게시판(전체글_최신순) -------------->
                		<c:if test="${empty param}">
-               		떠라 : ${sessionScope.muuid}
                			<c:forEach items="${mainList}" var="mainList">
 		                     <tr class="boardRow" data-count="${mainList.count}">
 		                        <td class="rowNum" data-bno="${mainList.bno}">${mainList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${mainList.sno}&bno=${mainList.bno }'">
 		                        	<span class="title">${mainList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${mainList.commentcount}</span>
+		                        	<c:if test="${mainList.bimagecount gt 0}"><span class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></span></c:if>
 		                        	<div class="UserBox">
 		                        		<div class="userImgBox">
 												<c:choose>
 													<c:when test="${sessionScope.muuid ne null && mainList.mphoto ne null}">
-														<img src="../userImgUpload/${mainList.mphoto}" alt="user-img" class="userImg">
+														<img src="../userImgUpload/${mainList.mphoto}" class="bphoto" alt="userImg">
 													</c:when>
 													<c:otherwise>
-														<img src="./img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+														<img src="./tradeImgUpload/defaultimg.jpg" alt="basic-user-img" class="userImg">
 													</c:otherwise>
 												</c:choose>
 											</div>
 		                        		<span class="mnickname">${mainList.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                       	<td class="bdate">${mainList.bdate}</td>
+		                       	<td class="bdateBox">
+		                       		<div class="bdate">${mainList.bdate}</div>
+		                       	</td>
 		                     </tr>
 		                     
                   		</c:forEach>
@@ -362,6 +368,7 @@
 		                        <td class="rowNum" data-bno="${list.bno}">${list.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${list.sno}&bno=${list.bno }'">
 		                        	 <span class="title">${list.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${list.commentcount}</span>
+		                        	<c:if test="${list.bimagecount gt 0}"><span class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></span></c:if>
 		                        	<div class="UserBox">
 		                        		<div class="userImgBox">
 												<c:choose>
@@ -369,21 +376,23 @@
 														<img src="../userImgUpload/${list.mphoto}" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
-														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+														<img src="../img/defaultimg.jpg" alt="basic-user-img" class="userImg">
 													</c:otherwise>
 												</c:choose>
 											</div>
 		                        		<span class="mnickname">${list.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                        <td class="bdate">${list.bdate}</td>
+		                        <td class="bdateBox">
+		                        	<div class="bdate">${list.bdate}</div>
+		                        </td>
 		                     </tr>
                   		</c:forEach>
                   		
              		</c:if>
              		
              		<!--------------카테고리별 게시판 검색결과 -------------->
-             		<c:if test="${param.cate ne null && param.search ne null && param.searchCate ne null}">
+             		<c:if test="${param.search ne null && param.searchCate ne null}">
              			<c:if test="${empty  searchList}">
              				<div class="NoSearchList">검색결과가 없습니다.</div>
              			</c:if>
@@ -392,6 +401,7 @@
 		                        <td class="rowNum" data-bno="${searchList.bno}">${searchList.bno}</td>
 		                        <td class="btitle" onclick="location.href='/boardDetail?cate=${searchList.sno}&bno=${searchList.bno }'">
 		                        	 <span class="title">${searchList.btitle}</span> <i class="xi-speech-o count" id="counticon"></i><span class="commentcount">${searchList.commentcount}</span>
+		                        	<c:if test="${searchList.bimagecount gt 0}"><span class="bphotoBox"><img src="./img/board_photo.png" class="bphoto" alt="img"></span></c:if>
 		                        	<div class="UserBox">
 		                        		<div class="userImgBox">
 												<c:choose>
@@ -399,14 +409,16 @@
 														<img src="../userImgUpload/${searchList.mphoto}" alt="user-img" class="userImg">
 													</c:when>
 													<c:otherwise>
-														<img src="../img/흰배경셀라스.jpg" alt="basic-user-img" class="userImg">
+														<img src="../img/defaultimg.jpg" alt="basic-user-img" class="userImg">
 													</c:otherwise>
 												</c:choose>
 											</div>
 		                        		<span class="mnickname">${searchList.mnickname}</span>
 		                        	</div>
 		                        </td>
-		                        <td class="bdate">${searchList.bdate}</td>
+		                        <td class="bdateBox">
+		                        	<div class="bdate">${searchList.bdate}</div>
+		                        </td>
 		                     </tr>
 	             		</c:forEach>
 	             		

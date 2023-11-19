@@ -151,7 +151,7 @@ function validateOnKeyUp(event) {
 					pwcheckInputChecked = true;
 					// pwcheck OK
 					clearMessage("pwcheckMessage");
-				}
+					}
 			}
 			
 			break;
@@ -170,6 +170,7 @@ function validateOnKeyUp(event) {
 				// pwcheck OK
 				clearMessage(msgDiv);
 			}
+			
 			break;
 			
 	}
@@ -185,7 +186,7 @@ function changePassword() {
 	$.ajax({
 		url : "/changePassword",
 		method : "post",
-		data : {email : emailAddress, id : id, pw : password},
+		data : {email : emailAddress, id : id, pw : encryptPassword(password)},
 		success : function(result){
 			if(result){
 				showPage("page5");
@@ -195,6 +196,12 @@ function changePassword() {
 			alert("ERROR : " + JSON.stringify(error));
 		}
 	});
+}
+
+/* 비밀번호 암호화 */
+function encryptPassword(pw) {
+	
+	return M.sec.encrypt(pw).result;
 }
 
 /* Message 출력 */

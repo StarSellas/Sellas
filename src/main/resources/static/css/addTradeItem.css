@@ -77,3 +77,20 @@ button {
 .text {
 	text-decoration: none;
 }
+
+.swiper {
+	width: 330px;
+	height: 310px;
+}
+
+.swiper-button-prev {
+	background-size: 30% auto;
+}
+
+.swiper-button-next {
+	background-size: 30% auto;
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+	display: none;
+}

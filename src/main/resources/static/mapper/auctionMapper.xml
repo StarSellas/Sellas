@@ -9,7 +9,7 @@
 </select>
 
 <sql id="auctionListBaseSQL">
-	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname,
+	SELECT trade.tno, trade.ttitle, trade.tdate, trade.tread, trade.tauctionstate, trade.tauctionminbidunit, trade.tauctionstartprice, member.mnickname, itemcategory.ino, itemcategory.iname, tradeimage.timage, tradeimage.tthumbnail,
 	COALESCE(auctionhistory.abidprice, 0) AS abidprice,
 	COALESCE(auctionhistory.abidprice + trade.tauctionminbidunit, trade.tauctionstartprice) AS minbidprice
 	FROM trade
@@ -19,7 +19,9 @@
 		ON itemcategory.ino = trade.ino
 		LEFT JOIN auctionhistory
 		ON auctionhistory.tno = trade.tno AND auctionhistory.astate = 2
-	WHERE trade.ttype = 1 AND trade.tauctionstate = 2
+		LEFT JOIN tradeimage
+		ON tradeimage.tno = trade.tno
+	WHERE trade.ttype = 1 AND trade.tauctionstate = 2 AND tradeimage.tthumbnail = 0
 </sql>
 
 <sql id="searchKeywordSQL">
@@ -172,4 +174,9 @@
 	insert into payment (tno, pseller, pbuyer, pamount) values (#{tno}, #{oseller}, #{obuyer}, #{abidprice})
 </insert>
 
+<select id="auctionImageList" resultType="Map">
+	SELECT *
+	FROM tradeimage
+	WHERE tno = #{tno}
+</select>
 </mapper>

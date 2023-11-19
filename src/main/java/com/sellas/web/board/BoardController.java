@@ -46,21 +46,21 @@ public class BoardController {
       map.put("cate", cate);
       map.put("searchCate", searchCate);
       
-      System.out.println("map : " + map);   // map : {cate=0, search=noSearch}
+      //System.out.println("map : " + map);   // map : {cate=0, search=noSearch}
          
-      // 메인게시판일때 (조회순 10개)
+      // 메인게시판일때 (조회순 10개) _ 검색값 없는 경우 포함
       if (cate == 0) {
          
-         System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
+         //System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
          List<Map<String, Object>> mainList = boardService.mainList(map);
          List<Map<String, Object>> setupboardList = boardService.setupboardList();
-         System.out.println(mainList);
+         //System.out.println(mainList);
          
-         // 메인게시판에서 검색했을 때 
+         // 메인게시판에서 검색했을 때 (검색값 없는경우 미포함)
          if(search != null && searchCate != null) {
-            System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
+            //System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
             List<Map<String, Object>> searchList = boardService.searchList(map);
-            System.out.println(searchList);
+            //System.out.println(searchList);
             model.addAttribute("searchList", searchList);
          }
 
@@ -101,7 +101,7 @@ public class BoardController {
       map.put("searchCate", searchCate);
       map.put("search", search);
       
-      System.out.println("map : " + map);
+      //System.out.println("map : " + map);
       // map : {currentPage=1, cate=0, lastbno=152, count=98, search=, searchCate=title}
       
       JSONObject json = new JSONObject();
@@ -109,14 +109,14 @@ public class BoardController {
       if(cate == 0) {
          
          List<Map<String, Object>> nextList = boardService.mnextPage(map);
-         System.out.println("메인 다음페이지 : " + nextList);
+         //System.out.println("메인 다음페이지 : " + nextList);
          json.put("list", nextList);
          
          return json.toString();
       }
          
          List<Map<String, Object>> nextList = boardService.nextPage(map);
-          System.out.println("검색&cate있을때 nextList : " + nextList);
+         //System.out.println("검색&cate있을때 nextList : " + nextList);
          json.put("list", nextList);
          
          return json.toString();
@@ -143,10 +143,10 @@ public class BoardController {
    @PostMapping("/boardWrite")
    public String boardWrite(@RequestParam Map<String, Object> map) {
 
-      System.out.println("나와라map : " + map);
+      //System.out.println("나와라map : " + map);
       //  {cate=2, btitle=글쓰기, bcontent=햐봄, muuid=6fd651fd-9922-43c3-b0d9-57e7e6ea4c14}
       int writeResult = boardService.boardWrite(map);
-      System.out.println("나와라 writeResult 1 : " + writeResult);
+      //System.out.println("나와라 writeResult 1 : " + writeResult);
       
       JSONObject json = new JSONObject();
       
@@ -167,9 +167,9 @@ public class BoardController {
                         @RequestParam(value = "bno")int bno, 
                         @RequestParam(value = "cate")int cate) {
 
-      System.out.println("boardimgList : " + boardimgList);
-      System.out.println("bno : " + bno);
-      System.out.println("cate : " + cate);
+      //System.out.println("boardimgList : " + boardimgList);
+      //System.out.println("bno : " + bno);
+      //System.out.println("cate : " + cate);
       
       Map<String, Object> map = new HashMap<String, Object>();
       map.put("bno", bno);
@@ -186,26 +186,26 @@ public class BoardController {
                 //System.out.println("경로: "+ path); //경로:
                // C:\Users\gogus\git\sellas\src\main\webapp\boardImgUpload
 
-                System.out.println(boardimgList.get(i).getOriginalFilename());
+                //System.out.println(boardimgList.get(i).getOriginalFilename());
                 //resource-28.jpg
                // System.out.println(boardimgList.get(i).getSize()); //81618
                // System.out.println(boardimgList.get(i).getContentType()); // image/jpeg
 
                 String[] split = boardimgList.get(i).getOriginalFilename().split("/");
-                System.out.println("split : " + split);
+                //System.out.println("split : " + split);
                 
                LocalDateTime ldt = LocalDateTime.now();
                String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
                String realFileName = format + "num" + i + split[split.length-2];
 
-               System.out.println("이름잘라 : " + realFileName);
+               //System.out.println("이름잘라 : " + realFileName);
                
                // 확장자 자르기
                String[] parts = boardimgList.get(i).getOriginalFilename().split("\\.");
                String lastPart = parts[parts.length - 1];
                
-               System.out.println(lastPart);
-               System.out.println(parts);
+               //System.out.println(lastPart);
+               //System.out.println(parts);
 
                // 확장자 아니면 파일 없애보리기
                if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
@@ -214,7 +214,7 @@ public class BoardController {
                }
 
                File boardimgName = new File(path, realFileName);
-               System.out.println("boardimgName : " + boardimgName);
+               //System.out.println("boardimgName : " + boardimgName);
 
                try {
                   FileCopyUtils.copy(boardimgList.get(i).getBytes(), boardimgName);
@@ -226,10 +226,10 @@ public class BoardController {
 
                map.put("bimage", realFileName);
                
-               System.out.println("map " + (i + 1) + "번째 : " + map);
+               //System.out.println("map " + (i + 1) + "번째 : " + map);
                int imgResult = boardService.boardImage(map);
                
-               System.out.println("imgResult " + (i + 1) + " 번째 : " + imgResult);
+               //System.out.println("imgResult " + (i + 1) + " 번째 : " + imgResult);
 
                if (imgResult == 1 && i == 0) { 
                   int Thumbnail = boardService.countThumbnail(map);
@@ -248,7 +248,7 @@ public class BoardController {
    @GetMapping("boardDetail")
    public String boardDetail(@RequestParam Map<String, Object> map, Model model) {
 
-      System.out.println("디테일map : " + map); // 디테일map : {cate=2, bno=5}
+      //System.out.println("디테일map : " + map); // 디테일map : {cate=2, bno=5}
       Map<String, Object> detailList = boardService.boardDetail(map);
       boardService.boardReadUP(map);
       List<Map<String, Object>> imageList = boardService.imageList(map);
@@ -259,6 +259,7 @@ public class BoardController {
       // System.out.println("디테일페이지 : " + detailList);
       // {bno=5, bread=0, mnickname=셀라스, commentcount=2, bdate=14:27:46, sno=2,
       // sname=판매요청, btitle=판매요청글씀, bcontent=ㅁㅇㄴㄹ, mno=1}
+      
       model.addAttribute("bdetail", detailList);
       model.addAttribute("imageList", imageList);
       model.addAttribute("comments", commentList);
@@ -274,7 +275,7 @@ public class BoardController {
 
       Map<String, Object> detailList = boardService.boardDetail(map);
       List<Map<String, Object>> imageList = boardService.imageList(map);
-      System.out.println(imageList);
+      //System.out.println(imageList);
       // System.out.println(detailList);
       // {bno=107, bread=5, mnickname=pyo, commentcount=0, bdate=14:39:53, sno=2,
       // bimagecount=0, sname=판매요청, btitle=제목, bcontent=내용, mno=96}
@@ -292,8 +293,8 @@ public class BoardController {
             @RequestParam Map<String, Object> map) {
          JSONObject json = new JSONObject();
          System.out.println("맵 값은 어떻게 오나요?" + map);
+         
          int normalEditResult = boardService.boardEdit(map);
-          
          
          if(map.get("OriImgMap[0]") != null) {
          Map<String, Object> deleteImage = new HashMap<String, Object>();
@@ -308,7 +309,7 @@ public class BoardController {
             deleteImage.put("Original4", map.get("OriImgMap[3]"));
          }
           
-         System.out.println("deleteImage : " + deleteImage);
+         //System.out.println("deleteImage : " + deleteImage);
          
          
             int boardDeleteEditImage = boardService.imgDelete(deleteImage);
@@ -337,13 +338,12 @@ public class BoardController {
       }
    }
 
-   // **************************************** 댓글
-   // ****************************************
+   // **************************************** 댓글 ****************************************
 
    // 댓글쓰기
    @PostMapping("commentWrite")
    public String commentWrite(@RequestParam Map<String, Object> map, HttpSession session) {
-      System.out.println(map); // {ccontent=adfasdfa, muuid=, cate=2, bno=74}
+      //System.out.println(map); // {ccontent=adfasdfa, muuid=, cate=2, bno=74}
 
       if (!util.checkLogin()) {
          return "redirect/login";
@@ -354,7 +354,7 @@ public class BoardController {
       if (result == 1) {
          return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
       } else {
-         System.out.println("댓글쓰기 실패");
+         //System.out.println("댓글쓰기 실패");
          return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
       }
    }
@@ -384,7 +384,7 @@ public class BoardController {
       // {bno=4, cno=3, cate=2, ccontent=댓글3수정}
 
       int result = boardService.commentEdit(map);
-      System.out.println(result);
+      //System.out.println(result);
 
       if (result == 1) {
          return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
@@ -408,101 +408,5 @@ public class BoardController {
       return "commentDetail";
    }
 
-   /***************** 테스트용 *****************/
-   /*
-    * // 글쓰기 페이지
-    * 
-    * @GetMapping("/boardWriteForTest") public String
-    * boardWriteForTest(@RequestParam(value = "cate", required = false,
-    * defaultValue = "1") int cate, Model model) {
-    * 
-    * if (!util.checkLogin()) { return "redirect/login"; }
-    * 
-    * List<Map<String, Object>> setupboardList = boardService.setupboardList(cate);
-    * model.addAttribute("board", setupboardList);
-    * 
-    * return "boardWriteForTest"; }
-    */
-
-   // 글쓰기 로직
-   @PostMapping("/boardWriteForTest")
-   public String boardWriteForTest(
-         @RequestParam(value = "boardimg", required = false) List<MultipartFile> boardimgList,
-         @RequestParam Map<String, Object> map) {
-
-      int imgResultCount = 0;
-      System.out.println(map);
-      int writeResult = boardService.boardWrite(map);
-      System.out.println("null일텐데? : " + boardimgList);
-      // {btitle=나눔에 글을 쓰려는데, bcontent=이게 , cate=2, sname=나눔}
-      // System.out.println(boardimgList);
-      // [org.springframework.web.multipart.support.StandardMultipartHttpServletRequest$StandardMultipartFile@72ec8d18]
-      if (writeResult == 1) {
-         System.out.println("bno :" + map.get("bno"));
-         // 파일이 있다면 업로드
-         if (boardimgList != null && !boardimgList.isEmpty()) {
-
-            for (int i = 0; i < boardimgList.size(); i++) {
-
-               HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
-                     .currentRequestAttributes()).getRequest();
-               String path = request.getServletContext().getRealPath("/boardImgUpload");
-               // System.out.println("경로: "+ path); //경로:
-               // C:\Users\gogus\git\sellas\src\main\webapp\boardImgUpload
-
-               // System.out.println(boardimgList.get(i).getOriginalFilename());
-               // //resource-28.jpg
-               // System.out.println(boardimgList.get(i).getSize()); //81618
-               // System.out.println(boardimgList.get(i).getContentType()); // image/jpeg
-
-               LocalDateTime ldt = LocalDateTime.now();
-               String format = ldt.format(DateTimeFormatter.ofPattern("YYYYMMddHHmmss"));
-               String realFileName = format + "num" + i + boardimgList.get(i).getOriginalFilename();
-
-               // 확장자 자르기
-               String[] parts = boardimgList.get(i).getOriginalFilename().split("\\.");
-               String lastPart = parts[parts.length - 1];
-               System.out.println(lastPart);
-
-               // 확장자 아니면 파일 없애보리기
-               if (!(lastPart.equals("jpg") || lastPart.equals("png") || lastPart.equals("jpeg")
-                     || lastPart.equals("bmp") || lastPart.equals("gif") || lastPart.equals("jpe"))) {
-                  continue;
-               }
-
-               File boardimgName = new File(path, realFileName);
-               System.out.println(boardimgName);
-
-               try {
-                  FileCopyUtils.copy(boardimgList.get(i).getBytes(), boardimgName);
-               } catch (IllegalStateException e) {
-                  e.printStackTrace();
-               } catch (IOException e) {
-                  e.printStackTrace();
-               }
-
-               map.put("bimage", realFileName);
-               System.out.println("map " + (i + 1) + "번째 : " + map);
-               int imgResult = boardService.boardImage(map);
-               System.out.println("imgResult " + (i + 1) + " 번째 : " + imgResult);
-
-               if (imgResult == 1 && i == 0) {
-                  System.out.println("이걸넣을건데 :" + map.get("bimage"));
-                  int result = boardService.setThumbnail(map);
-                  System.out.println("제발요: " + result);
-               }
-
-               imgResultCount += imgResult;
-
-            } // for문
-            System.out.println("업로드완" + imgResultCount);
-         } // if(!boardimg.isEmpty()
-
-         return "redirect:/boardDetail?cate=" + map.get("cate") + "&bno=" + map.get("bno");
-
-      } // if(writeResult == 1)
-      System.out.println("글쓰기&파일업로드 실패");
-      return "redirect:/boardDetail?cate=" + map.get("cate");
-   }
-
+  
 }

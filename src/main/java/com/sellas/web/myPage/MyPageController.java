@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -113,6 +116,7 @@ public class MyPageController {
 			Map<String, Object> member = myPageService.memberInfo(uuid);
 			model.addAttribute("nickname", member.get("mnickname"));
 			model.addAttribute("mphoto", member.get("mphoto"));
+			model.addAttribute("mname", member.get("mname"));
 	      
 	      return "profileEdit";
 	   }
@@ -210,9 +214,14 @@ public class MyPageController {
 	//거래후기글쓰기
 	@GetMapping("review")
 	public String review(@RequestParam("tno") String tno, Model model, HttpSession session) {
+		
+		if(!util.checkLogin()) {
+			return "/login";
+		}
+		
 		// 구매자,판매자확인
 		ReviewDTO reviewMember = myPageService.findId(tno);
-		
+		 session.setAttribute("reviewMember", reviewMember);
 		// 구매정보불러와서 화면전환
 		// 후기쓰는 자가 판매자인 경우
 		if (reviewMember.getPseller() == session.getAttribute("muuid")) {
@@ -225,18 +234,50 @@ public class MyPageController {
 		return "review";
 
 	}
-
+	
+	
+	/**
+	 * 
+	 * @param reviewDTO
+	 * @param bindingResult
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	//후기작성등록
 	@PostMapping("review")
-	public String review(ReviewDTO reviewDTO, HttpSession session, Model model) {
+	public String review(@Valid ReviewDTO reviewDTO, BindingResult bindingResult, HttpSession session, Model model) {
+		Map<String, String> errorMsg = new HashMap<>();
+	    if(bindingResult.hasErrors()) {
+	        
+	         List<FieldError> errorlist = bindingResult.getFieldErrors();
+	        
+	        for(int i=0; i<errorlist.size(); i++) {
+	            String field = errorlist.get(i).getField();
+	            String message = errorlist.get(i).getDefaultMessage();
+	            
+	            
+	            //서버확인용으로 남겨두겠습니다.
+	            System.out.println("필드 = " + field);
+	            System.out.println("메세지 = " + message);
+	            
+	            errorMsg.put(field, message);
+	        }
+	        
+	        // 모델에 errorMsg를 추가
+	        model.addAttribute("errorMsg", errorMsg);
+	        return "review";
+	    }
 
+	    
 		int result = myPageService.inputReview(reviewDTO, session);
-		
 		if (result == 1) {
+			session.removeAttribute("reviewMember");
 			return "redirect:/mypage";
 			
 		} else {
 			String error = "오류가 발생했습니다.";
+			session.removeAttribute("reviewMember");
 	         model.addAttribute("error", error);
 			return "redirect:/mypage";
 		}
@@ -324,17 +365,14 @@ public class MyPageController {
 	public String getAuction(Model model, HttpSession session) {
 		
 		String uuid = String.valueOf(session.getAttribute("muuid"));
-		
 	
 		//판매내역
 		List<Map<String, Object>> aucSellList = myPageService.getAucSell(uuid);
 		model.addAttribute("aucSellList",aucSellList);
-		System.out.println("판매내역뭐있어"+aucSellList);
 		
 		//구매내역
 		List<Map<String, Object>> aucBuyList = myPageService.getAucBuy(uuid);
 		model.addAttribute("aucBuyList", aucBuyList);
-		System.out.println("구매내역뭐있어"+aucBuyList);
 		
 		return "auctionList";
 		
@@ -389,7 +427,7 @@ public class MyPageController {
 	 * @param tno
 	 * @param model
 	 * @param session
-	 * @return
+	 * @return json
 	 */
 	//찜하기 삭제하기
 	@ResponseBody
@@ -422,16 +460,13 @@ public class MyPageController {
 
 		String nickname = String.valueOf(session.getAttribute("mnickname"));
 		//내글보기
-/*		{bno=107, bread=103, mnickname=pyo, commentcount=6, bdate=2023-11-06, sno=2,
-				bimagecount=2, btitle=제목수정, bcontent=내용수정, mno=96*/
+
 		
 		List<Map<String, Object>> myPost = myPageService.getMyPost(nickname);
 		//내댓글보기
 		
-		System.out.println("mypost"+myPost);
 		List<Map<String, Object>> myComment = myPageService.getMyComment(nickname);
 		
-		System.out.println("myCOmment"+myComment);
 		model.addAttribute("myPost", myPost);
 		model.addAttribute("myComment",myComment);
 		

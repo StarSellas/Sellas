@@ -35,8 +35,18 @@ button {
 	font-weight: bolder;
 }
 
+.thumbnail {
+	border-radius: 7px 7px 0 0;
+}
+
 .itemCategory {
+	position: absolute;
+	width: 125px;
 	text-align: center;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.3);
+	bottom: 0;
+	left: 0;
 }
 
 .readNumber {
@@ -90,19 +100,28 @@ button {
 	text-align: right;
 }
 
-.timeDivider{
-	width:16px;
+.timeDivider {
+	width: 16px;
 	text-align: left;
 }
 
 .remainingTime {
-	margin-top: 8px;
 	display: flex;
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(173, 173, 173, 0.3);
+	border-radius: 0 0 7px 7px;
+}
+
+.ImageInfo {
+	position: relative;
+}
+
+.ImageInfo img {
+	object-fit: cover;
 }
 
 .ItemInfo {
 	margin: 0px 10px;
+	width: 125px;
 }
 
 .OverviewInfo {
@@ -114,6 +133,7 @@ button {
 .RegistrationInfo {
 	display: flex;
 	width: 260px;
+	height: 30px;
 	margin-bottom: 10px;
 }
 

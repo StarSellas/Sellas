@@ -45,71 +45,66 @@
 				<div class="location col">구매내역</div>
 			</div>
 			<div class="nav">
-
+			
+			<div class="index"></div>
+		
 			<c:forEach items="${buyList}" var="row">
+
+	<div class="commentList">
 	<c:choose>
-<c:when test="${fn:length(buyList) gt 0 && row.hastno eq null}">
-<div class="card mb-3" style="width: 330px;">
+	<c:when test="${row.hastno eq null && row.tnormalstate == 2}">
+	<div class="card" style="width: 330px;">
   <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
     <div class="col-4">
-        <c:choose>
+    <c:choose>
     <c:when test="${row.timage ne null}">
-      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="custom-rounded-start object-fit-cover" alt="물품이미지">
     </c:when>
     <c:otherwise>
-      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="custom-rounded-start object-fit-cover" alt="기본이미지" />
     </c:otherwise>
       </c:choose>
     </div>
     <div class="col-8">
       <div class="card-body">
-        <input type="hidden" value="${row.tno}">
+        <input type="hidden" class="tno" value="${row.tno}">
         <h5 class="card-title">${row.ttitle}</h5>
 		<p class="card-text">
-  <p class="card-text">
-        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
-    </p>
-    <p class="card-text">
+    <p class="card-text tdate">
         <small class="text-body-secondary">
-   ${row.displayDate}
+         ${row.displayDate}
         </small>
     </p>
-<%--     ${row.hastno}
-    ${row.writeYN} --%>
+  <p class="card-text tprice">
+        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
+    </p>
       </div>
     </div>
   </div>
 <!--   버튼 -->
 <c:choose>
-<c:when test="${row.tnormalstate == 2}">
-<c:choose>
+
     <c:when test="${row.rno == null}">
        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:when>
+
     <c:when test="${row.rno != null && row.writeYN == 'Y'}">
             <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기 보러가기</button>
     </c:when>
+
     <c:when test="${row.rno != null && row.writeYN != 'Y'}">
      <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
     </c:when>
-    <c:otherwise>
-        <button id="reviewBtn" class="submitbtn reviewBtn" type="button" onclick="location.href='./review?tno=${row.tno}'">후기 작성하기</button>
-    </c:otherwise>
     </c:choose>
-</c:when>
-<c:otherwise>
- <button id="reviewBtn" value="${row.tno}" class="submitbtn reviewBtn" type="button">글 숨기기</button>
-</c:otherwise>
-</c:choose>
 </div>
-<!--   버튼 -->
-	 </c:when>
 
-<c:when test="${fn:length(buyList) gt 0 && row.hastno eq 'Y' && row.writeYN eq 'Y'}">
-    <div class="card" style="width: 330px;">
+	</c:when>
+
+<c:when test="${row.hastno eq 'Y' && row.writeYN eq 'Y' &&  row.tnormalstate == 2}">
+  <div class="card" style="width: 330px;">
         <div class="row g-0" onclick="location.href='./normalDetail?tno=${row.tno}'">
             <div class="col-4">
-                <c:choose>
+             <c:choose>
     <c:when test="${row.timage ne null}">
       <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
     </c:when>
@@ -120,38 +115,62 @@
             </div>
             <div class="col-8">
                 <div class="card-body">
-                    <input type="hidden" value="${row.tno}">
+                    <input type="hidden" class="tno" value="${row.tno}">
                     <h5 class="card-title">${row.ttitle}</h5>
-                    <p class="card-text">
-                        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
-                    </p>
-                    <p class="card-text">
+                    <p class="card-text tdate">
                         <small class="text-body-secondary">
-                             ${row.displayDate}
+                            ${row.displayDate}
                         </small>
                     </p>
+                    <p class="card-text tprice">
+                        <fmt:formatNumber value="${row.tnormalprice}" pattern="#,###원"/>
+                    </p>
+        
                 </div>
             </div>
         </div>
         <!-- 버튼 -->
-        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기보러가기</button>
+        <button id="reviewDetailBtn" class="submitbtn reviewDetailBtn" type="button" onclick="location.href='./reviewDetail?rno=${row.rno}'">후기 보러가기</button>
     </div>
 </c:when>
-	 <c:when test="${fn:length(buyList) eq 0}">
-	 구매 내역이 없어요.
-	 </c:when>
-	</c:choose>
+  </c:choose>
+	</div>
 		</c:forEach>
-</div>
   </div>
+</div>
 
 	</section>
-
+	<!-- Footer-->
 	<!-- Bootstrap core JS-->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 <script>
+
+$(".normalDeleteBtn").click(function(){
+	
+	let tno = $(event.target).val();
+	let uuid = '${sessionScope.muuid}';
+	
+	if(confirm("정말 삭제하시겠습니까?")){
+		$.ajax({
+			url : "normalDelete",
+               type : "post",
+               data : {tno : tno , muuid: uuid},
+               dataType : "json",
+               success:function(data){
+            	   if(data.deleteSuccess == 1){
+            		   alert("삭제가 완료되었습니다.");
+            		   window.location.reload();
+            	   }
+               },
+               error:function(error){
+            	   alert("실패");
+               }
+		});
+	}
+});
+
 </script>
 </body>
 </html>

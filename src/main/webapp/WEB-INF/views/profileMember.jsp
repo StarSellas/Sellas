@@ -26,6 +26,9 @@
 <link rel="stylesheet"
 	href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <link rel="stylesheet" href="../css/profile.css">
+<link rel="stylesheet"
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
@@ -59,6 +62,10 @@
 			<div class="experience-section"
 				style="position: relative; margin-top: 100px;">
 				<span class="rabel">경험치</span>
+						<i class="fa-regular fa-circle-question" style="color: #88adff;"
+   data-bs-toggle="tooltip" data-bs-placement="right"
+   data-bs-custom-class="custom-tooltip"
+   title="상대방의 거래 후기로 얻을 수 있어요."></i>
 				<div class="progress" role="progressbar"
 					aria-label="Example with label"
 					aria-valuenow="${(exp) * 100}" aria-valuemin="0"
@@ -75,7 +82,7 @@
 			받은 거래 후기가 없어요
 			</c:if>
 			<c:forEach items="${profileReview}" var="review">
-			<div class="movedetail" onclick="location.href='./reviewDetailByMe?rno=${review.rno}'">
+			<div class="movedetail">
 							<div class="reviewimg">
 					<img src="../userImgUpload/${review.mphoto}" alt="user-img" class="user-img-img">
 				</div>
@@ -95,8 +102,10 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
-	<script src="js/scripts.js">
-		
-	</script>
+<script type="text/javascript">
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+</script>
 </body>
 </html>

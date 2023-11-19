@@ -38,7 +38,6 @@
             // ratePromise 라디오 버튼이 선택됐을 때
             $('#ratePromise input[type=radio]').on('change', function() {
         	ratePromiseValue = $(this).val(); // 선택한 값을 변수에 저장
-           alert(ratePromiseValue);
            // 모든 라벨의 색상을 기본색으로 변경
            $('#ratePromise label').css('color', 'transparent');
            // 선택된 라벨의 색상을 파란색으로 변경
@@ -59,7 +58,6 @@
             // rateResponse 라디오 버튼이 선택됐을 때
             $('#rateResponse input[type=radio]').on('change', function() {
                 rateResponseValue = $(this).val(); // 선택한 값을 변수에 저장
-                alert(rateResponseValue);
                 $('#rateResponse label').css('color', 'transparent');
                 $(this).next('label').css('color', 'blue');
                 
@@ -78,7 +76,6 @@
             // rateManner 라디오 버튼이 선택됐을 때
             $('#rateManner input[type=radio]').on('change', function() {
                 rateMannerValue = $(this).val(); // 선택한 값을 변수에 저장
-                alert(rateMannerValue);
                 $('#rateManner label').css('color', 'transparent');
                 $(this).next('label').css('color', 'blue');
            

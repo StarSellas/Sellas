@@ -7,6 +7,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/> 
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<title>Shop Homepage - Start Bootstrap Template</title>
@@ -22,9 +23,16 @@
 		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		<script src="./js/jquery-3.7.0.min.js"></script>
+		<script src="./js/wnInterface.js"></script> 
+		<script src="./js/mcore.min.js"></script> 
+		<script src="./js/mcore.extends.js"></script>
 	</head>
 	<body>
 
+
+	<div class="form-floating">
+		<a href="./login"><img src="./img/sellastext.png" class="sellasText" alt=""></a>
+	</div>
 
 	<form action="./signup" method="post">
 
@@ -34,6 +42,7 @@
 				<input class="form-control" type="text" id="email" name="email" placeholder="이메일 주소" maxlength="36" required="required">
 				<label for="email">이메일 주소</label>
 				<div id="emailMessage"><span style="visibility: hidden;">:</span></div>
+				<div id="guideMessage" style="visibility: hidden;"><a class="text" href="./findid">아이디 찾기</a></div>
 			</div>
 			<div class="form-floating" id="emailCodeDiv" style="visibility: hidden;">
 				<input class="form-control" type="text" id="emailCode" placeholder="인증번호" maxlength="16" required="required">
@@ -56,7 +65,7 @@
 				<div id="idMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
 			<div class="form-floating">	
-				<input class="form-control" type="password" id="pw" name="pw" placeholder="비밀번호" maxlength="15" required="required">
+				<input class="form-control" type="password" id="pw" name="password" placeholder="비밀번호" maxlength="15" required="required">
 				<label for="pw">비밀번호</label>
 				<div id="pwMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
@@ -65,6 +74,7 @@
 				<label for="pwcheck">비밀번호 확인</label>
 				<div id="pwcheckMessage"><span style="visibility: hidden;">:</span></div>
 			</div>
+			<input type="hidden" id="encryptPassword" name="pw" value="">
 		</div>
 		<div class="form-floating">
 			<button type="button" id="next2" onclick="showPage('page3')" disabled="disabled">다음</button>
@@ -96,9 +106,19 @@
 
 	</form>
 
+
 	<!-- Bootstrap core JS-->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="js/signup.js"></script>
 	</body>
+
+<script>
+
+M.onBack( function(e) {
+	window.history.back();
+});
+
+</script>
+
 </html>

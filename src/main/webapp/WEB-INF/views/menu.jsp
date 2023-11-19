@@ -27,21 +27,17 @@
 
         <!-- Section-->
         <section class="py-5">
-        
-            <div class="container px-4 px-lg-5 mt-5" style="z-index: 10" id="productContainer">
-                <div class="justify-content-center">
+            <div class="container mt-5" style="z-index: 10" id="productContainer">
+                <div class="menuBox justify-content-center">     
+				
+				<div class="auctionBox">
+					<ul class="auction">
+						<li><a href="/auction">경매</a></li>
+					</ul>
+				</div>
 
-					<div class="boardMenuBox">
-						<div><a href="/board">게시판</a></div>	
-						 <ul class="boardMenu">
-		                      <li><a href="/board?cate=1">공지사항</a></li>
-		                      <li><a href="/board?cate=2">판매요청</a></li>
-		                      <li><a href="/board?cate=3">나눔</a></li>
-		                 </ul>
-	                 </div>
-	                 
 	                 <div class="itemcategoryBox">
-	                 <div><a href="/">카테고리</a></div>	
+	                 <div class="tradeMtitle">카테고리</div>	
 						 <ul class="itemcategory">
 		                      <li><a href="/sortcate?ino=1">디지털기기 / 가전</a></li>
 		                      <li><a href="/sortcate?ino=2">가구 / 인테리어</a></li>
@@ -54,12 +50,20 @@
 		                 </ul>
 	                 </div>
 	                 
+	                 <div class="boardMenuBox">
+						<div class="boardMtitle">커뮤니티</div>	
+						 <ul class="boardMenu">
+		                      <li><a href="/board">전체보기</a></li>
+		                      <li><a href="/board?cate=1">공지사항</a></li>
+		                      <li><a href="/board?cate=2">판매요청</a></li>
+		                      <li><a href="/board?cate=3">나눔</a></li>
+		                 </ul>
+	                 </div>
+	              
+	              
+	              </div>   
 				</div>
-            </div>
-            
         </section>
        
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

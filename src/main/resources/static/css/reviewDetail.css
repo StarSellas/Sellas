@@ -14,7 +14,6 @@
     max-width: 100%; /* 최대 너비 100% */
     height: auto;
     object-fit: cover;
-  margin-bottom: 20px;
 }
 
 .card-body  {
@@ -44,7 +43,7 @@ h6 {
 }
 
 a {
-	color: inherit;
+	color: black !important;
 }
 
 

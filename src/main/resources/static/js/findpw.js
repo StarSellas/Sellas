@@ -91,6 +91,7 @@ function validateOnKeyUp(event) {
 	//alert(inputField + "/" + fieldId + " : " + inputValue);
 	
 	switch(fieldId){
+
 		case "pw":
 		
 			let uppercaseRegex = /[A-Z]/g;
@@ -131,7 +132,7 @@ function validateOnKeyUp(event) {
 					pwcheckInputChecked = true;
 					// pwcheck OK
 					clearMessage("pwcheckMessage");
-				}
+					}
 			}
 			
 			break;
@@ -165,7 +166,7 @@ function changePassword() {
 	$.ajax({
 		url : "/changePassword",
 		method : "post",
-		data : {email : emailAddress, id : id, pw : password},
+		data : {email : emailAddress, id : id, pw : encryptPassword(password)},
 		success : function(result){
 			if(result){
 				showPage("page4");
@@ -175,6 +176,12 @@ function changePassword() {
 			alert("ERROR : " + JSON.stringify(error));
 		}
 	});
+}
+
+/* 비밀번호 암호화 */
+function encryptPassword(pw) {
+	
+	return M.sec.encrypt(pw).result;
 }
 
 /* Message 출력 */

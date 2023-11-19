@@ -10,21 +10,21 @@
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<title>Shop Homepage - Start Bootstrap Template</title>
+		
 		<!-- Favicon-->
 		<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		
 		<!-- Bootstrap icons-->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+		
 		<!-- Core theme CSS (includes Bootstrap)-->
 		<link href="css/styles.css" rel="stylesheet" />
 		<link href="css/addTradeItem.css" rel="stylesheet" />
 
 		<!-- ******************* 추가 *********************** -->
-		<link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-		<script src="./js/jquery-3.7.0.min.js"></script>
-		<script src="./js/wnInterface.js"></script> 
-		<script src="./js/mcore.min.js"></script> 
-		<script src="./js/mcore.extends.js"></script> 
+		<link href="http://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css" rel="stylesheet" >
+		<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"  />
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
 		<style type="text/css">
 		.loading {
@@ -92,9 +92,9 @@ $(function() {
 
 	</head>
 	<body>
-	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 	<%@ include file="menubar.jsp" %>
-
+	
+	<form method="post" name="frm" id="frm" onsubmit="return false;" autocomplete="off"></form>
 
 	<form action="./addTradeItem" method="post" id="productContainer">
 
@@ -137,8 +137,10 @@ $(function() {
 						<button id="picker2" type="button"><img src="../img/image.png" width="38"></button>
 						<button id="camera" type="button"><img src="../img/camera.png" width="38"></button>
 					</div>
-					<!-- TODO : 미리보기 -->
-					<div id="box"></div>
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+						<div class="swiper-pagination"></div>
+					</div>
 					<div id="progress"></div>
 					<div id="upload-box"></div>
 				</div>
@@ -227,13 +229,29 @@ $(function() {
 	</form>
 
 	<!-- Core theme JS-->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="js/addTradeItem.js"></script>
 
 </body>
 
 <script type="text/javascript">
+
 // 모피어스 사진 촬영 및 앨범 사진 업로드
 // 작성자 : 이대원 ヽ(´▽`)/
+
+/* 이미지 */
+function pagination() {
+	const swiper = new Swiper('.swiper', {
+		pagination: {
+			el: '.swiper-pagination',
+		},
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+	});
+}
+
 
 $(function(){
 let cameraImagePath ='';
@@ -244,7 +262,7 @@ let $previewImgArray = [];
 let tradeType = 0;
 let count = 0;
 
-const $box = $('#box');
+const $box = $('.swiper-wrapper');
 const $uploadBox = $('#upload-box');
 const $progress = $('#progress');
 const $picker = $('#picker');
@@ -258,40 +276,45 @@ $("#camera").click(function(){
       return false;
    }
 
-   selectImagePath = [];
-   M.media.camera({
-      path: "/media",
-      mediaType: "PHOTO",
-      saveAlbum: true,
-      callback: function(status, result, option) {
-         if (status == 'SUCCESS') {
+	/* 업로드 이미지 미리보기 슬라이드 적용 */
+	selectImagePath = [];
+	M.media.camera({
+		path: "/media",
+		mediaType: "PHOTO",
+		saveAlbum: true,
+		callback: function(status, result, option) {
+			if (status == 'SUCCESS') {
               
-            var photo_path = result.fullpath;
-            $previewImgArray[count] = result.path;
-            selectImagePath[0] = result.path;
-            $.convertBase64ByPath2(selectImagePath)
-            .then(({ status, result }) => {
-            if (status === 'SUCCESS') {
-               $previewImg = $(document.createElement('img'))
-               $previewImg.attr('height', '200px')
-               $previewImg.attr('width', '200px');
-               $previewImg.attr('src', "data:image/png;base64," + result[0].data)
-           
-               $box.append($previewImg);
-               count++;
-               } else {
-                  return Promise.reject('BASE64 변환 실패')
-               }
-            })
-            .catch((err) => {
-               if (typeof err === 'string') alert(err)
-               console.error(err)
-            })
-               
-            //  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
-         }
-      }
-   });
+				var photo_path = result.fullpath;
+				$previewImgArray[count] = result.path;
+				selectImagePath[0] = result.path;
+				$.convertBase64ByPath2(selectImagePath)
+				.then(({ status, result }) => {
+					if (status === 'SUCCESS') {
+						$previewImg = $(document.createElement('img'));
+						$previewImg.attr('height', '275px');
+						$previewImg.attr('width', '275px');
+						$previewImg.attr('src', "data:image/png;base64," + result[0].data);
+						$previewImg.attr('class','rounded');
+						
+						$slide = $(document.createElement('div'));
+						$slide.attr('class', 'swiper-slide');
+						$slide.append($previewImg);
+						$box.append($slide);
+						pagination();
+						count++;
+					} else {
+						return Promise.reject('BASE64 변환 실패')
+					}
+				})
+				.catch((err) => {
+					if (typeof err === 'string') alert(err)
+					console.error(err)
+				})
+				//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
+			}
+		}
+	});
 }); 
 
 $picker2.on('click', () => {
@@ -328,19 +351,22 @@ $picker2.on('click', () => {
       if (status === 'SUCCESS') {
          for (let i = 0; i < result.length; i++) {
             if ($box.find('img').length >= 4) {
-               
                continue;
             }
             
-            
-            
-            let imageSrc = "data:image/png;base64," + result[i].data;
-            let $previewImg = $(document.createElement('img'));
-            $previewImg.attr('height', '200px');
-            $previewImg.attr('width', '200px');
-            $previewImg.attr('src', imageSrc);
-            $box.append($previewImg);
+            $previewImg = $(document.createElement('img'));
+			$previewImg.attr('height', '275px');
+			$previewImg.attr('width', '275px');
+			$previewImg.attr('src', "data:image/png;base64," + result[i].data);
+			$previewImg.attr('class','rounded');
+			
+			$slide = $(document.createElement('div'));
+			$slide.attr('class', 'swiper-slide');
+			$slide.append($previewImg);
+			$box.append($slide);
          }
+         //alert($('.swiper-wrapper').children().length);
+         pagination();
       } else {
          return Promise.reject('이미지 가져오기 실패');
       }
@@ -405,7 +431,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.52:8080/file/upload2',
+         url: 'http://172.30.1.67:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
@@ -430,22 +456,57 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    $("#addPhotoBtn").click(function(){
       $("#addPhoto").show();
    });
-              
-              
-              
+             
+
    $("#addTradeItemBtn").click(function(){
          let category = $("input[name='category']").val();
          let title = $("input[name='title']").val();
          let content = $("textarea[name='content']").val();
          let locationLat = $("input[name='locationLat']").val();
          let locationLng = $("input[name='locationLng']").val();
-
          let tradeType = $("input[name='tradeType']").val();
          let normalPrice = $("input[name='normalPrice']").val();
          let auctionStartPrice = $("input[name='auctionStartPrice']").val();
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
-
          
+         if(title.length < 5){
+        	 M.pop.instance("제목은 5글자 이상 작성해주세요.");
+        	 $("#title").focus();
+        	 return false;
+         }
+         if(content.length < 5){
+        	 M.pop.instance("내용은 5글자 이상 작성해주세요.");
+        	 $("#content").focus();
+        	 return false;
+         }
+         
+         if(tradeType == 0){
+        	 if(normalPrice == 0 || normalPrice == null || normalPrice == ''){
+        		 M.pop.instance("가격을 입력해주세요.");
+        		 return false;
+        	 }
+        	 if(normalPrice < 1000){
+        		 M.pop.instance("최소 등록가격은 1000웨일 페이 이상입니다.");
+        		 return false;
+        	 }
+         }
+        if(tradeType == 1){
+        	if(auctionStartPrice == 0 || auctionStartPrice == null || auctionStartPrice == ''){
+        		M.pop.instance("시작 가격을 입력해주세요.");
+        		return false;
+        	}if(auctionMinBidUnit == 0 || auctionMinBidUnit == null || auctionMinBidUnit == ''){
+        		M.pop.instance("최소 입찰단위를 입력해주세요.");
+        		return false;
+        	}
+        }
+         if(category == null || category == ''){
+        	 M.pop.instance("카테고리를 선택해주세요.");
+        	 return false;
+         }
+         if($previewImgArray.length == 0){
+        	 M.pop.instance("사진을 추가해주세요.");
+        		 return false;
+         }
       $.ajax({
          url : "./addTradeItem",
          type : "post",
@@ -520,7 +581,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
             }
          },
          error : function(error){
-            alert("흑학힉");
+            alert("오류가 발생했습니다.");
          }   
       });
    });

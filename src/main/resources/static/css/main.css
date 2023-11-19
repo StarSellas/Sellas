@@ -1,23 +1,50 @@
 @charset "UTF-8";
 
+
 .searchBox{
+	width: inherit;
 	display: flex;
 	align-items: flex-end;
+	justify-content: center;
+    align-items: center;
 	margin-bottom: 10px;
 }
 .searchFrom{
-	width: 80%;
+	width: 90%;
+	margin-top: 5px;
 	margin-bottom: 20px;
 	display: flex;
 	align-items: flex-end; 
-	border-bottom: 1px gray solid;
+	border: 1px #ededed solid;
+	border-radius: 30px; 
+	padding: 3px 8px;
+}
+#searchFromM{
+	width: 90%;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: flex-end; 
+	border: 1px #ededed solid;
+	border-radius: 30px; 
+	padding: 3px 8px;
+}
+#navbarSDropdown{
+	padding-left: 5px;
 }
 .searchCate{
 	margin: 0;
 	padding: 1px 2px;
 	height: inherit;
 }
+
 .swrite{
+	width: 220px;
+	height: 40px;
+	margin: 0;
+	padding: 1px 2px 0 8px;
+	border: none;
+}
+#swriteM{
 	width: 220px;
 	height: 40px;
 	margin: 0;
@@ -31,16 +58,28 @@
 	margin: 0;
 	flex:1;
 }
-.swriteButton{
+#searchCateBox{
+	flex-grow: 1;
+	max-width: 150px;
+}
+#swriteButton{
 	border: 0.5px solid white;
 	background-color: inherit;
 	margin: 0;
-	padding: 2px 2px 8px 2px;
+	padding: 2px 5px 8px 2px;
+	width: 35px;
+	height: 35px;
+}
+#swriteButtonM{
+	border: 0.5px solid white;
+	background-color: inherit;
+	margin: 0;
+	padding: 2px 2px 5px 2px;
 	width: 35px;
 	height: 35px;
 }
 #searchIcon{
-	width: 80%;
+	width: 23px;
 }
 
 #navbarDropdown{
@@ -53,7 +92,11 @@
 }
 
 .tradeState{
-	margin-bottom: 13px;
+	position: absolute;
+    bottom: 0; /* 부모 요소의 하단에 위치하도록 조정 */
+    left: 50%; /* 가운데 정렬 */
+    transform: translateX(-50%); /* 가운데 정렬을 위한 조정 */
+	padding-bottom : 20px;
 	text-align: center;
 }
 
@@ -74,4 +117,62 @@
 }
 .state_done{
 	opacity: 50%;
+}
+
+/* =============경매스토리============== */
+.user-img {
+	width: 80px;
+	height: 80px;
+	overflow: hidden;
+	float: left;
+	
+	 border: 3px solid transparent;
+    border-radius: 50%;
+    background-image: linear-gradient(#fff, #fff), 
+    linear-gradient(to right, #6d7ffd 0%,  #0abefe 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+
+.container1{
+	padding-left: 10px
+}
+.headinfo{
+	margin-bottom: 3px;
+}
+
+
+.user-img-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.storyhead{
+	border-bottom: 1px #dcdcdc solid;
+	padding-top: 70px;
+	padding-bottom: 8px;
+}
+
+.plus{
+	float: right;
+    position: fixed;
+}
+	
+.swiper-slide{
+	margin: 0 !important;
+}
+
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
+
+.footerinfo{
+	margin-top: 15px;
+	color: gray;
+	font-weight: bold;
+	font-size: 12px;
+	float: right;
 }
