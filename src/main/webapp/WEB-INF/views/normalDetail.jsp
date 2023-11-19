@@ -135,7 +135,7 @@
                         <c:if test="${detail.tnormalstate eq 1}">거래중</c:if>
                         <c:if test="${detail.tnormalstate eq 2}">거래완료</c:if>
                               </div>
-             <div class="dcontent" style="white-space:pre-wrap;">
+             <div class="dcontent">
                ${detail.tcontent}
                </div>
                <div>
