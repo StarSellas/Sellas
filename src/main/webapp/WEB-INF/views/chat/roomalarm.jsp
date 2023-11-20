@@ -124,11 +124,11 @@
 	}
 
 	function scrollChatToBottom() {
-	    var realtimechat = document.querySelector('.msg_history');
+	    let realtimechat = document.querySelector('.msg_history');
 	    realtimechat.scrollTop = realtimechat.scrollHeight;
 
 	    // 새로운 메시지가 도착할 때마다 자동으로 스크롤
-	    var inputElement = document.getElementById('messages');
+	    let inputElement = document.getElementById('messages');
 	    inputElement.scrollIntoView(false);
 	}
 
@@ -462,6 +462,8 @@ $(function(){
 	  let $uploadImg = null;
 	  
 	  const $picker = $('#picker');
+	  const $push = $('#push');
+	  const $box = $('#box');
 	  
 	  $picker.on('click', () => {
 		   if ($box.find('img').length >= 4) {
@@ -512,7 +514,7 @@ $(function(){
 		            
 		         }
 		         //alert($('.swiper-wrapper').children().length);
-		         //pagination();
+		         pagination();
 		      } else {
 		         return Promise.reject('이미지 가져오기 실패');
 		      }
@@ -707,14 +709,21 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 						</div>
 						<div class="button-container">
     						<button id="picker">
-        						<img class="card-img-top" src="../img/camera.png" alt="sellas" />
+        						<img class="card-img-top" src="../img/album.png" alt="sellas" />
     						</button>
-    						<span class="buttontext">사진선택</span>
+    						<span class="buttontext">앨범	</span>
 						</div>
+						<div class="button-container">
+    				<button id="push">
+        				<img class="card-img-top" src="../img/camera.png" alt="sellas" />
+    				</button>
+				<span class="buttontext">카메라</span>
+				</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div id="box" style="display:none;"></div>
 </body>
 </html>

@@ -530,7 +530,7 @@ $(function(){
 			            
 			         }
 			         //alert($('.swiper-wrapper').children().length);
-			         //pagination();
+			         pagination();
 			      } else {
 			         return Promise.reject('이미지 가져오기 실패');
 			      }
@@ -711,13 +711,20 @@ $(function(){
 					</div>
 					<div class="button-container">
     						<button id="picker">
-        						<img class="card-img-top" src="../img/camera.png" alt="sellas" />
+        						<img class="card-img-top" src="../img/album.png" alt="sellas" />
     						</button>
-    						<span class="buttontext">사진선택</span>
+    						<span class="buttontext">앨범</span>
 						</div>
+						<div class="button-container">
+    				<button id="push">
+        				<img class="card-img-top" src="../img/.png" alt="sellas" />
+    				</button>
+				<span class="buttontext">카메라</span>
+				</div>
 				</div>
 			</c:if>
 	</div>
 </div>
+<div id="box" style="display:none;"></div>
 </body>
 </html>

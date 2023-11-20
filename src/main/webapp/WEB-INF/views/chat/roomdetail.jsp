@@ -21,7 +21,6 @@
 <script src="../js/mcore.extends.js"></script>
 <script>
 $(function(){
-		
 	document.getElementById('messages').addEventListener('keyup', function (e) {
 		    if (e.key === 'Enter') {
 		        e.preventDefault(); // 이 부분을 추가
@@ -55,7 +54,7 @@ $(function(){
 	                    
 	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
 		//console.log(frame); 정상적으로 들어옵니다.
-		scrollChatToBottom()
+		scrollChatToBottom();
 		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
 			var recv = JSON.parse(message.body);
 			//console.log("recv" + recv); 정상적으로 들어옵니다.
@@ -123,12 +122,12 @@ $(function(){
 	}
 
 	function scrollChatToBottom() {
-	    var realtimechat = document.querySelector('.msg_history');
+	    /* let realtimechat = document.querySelector('.msg_history');
 	    realtimechat.scrollTop = realtimechat.scrollHeight;
-
+		alert(realtimechat)
 	    // 새로운 메시지가 도착할 때마다 자동으로 스크롤
-	    var inputElement = document.getElementById('messages');
-	    inputElement.scrollIntoView(false);
+	    let inputElement = document.getElementById('messages');
+	    inputElement.scrollIntoView(false); */
 	}
 
 
@@ -268,8 +267,6 @@ $(function(){
 		        sent_msg.appendChild(timeElement);
 		        outgoing_msg.appendChild(sent_msg);
 		        messagesList[0].appendChild(outgoing_msg);
-
-	        	messagesList[0].appendChild(incoming_msg);
 	        
 	        } else if(recv.type === 'IMAGE'){
 	        	
@@ -311,7 +308,10 @@ $(function(){
 	            location.href='/';
 	        }
 		}
-		scrollChatToBottom();
+	    window.scrollTo(0, document.body.scrollHeight);
+	    window.scrollTo(0, 99999);
+	    document.getElementByClassName('inbox_msg').scrollTop = document.getElementById('messages').scrollHeight;
+
 	}
 
 	function startPing() {
@@ -656,11 +656,10 @@ $(function(){
 							image : result[i].data,
 							time : formattedDate
 						}));
-			            
+			          
 			            
 			         }
 			         //alert($('.swiper-wrapper').children().length);
-			         //pagination();
 			      } else {
 			         return Promise.reject('이미지 가져오기 실패');
 			      }
@@ -673,20 +672,64 @@ $(function(){
 			   });
 			});
 		   $("#push").click(function(){
-		      alert(BASE64Array[0]);
-		      $.ajax({
-		         url : "/chat/chatImage",
-		         type : "post",
-		         data : {BASE64Array : BASE64Array[0]},
-		         dataType : "json",
-		         success : function(data){
-		            alert("ㅎㅇ");
-		         },
-		         error : function(error){
-		            alert(error);
-		         }
-		         
-		      });
+				M.media.camera({
+					path: "/media",
+					mediaType: "PHOTO",
+					saveAlbum: true,
+					callback: function(status, result, option) {
+						if (status == 'SUCCESS') {
+			              
+							var photo_path = result.fullpath;
+							$previewImgArray[count] = result.path;
+							
+							$.convertBase64ByPath2($previewImgArray)
+							.then(({ status, result }) => {
+								if (status === 'SUCCESS') {
+									BASE64Array[0] = result[0].data;
+									
+									//alert(BASE64Array[0]);
+									 ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+											type : 'IMAGE',
+											roomId : roomId,
+											sender : sender,
+											mnickname : mnickname,
+											image : result[0].data,
+											time : formattedDate
+										}));
+								      $.ajax({
+								         url : "/chat/chatImage",
+								         type : "post",
+								         data : {BASE64Array : BASE64Array[0]},
+								         dataType : "json",
+								         success : function(data){
+								            //alert("ㅎㅇ");
+								           
+								         },
+								         error : function(error){
+								            alert(error);
+								         }
+								         
+								      });
+								      
+								      
+									count++;
+								} else {
+									return Promise.reject('BASE64 변환 실패')
+								}
+							})
+							.catch((err) => {
+								if (typeof err === 'string') alert(err)
+								console.error(err)
+							})
+							//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
+						}
+					}
+				});
+			   
+			   
+			   
+			   
+		      
 		   });
 		  
 		   $.imagePicker2 = function () {
@@ -707,7 +750,7 @@ $(function(){
 		  $.uploadImageByPath2 = function ($previewImgArray, progress) {
 			   return new Promise((resolve) => {
 			      const _options = {
-			         url: 'http://172.30.1.73:8080/chat/chatImage',
+			         url: 'http://172.30.1.97:8080/chat/chatImage',
 			         header: {},
 			         params: {},
 			         body: $previewImgArray.map((filePath) => ({
@@ -773,7 +816,7 @@ $(function(){
 					</i>
 				</a>
 			</div>
-			<div>
+			<div class="thingname">
 				<h4>
 					${tnoname }
 				</h4>
@@ -781,101 +824,110 @@ $(function(){
 		</div>
 	</div>
 </div>
-	<div class="inbox_msg">
-		<div class="msg_history">
-			<c:if test="${lastroomcheck == 1 }">
-				<c:forEach items="${lastchatlist }" var="lastchat">
-					<c:if test="${lastchat.chatnick != sessionScope.mnickname }">
-						<div class="incoming_msg">
-							<div class="incoming_msg_img">
-								<c:choose>
-									<c:when test="${lastchat.mphotocheck eq 1 }">
-										<img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
-									</c:when>
-									<c:otherwise>
-	            						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
-	         						</c:otherwise>
-	          					</c:choose>
-	          				</div>
+<div class="inbox_msg">
+	<div class="msg_history">
+		<c:if test="${lastroomcheck == 1 }">
+			<c:forEach items="${lastchatlist }" var="lastchat">
+				<c:if test="${lastchat.chatnick != sessionScope.mnickname }">
+					<div class="incoming_msg">
+						<div class="incoming_msg_img">
+							<c:choose>
+								<c:when test="${lastchat.mphotocheck eq 1 }">
+									<img class="card-img-top" src="../userImgUpload/${lastchat.mphoto }" alt="sellas" />
+								</c:when>
+								<c:otherwise>
+	           						<img class="card-img-top" src="../tradeImgUpload/defaultimg.jpg" alt="sellas" />
+	       						</c:otherwise>
+	       					</c:choose>
+        				</div>
               			<div class="received_msg">
                 			<div class="received_withd_msg">
                   				<p>${lastchat.dcontent }</p>
-                  				<span class="time_date">${lastchat.ddate }</span></div>
-              				</div>
-            			</div>
-            		</c:if>
-            		<c:if test="${lastchat.chatnick == sessionScope.mnickname }">
-            			<div class="outgoing_msg">
-              				<div class="sent_msg">
-                				<p>${lastchat.dcontent }</p>
-                				<span class="time_date">${lastchat.ddate }</span></div>
-            				</div>
-            			</c:if>
-            		</c:forEach>
+                  				<span class="time_date">${lastchat.ddate }</span>
+                  			</div>
+              			</div>
+            		</div>
             	</c:if>
-          	</div>
-			<div class="type_msg">
-            	<div class="input_msg_write">
-            		<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
-              		<input type="text" class="write_msg" id="messages" />
-            	</div>
-            	<div>
-              		<div class="otherBtnBox hide">
-              			<c:if test="${tnormalstate ==0 }">
-              				<div class="trade-buttons">
-                				<div class="button-container">
-    								<button id="tradeamount">
-        								<img class="card-img-top" src="../tradeImgUpload/chatcoin.png" alt="sellas" />
-    								</button>
-    								<span class="buttontext">금액제시</span>
-								</div>
-								<div class="button-container">
-                      				<button id="tradeRequest">
-										<img class="card-img-top" src="../tradeImgUpload/chatcoingo.png" alt="sellas" />
-									</button>
-									<span class="buttontext">제시하기</span>
-								</div>
-                      		</div>
-                		</c:if>
-                		<c:if test="${tnormalstate == 1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
-                			<div class="tradeAcceptOrCancel2">
-                				<div class="button-container">
-                					<button id="tradeAccept">
-                						<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
-                					</button>
-                					<span class="buttontext">수령완료</span>
-                				</div>
-                				<div class="button-container">
-                      				<button id="tradeCancel">
-                      					<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
-                      				</button>
-                      				<span class="buttontext">거래취소</span>
-                      			</div>
-                      		</div>
-                		</c:if>
-                		<div class="tradeAcceptOrCancel">
-							<div class="button-container">
-                				<button id="tradeAccept">
-                					<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
-                				</button>
-                				<span class="buttontext">수령완료</span>
-                			</div>
-                			<div class="button-container">
-                      			<button id="tradeCancel">
-                      				<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
-                      			</button>
-                      			<span class="buttontext">거래취소</span>
-                      		</div>
+            	<c:if test="${lastchat.chatnick == sessionScope.mnickname }">
+            		<div class="outgoing_msg">
+           				<div class="sent_msg">
+               				<p>${lastchat.dcontent }</p>
+               				<span class="time_date">${lastchat.ddate }</span>
+               			</div>
+           			</div>
+            	</c:if>
+       		</c:forEach>
+       	</c:if>
+	</div>
+</div>
+<div class="type_msg">
+	<div class="input_msg_write">
+		<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
+			<input type="text" class="write_msg" id="messages" />
+		</div>
+		<div>
+			<div class="otherBtnBox hide">
+				<c:if test="${tnormalstate ==0 }">
+					<div class="trade-buttons">
+						<div class="button-container">
+							<button id="tradeamount">
+								<img class="card-img-top" src="../tradeImgUpload/chatcoin.png" alt="sellas" />
+							</button>
+							<span class="buttontext">금액제시</span>
 						</div>
 						<div class="button-container">
-    						<button id="picker">
-        						<img class="card-img-top" src="../img/camera.png" alt="sellas" />
-    						</button>
-    						<span class="buttontext">사진선택</span>
+							<button id="tradeRequest">
+								<img class="card-img-top" src="../tradeImgUpload/chatcoingo.png" alt="sellas" />
+							</button>
+							<span class="buttontext">제시하기</span>
 						</div>
-                	</div>
-           		</div>
-    		</div>
-		</div> 
+					</div>
+				</c:if>
+				<c:if test="${tnormalstate == 1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
+					<div class="tradeAcceptOrCancel2">
+						<div class="button-container">
+ 							<button id="tradeAccept">
+								<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+							</button>
+							<span class="buttontext">수령완료</span>
+						</div>
+						<div class="button-container">
+							<button id="tradeCancel">
+								<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+							</button>
+							<span class="buttontext">거래취소</span>
+						</div>
+                      </div>
+                	</c:if>
+                	<div class="tradeAcceptOrCancel">
+						<div class="button-container">
+                			<button id="tradeAccept">
+                				<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+                			</button>
+                			<span class="buttontext">수령완료</span>
+                		</div>
+                		<div class="button-container">
+                   			<button id="tradeCancel">
+                   				<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+                   			</button>
+               			<span class="buttontext">거래취소</span>
+               		</div>
+               	</div>
+				<div class="button-container">
+    				<button id="picker">
+        				<img class="card-img-top" src="../img/album.png" alt="sellas" />
+    				</button>
+				<span class="buttontext">앨범</span>
+				</div>
+				<div class="button-container">
+    				<button id="push">
+        				<img class="card-img-top" src="../img/camera.png" alt="sellas" />
+    				</button>
+				<span class="buttontext">카메라</span>
+				</div>
+				<div id="box" style="display:none;"></div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
