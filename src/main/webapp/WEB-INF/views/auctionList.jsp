@@ -90,10 +90,10 @@
         <c:when test="${row.tauctionstate eq 0}">
             <span style="color: #88abff;">낙찰</span>
         </c:when>
-        <c:when test="${row.tauctionstate eq 2}">
+        <c:when test="${row.tauctionstate eq 1}">
             <span style="color: gray;">유찰</span>
         </c:when>
-        <c:when test="${row.tauctionstate eq 3}">
+        <c:when test="${row.tauctionstate eq 2}">
             <span style="color: green;">진행중</span>
         </c:when>
     </c:choose>
@@ -130,7 +130,7 @@
           <span style="color: tomato;">미낙찰</span>
          </c:if>
          <c:if test="${row.astate eq 2}">
-          <span style="color: #green;">최고가입찰</span>
+          <span style="color: green;">최고가입찰</span>
          </c:if>
             </div>
          </div>

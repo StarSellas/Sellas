@@ -355,7 +355,7 @@
           $.uploadImageByPath2 = function ($previewImgArray, bno,cate, progress) {
                return new Promise((resolve) => {
                  const _options = {
-                   url: 'http://172.30.1.4:8080/fileUpload',
+                   url: 'http://172.30.1.40:8080/fileUpload',
                    header: {},
                    params: { bno: bno, cate: cate },
                    body: $previewImgArray.map((filePath) => ({

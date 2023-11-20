@@ -92,7 +92,8 @@ FROM trade t
 LEFT JOIN tradeimage ti ON t.tno = ti.tno
 LEFT JOIN payment p ON t.tno = p.tno
 LEFT JOIN review r ON r.pno = p.pno
-WHERE t.muuid=#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL) AND tnormalstate != 3;
+WHERE t.muuid=#{uuid} AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL) AND tnormalstate != 3
+ORDER BY t.tno DESC;
 </select>
 
 
@@ -105,6 +106,7 @@ LEFT JOIN review r ON r.pno = p.pno
 JOIN trade t ON p.tno = t.tno
 LEFT JOIN tradeimage ti ON t.tno = ti.tno
 WHERE pbuyer =#{uuid} AND pstate = 0 AND (ti.tthumbnail = 0 OR ti.tthumbnail IS NULL)
+ORDER BY t.tdate DESC;
 </select>
 
 

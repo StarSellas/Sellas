@@ -493,8 +493,6 @@ public class ChatRoomController {
 	@ResponseBody
 	public String alarmcount(@RequestParam String oseller) {
 		int roomcount = chatRoomService.alarmcount(oseller);
-		List<Map<String, Object>> ouuid = chatRoomService.getAllOuuid(oseller);
-		int chatcount = chatRoomService.chatCompareCount(ouuid);
 		JSONObject json = new JSONObject();
 		json.put("count",roomcount);
 		return json.toString();

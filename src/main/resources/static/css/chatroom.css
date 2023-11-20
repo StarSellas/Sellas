@@ -4,6 +4,8 @@
 }
 img {
   	max-width: 100%;
+  	border-radius: 3px;
+
 }
 .inbox_people {
     position: fixed;
@@ -51,14 +53,15 @@ img {
     box-sizing: border-box;
 }
 
+
 .msg_history {
+
 	margin-top:60px;
   	padding: 30px 15px 0 25px;
   	background-color: #acc0d0;
   	overflow-y: auto;
   	height: 940px;
   	margin-bottom:10px;
-  	
 }
 .incoming_msg_img {
   	display: inline-block;
@@ -164,6 +167,22 @@ img {
 	margin-top: 5px;
 	text-align: center;
     font-size: 10px;
+}
+
+#tradeamount{
+	background-color:#8FBC8F;
+}
+#tradeRequest{
+	background-color:#ADD8E6;
+}
+#tradeAccept{
+	background-color:#D8BFD8;
+}
+#tradeCancel{
+	background-color:#E6E6FA  ;
+}
+#picker{
+	background-color:#FFB6C1;
 }
 .tradeResponse button {
 	background:rgb(254,254,254) !important; 

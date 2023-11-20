@@ -246,8 +246,8 @@
                   if (status === 'SUCCESS') {
                      //alert("뜨나?22")
                 	  $previewImg = $(document.createElement('img'));
-						$previewImg.attr('height', '275px');
-						$previewImg.attr('width', '250px');
+						$previewImg.attr('height', '200px');
+						$previewImg.attr('width', '200px');
 						$previewImg.attr('src', "data:image/png;base64," + result[0].data);
 						$previewImg.attr('class','rounded');
 						
@@ -316,7 +316,7 @@
 
                      
                      $previewImg = $(document.createElement('img'));
-         			$previewImg.attr('height', '275px');
+         			$previewImg.attr('height', '200px');
          			$previewImg.attr('width', '200px');
          			$previewImg.attr('src', "data:image/png;base64," + result[i].data);
          			$previewImg.attr('class','rounded');
@@ -616,7 +616,7 @@
                                     
                         }
                      }
-                     M.pop.instance("작성이 완료되었습니다.");
+                     M.pop.instance("수정이 완료되었습니다.");
                      var form = document.createElement("form");
                      form.method = "GET";
                      form.action = "./normalDetail"; // 컨트롤러 경로 설정

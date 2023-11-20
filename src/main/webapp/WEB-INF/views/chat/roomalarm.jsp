@@ -55,8 +55,10 @@
 			} else {
 				return false;
 			}if(recv.type == 'PAYMENT'){
+				$(function(){
         		requestMoney = recv.requestMoney;
         		$(".tradeResponse").show();
+				}); 
         	}if(recv.type=='TRADECANCEL'){
         		alert("거래가 취소되었습니다. 메인으로 돌아갑니다.");
         		location.href='../';
@@ -237,7 +239,6 @@
 	};
 	
 	$(function() {
-    	$(".tradeResponse").hide();
     //숨겨야징
     $(".tradeResponse").hide();
     $(".tradeAcceptOrCancel").hide();
@@ -510,36 +511,80 @@ $(function(){
 						image : result[i].data,
 						time : formattedDate
 					}));
-		            
+		          
 		            
 		         }
 		         //alert($('.swiper-wrapper').children().length);
-		         pagination();
 		      } else {
 		         return Promise.reject('이미지 가져오기 실패');
 		      }
 		   })
 		   .catch((err) => {
-			   M.pop.instance(err);
+		      alert(err);
 		      if (typeof err === 'string') alert(err);
 		      
 		         console.error(err);
 		   });
 		});
 	   $("#push").click(function(){
-	      alert(BASE64Array[0]);
-	      $.ajax({
-	         url : "/chat/chatImage",
-	         type : "post",
-	         data : {BASE64Array : BASE64Array[0]},
-	         dataType : "json",
-	         success : function(data){
-	         },
-	         error : function(error){
-	            alert(error);
-	         }
-	         
-	      });
+			M.media.camera({
+				path: "/media",
+				mediaType: "PHOTO",
+				saveAlbum: true,
+				callback: function(status, result, option) {
+					if (status == 'SUCCESS') {
+		              
+						var photo_path = result.fullpath;
+						$previewImgArray[count] = result.path;
+						
+						$.convertBase64ByPath2($previewImgArray)
+						.then(({ status, result }) => {
+							if (status === 'SUCCESS') {
+								BASE64Array[0] = result[0].data;
+								
+								//alert(BASE64Array[0]);
+								 ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+										type : 'IMAGE',
+										roomId : roomId,
+										sender : sender,
+										mnickname : mnickname,
+										image : result[0].data,
+										time : formattedDate
+									}));
+							      $.ajax({
+							         url : "/chat/chatImage",
+							         type : "post",
+							         data : {BASE64Array : BASE64Array[0]},
+							         dataType : "json",
+							         success : function(data){
+							            //alert("ㅎㅇ");
+							           
+							         },
+							         error : function(error){
+							            alert(error);
+							         }
+							         
+							      });
+							      
+							      
+								count++;
+							} else {
+								return Promise.reject('BASE64 변환 실패')
+							}
+						})
+						.catch((err) => {
+							if (typeof err === 'string') alert(err)
+							console.error(err)
+						})
+						//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
+					}
+				}
+			});
+		   
+		   
+		   
+		   
+	      
 	   });
 	  
 	   $.imagePicker2 = function () {
@@ -560,7 +605,7 @@ $(function(){
 	  $.uploadImageByPath2 = function ($previewImgArray, progress) {
 		   return new Promise((resolve) => {
 		      const _options = {
-		         url: 'http://172.30.1.73:8080/chat/chatImage',
+		         url: 'http://172.30.1.97:8080/chat/chatImage',
 		         header: {},
 		         params: {},
 		         body: $previewImgArray.map((filePath) => ({
@@ -667,13 +712,13 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
               		<div class="tradeResponse">
               			<div class="button-container">
             				<button class="tradeok" type="button">
-            					<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+            					<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
             				</button>
             				<span class="buttontext">거래수락</span>
             			</div>
             			<div class="button-container">
 							<button class="tradeno" type="button">
-							<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+							<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
 							</button>
 							<span class="buttontext">거래취소</span>
 						</div>
@@ -682,13 +727,13 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 						<div>
 							<div class="button-container">
 								<button class="tradeAccept" type="button">
-									<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+									<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
 								</button>
 								<span class="buttontext">수령완료</span>
 							</div>
 							<div class="button-container">
 								<button class="tradeCancel" type="button">
-									<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+									<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
 								</button>
 								<span class="buttontext">거래취소</span>
 							</div>
@@ -697,13 +742,13 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 					<div class="tradeAcceptOrCancel">
 						<div class="button-container">
 							<button class="tradeAccept" type="button">
-								<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+								<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
 							</button>
 							<span class="buttontext">수령완료</span>
 						</div>
 						<div class="button-container">
 							<button class="tradeCancel" type="button">
-								<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+								<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
 							</button>
 							<span class="buttontext">거래취소</span>
 						</div>

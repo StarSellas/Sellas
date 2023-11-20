@@ -308,9 +308,6 @@ $(function(){
 	            location.href='/';
 	        }
 		}
-	    window.scrollTo(0, document.body.scrollHeight);
-	    window.scrollTo(0, 99999);
-	    document.getElementByClassName('inbox_msg').scrollTop = document.getElementById('messages').scrollHeight;
 
 	}
 

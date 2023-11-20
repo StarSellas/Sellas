@@ -21,8 +21,8 @@
 </insert>
 
 <insert id="addAuctionTradeItem" parameterType="Map">
-	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tlocationlat, tlocationlng, tauctionstartprice, tauctionminbidunit, tauctionstate)
-	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{locationLat}, #{locationLng}, #{auctionStartPrice}, #{auctionMinBidUnit}, 2)
+	INSERT INTO trade (ino, muuid, ttype, ttitle, tcontent, tlocationlat, tlocationlng, tauctionstartprice, tauctionminbidunit, tauctiondeposit, tauctionstate)
+	VALUES (#{category}, #{muuid}, #{tradeType}, #{title}, #{content}, #{locationLat}, #{locationLng}, #{auctionStartPrice}, #{auctionMinBidUnit}, #{auctionDeposit}, 2)
 	<selectKey keyProperty="tno" order="AFTER" resultType="java.lang.Integer"> SELECT LAST_INSERT_ID() AS tno </selectKey>
 </insert>
 
