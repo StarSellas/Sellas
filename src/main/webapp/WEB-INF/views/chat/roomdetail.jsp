@@ -868,13 +868,13 @@ $(function(){
 					<div class="trade-buttons">
 						<div class="button-container">
 							<button id="tradeamount">
-								<img class="card-img-top" src="../tradeImgUpload/chatcoin.png" alt="sellas" />
+								<img class="card-img-top" src="../img/chatcoin.png" alt="sellas" />
 							</button>
 							<span class="buttontext">금액제시</span>
 						</div>
 						<div class="button-container">
 							<button id="tradeRequest">
-								<img class="card-img-top" src="../tradeImgUpload/chatcoingo.png" alt="sellas" />
+								<img class="card-img-top" src="../img/chatcoingo.png" alt="sellas" />
 							</button>
 							<span class="buttontext">제시하기</span>
 						</div>
@@ -884,13 +884,13 @@ $(function(){
 					<div class="tradeAcceptOrCancel2">
 						<div class="button-container">
  							<button id="tradeAccept">
-								<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+								<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
 							</button>
 							<span class="buttontext">수령완료</span>
 						</div>
 						<div class="button-container">
 							<button id="tradeCancel">
-								<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+								<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
 							</button>
 							<span class="buttontext">거래취소</span>
 						</div>
@@ -899,13 +899,13 @@ $(function(){
                 	<div class="tradeAcceptOrCancel">
 						<div class="button-container">
                 			<button id="tradeAccept">
-                				<img class="card-img-top" src="../tradeImgUpload/tradeok.png" alt="sellas" />
+                				<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
                 			</button>
                 			<span class="buttontext">수령완료</span>
                 		</div>
                 		<div class="button-container">
                    			<button id="tradeCancel">
-                   				<img class="card-img-top" src="../tradeImgUpload/tradeno.png" alt="sellas" />
+                   				<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
                    			</button>
                			<span class="buttontext">거래취소</span>
                		</div>
