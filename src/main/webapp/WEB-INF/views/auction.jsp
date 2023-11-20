@@ -32,10 +32,11 @@
 
 		<div class="container mt-3">
 		<div class="d-flex justify-content-between align-items-center">
-
-		<input type="text" id="keyword" value="">
-		<button id="search">검색</button>
-
+			<div id="searchDiv">
+				<input type="text" id="keyword" value="">
+				<button id="search"><img src="../img/search.png" width="27px"></button>
+			</div>
+				<button id="openCategoryFilter"><img src="../img/filter.png" width="40px" height="40px"></button>
 		</div>
 		</div>
 
@@ -45,11 +46,13 @@
 		<div class="categoryList">
 			<span>카테고리</span>
 			<span class="closeCategoryFilter" id="closeCategoryFilter">&times;</span>
-			<c:forEach var="itemCategory" items="${itemCategory}">
-				<div>
-					<button class="categoryButton activated" id="categoryButton${itemCategory.key }" onclick="applyCategoryFilter(${itemCategory.key })">${itemCategory.value }</button>
-				</div>
-			</c:forEach>
+			<div>
+				<c:forEach var="itemCategory" items="${itemCategory}">
+					<div>
+						<button class="categoryButton activated" id="categoryButton${itemCategory.key }" onclick="applyCategoryFilter(${itemCategory.key })">${itemCategory.value }</button>
+					</div>
+				</c:forEach>
+			</div>
 		</div>
 		</div>
 
@@ -72,8 +75,6 @@
 			</li>
 		</ul>
 
-		<button id="openCategoryFilter">카테고리</button>
-
 		</div>
 		</div>
 
@@ -85,5 +86,7 @@
 
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script src="js/auction.js"></script>
+
 	</body>
+
 </html>

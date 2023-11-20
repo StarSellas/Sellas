@@ -105,7 +105,7 @@
 
                     // 선택된 라디오 버튼이 없거나 2개 이상이면
                     if (checkBtn.length !== 1) {
-                        alert("평가하지 않은 문항이 있어요.");
+                        M.pop.instance("평가하지 않은 문항이 있어요.");
                         isValid = false; // 유효성 검사 실패
                         return false; // 각각의 질문에서 나가기
                     }
@@ -180,6 +180,7 @@
 
 						<div class="writeReview">따듯한 후기를 남겨주세요.(선택사항)</div>
 						<textarea style="height:140px;" class="col-auto form-control"  name="rcontent" id="reviewContents" placeholder="후기는 상대방 프로필에 보입니다."></textarea>
+					<span class="msg_box">${errorMsg.rcontent}</span>
 					</div>
 					<button type="button" class="reviewSubmit">후기보내기</button>
 				</form>

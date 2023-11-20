@@ -91,6 +91,11 @@ public interface NormalDAO {
 	int normalHikeUp(Map<String, Object> map);
 
 	int SelectLastTno();
+	
+	//TODO 경매스토리
+	List<Map<String, Object>> findAuctionStoryById(String muuid);
+
+	int normalLastTno();
 
 	
 

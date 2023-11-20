@@ -106,10 +106,10 @@
             <div class="col-4">
              <c:choose>
     <c:when test="${row.timage ne null}">
-      <img src="./tradeImgUpload/${row.timage}" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="물품이미지">
+      <img src="./tradeImgUpload/${row.timage}" id="timage" class="custom-rounded-start object-fit-cover" alt="물품이미지">
     </c:when>
     <c:otherwise>
-      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="img-fluid custom-rounded-start object-fit-cover" alt="기본이미지" />
+      <img src="./tradeImgUpload/defaultimg.jpg" id="timage" class="custom-rounded-start object-fit-cover" alt="기본이미지" />
     </c:otherwise>
       </c:choose>
             </div>
@@ -160,7 +160,7 @@ $(".normalDeleteBtn").click(function(){
                dataType : "json",
                success:function(data){
             	   if(data.deleteSuccess == 1){
-            		   alert("삭제가 완료되었습니다.");
+            		   M.pop.instance("삭제가 완료되었습니다.");
             		   window.location.reload();
             	   }
                },

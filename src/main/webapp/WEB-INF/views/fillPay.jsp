@@ -49,8 +49,10 @@
 					<input value="${mnickname }" name="mnickname" type="hidden">
 					<input value="${sessionScope.mno }" name="mno" type="hidden">
 					<div class="form-floating" id="fillPayDIV">
-						<label for="fillmonney">원</label> <input type="number"
-							class="form-control" id="fillmonney" name="money">
+					<div class="input-group">
+						<input type="number" class="form-control" id="fillmonney" name="money">
+						<span class="input-group-text">원</span>
+					</div>
 					</div>
 					<button type="submit" class="fill">충전하기</button>
 				</form>

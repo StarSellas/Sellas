@@ -12,6 +12,20 @@
  */
  
 /* ******************** css 수정 *************************/ 
+.productcontent{
+	margin-top: 15px;
+}
+
+.normalTtitle{
+	 display: block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.tradeRow{
+position: relative;	
+}
 
 button.navbar-toggler{
 	border: none;
@@ -4365,7 +4379,7 @@ textarea.form-control-lg {
 .card-img,
 .card-img-top,
 .card-img-bottom {
-height:132.63px;
+height:165px;
   width: 100%;
 }
 
@@ -7394,7 +7408,7 @@ height:132.63px;
 }
 
 .h-100 {
-  height: 350px !important;
+  height: 345px !important;
 }
 
 .h-auto {

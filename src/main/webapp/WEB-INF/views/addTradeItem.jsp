@@ -26,9 +26,6 @@
 		<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"  />
 		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a5bf13cc97cefa4fa07aebcc296ef6b7&libraries=services,clusterer,drawing"></script>
-		<script src="./js/wnInterface.js"></script> 
-		<script src="./js/mcore.min.js"></script> 
-		<script src="./js/mcore.extends.js"></script> 
 		<style type="text/css">
 		.loading {
 			background-color: white;
@@ -142,7 +139,7 @@ $(function() {
 					</div>
 					<div class="swiper">
 						<div class="swiper-wrapper"></div>
-						<div class="swiper-pagination"></div>
+						<div class="swiper-pagination" id="paginationDiv"></div>
 					</div>
 					<div id="progress"></div>
 					<div id="upload-box"></div>
@@ -165,18 +162,18 @@ $(function() {
 
 		<div id="normalTradeDiv">
 			<div class="form-floating">
-				<input class="form-control" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
+				<input class="form-control ceiledNumber" type="number" id="normalPrice" name="normalPrice" placeholder="가격">
 				<label for="normalPrice">가격</label>
 			</div>
 		</div>
 
 		<div id="auctionTradeDiv" style="display:none">
 			<div class="form-floating">
-				<input class="form-control" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
+				<input class="form-control ceiledNumber" type="number" id="auctionStartPrice" name="auctionStartPrice" placeholder="경매시작가격">
 				<label for="auctionStartPrice">경매시작가격</label>
 			</div>
 			<div class="form-floating">
-				<input class="form-control" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
+				<input class="form-control ceiledNumber" type="number" id="auctionMinBidUnit" name="auctionMinBidUnit" placeholder="최소입찰단위">
 				<label for="auctionMinBidUnit">최소입찰단위</label>
 			</div>
 		</div>
@@ -243,18 +240,26 @@ $(function() {
 // 작성자 : 이대원 ヽ(´▽`)/
 
 /* 이미지 */
+
+let swiper = null;
+
 function pagination() {
-	const swiper = new Swiper('.swiper', {
+	if (swiper) {
+		swiper.destroy();
+		swiper = null;
+		document.getElementById("paginationDiv").innerHTML = "";
+	} 
+	swiper = new Swiper(".swiper", {
 		pagination: {
-			el: '.swiper-pagination',
+			el: ".swiper-pagination",
 		},
 		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev",
 		},
 	});
-}
 
+}
 
 $(function(){
 let cameraImagePath ='';
@@ -275,7 +280,7 @@ const $picker2 = $('#picker2');
 
 $("#camera").click(function(){
    if ($box.find('img').length >= 4) {
-      alert('더 이상 이미지를 추가할 수 없습니다.');
+	   M.pop.instance('더 이상 이미지를 추가할 수 없습니다.');
       return false;
    }
 
@@ -375,12 +380,12 @@ $picker2.on('click', () => {
       }
    })
    .catch((err) => {
-      alert(err);
+	   M.pop.instance(err);
       if (typeof err === 'string') alert(err);
       
          console.error(err);
    });
-})
+});
 
 $.imagePicker2 = function () {
    return new Promise((resolve) => {
@@ -434,7 +439,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.67:8080/file/upload2',
+         url: 'http://172.30.1.40:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
@@ -471,6 +476,10 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          let normalPrice = $("input[name='normalPrice']").val();
          let auctionStartPrice = $("input[name='auctionStartPrice']").val();
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
+         let auctionDeposit = 0;
+         if(tradeType === "1"){
+        	 auctionDeposit = parseFloat(auctionStartPrice) * 0.1 + parseFloat(auctionMinBidUnit);
+         }
          
          if(title.length < 5){
         	 M.pop.instance("제목은 5글자 이상 작성해주세요.");
@@ -515,7 +524,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          type : "post",
          data : {category : category, title : title, content : content, tradeType : tradeType,
                   locationLat : locationLat, locationLng : locationLng, normalPrice : normalPrice, 
-                  auctionStartPrice: auctionStartPrice, auctionMinBidUnit : auctionMinBidUnit},
+                  auctionStartPrice: auctionStartPrice, auctionMinBidUnit : auctionMinBidUnit, auctionDeposit : auctionDeposit},
          dataType : "json",
          success : function(data){
             tradeType = data.tradeType;
@@ -553,12 +562,12 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
                      }
                   })
                   .catch((err) => {
-                     if (typeof err === 'string') alert(err)
+                     if (typeof err === 'string') M.pop.instance(err)
                      console.error(err)
                   })
                            
                }
-               alert("작성이 완료되었습니다.");
+               M.pop.instance("작성이 완료되었습니다.");
                
                var form = document.createElement("form");
                form.method = "GET";
@@ -584,7 +593,7 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
             }
          },
          error : function(error){
-            alert("오류가 발생했습니다.");
+        	 M.pop.instance("오류가 발생했습니다.");
          }   
       });
    });

@@ -50,35 +50,37 @@
 	    			let contentBox = $(this).parent().siblings(".cContentBox");
 	    			// 댓글버튼박스
 	    			let cButtonBox = $(this).parent(".commentsBtn");
+	    			// 댓글내용박스
+        			let content = $(this).parent().siblings(".cContentBox").children(".content");
 	    			// 수정댓글창
 	    			let newContentBox = ""
 	    	
-	    			newContentBox += '<div class="newWriteBox">'
-	    				+ '<form action="./commentEdit" method="post">'
-	    				+ '<input type="hidden" name="bno" value="' + bno + '">'
-	    				+ '<input type="hidden" name="cno" value="' + cno + '">'
-	    				+ '<input type="hidden" name="cate" value="' + cate + '">'
-	    				+ '<textarea class="cContent" name="ccontent">'
-	    				+ ccontent
-	    				+ '</textarea>'
-	    				+ '<div class="commentsBtn">'
-	    				+ '<button type="submit">등록</button>' // 등록 버튼
-	    				+ '<button class="reset">취소</button>'
-	    				+ '</div>'
-	    				+ '</form>'
-	    				+ '</div>';
-	    	
-	    	
-	    			contentBox.after(newContentBox);
-	    			contentBox.hide();
-	    			cButtonBox.hide();
-	    	
-	    			// 수정취소버튼클릭 
-	    			$(".reset").click(function() {
-	    				$(this).parents(".newWriteBox").remove();
-	    				contentBox.show();
-	    				cButtonBox.show();
-	    			});
+	        			newContentBox += '<div class="newWriteBox">'
+	        				+ '<form action="./commentEdit" method="post" class="newtWriteForm">'
+	        				+ '<input type="hidden" name="bno" value="' + bno + '">'
+	        				+ '<input type="hidden" name="cno" value="' + cno + '">'
+	        				+ '<input type="hidden" name="cate" value="' + cate + '">'
+	        				+ '<textarea class="newcContent" name="ccontent">'
+	        				+ ccontent
+	        				+ '</textarea>'
+	        				+ '<div class="commentsBtn">'
+	        				+ '<button type="submit" class="newcWriteBtn">등록</button>' // 등록 버튼
+	        				+ '<button class="reset">취소</button>'
+	        				+ '</div>'
+	        				+ '</form>'
+	        				+ '</div>';
+	        	
+	        	
+	        			content.after(newContentBox);
+	        			content.hide();
+	        			cButtonBox.hide();
+	        	
+	        			// 수정취소버튼클릭 
+	        			$(".reset").click(function() {
+	        				$(this).parents(".newWriteBox").remove();
+	        				content.show();
+	        				cButtonBox.show();
+	        			});
 	    	
 	    		}) // cedit 클릭이벤트
 	    	
@@ -98,7 +100,7 @@
         			}
         			
 					if(cContent == "" || cContent == null){
-						alert("댓글을 입력해주세요");
+						M.pop.instance("댓글을 입력해주세요");
 						return false;
 					}
         			//alert("댓글등록")
@@ -133,7 +135,7 @@
 												<img src="../userImgUpload/${comments.mphoto}" alt="user-img" class="userImg">
 											</c:when>
 											<c:otherwise>
-												<img src="../img/흰배경셀라스.jpg" alt="basic-user-img"	class="userImg">
+												<img src="../userImgUpload/defaultimg.png" alt="basic-user-img"	class="userImg">
 											</c:otherwise>
 										</c:choose>
 									</div>

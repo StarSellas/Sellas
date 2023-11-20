@@ -1,4 +1,21 @@
 
+window.onload = function() {
+	
+	let startPriceValueDiv = document.getElementById("startPriceValue");
+	startPriceValueDiv.textContent = formatPrice(startPriceValueDiv.textContent);
+	
+	let currentPriceValueDiv = document.getElementById("currentPriceValue");
+	currentPriceValueDiv.textContent = formatPrice(currentPriceValueDiv.textContent);
+	
+	let minimumPriceValueDiv = document.getElementById("minimumPriceValue");
+	minimumPriceValueDiv.textContent = formatPrice(minimumPriceValueDiv.textContent);
+}
+
+/* 가격 단위 구분 */
+function formatPrice(price) {
+	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 /* 지도 */
 
 let lat = document.getElementById("lat").value;
@@ -42,7 +59,7 @@ function validateBidding(){
 	// 입력값이 있을 때만 실행
 	if(bidPriceInput.value != ""){
 	
-	let bidPrice = parseInt(bidPriceInput.value);
+	let bidPrice = bidPriceInput.value = parseInt(bidPriceInput.value) - parseInt(bidPriceInput.value) % 10;
     let minBidPrice = parseInt(bidPriceInput.min);
 
 	if(bidPrice < minBidPrice){
@@ -66,7 +83,7 @@ function validateBidding(){
 					document.getElementById("guideText").style.visibility = "hidden";
 					document.getElementById("biddingButton").removeAttribute("disabled");
 					
-					document.getElementById("bidPriceDiv").textContent = "입찰가격 : " + bidPrice;
+					document.getElementById("bidPriceDiv").textContent = "" + bidPrice;
 				} else {
 					// 잔액 부족
 					bidPriceInput.classList.add("is-invalid");

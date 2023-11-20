@@ -122,7 +122,7 @@ public class AuctionService {
 						// 성공
 						auctionDAO.withdrawBalance(map);
 						auctionDAO.addBiddingHistory(map);
-						return 1;
+						return 0;
 					}
 				}
 			} else {
@@ -142,7 +142,7 @@ public class AuctionService {
 						auctionDAO.changeHistoryState(auctionBiddingInfo);
 						auctionDAO.withdrawBalance(map);
 						auctionDAO.addBiddingHistory(map);
-						return 1;
+						return 0;
 					}
 				}
 			}

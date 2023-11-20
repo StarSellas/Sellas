@@ -57,7 +57,7 @@
 								<c:if test="${exp >= 30 && exp <= 70}">고래</c:if>
 								<c:if test="${exp > 70 }">슈퍼고래</c:if>
 				</div>
-<div class="profilediv">
+			<div class="profilediv">
 				<button class=profile onclick="window.location.href='profile'">프로필보기</button>
 			</div>
 			</div>
@@ -94,6 +94,16 @@
 </div>
 
 
+		        <h6 class="title">환경 설정</h6>
+		<div class="movedetail">
+<div class="listdiv" onclick="location.href='./addTradeLocation'">
+<i class="fa-solid fa-location-crosshairs" style="color: #88abff;"></i>&nbsp;&nbsp;위치지정
+</div>		
+<div class="listdiv call">
+<i class="fa-solid fa-headset" style="color: #88abff;"></i>&nbsp;&nbsp;고객센터
+</div>
+</div>
+
   <h6 class="logout" onclick="location.href='./logout'">로그아웃</h6>
 
 
@@ -108,5 +118,7 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<!-- Core theme JS-->
 	<script src="js/scripts.js"></script>
+	<script src="../js/wishlist.js"></script>
+	
 </body>
 </html>

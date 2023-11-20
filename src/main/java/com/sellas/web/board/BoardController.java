@@ -48,15 +48,15 @@ public class BoardController {
       
       //System.out.println("map : " + map);   // map : {cate=0, search=noSearch}
          
-      // 메인게시판일때 (조회순 10개)
+      // 메인게시판일때 (조회순 10개) _ 검색값 없는 경우 포함
       if (cate == 0) {
          
          //System.out.println("메인보드 cate가 0이져 : " + map); // {cate=0, searchCate=title}
          List<Map<String, Object>> mainList = boardService.mainList(map);
          List<Map<String, Object>> setupboardList = boardService.setupboardList();
-         System.out.println(mainList);
+         //System.out.println(mainList);
          
-         // 메인게시판에서 검색했을 때 
+         // 메인게시판에서 검색했을 때 (검색값 없는경우 미포함)
          if(search != null && searchCate != null) {
             //System.out.println("메인보드 cate가 0이고 검색도함 : " + map); // {searchCate=title, search=테스트, cate=0}
             List<Map<String, Object>> searchList = boardService.searchList(map);
@@ -259,6 +259,7 @@ public class BoardController {
       // System.out.println("디테일페이지 : " + detailList);
       // {bno=5, bread=0, mnickname=셀라스, commentcount=2, bdate=14:27:46, sno=2,
       // sname=판매요청, btitle=판매요청글씀, bcontent=ㅁㅇㄴㄹ, mno=1}
+      
       model.addAttribute("bdetail", detailList);
       model.addAttribute("imageList", imageList);
       model.addAttribute("comments", commentList);
@@ -291,9 +292,9 @@ public class BoardController {
       public String boardEdit(
             @RequestParam Map<String, Object> map) {
          JSONObject json = new JSONObject();
-         //System.out.println("맵 값은 어떻게 오나요?" + map);
+         System.out.println("맵 값은 어떻게 오나요?" + map);
+         
          int normalEditResult = boardService.boardEdit(map);
-          
          
          if(map.get("OriImgMap[0]") != null) {
          Map<String, Object> deleteImage = new HashMap<String, Object>();

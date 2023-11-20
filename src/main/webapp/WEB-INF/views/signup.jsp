@@ -7,6 +7,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="viewport" content="initial-scale=1, width=device-width, user-scalable=no"/> 
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<title>Shop Homepage - Start Bootstrap Template</title>
@@ -41,6 +42,7 @@
 				<input class="form-control" type="text" id="email" name="email" placeholder="이메일 주소" maxlength="36" required="required">
 				<label for="email">이메일 주소</label>
 				<div id="emailMessage"><span style="visibility: hidden;">:</span></div>
+				<div id="guideMessage" style="visibility: hidden;"><a class="text" href="./findid">아이디 찾기</a></div>
 			</div>
 			<div class="form-floating" id="emailCodeDiv" style="visibility: hidden;">
 				<input class="form-control" type="text" id="emailCode" placeholder="인증번호" maxlength="16" required="required">
@@ -110,4 +112,13 @@
 	<!-- Core theme JS-->
 	<script src="js/signup.js"></script>
 	</body>
+
+<script>
+
+M.onBack( function(e) {
+	window.history.back();
+});
+
+</script>
+
 </html>

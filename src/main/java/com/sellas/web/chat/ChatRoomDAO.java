@@ -1,5 +1,6 @@
 package com.sellas.web.chat;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public interface ChatRoomDAO {
 
 	List<Map<String, Object>> alarmList(String muuid);
 
-	int setCheckZero(String muuid);
+	int setCheckZero(String ouuid);
 
 	int selectTnormalstate(Map<String, Object> map);
 
@@ -43,5 +44,23 @@ public interface ChatRoomDAO {
 	List<Map<String, Object>> chatRoomList(String muuid);
 
 	String getTitleByTno(Integer tno);
-	
+
+	String getDcontentByTno(String ouuid);
+
+	String getThumbnailByTno(Integer tno);
+
+	Timestamp getDdateByOuuid(String ouuid);
+
+	int auctionCheck(Map<String, Object> map);
+
+	String getMphoto(String muuid);
+
+	int tNormalPrice(Map<String, Object> map);
+
+	int checkEnter(Map<String, Object> map);
+
+	int chatCompareCount(List<Map<String, Object>> ouuid);
+
+	List<Map<String, Object>> getAllOuuid(String oseller);
+
 }

@@ -202,7 +202,7 @@
 
                     nextPhotoId++;
                 } else {
-                    alert("더 이상 사진을 추가할 수 없습니다.");
+                    M.pop.instance("더 이상 사진을 추가할 수 없습니다.");
                 }
             });
         });
@@ -232,7 +232,7 @@
 				//제목 안 썼을 때
 				let ttitle = $("#ttitle").val();
 				if(ttitle.length < 5){
-					alert("제목은 5글자 이상 작성해주세요.");
+					M.pop.instance("제목은 5글자 이상 작성해주세요.");
 					 $("#ttitle").focus();
 					return false;
 				}
@@ -241,18 +241,18 @@
 				//내용 안 썼을 때
 				let tcontent = $("#tcontent").val();
 				if(tcontent.length < 5){
-					alert("내용은 5글자 이상 작성해주세요.");
+					M.pop.instance("내용은 5글자 이상 작성해주세요.");
 					 $("#tcontent").focus();
 					return false;
 				}
 				//가격 안 적었을 때
 				if($("#tnormalprice").val() == null || $("#tnormalprice").val() == 0){
-					alert("가격을 입력해주세요.");
+					M.pop.instance("가격을 입력해주세요.");
 					$("#tnormalprice").focus();
 					return false;
 				}
 				if($("#tnormalprice").val() < 1000){
-					alert("최소가격은 1000 웨일페이 이상입니다.");
+					M.pop.instance("최소가격은 1000 웨일페이 이상입니다.");
 					$("#tnormalprice").focus();
 					return false;
 				}
@@ -263,7 +263,7 @@
 				
 				
 				if(confirm("글을 작성하시겠습니까?")){
-					alert("작성이 완료되었습니다.");
+					M.pop.instance("작성이 완료되었습니다.");
 				}
 			});
 		});

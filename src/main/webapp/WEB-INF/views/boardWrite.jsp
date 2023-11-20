@@ -63,6 +63,8 @@
             <div class="container mt-5" style="z-index: 10" id="productContainer">
                 <div class="justify-content-center">
 
+                <div class="backButton"><a href="javascript:history.back()"><i class="xi-angle-left xi-x"></i></a></div>
+
                <!-- 게시판 카테고리 드롭다운 -->
                <div class="cateBox">
                      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 align-items-end" id="cateBar">
@@ -175,7 +177,7 @@
     
     $("#camera").click(function(){
        if(selectImagePath.length >= 4){
-          alert("더 이상 사진을 추가할 수 없습니다.");
+    	   M.pop.instance("더 이상 사진을 추가할 수 없습니다.");
           return false;
        }
        
@@ -219,7 +221,7 @@
     
              $picker2.on('click', () => {
                if(selectImagePath.length >= 4){
-                   alert("더 이상 사진을 추가할 수 없습니다.");
+            	   M.pop.instance("더 이상 사진을 추가할 수 없습니다.");
                    return false;
                 }
                
@@ -321,7 +323,7 @@
              $.uploadImageByPath2 = function ($previewImgArray, bno, cate, progress) {
                   return new Promise((resolve) => {
                     const _options = {
-                      url: 'http://172.30.1.4:8080/fileUpload',
+                      url: 'http://172.30.1.40:8080/fileUpload',
                       header: {},
                       params: { bno: bno, cate: cate },
                       body: $previewImgArray.map((filePath) => ({
@@ -350,16 +352,16 @@
                   let btitle = $(this).parent().siblings(".btitleBox").children("#btitle").val();
                   let bcontent = $(this).parent().siblings(".bcontentBox").children("#bcontent").val();
                  
-                 alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
+                 //alert(muuid + "제목 : " + btitle + "내용 : " + bcontent);
                
                  // 글쓰기 유효성 검사 (로그인&빈칸)
                if(btitle.length < 3){
-                  alert("제목을 입력하세요.");
+            	   M.pop.instance("제목을 입력하세요.");
                   return false;
                }
                
                if(bcontent.length < 3){
-                  alert("내용을 입력하세요.");
+            	   M.pop.instance("내용을 입력하세요.");
                   return false;
                }      
                
@@ -375,7 +377,7 @@
                         let bno = data.bno;
                         let cate = data.cate;
                         
-                        alert("이건? : "+ bno);
+                        //alert("이건? : "+ bno);
                         
                         if(selectImagePath.length > 0){
                            if (selectImagePath[0] === ''){
@@ -395,7 +397,7 @@
                                 }) => {
                                   // status code
                                   if (status === '200') {
-                                     alert("떠라");
+                                     //alert("떠라");
                                     $progress.text('업로드 완료')
                                     const bodyJson = JSON.parse(body)
                                     $uploadImg = $(document.createElement('img'))
@@ -413,7 +415,7 @@
                            
                         }
                         
-                        alert("작성이 완료되었습니다.");
+                        M.pop.instance("작성이 완료되었습니다.");
                         var form = document.createElement("form");
                         form.method = "GET";
                         form.action = "./boardDetail"; // 컨트롤러 경로 설정
@@ -438,7 +440,7 @@
                      }
                   },
                   error : function(error){
-                     alert("흑흑");
+                     alert("error");
                   }
                   
                });
@@ -449,4 +451,5 @@
    </script>
 
 </body>
+
 </html>

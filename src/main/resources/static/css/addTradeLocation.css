@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 button {
-	width: 350px;
+	width: 360px;
 	height: 50px;
 	background-color: white;
 	border: 1px solid #88abff;
@@ -12,6 +12,16 @@ button {
 .endTypeButton {
 	color: white;
 	background-color: #88abff;
+}
+
+.resultButton {
+	position: fixed;
+	bottom: 100px;
+}
+
+.sellasText {
+	margin: 30px 50px;
+	width: 260px;
 }
 
 .page {
@@ -25,5 +35,34 @@ button {
 .form-floating {
 	margin: 0 auto;
 	margin-bottom: 20px;
-	width: 350px !important;
+	width: 360px !important;
+	display: flex;
+}
+
+.resultTitleT {
+	width: 100%;
+	margin: 20px 0px;
+	font-size: 32px;
+	font-weight: bold;
+	color: rgba(33, 133, 255, 0.8);
+	text-align: center;
+	margin: 20px 0px;
+}
+
+.resultTitleF {
+	width: 100%;
+	margin: 20px 0px;
+	font-size: 32px;
+	font-weight: bold;
+	color: rgba(233, 53, 53, 0.7);
+	text-align: center;
+	margin: 20px 0px;
+}
+
+#resultName {
+	width:100%;
+	font-size: 40px;
+	font-weight: bolder;
+	color: rgba(0, 0, 0, 0.5);
+	text-align: center;
 }

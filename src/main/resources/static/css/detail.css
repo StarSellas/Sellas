@@ -32,9 +32,13 @@
 	margin-bottom: 0;
 	height: 15%;
 }
+.btitle{
+	margin-bottom: 5px;
+}
 .UserBox{
 	padding: 0;
 	margin: auto;
+	margin-bottom: 10px;
 	height: inherit;
 }
 
@@ -43,6 +47,7 @@
 	color: gray;
 	float: right;
 	font-weight: normal;
+	padding-top: 5px;
 }
 .bread{
 	margin: 10px 0 5px 10px;
@@ -78,15 +83,16 @@
 	height: 40%;	
 }
 .bcontent{
-	padding: 15px 5px;
-	height: 150px;
+	padding: 40px 5px;
+	width: 100%;
+	height: 100%;
 }
 .bimageBox{
 	margin: 10px;
 }
 
 .boardImgBox{
-	margin: 10px;
+	margin: 15px;
 	text-align: center;
 }
 .boardImg{
@@ -94,9 +100,9 @@
 }
 
 .bBtnBox{
-	margin: 5px;;
+	margin: 5px;
 	padding: 0;
-	width: inherit;
+	width: 100%;
 	height: 5%;
 	display: flex;
 	align-items: flex-end;
@@ -104,7 +110,8 @@
 
 .bButtons{
 	display: flex;
- 	align-items: flex-end;
+ 	justify-content: flex-end;
+ 	margin-right: 5px; 
 }
 
 .bedit, .bdelete{
@@ -179,7 +186,7 @@
 	align-items: flex-end; 
 }
 
-.cedit, .cdelete{
+.cedit, .cdelete {
 	border: none;
 	background: transparent;
 	padding: 0;
@@ -192,7 +199,8 @@
 .moreComments{
 	font-size: 15px;
 	text-align: center;
-	opacity: 60%
+	opacity: 60%;
+	margin: 5px 0 10px 0;
 }
 
 /****************** commentsWrite *******************/
@@ -209,35 +217,48 @@
 	margin-top: 20px;
 	display: flex;
 	align-items: flex-end;
+	justify-content: flex-end;
 }
 .newtWriteForm{
+	padding: 0;
+	margin: 10px;
 	width: inherit;
-	margin: auto;
 	display: flex;
+	align-items: flex-end;
 }
 
 .cContent{
 	padding: 0;
 	display: flex;
 	align-items: flex-end; 
-	height: 40px;
+	height: 30px;
 	flex-grow: 1;
 	max-width: 260px;
 	padding: 5px 8px 0 8px;
 }
 .newcContent{
-	width: 60%;
-	height: 40px;
-	margin: 5px 10px;
+	padding: 0;
+	padding-left: 8px;
+	border: none;
+	border-bottom: 1px solid #808080;
+	display: flex;
+	align-items: flex-end;
+	height: 30px;
+	flex-grow: 1;
+	max-width: 210px;
+}
+.newcContent:focus{
+	outline: none;
 }
 .commentsBtn.cWriteBtnBox{
 	display: flex;
+	align-items: center;
   	justify-content: flex-end;
 }
+
 #cWriteBtnBox{
 	height: 40px;
   	justify-content: center;
-  	align-items: center;
 }
 
 .cWriteBtn{
@@ -249,12 +270,13 @@
 	text-align: center;
 }
 
-.newcWriteBtn{
-	margin-right: 10px;
-}
-.newcWriteBtn, .reset {
+.newcWriteBtn, .reset{
 	border: none;
 	background: transparent;
 	padding: 0;
-	margin-bottom: 10px;
-}
+	margin: 0 15px 0px 0;
+	font-size: 13px;
+	font-weight: bold;
+	opacity: 40%;
+	}
+	

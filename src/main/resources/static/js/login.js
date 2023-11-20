@@ -27,7 +27,6 @@ function login() {
 				if(result){
 					window.location.href = '/';
 				} else{
-					document.getElementById("id").classList.add("is-invalid");
 					document.getElementById("pw").classList.add("is-invalid");
 					document.getElementById("pw").value = "";
 					document.getElementById("errorMessage").textContent="아이디 또는 비밀번호를 확인 후 다시 입력하세요";
