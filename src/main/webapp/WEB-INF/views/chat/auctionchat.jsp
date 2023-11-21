@@ -543,14 +543,12 @@ $(function(){
 			   });
 			});
 		   $("#push").click(function(){
-		      alert(BASE64Array[0]);
 		      $.ajax({
 		         url : "/chat/chatImage",
 		         type : "post",
 		         data : {BASE64Array : BASE64Array[0]},
 		         dataType : "json",
 		         success : function(data){
-		            alert("ㅎㅇ");
 		         },
 		         error : function(error){
 		            alert(error);

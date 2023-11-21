@@ -119,7 +119,7 @@
 				messageInput.value = '';
 			} else {
 				// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
-				alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
+				M.pop.instance('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
 			}
 
 		}
@@ -355,7 +355,7 @@
 				},
 				dataType : "json",
 				success : function(data) { //data.comparecount = 1이면 거래 지속, 0이면 거래 중지 충전창으로 보
-					alert("거래수락")
+					
 					if (data.tradeAccepted === 'ok') {
 						trade = 1;
 						M.pop.instance("거래를 수락하셨습니다.");
@@ -456,7 +456,7 @@
     				e.preventDefault(); // 이 부분을 추가
     				reason = messageInput.value;
     				messageInput.placeholder = '';
-    				alert("거래취소0")
+    				
 	        		
 	        		$.ajax({
 	        	        url: "/recieveCancelled",
@@ -464,7 +464,7 @@
 	        	        data: { reason: reason , muuid : sender, tno : tno}, 
 	        	        dataType: "json",
 	        	        success: function(data) {
-	        	        	alert("거래취소1")
+	        	        	
 	        	        	if(data.recieveCancelledSuccess ==1 ){
 	        	        		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 	    							type : 'TRADECANCEL',

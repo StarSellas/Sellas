@@ -132,7 +132,7 @@ function sendMessage() { //메시지 보내는 곳입니다.
 			//messageInput.value = '';
 		} else {
 			// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
-			alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
+			M.pop.instance('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
 		}
 	}
 }
@@ -353,7 +353,7 @@ function recvMessage(recv) {
 							$("#tradeRequest").click(function(){
 								//console.log(data.obuyeramounts);
 								if(data.obuyeramounts < $(".write_msg").val()){
-									alert("제시한 금액이 현재 금액보다 많습니다.");
+									M.pop.instance("제시한 금액이 현재 금액보다 많습니다.");
 									return false;
 								}else{
 									let messageInput = document.getElementById('messages');
