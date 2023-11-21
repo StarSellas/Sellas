@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>채팅방</title>
 <link href="../css/chatroom.css" rel="stylesheet">
 <script src="../js/jquery-3.7.0.min.js"></script>
@@ -21,51 +21,68 @@
 <script src="../js/mcore.extends.js"></script>
 <script>
 $(function(){
+	
 	document.getElementById('messages').addEventListener('keyup', function (e) {
-		    if (e.key === 'Enter') {
-		        e.preventDefault(); // 이 부분을 추가
-		        sendMessage();
-		    }
-		});
+		if (e.key === 'Enter') {
+			e.preventDefault(); // 이 부분을 추가
+			sendMessage();
+		}
 	});
+});
 	
-	let sock = new SockJS("/ws/chat");
-	let emessage = '${emessage}'; //입장 메시지
-	//console.log("emessage : " + emessage);
-	let oseller = '${oseller}'; //판매자 UUID
-	let sender = '${obuyer}' //구매자 유유아이디
-	let roomId = '${roomId}'; //방 유유아이디
-	let mnickname = '${mnickname}'; //구매자 닉
-	let tno = '${tno}'; //거래물품 번호
-	let tnormalstate = '${tnormalstate}'; 
-	let ws = Stomp.over(sock);
-	let trade = 0; //거래상태, 0=일반, 1=거래중, 2=거래완료, 3=거래취소
-	let tnormalprice ='${tnormalprice}';
-	let checkenter = '${checkenter}';
+let sock = new SockJS("/ws/chat");
+let emessage = '${emessage}'; //입장 메시지
+let oseller = '${oseller}'; //판매자 UUID
+let sender = '${obuyer}' //구매자 유유아이디
+let roomId = '${roomId}'; //방 유유아이디
+let mnickname = '${mnickname}'; //구매자 닉
+let tno = '${tno}'; //거래물품 번호
+let tnormalstate = '${tnormalstate}'; 
+let ws = Stomp.over(sock);
+let trade = 0; //거래상태, 0=일반, 1=거래중, 2=거래완료, 3=거래취소
+let tnormalprice ='${tnormalprice}';
+let checkenter = '${checkenter}';
 	
-	var currentDate = new Date();
-	var currentHour = currentDate.getHours();
-	let formattedDate = currentHour +'시' + ' ' + currentDate.getMinutes() + '분';
+let currentDate = new Date();
+let currentHour = currentDate.getHours();
+let formattedDate = currentHour +'시' + ' ' + currentDate.getMinutes() + '분';
 
 	/* else if(recv.type == 'IMAGE') {
 				const imgElement = document.getElementById('receivedImage');
 		        imgElement.src = 'data:image/jpeg;base64,' + recv.image;
 			}  */
 	                    
-	ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
-		//console.log(frame); 정상적으로 들어옵니다.
+ws.connect({}, function(frame) { //웹소켓 연결하는 곳입니다.
+	//console.log(frame); 정상적으로 들어옵니다.
+	scrollChatToBottom();
+	ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
 		scrollChatToBottom();
-		ws.subscribe("/sub/ws/chat/room/" + roomId, function(message) { //들어오는 메시지 수신하는 곳입니다.
-			var recv = JSON.parse(message.body);
-			//console.log("recv" + recv); 정상적으로 들어옵니다.
-			if (recv.type != 'ALARM' && recv.type != 'INTERVAL' && recv.type != 'OUT') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
-				recvMessage(recv);
-			} else {
-				return false;
-			}
-
-		});
-		if(checkenter === 0){
+		var recv = JSON.parse(message.body);
+		//console.log("recv" + recv); 정상적으로 들어옵니다.
+		if (recv.type == 'ALARM' || recv.type == 'INTERVAL' || recv.type == 'OUT') { //알림과 인터벌은 출력하지 않기위해 거르는 if문입니다.
+			return false;
+		} else if (recv.type == 'TRADEOK') {
+            $("#tradeAccept").show();
+            $("#tradeCancel").show();
+        } else{
+        	recvMessage(recv);
+            window.scrollTo(0, 99999);
+        }
+        if (recv.type == 'TRADECANCEL') {
+        	 M.pop.instance("거래가 취소되었습니다.");
+        	 $("#title").focus();
+            location.href = '/';
+        }
+        if (recv.type == 'TRADENO') {
+        	M.pop.instance("거래를 거절되었습니다.");
+            location.href = '/';
+        }
+        if (recv.type == 'TRADECOMPLETE') {
+        	M.pop.instance("거래가 완료되었습니다.");
+            location.href = '/';
+        }
+	});
+	if(checkenter === 0){
 		ws.send("/pub/ws/chat/message", {}, JSON.stringify({ //채팅방에 들어오면 가장먼저 보내는 메시지입니다.
 			type : 'ENTER',
 			roomId : roomId,
@@ -74,88 +91,86 @@ $(function(){
 			message : emessage,
 			time : formattedDate
 		}));
-		}
-		startPing();
-	});
+	}
+	startPing();
+});
 	
-	function sendMessage() { //메시지 보내는 곳입니다.
-		let messageInput = document.getElementById('messages');
-		let message = messageInput.value;
-
-		if (message === "") { // 공백을 제거하지 않음
-			return;
-		}
+function sendMessage() { //메시지 보내는 곳입니다.
+	let messageInput = document.getElementById('messages');
+	let message = messageInput.value;
+	
+	if (message === "") { // 공백을 제거하지 않음
+		return;
+	}
 
 		/* console.log(message)
 		console.log(sender)
 		console.log(roomId) 셋 다 들어오는거 확인했습니다. */
-		if (trade == 0) {
+	if (trade == 0) {
+		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+			type : 'TALK',
+			roomId : roomId,
+			sender : sender,
+			mnickname : mnickname,
+			message : message,
+			time : formattedDate
+		}));
+		messageInput.value = '';
+	} else if (trade == 1) {
+		if (!isNaN(message)) {
+				// ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
 			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-				type : 'TALK',
+				type : 'PAYMENT',
 				roomId : roomId,
 				sender : sender,
 				mnickname : mnickname,
 				message : message,
 				time : formattedDate
+			// 숫자로 변환한 값을 전송합니다.
 			}));
-			messageInput.value = '';
-		} else if (trade == 1) {
-			if (!isNaN(message)) {
-				// ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
-				ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-					type : 'PAYMENT',
-					roomId : roomId,
-					sender : sender,
-					mnickname : mnickname,
-					message : message,
-					time : formattedDate
-				// 숫자로 변환한 값을 전송합니다.
-				}));
-				trade = 0;
-				//messageInput.value = '';
-			} else {
-				// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
-				alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
-			}
-
+			trade = 0;
+			//messageInput.value = '';
+		} else {
+			// 'paymessage'가 숫자가 아닌 경우, 적절한 오류 처리나 메시지를 추가할 수 있습니다.
+			alert('금액을 입력할 땐 숫자만 입력할 수 있습니다.');
 		}
 	}
+}
 
-	function scrollChatToBottom() {
-	    /* let realtimechat = document.querySelector('.msg_history');
-	    realtimechat.scrollTop = realtimechat.scrollHeight;
-		alert(realtimechat)
-	    // 새로운 메시지가 도착할 때마다 자동으로 스크롤
-	    let inputElement = document.getElementById('messages');
-	    inputElement.scrollIntoView(false); */
-	}
+function scrollChatToBottom() {
+    let realtimechat = document.querySelector('.msg_history');
+    realtimechat.scrollTop = realtimechat.scrollHeight;
+
+    // 새로운 메시지가 도착할 때마다 자동으로 스크롤
+    let inputElement = document.getElementById('messages');
+    inputElement.scrollIntoView(false);
+}
 
 
-	function recvMessage(recv) {
-	    if (recv.mnickname !== '${sessionScope.mnickname}') {
-	        
-	        if(recv.type !== 'IMAGE'){
+function recvMessage(recv) {
+    if (recv.mnickname !== '${sessionScope.mnickname}') {
+    	if(recv.type !== 'IMAGE'){
 				
-	        	var messagesList = document.getElementsByClassName("msg_history");
+	       	var messagesList = document.getElementsByClassName("msg_history");
 
-		        var incoming_msg = document.createElement("div");
-		        incoming_msg.className = "incoming_msg";
+	        var incoming_msg = document.createElement("div");
+	        incoming_msg.className = "incoming_msg";
 
-		        let incoming_msg_img = document.createElement("div");
-		        incoming_msg_img.className = "incoming_msg_img";
+		    let incoming_msg_img = document.createElement("div");
+		    incoming_msg_img.className = "incoming_msg_img";
 		        
-		        if('${mphotocheck}' === 1){
-		        	var imgElement = document.createElement("img");
-		        	var photoPath = '../userImgUpload/${mphoto}';
-		        	imgElement.src = photoPath;
-		        	imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+		    if('${mphotocheck}' === 1){
+		        var imgElement = document.createElement("img");
+		        var photoPath = '../userImgUpload/${mphoto}';
+		        imgElement.src = photoPath;
+		        imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
 		        	
-		        } else {
-		        	var imgElement = document.createElement("img");
-		        	var photoPath = '../tradeImgUpload/defaultimg.jpg';
-		 	        imgElement.src = photoPath;
-		 	        imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
-		        }
+		    } else {
+		        var imgElement = document.createElement("img");
+		        var photoPath = '../tradeImgUpload/defaultimg.jpg';
+		 	    imgElement.src = photoPath;
+		 	    imgElement.alt = "sellas"; // 대체 텍스트는 적절히 수정해주세요.
+		    }
 		        
 		        incoming_msg_img.appendChild(imgElement);
 		        incoming_msg.appendChild(incoming_msg_img);
@@ -227,23 +242,7 @@ $(function(){
 
 	        	messagesList[0].appendChild(incoming_msg);
 	        }
-
-	        if (recv.type == 'TRADEOK') {
-	            $(".tradeAcceptOrCancel").show();
-	        }
-	        if (recv.type == 'TRADECANCEL') {
-	        	 M.pop.instance("거래가 취소되었습니다.");
-	        	 $("#title").focus();
-	            location.href = '/';
-	        }
-	        if (recv.type == 'TRADENO') {
-	        	M.pop.instance("거래를 거절되었습니다.");
-	            location.href = '/';
-	        }
-	        if (recv.type == 'TRADECOMPLETE') {
-	        	M.pop.instance("거래가 완료되었습니다.");
-	            location.href = '/';
-	        }
+    	
 	    } else {
 
 	        if(recv.type !== 'IMAGE'){
@@ -293,7 +292,8 @@ $(function(){
 	        }
 
 	        if (recv.type == 'TRADEOK') {
-	            $(".tradeAcceptOrCancel").show();
+	            $("#tradeAccept").show();
+	            $("#tradeCancel").show();
 	        }
 	        if (recv.type == 'TRADECANCEL') {
 	        	M.pop.instance("거래가 취소되었습니다.");
@@ -308,8 +308,10 @@ $(function(){
 	            location.href='/';
 	        }
 		}
+    scrollChatToBottom();
+}
 
-	}
+
 
 	function startPing() {
 		let message = "INTERVAL";
@@ -325,7 +327,8 @@ $(function(){
 	
 	$(function() {
 		$("#tradeRequest").hide();
-		$(".tradeAcceptOrCancel").hide();
+		$("#tradeAccept").hide();
+		$("#tradeCancel").hide();
 		
 		
 		$("#tradeamount").click(function() { //거래수락을 눌렀을 때 실행할 함수입니다.
@@ -361,56 +364,48 @@ $(function(){
 									}
 						
 									$("#tradeCancel").click(function(){
-						    			$("#tradeCancel").hide();
-						        		var reasonInput = document.createElement("input");
-						        	    reasonInput.type = "text";
-						        	    reasonInput.name = "cancellationReason";
-						        	    reasonInput.placeholder = "취소 사유를 입력하세요";
-						        	    reasonInput.className = "cancellation-reason"; 
-						        	    // 생성한 input 태그를 페이지에 추가
-						        	    $(".input_msg_write").append(reasonInput);
-						        	 // 동적으로 버튼을 생성하고 추가
-						        	    var cancelButton = document.createElement("button");
-						        	    cancelButton.textContent = "거래 취소하기"; // 버튼에 표시할 텍스트
-						        	    cancelButton.className = "cancelbtn"; // 클래스 추가
-						        	    $(".input_msg_write").append(cancelButton);
-
-						        	});// $(".recieveCancelled").click(function()끝
+						        		messageInput.placeholder = "취소 사유를 입력하세요";
+						        		
+						        		document.getElementById('messages').addEventListener('keyup', function (e) {
+						        			if (e.key === 'Enter') {
+						        				e.preventDefault(); // 이 부분을 추가
+						        				reason = messageInput.value;
+						        				messageInput.placeholder = '';
+								        		
+								        		$.ajax({
+								        	        url: "/recieveCancelled",
+								        	        type: "post", 
+								        	        data: { reason: reason , muuid : sender, tno : tno}, 
+								        	        dataType: "json",
+								        	        success: function(data) {
+								        	        	if(data.recieveCancelledSuccess ==1 ){
+								        	        		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
+								    							type : 'TRADECANCEL',
+								    							roomId : roomId,
+								    							sender : sender,
+								    							mnickname : mnickname,
+								    							message : "거래가 취소되었습니다.",
+								    							time : formattedDate
+								    						}));
+								        	        		
+								        	        		M.pop.instance("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
+								        	        		location.href='/';
+								        	        	}
+								        	            // 서버로부터의 응답을 처리
+								        	            console.log("서버 응답:", data);
+								        	            // 이후 원하는 동작 수행
+								        	        },
+								        	        error: function(error) {
+								        	            // 오류 처리
+								        	            //console.log("오류 발생:", error);
+								        	        }
+								        	    });
+						        				
+						        			}
+						        		});
+						        				
+						        			});
 						        	
-						        	$(document).on("click", ".cancelbtn", function() {
-						        		let tcmessage ="   거래가 취소되었습니다. 자세한 사항은"+ "<a href='/'>"+"마이페이지"+"</a>"+ "에서 확인해주세요."
-						        	    var reason = $(".cancellation-reason").val(); 
-						        	 // 받아와야 하는 값 : tno, 세션의 muuid, 실패 사유, tnormalprice
-						        	    $.ajax({
-						        	        url: "/recieveCancelled",
-						        	        type: "post", 
-						        	        data: { reason: reason , muuid : sender, tno : tno}, 
-						        	        dataType: "json",
-						        	        success: function(data) {
-						        	        	
-						        	        	if(data.recieveCancelledSuccess ==1 ){
-						        	        		ws.send("/pub/ws/chat/message", {}, JSON.stringify({
-						    							type : 'TRADECANCEL',
-						    							roomId : roomId,
-						    							sender : sender,
-						    							mnickname : mnickname,
-						    							message : "거래가 취소되었습니다.",
-						    							time : formattedDate
-						    						}));
-						        	        		
-						        	        		M.pop.instance("취소가 정상적으로 처리되었습니다. 메인으로 돌아갑니다.");
-						        	        		location.href='/';
-						        	        	}
-						        	            // 서버로부터의 응답을 처리
-						        	            console.log("서버 응답:", data);
-						        	            // 이후 원하는 동작 수행
-						        	        },
-						        	        error: function(error) {
-						        	            // 오류 처리
-						        	            //console.log("오류 발생:", error);
-						        	        }
-						        	    });
-						        	});
 									
 						        	if (!isNaN(message)) {
 										// ()안의 값이 숫자로 변환가능하면 false를 리턴합니다. 그래서 숫자인지 확인하는 if문에 쓰고 싶다면 앞에 !를 붙여야합니다.
@@ -452,7 +447,7 @@ $(function(){
 
 		$("#tradeno").click(function() { //거래취소 눌렀을 때 실행할 함수입니다.
 			trade = 2;
-			let nomessage = sender + "님이 거래를 취소하셨습니다.";
+			let nomessage = mnickname + "님이 거래를 취소하셨습니다.";
 			ws.send("/pub/ws/chat/message", {}, JSON.stringify({
 				type : 'TRADENO',
 				roomId : roomId,
@@ -484,7 +479,8 @@ $(function(){
 							time : formattedDate
 						}));
     					$(".tradeAcceptOrCancel2").hide();
-    					$(".tradeAcceptOrCancel").hide();
+    					$("#tradeAccept").hide();
+    					$("#tradeCancel").hide();
     					M.pop.instance("수락이 완료되었습니다. 상대방의 수락을 기다리고 있습니다.");
     				}
     				if(data.tradeAllSuccess == 1){
@@ -506,7 +502,7 @@ $(function(){
 	});
 		
 	$(function () {
-	    $("#toggleBtn").click(function () {
+	    $(".toggleBtnBox").click(function () {
 	        toggleButtons();
 	    });
 
@@ -521,9 +517,6 @@ $(function(){
 	        	$(".type_msg").animate({height: '108px' }, 250);
 	        	$(".msg_history").animate({ marginTop: '-10px' }, 250);
 
-	       		// 토글 버튼들을 나타내는 애니메이션
-	        	$(".tradeResponse").slideToggle(500);
-
 	        	// 토글 버튼의 클래스를 토글
 	        	$(".toggleBtnBox").toggleClass("btnClicked");
 
@@ -533,15 +526,13 @@ $(function(){
 	        	} else {
 	            	$(".otherBtnBox").removeClass("tBtnBox");
 	        	}
+		    	scrollChatToBottom();
 	    	} else if(newHeight === '98px'){
 	    		
 	    		// 인풋창을 아래로 내리는 애니메이션
 	        	$(".type_msg").animate({ marginTop: '2px', height: '48px' }, 250);
 	        	$(".msg_history").animate({ marginTop: '60px'}, 250);
 
-	        	// 토글 버튼들을 나타내는 애니메이션
-	        	$(".tradeResponse").slideToggle(250);
-
 	        	// 토글 버튼의 클래스를 토글
 	        	$(".toggleBtnBox").toggleClass("btnClicked");
 
@@ -551,9 +542,11 @@ $(function(){
 	        	} else {
 	            	$(".otherBtnBox").removeClass("tBtnBox");
 	        	}
+	    	scrollChatToBottom();
 	    	}
 	    }
 	});
+	
 	$(function(){
 		
 		$(".goback").click(function(){
@@ -721,14 +714,8 @@ $(function(){
 							//  return $.uploadImageByPath(selectImagePath); 이거 쓰면 업로드됩니당
 						}
 					}
-				});
-			   
-			   
-			   
-			   
-		      
+				});  
 		   });
-		  
 		   $.imagePicker2 = function () {
 			   return new Promise((resolve) => {
 			      M.media.picker({
@@ -743,11 +730,10 @@ $(function(){
 			      });
 			   })
 			}
-		  
-		  $.uploadImageByPath2 = function ($previewImgArray, progress) {
+		   $.uploadImageByPath2 = function ($previewImgArray, progress) {
 			   return new Promise((resolve) => {
 			      const _options = {
-			         url: 'http://172.30.1.97:8080/chat/chatImage',
+			         url: 'http://172.30.1.78:8080/chat/chatImage',
 			         header: {},
 			         params: {},
 			         body: $previewImgArray.map((filePath) => ({
@@ -857,74 +843,71 @@ $(function(){
        	</c:if>
 	</div>
 </div>
+<div id="box" style="display:none;"></div>
 <div class="type_msg">
 	<div class="input_msg_write">
-		<div class="toggleBtnBox"><i id="toggleBtn" class="xi-plus"></i></div>
-			<input type="text" class="write_msg" id="messages" />
+		<div class="toggleBtnBox">
+			<i id="toggleBtn" class="xi-plus">
+			</i>
 		</div>
-		<div>
-			<div class="otherBtnBox hide">
+		<input type="text" class="write_msg" id="messages" />
+	</div>
+	<div class="otherBtnBox hide">
 				<c:if test="${tnormalstate ==0 }">
-					<div class="trade-buttons">
-						<div class="button-container">
-							<button id="tradeamount">
+						<div class="button-container" id="tradeamount">
+							<button id="tradeamountbutton">
 								<img class="card-img-top" src="../img/chatcoin.png" alt="sellas" />
 							</button>
 							<span class="buttontext">금액제시</span>
 						</div>
-						<div class="button-container">
-							<button id="tradeRequest">
+						<div class="button-container" id="tradeRequest">
+							<button id="tradeRequestbutton">
 								<img class="card-img-top" src="../img/chatcoingo.png" alt="sellas" />
 							</button>
 							<span class="buttontext">제시하기</span>
 						</div>
-					</div>
 				</c:if>
 				<c:if test="${tnormalstate == 1 &&(sessionScope.muuid == payment.pbuyer || sessionScope.muuid == payment.pseller)&& payment.pstate == 2}">
 					<div class="tradeAcceptOrCancel2">
-						<div class="button-container">
- 							<button id="tradeAccept">
+						<div class="button-container" id="tradeAccept">
+ 							<button id="tradeAcceptbutton">
 								<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
 							</button>
 							<span class="buttontext">수령완료</span>
 						</div>
-						<div class="button-container">
-							<button id="tradeCancel">
+						<div class="button-container" id="tradeCancel">
+							<button id="tradeCancelbutton">
 								<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
 							</button>
 							<span class="buttontext">거래취소</span>
 						</div>
                       </div>
                 	</c:if>
-                	<div class="tradeAcceptOrCancel">
-						<div class="button-container">
-                			<button id="tradeAccept">
+						<div class="button-container" id="tradeAccept">
+                			<button id="tradeAcceptbutton">
                 				<img class="card-img-top" src="../img/tradeok.png" alt="sellas" />
                 			</button>
                 			<span class="buttontext">수령완료</span>
                 		</div>
-                		<div class="button-container">
-                   			<button id="tradeCancel">
+                		<div class="button-container" id="tradeCancel">
+                   			<button id="tradeCancelbutton">
                    				<img class="card-img-top" src="../img/tradeno.png" alt="sellas" />
                    			</button>
                			<span class="buttontext">거래취소</span>
                		</div>
-               	</div>
-				<div class="button-container">
-    				<button id="picker">
+				<div class="button-container" id="picker">
+    				<button id="pickerbutton">
         				<img class="card-img-top" src="../img/album.png" alt="sellas" />
     				</button>
 				<span class="buttontext">앨범</span>
 				</div>
-				<div class="button-container">
-    				<button id="push">
+				<div class="button-container" id="push">
+    				<button id="pushbutton">
         				<img class="card-img-top" src="../img/camera.png" alt="sellas" />
     				</button>
 				<span class="buttontext">카메라</span>
 				</div>
-				<div id="box" style="display:none;"></div>
 			</div>
 		</div>
-	</div>
 </body>
 </html>

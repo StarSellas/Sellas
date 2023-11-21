@@ -445,7 +445,9 @@ public class ChatRoomController {
 		        Timestamp ddate = chatRoomService.getDdateByOuuid(ouuid);
 		        
 		     // 현재 시간과의 차이 계산
-			    long timeDiff = System.currentTimeMillis() - ddate.getTime();
+			    long timeDiff = System.currentTimeMillis() - ddate.getTime(); //만약 여기에 null값이 들어와 오류나면
+			    //서버에 onlinechat과 dialogue 테이블에 한 쪽에는 채팅방이 있고, 다른곳엔 없어서 그런겁니다.
+			    //제일 쉬운 해결법은 다 삭제하는 겁니다.
 			    long hoursDiff = timeDiff / (60 * 60 * 1000);
 
 			    SimpleDateFormat sdf;
