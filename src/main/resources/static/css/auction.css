@@ -25,7 +25,7 @@ button {
 
 .itemTitle {
 	width: 220px;
-	height: 48px;
+	height: 60px;
 	font-size: 22px;
 	font-weight: bolder;
 }
@@ -46,7 +46,7 @@ button {
 
 .readNumber {
 	text-align: right;
-	padding-top: 25px;
+	padding-top: 35px;
 	width: 40px;
 }
 
@@ -81,21 +81,25 @@ button {
 }
 
 .hour {
-	width: 28px;
+	width: 24px;
 	text-align: right;
 }
 
 .minute {
-	width: 28px;
+	width: 24px;
 	text-align: right;
 }
 
 .second {
-	width: 28px;
+	width: 24px;
 	text-align: right;
 }
+.mtimeDivider {
+	width: 30px;
+	text-align: left;
+}
 
-.timeDivider {
+.mtimeDivider {
 	width: 16px;
 	text-align: left;
 }
@@ -116,6 +120,7 @@ button {
 
 .ItemInfo {
 	margin: 0px 10px;
+	padding: 7px 0px;
 	width: 125px;
 }
 
@@ -129,7 +134,7 @@ button {
 	display: flex;
 	width: 260px;
 	height: 30px;
-	margin-bottom: 10px;
+	margin-bottom: 1px;
 }
 
 .PriceInfo {

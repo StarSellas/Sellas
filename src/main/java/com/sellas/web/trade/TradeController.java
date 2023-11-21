@@ -50,13 +50,15 @@ public class TradeController {
 	public String addTradeItem(@RequestParam Map<String, Object> map) {
 		System.out.println("오는 맵 값입니다 : " + map);
 		JSONObject json = new JSONObject();
-		int result = tradeService.addTradeItem(map);
-		System.out.println(result);
 		if(Integer.parseInt(String.valueOf(map.get("tradeType"))) == 1) {
 			System.out.println("트레이드 타입은 1");
-		}if(Integer.parseInt(String.valueOf(map.get("tradeType"))) == 0) {
+			tradeService.putdownDeposit(map.get("auctionDeposit"));
+		}
+		if(Integer.parseInt(String.valueOf(map.get("tradeType"))) == 0) {
 			System.out.println("트레이드 타입은 0");
 		}
+		int result = tradeService.addTradeItem(map);
+		System.out.println(result);
 
 		if(result == 1) {
 			int LastTno = (int) map.get("tno");
