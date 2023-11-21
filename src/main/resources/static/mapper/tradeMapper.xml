@@ -49,4 +49,10 @@
 	where muuid = #{oseller}
 </update>
 
+<update id="putdownDeposit" parameterType="Map">
+	update member
+	SET mbalance = mbalance - #{auctionDeposit}
+	WHERE muuid = #{muuid}
+</update>
+
 </mapper>

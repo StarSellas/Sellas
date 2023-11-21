@@ -26,4 +26,6 @@ public interface TradeDAO {
 
 	int depositReturn(Map<String, Object> map);
 
+	void putdownDeposit(Map<String, Object> map);
+
 }

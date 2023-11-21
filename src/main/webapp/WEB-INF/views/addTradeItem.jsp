@@ -439,7 +439,7 @@ $.convertBase64ByPath2 = function ($previewImgArray) {
 $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
    return new Promise((resolve) => {
       const _options = {
-         url: 'http://172.30.1.40:8080/file/upload2',
+         url: 'http://172.30.1.67:8080/file/upload2',
          header: {},
          params: { tno: tno },
          body: $previewImgArray.map((filePath) => ({
@@ -478,7 +478,23 @@ $.uploadImageByPath2 = function ($previewImgArray, tno, progress) {
          let auctionMinBidUnit = $("input[name='auctionMinBidUnit']").val();
          let auctionDeposit = 0;
          if(tradeType === "1"){
-        	 auctionDeposit = parseFloat(auctionStartPrice) * 0.1 + parseFloat(auctionMinBidUnit);
+        	auctionDeposit = (parseFloat(auctionStartPrice) + parseFloat(auctionMinBidUnit)) * 0.1;
+         	$.ajax({
+         		url : "/checkBalance",
+         		method : "get",
+         		data : {price : auctionDeposit},
+         		success : function(result){
+         			if(result){
+         				// 등록 가능
+         			} else{
+         				M.pop.instance("보증금이 부족합니다.");
+         				return false;
+         			}
+         		},
+         		error : function(error){
+         			//alert("ERROR : " + JSON.stringify(error));
+         		}
+         	});
          }
          
          if(title.length < 5){

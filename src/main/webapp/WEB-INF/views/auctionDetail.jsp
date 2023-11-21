@@ -134,12 +134,12 @@
 			</c:if>
 		</c:if>
 
-		<!-- 
+		
 		<button onclick="showPage('page0')">page0</button>
 		<button onclick="showPage('page2')">page2</button>
 		<button onclick="showPage('page3')">page3</button>
 		<button onclick="showPage('page4')">page4</button>
-		-->
+		
 
 		</div>
 

@@ -210,11 +210,11 @@ function addAuctionItem(item){
 	let remainingTime = document.createElement("div");
 	
 	let hDivider = document.createElement("div");
-	hDivider.textContent = "h";
-	hDivider.classList.add("timeDivider");
+	hDivider.textContent = "시간";
+	hDivider.classList.add("htimeDivider");
 	let mDivider = document.createElement("div");
-	mDivider.textContent = "m";
-	mDivider.classList.add("timeDivider");
+	mDivider.textContent = "분";
+	mDivider.classList.add("mtimeDivider");
 	
 	let remainingHour = document.createElement("div");
 	remainingHour.innerText += Math.floor((itemDeadLine - currentDateTime) / (60 * 60 * 1000));

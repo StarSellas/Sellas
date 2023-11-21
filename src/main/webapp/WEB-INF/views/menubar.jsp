@@ -71,6 +71,8 @@
 					<div id="menu">마이페이지</div></li>
 			</ul>
 		</div>
+		
+		<input type="hidden" id="muuid" value=${sessionScope.muuid }>
 	</footer>
 
 	<!-- Bootstrap core JS-->
@@ -83,6 +85,11 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<script>
 		$(document).ready(function() {
+			
+			if (document.getElementById("muuid").value === ""){
+				window.location.href = "./login";
+			}
+			
 			// 초기 높이 저장
 			var initialHeight = window.innerHeight;
 

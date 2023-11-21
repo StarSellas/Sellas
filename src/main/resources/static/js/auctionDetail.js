@@ -83,7 +83,7 @@ function validateBidding(){
 					document.getElementById("guideText").style.visibility = "hidden";
 					document.getElementById("biddingButton").removeAttribute("disabled");
 					
-					document.getElementById("bidPriceDiv").textContent = "" + bidPrice;
+					document.getElementById("bidPriceDiv").textContent = "" + formatPrice(bidPrice) + "원";
 				} else {
 					// 잔액 부족
 					bidPriceInput.classList.add("is-invalid");
@@ -93,6 +93,8 @@ function validateBidding(){
 					document.getElementById("errorMessage").style.color = "gray";
 					document.getElementById("guideText").style.visibility = "visible";
 					document.getElementById("biddingButton").setAttribute("disabled", "true");
+					
+					document.getElementById("bidPriceDiv").textContent = "";
 				}
 			},
 			error : function(error) {
