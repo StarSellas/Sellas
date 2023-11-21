@@ -83,22 +83,29 @@ public class TradeService {
 	}
 
 	public int tradeComplete(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return tradeDAO.tradeComplete(map);
 	}
 
 	public int getAbidprice(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return tradeDAO.getAbidprice(map);
 	}
 
 	public int putAbidprice(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return tradeDAO.putAbidprice(map);
 	}
 
 	public int depositReturn(Map<String, Object> map) {
-		// TODO Auto-generated method stub
 		return tradeDAO.depositReturn(map);
+	}
+
+	public void putdownDeposit(Object object) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("auctionDeposit", object);
+		
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+        map.put("muuid", session.getAttribute("muuid"));
+		
+		tradeDAO.putdownDeposit(map);
 	}
 }

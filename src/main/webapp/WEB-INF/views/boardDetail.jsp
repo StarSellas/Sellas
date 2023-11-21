@@ -102,9 +102,9 @@
         		// 댓글쓰기 유효성 검사 (로그인&빈칸)
         		$(".cWriteBtn").click(function(){
         			
-        			let muuid = $(this).parent().siblings(".muuid").val();
-        			let cContent = $(this).parent().siblings(".cContent").val();
-					//alert("계정 : " + muuid + " / 댓글 : " + cContent)
+        			let muuid = $(this).parent().siblings("#cinfoBox").children(".muuid").val();
+        			let cContent = $(this).parent().siblings("#cinfoBox").children(".cContent").val();
+					alert("계정 : " + muuid + " / 댓글 : " + cContent)
         			
         			if(muuid == "" || muuid == null){
         				
@@ -273,13 +273,16 @@
 					<!-------------------- 댓글쓰기창 -------------------->
 						<div class="cWriteBox">
 							<form action="./commentWrite" method="post" class="commentWriteForm">
-								<textarea class="cContent" name="ccontent" style="white-space:pre-wrap;" maxlength="30"></textarea>
-								<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
-								<input type="hidden" name="cate" value="${param.cate }">
-								<input type="hidden" name="bno" value="${param.bno }">
+								<div id="cinfoBox">
+									<input class="cContent" name="ccontent" id="cContent" style="white-space:pre-wrap;" maxlength="30" placeholder="댓글쓰기"/>
+									<input type="hidden" name="muuid" class="muuid" value="${sessionScope.muuid }">
+									<input type="hidden" name="cate" value="${param.cate }">
+									<input type="hidden" name="bno" value="${param.bno }">
+								</div>
 								<div class="commentsBtn" id="cWriteBtnBox">
 									<button type="submit" class="cWriteBtn">등록</button>
 								</div>
+								
 							</form>
 						</div>
                    </div>
