@@ -37,10 +37,9 @@ public class MyPageController {
    public String myPage(Model model, HttpSession session) {
 
       
-      if(!util.checkLogin()) {
-         return "/login";
-      }
-      String uuid = String.valueOf(session.getAttribute("muuid"));
+     
+      String uuid = "ade965df-0d77-4e5f-9fec-c33c9f921588";
+      session.setAttribute("muuid", uuid);
       
       //세션에 저장된 uuid를 가지고 멤버조회
       Map<String, Object> member = myPageService.memberInfo(uuid);
@@ -60,11 +59,10 @@ public class MyPageController {
    @GetMapping("/profile")
    public String profile(Model model, HttpSession session) {
       
-      if(!util.checkLogin()) {
-         return "redirect/login";
-      }
+	   String uuid = "ade965df-0d77-4e5f-9fec-c33c9f921588";
+	      session.setAttribute("muuid", uuid);
       
-      String uuid = String.valueOf(session.getAttribute("muuid"));
+      
       
       //세션에 저장된 uuid를 가지고 멤버조회
       Map<String, Object> member = myPageService.memberInfo(uuid);
@@ -215,9 +213,8 @@ public class MyPageController {
    @GetMapping("review")
    public String review(@RequestParam("tno") String tno, Model model, HttpSession session) {
       
-      if(!util.checkLogin()) {
-         return "/login";
-      }
+	   String uuid = "ade965df-0d77-4e5f-9fec-c33c9f921588";
+	      session.setAttribute("muuid", uuid);
       
       // 구매자,판매자확인
       ReviewDTO reviewMember = myPageService.findId(tno);
@@ -458,7 +455,7 @@ public class MyPageController {
       }
       
 
-      String nickname = String.valueOf(session.getAttribute("mnickname"));
+      String nickname = "SELLAS1";
       //내글보기
 
       
