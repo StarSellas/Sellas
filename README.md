@@ -18,7 +18,7 @@
 ### 플로우차트
 ![image](https://github.com/StarSellas/Sellas/assets/134923287/898b4445-d25d-41e1-9ee0-9e85357d6f5a)
 
-###시스템아키텍처
+### 시스템아키텍처
 ![image](https://github.com/StarSellas/Sellas/assets/134923287/3e29dfcb-f636-4bbf-aaf4-ea13dbdc19ea)
 
 ### 동영상시연
